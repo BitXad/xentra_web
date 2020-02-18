@@ -29,11 +29,30 @@ class Imagen_asociado_model extends CI_Model
 
         return $imagen_asociado;
     }
-        
+
+    /* muestra todas las imagenes de un asociado */
+    function get_all_imagen_asociado($id_asoc)
+    {
+        $imagen = $this->db->query("
+            SELECT
+                i.*
+            FROM
+                imagen_asociado i, asociado a
+            WHERE
+                i.asociado_id = a.id_asoc
+                and i.asociado_id = $id_asoc
+        ")->result_array();
+        return $imagen;
+    }
+    
+    
+    
+    
+    
     /*
      * Get all imagen_asociado
      */
-    function get_all_imagen_asociado()
+    function get_all_imagen_asociado1()
     {
         $imagen_asociado = $this->db->query("
             SELECT
@@ -76,4 +95,6 @@ class Imagen_asociado_model extends CI_Model
     {
         return $this->db->delete('imagen_asociado',array('imagenasoc_id'=>$imagenasoc_id));
     }
+    
+    
 }

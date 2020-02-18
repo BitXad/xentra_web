@@ -10,79 +10,234 @@ class Imagen_asociado extends CI_Controller{
         parent::__construct();
         $this->load->model('Imagen_asociado_model');
     } 
-
-    /*
-     * Listing of imagen_asociado
-     */
-    function index()
+    
+    function catalogo($id_asoc)
     {
-        $data['imagen_asociado'] = $this->Imagen_asociado_model->get_all_imagen_asociado();
+        $this->load->model('Asociado_model');
+	$asociado = $this->Asociado_model->get_asociado($id_asoc);
+        $data['id_asoc'] = $id_asoc;
+        $data['nombre_asoc'] = $asociado['nombres_asoc']." ".$asociado['apellidos_asoc'];
+        $data['all_imagen_asociado'] = $this->Imagen_asociado_model->get_all_imagen_asociado($id_asoc);
         
-        $data['_view'] = 'imagen_asociado/index';
+        $data['_view'] = 'imagen_asociado/catalogo';
         $this->load->view('layouts/main',$data);
     }
-
     /*
      * Adding a new imagen_asociado
      */
-    function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
+     function add($asociado_id)
+    {
+        //if($this->acceso(69)){
+            //$this->load->library('form_validation');
+            /* *********************INICIO imagen***************************** */
+            $foto="";
+            if (!empty($_FILES['galeria_imagen']['name'])){
+		
+                        $this->load->library('image_lib');
+                        $config['upload_path'] = './resources/images/asociados/';
+                        $img_full_path = $config['upload_path'];
+
+                        //$config['allowed_types'] = 'gif|jpeg|jpg|png';
+                        $config['allowed_types'] = '*';
+                        $config['image_library'] = 'gd2';
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 0;
+                        $config['max_height'] = 0;
+                        
+                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                        $config['file_name'] = $new_name; //.$extencion;
+                        $config['file_ext_tolower'] = TRUE;
+
+                        $this->load->library('upload', $config);
+                        $this->upload->do_upload('galeria_imagen');
+
+                        $img_data = $this->upload->data();
+                        $extension = $img_data['file_ext'];
+                        /* ********************INICIO para resize***************************** */
+                        if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                            $conf['image_library'] = 'gd2';
+                            $conf['source_image'] = $img_data['full_path'];
+                            $conf['new_image'] = './resources/images/asociados/';
+                            $conf['maintain_ratio'] = TRUE;
+                            $conf['create_thumb'] = FALSE;
+                            $conf['width'] = 800;
+                            $conf['height'] = 600;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+                            $confi['image_library'] = 'gd2';
+                            $confi['source_image'] = './resources/images/asociados/'.$new_name.$extension;
+                            $confi['new_image'] = './resources/images/asociados/'."thumb_".$new_name.$extension;
+                            $confi['create_thumb'] = FALSE;
+                            $confi['maintain_ratio'] = TRUE;
+                            $confi['width'] = 50;
+                            $confi['height'] = 50;
+
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($confi);
+                            $this->image_lib->resize();
+                        }
+                        /* ********************F I N  para resize***************************** */
+                        
+
+                        $foto = $new_name.$extension;
+                    }
+            /* *********************FIN imagen***************************** */
+            $estado_id = 1;
             $params = array(
-				'asociado_id' => $this->input->post('asociado_id'),
-				'imagenasoc_titulo' => $this->input->post('imagenasoc_titulo'),
-				'imagenasoc_archivo' => $this->input->post('imagenasoc_archivo'),
-				'imagenasoc_descripcion' => $this->input->post('imagenasoc_descripcion'),
+                'asociado_id' => $asociado_id,
+                'imagenasoc_titulo' => $foto,
+                'imagenasoc_archivo' => $foto,
+                'imagenasoc_descripcion' => $this->input->post('imagenasoc_nombre'),
             );
             
-            $imagen_asociado_id = $this->Imagen_asociado_model->add_imagen_asociado($params);
-            redirect('imagen_asociado/index');
-        }
-        else
-        {
-			$this->load->model('Asociado_model');
-			$data['all_asociado'] = $this->Asociado_model->get_all_asociado();
+            $imagenprod_id = $this->Imagen_asociado_model->add_imagen_asociado($params);
+            redirect('imagen_asociado/catalogo/'.$asociado_id);
             
-            $data['_view'] = 'imagen_asociado/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
-
+        //}
+    }
     /*
      * Editing a imagen_asociado
      */
-    function edit($imagenasoc_id)
-    {   
-        // check if the imagen_asociado exists before trying to edit it
+    function edit($id_asoc, $imagenasoc_id)
+    {
+        //if($this->acceso(109)){
+            //$data['page_title'] = "Imagen Producto";
+        // check if the imagen_producto exists before trying to edit it
         $data['imagen_asociado'] = $this->Imagen_asociado_model->get_imagen_asociado($imagenasoc_id);
         
         if(isset($data['imagen_asociado']['imagenasoc_id']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
+            $this->load->library('form_validation');
+
+	    $this->form_validation->set_rules('imagenasoc_titulo','Imagen Titulo','required');
+		
+	    if($this->form_validation->run())     
+            {
+                /* *********************INICIO imagen***************************** */
+                $foto="";
+                    $foto1= $this->input->post('imagenasoc_archivo1');
+                if (!empty($_FILES['imagenasoc_archivo']['name']))
+                {
+                    $this->load->library('image_lib');
+                    $config['upload_path'] = './resources/images/asociados/';
+                    //$config['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config['allowed_types'] = '*';
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 0;
+                    $config['max_height'] = 0;
+
+                    $new_name = time();
+                    $config['file_name'] = $new_name; //.$extencion;
+                    $config['file_ext_tolower'] = TRUE;
+
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload('imagenasoc_archivo');
+
+                    $img_data = $this->upload->data();
+                    $extension = $img_data['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        $conf['image_library'] = 'gd2';
+                        $conf['source_image'] = $img_data['full_path'];
+                        $conf['new_image'] = './resources/images/asociados/';
+                        $conf['maintain_ratio'] = TRUE;
+                        $conf['create_thumb'] = FALSE;
+                        $conf['width'] = 800;
+                        $conf['height'] = 600;
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($conf);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
+                        
+                        $confi['image_library'] = 'gd2';
+                        $confi['source_image'] = './resources/images/asociados/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/asociados/'."thumb_".$new_name.$extension;
+                        $confi['create_thumb'] = FALSE;
+                        $confi['maintain_ratio'] = TRUE;
+                        $confi['width'] = 50;
+                        $confi['height'] = 50;
+
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($confi);
+                        $this->image_lib->resize();
+                    }
+                    /* ********************F I N  para resize***************************** */
+                    //$directorio = base_url().'resources/imagenes/';
+                    $directorio = FCPATH.'resources\images\asociados\\';
+                    //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
+                    if(isset($foto1) && !empty($foto1)){
+                      if(file_exists($directorio.$foto1)){
+                          unlink($directorio.$foto1);
+                          $mimagenthumb = "thumb_".$foto1;
+                          //$mimagenthumb = str_replace(".", "_thumb.", $foto1);
+                          if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                              unlink($directorio.$mimagenthumb);
+                          }
+                      }
+                  }
+                    $foto = $new_name.$extension;
+                }else{
+                    $foto = $foto1;
+                }
+            /* *********************FIN imagen***************************** */
                 $params = array(
-					'asociado_id' => $this->input->post('asociado_id'),
-					'imagenasoc_titulo' => $this->input->post('imagenasoc_titulo'),
-					'imagenasoc_archivo' => $this->input->post('imagenasoc_archivo'),
-					'imagenasoc_descripcion' => $this->input->post('imagenasoc_descripcion'),
+                    'asociado_id' => $id_asoc,
+                    'imagenasoc_titulo' => $this->input->post('imagenasoc_titulo'),
+                    'imagenasoc_archivo' => $foto,
+                    'imagenasoc_descripcion' => $this->input->post('imagenasoc_descripcion'),
                 );
 
                 $this->Imagen_asociado_model->update_imagen_asociado($imagenasoc_id,$params);            
-                redirect('imagen_asociado/index');
+                redirect('imagen_asociado/catalogo/'.$id_asoc);
             }
             else
             {
-				$this->load->model('Asociado_model');
-				$data['all_asociado'] = $this->Asociado_model->get_all_asociado();
+		$data['id_asoc'] = $id_asoc;
 
                 $data['_view'] = 'imagen_asociado/edit';
                 $this->load->view('layouts/main',$data);
             }
         }
         else
-            show_error('The imagen_asociado you are trying to edit does not exist.');
-    } 
+            show_error('The imagen_producto you are trying to edit does not exist.');
+        //}
+    }
+    
+    
+    
+    /*
+     * Muestra la Galeria de Imagenes de un asociado
+     */
+    function galeriasociado($id_asoc)
+    {
+        $this->load->model('Asociado_model');
+	$asociado = $this->Asociado_model->get_asociado($id_asoc);
+        $data['id_asoc'] = $id_asoc;
+        $data['nombre_asoc'] = $asociado['nombres_asoc']." ".$asociado['apellidos_asoc'];
+        $data['all_imagen_asociado'] = $this->Imagen_asociado_model->get_all_imagen_asociado($id_asoc);
+        
+        $data['_view'] = 'imagen_asociado/galeriasociado';
+        $this->load->view('layouts/main',$data);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     /*
      * Deleting imagen_asociado
@@ -100,5 +255,6 @@ class Imagen_asociado extends CI_Controller{
         else
             show_error('The imagen_asociado you are trying to delete does not exist.');
     }
+    
     
 }
