@@ -152,5 +152,17 @@ class Asociado extends CI_Controller{
             echo json_encode(null);
         }
     }
+    /* buscar asocoados */
+    function buscarasociados()
+    {
+        if($this->input->is_ajax_request()){
+            $parametro       = $this->input->post('parametro');   
+            $categoriaestado = $this->input->post('categoriaestado');   
+                $datos = $this->Asociado_model->get_busqueda_asociado_parametro($parametro, $categoriaestado);
+            echo json_encode($datos);
+        }else{                 
+            show_404();
+        }
+    }
     
 }

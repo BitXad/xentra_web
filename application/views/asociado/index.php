@@ -1,5 +1,6 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/asociado.js'); ?>" type="text/javascript"></script>
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <script type="text/javascript">
     $(document).ready(function () {
         (function ($) {
@@ -39,7 +40,7 @@
             <div class="col-md-7" style="padding-left: 0px">
                 <div class="input-group">
                     <span class="input-group-addon"> Buscar </span>           
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código" onkeypress="buscarproducto(event)" autocomplete="off">
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código" onkeypress="buscarasociado(event)" autocomplete="off">
                 </div>
             </div>
             <!--<div class="col-md-3">
@@ -121,7 +122,7 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-body table-responsive">
-                <table class="table table-condensed">
+                <table class="table table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
                         <th>ASOCIADO</th>

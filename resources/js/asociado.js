@@ -3,6 +3,16 @@ function inicio(){
     tablaresultadosasociado(3);
 }
 
+/*
+ * Funcion que buscara asociados en la tabla asociado
+ */
+function buscarasociado(e) {
+  tecla = (document.all) ? e.keyCode : e.which;
+  
+    if (tecla==13){
+        tablaresultadosasociado(2);
+    }
+}
 
 //Tabla resultados de la busqueda en el index de producto
 function tablaresultadosasociado(limite)
@@ -23,8 +33,8 @@ function tablaresultadosasociado(limite)
         controlador = base_url+'asociado/buscarasociadosall/';
      // busca por categoria
     }else{
-        controlador = base_url+'producto/buscarproductos/';
-        var categoria = document.getElementById('categoria_id').value;
+        controlador = base_url+'asociado/buscarasociados/';
+        /*var categoria = document.getElementById('categoria_id').value;
         var estado    = document.getElementById('estado_id').value;
         if(categoria == 0){
            categoriaestado = "";
@@ -42,7 +52,7 @@ function tablaresultadosasociado(limite)
         }
         
         $("#busquedacategoria").html(categoriatext+" "+estadotext);
-        
+        */
         parametro = document.getElementById('filtrar').value;
     }
     
@@ -218,7 +228,11 @@ function tablaresultadosasociado(limite)
                         html += "</div>";
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
-                        html += "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/asociados/"+registros[i]["foto_asoc"]+"' />";
+                        var imagenreal = ""
+                        if(registros[i]["foto_asoc"] != null && registros[i]["foto_asoc"] != ""){
+                            imagenreal = registros[i]["foto_asoc"];
+                        }
+                        html += "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/asociados/"+imagenreal+"' />";
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
 
@@ -278,16 +292,7 @@ function tablaresultadosasociado(limite)
 
 
 
-/*
- * Funcion que buscara productos en la tabla productos
- */
-function buscarproducto(e) {
-  tecla = (document.all) ? e.keyCode : e.which;
-  
-    if (tecla==13){
-        tablaresultadosproducto(2);
-    }
-}
+
 
 function imprimir_producto(){
     var estafh = new Date();
