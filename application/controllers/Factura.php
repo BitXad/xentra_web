@@ -22,6 +22,11 @@ class Factura extends CI_Controller{
         $this->load->view('layouts/main',$data);
     }
 
+    function cobranza()
+    {
+        $data['_view'] = 'factura/cobranza';
+        $this->load->view('layouts/main',$data);
+    }
     /*
      * Adding a new factura
      */
