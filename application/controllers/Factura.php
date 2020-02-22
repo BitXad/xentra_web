@@ -151,5 +151,73 @@ class Factura extends CI_Controller{
         else
             show_error('The factura you are trying to delete does not exist.');
     }
+
+    function buscarasociado()
+    {
+      
+        //**************** inicio contenido ***************
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $ci = $this->input->post('ci');                    
+                    $datos = $this->Factura_model->buscar_asociado($ci);
+                    echo json_encode($datos);                        
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+                
+        //**************** fin contenido ***************
+        
+                
+               
+    }
+    function buscar_idasociado()
+    {
+      
+        //**************** inicio contenido ***************
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $id = $this->input->post('asociado');                    
+                    $datos = $this->Factura_model->buscar_id_asociado($id);
+                    echo json_encode($datos);                        
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+                
+        //**************** fin contenido ***************
+        
+                
+               
+    }
+
+    function buscar_asociados()
+    {
+      
+        //**************** inicio contenido ***************
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $nombre = $this->input->post('nombre');                    
+                    $apellido = $this->input->post('apellido');                    
+                    $datos = $this->Factura_model->busqueda_asociados($nombre,$apellido);
+                    echo json_encode($datos);                        
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+                
+        //**************** fin contenido ***************
+    
+               
+    }
     
 }

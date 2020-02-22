@@ -76,4 +76,30 @@ class Factura_model extends CI_Model
     {
         return $this->db->delete('factura',array('id_fact'=>$id_fact));
     }
+
+    function buscar_asociado($ci)
+    {
+
+        $sql = "select * from asociado where nit_asoc = ".$ci." or ci_asoc=".$ci." or codigo_asoc=".$ci;        
+        $resultado = $this->db->query($sql)->result_array();
+        
+        return $resultado;
+    }
+    function buscar_id_asociado($id)
+    {
+
+        $sql = "select * from asociado where id_asoc = ".$id." ";        
+        $resultado = $this->db->query($sql)->result_array();
+        
+        return $resultado;
+    }
+
+    function busqueda_asociados($nombre,$apellido)
+    {
+
+        $sql = "select * from asociado where nombres_asoc like '%".$nombre."%' and apellidos_asoc like '%".$apellido."%' ";        
+        $resultado = $this->db->query($sql)->result_array();
+        
+        return $resultado;
+    }
 }
