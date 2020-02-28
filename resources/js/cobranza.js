@@ -381,6 +381,7 @@ function ver_facturas(asociado)
                     $("#id_asoc").val(registros[0]["id_asoc"]);
 
                     facturas_pendientes(asociado); 
+                   // multas_pendientes(asociado); 
                     }             
 
             },
@@ -397,8 +398,123 @@ function ver_facturas(asociado)
 
 function facturas_pendientes(asociado)
 {
-   alert('siga');
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"factura/buscar_pendientes";
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{asociado:asociado},
+            success:function(respuesta){
+                
+                var registros = JSON.parse(respuesta);
+                var fin = registros.length;
+                html = "";
+               
+                
+                for(var i = 0; i<fin; i++)
+                {
 
+                    html += "<tr onclick='detalle_factura("+registros[i]["id_fact"]+")'>";               
+                    html += "<td>"+(i+1)+"</td>";
+                    html += "<td>"+registros[i]["id_fact"]+"</td>";
+                    html += "<td>"+registros[i]["id_lec"]+"</td>";
+                    html += "<td>"+registros[i]["actual_lec"]+"</td>";
+                    html += "<td>"+registros[i]["anterior_lec"]+"</td>";
+                    html += "<td>"+registros[i]["consumo_lec"]+"</td>";
+                    html += "<td>"+registros[i]["mes_lec"]+"</td>";  
+                    html += "<td>"+registros[i]["gestion_lec"]+"</td>";  
+                    
+                    html += "</tr>";
+                } 
+                   
+                $("#lista_pendientes").html(html);
+
+            },
+            error: function(respuesta){
+              alert('No existen Facturas Pendientes');
+            }
+        });
+}
+
+/*
+function multas_pendientes(asociado)
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"factura/buscar_multas";
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{asociado:asociado},
+            success:function(respuesta){
+                
+                var registros = JSON.parse(respuesta);
+                var fin = registros.length;
+                html = "";
+               
+                
+                for(var i = 0; i<fin; i++)
+                {
+
+                    html += "<tr onclick='ver_facturas("+registros[i]["id_fact"]+")'>";               
+                    html += "<td>"+(i+1)+"</td>";
+                    html += "<td>"+registros[i]["motivo_multa"]+"</td>";
+                    html += "<td>"+registros[i]["cant_detfact"]+"</td>";
+                    html += "<td>"+registros[i]["descip_detfact"]+"</td>";
+                    html += "<td>"+registros[i]["monto_multa"]+"</td>";
+                    html += "<td>"+registros[i]["desc_detfact"]+"</td>";
+                    html += "<td>"+registros[i]["total_detfact"]+"</td>";
+                   
+                    
+                    html += "</tr>";
+                } 
+                   
+                $("#detalle_factura").html(html);
+
+            },
+            error: function(respuesta){
+              alert('No existen Facturas Pendientes');
+            }
+        });
+}*/
+
+function detalle_factura(factura)
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"factura/buscar_detalle";
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{factura:factura},
+            success:function(respuesta){
+                
+                var registros = JSON.parse(respuesta);
+                var fin = registros.length;
+                html = "";
+               
+                
+                for(var i = 0; i<fin; i++)
+                {
+
+                    html += "<tr onclick='ver_facturas("+registros[i]["id_fact"]+")'>";               
+                    html += "<td align='center'>"+(i+1)+"</td>";
+                    html += "<td align='center'>"+registros[i]["id_fact"]+"</td>";
+                    html += "<td align='center'>"+registros[i]["cant_detfact"]+"</td>";
+                    html += "<td>"+registros[i]["descip_detfact"]+"</td>";
+                    html += "<td align='right'>"+Number(registros[i]["punit_detfact"]).toFixed(2)+"</td>";
+                    html += "<td align='right'>"+Number(registros[i]["desc_detfact"]).toFixed(2)+"</td>";
+                    html += "<td align='right'>"+Number(registros[i]["total_detfact"]).toFixed(2)+"</td>";
+                   
+                    
+                    html += "</tr>";
+                } 
+                   
+                $("#detalle_factura").html(html);
+
+            },
+            error: function(respuesta){
+              alert('No existen Facturas Pendientes');
+            }
+        });
 }
 
 

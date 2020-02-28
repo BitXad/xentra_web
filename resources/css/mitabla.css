@@ -38,13 +38,14 @@
 #mitabla_xs {
     /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
     font-family: "Arial", Arial, Arial, arial;
-    font-size: 10px;
+    
     border-collapse: collapse;
     width: 100%;
     padding : 0 0 0 0;
 }
 
-#mitabla_xs td,{
+#mitabla_xs td {
+    font-size: 9.5px;
     padding-top: 1px;
     padding-bottom: 1px;
     border: 1px solid #ddd;

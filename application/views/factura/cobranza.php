@@ -1,7 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/cobranza.js'); ?>" type="text/javascript"></script>
-
+ 
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -137,16 +137,16 @@ input[type=number] { -moz-appearance:textfield; }
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                             <th>Nº</th>
-                            <th>Lec.<br>Act.</th>
+                            <th>Fact.</th>
+                            <th>Lec.</th>
+                            <th>Actual</th>
                             <th>Anterior</th>
                             <th>Cons.</th>
                             <th>Mes</th>
                             <th>Gestion</th>
-                            <th>Total<br>BS.</th>
-                            <th></th>
                            
                     </tr>
-                    <tbody class="buscar1" id="detalleordeniza">
+                    <tbody class="buscar1" id="lista_pendientes">
                       
                     </tbody>
                 </table>
@@ -161,17 +161,15 @@ input[type=number] { -moz-appearance:textfield; }
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                             <th>Nº</th>
-                            <th>Lec.<br>Act.</th>
-                            <th>Anterior</th>
-                            <th>Cons.</th>
-                            <th>Mes</th>
-                            <th>Gestion</th>
+                            <th>Factura</th>
+                            <th>Cant.</th>
+                            <th>Detalle</th>
                             <th>SubTotal<br>BS.</th>
-                            <th>Multa<br>BS.</th>
+                            <th>Des.<br>BS.</th>
                             <th>Total<br>BS.</th>
                            
                     </tr>
-                    <tbody class="buscar2" id="detalleordeniza">
+                    <tbody class="buscar2" id="detalle_factura">
                        
                     </tbody>
                 </table>

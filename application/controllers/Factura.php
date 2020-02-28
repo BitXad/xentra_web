@@ -27,6 +27,9 @@ class Factura extends CI_Controller{
         $data['_view'] = 'factura/cobranza';
         $this->load->view('layouts/main',$data);
     }
+
+
+
     /*
      * Adding a new factura
      */
@@ -218,6 +221,22 @@ class Factura extends CI_Controller{
         //**************** fin contenido ***************
     
                
+    }
+
+    function buscar_pendientes()
+    {
+        $asociado = $this->input->post('asociado');
+        $datos = $this->Factura_model->get_pendiente_factura($asociado);
+        echo json_encode($datos);  
+        
+    }
+
+    function buscar_detalle()
+    {
+        $factura = $this->input->post('factura');
+        $datos = $this->Factura_model->get_pendiente_detalle($factura);
+        echo json_encode($datos);  
+        
     }
     
 }
