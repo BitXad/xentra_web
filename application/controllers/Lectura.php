@@ -9,6 +9,8 @@ class Lectura extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Lectura_model');
+        $this->load->model('Asociado_model');
+        $this->load->model('Mes_model');
     } 
 
     /*
@@ -19,6 +21,21 @@ class Lectura extends CI_Controller{
         $data['lectura'] = $this->Lectura_model->get_all_lectura();
         
         $data['_view'] = 'lectura/index';
+        $this->load->view('layouts/main',$data);
+    }
+
+    /*
+     * Listing of lectura
+     */
+    function lecturas()
+    {
+//        $data['asociados'] = $this->Asociado_model->get_all_asociado();
+        $data['lectura'] = $this->Lectura_model->get_all_lectura();
+        $data['meses'] = $this->Mes_model->get_all_mes();
+        $data['zonas'] = $this->Lectura_model->get_all_zonas();
+        $data['direcciones'] = $this->Lectura_model->get_all_direcciones();
+        
+        $data['_view'] = 'lectura/lecturas';
         $this->load->view('layouts/main',$data);
     }
 
@@ -136,5 +153,15 @@ class Lectura extends CI_Controller{
         else
             show_error('The lectura you are trying to delete does not exist.');
     }
+    
+    
+    function buscar_asociados(){
+        
+        $sql = $this->input->post("sql");
+        $resultado = $this->Lectura_model->consultar($sql);
+        echo json_encode($resultado);
+        
+    }
+    
     
 }
