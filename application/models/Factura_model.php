@@ -127,4 +127,24 @@ class Factura_model extends CI_Model
         
         return $resultado;
     }
+
+    function get_recargo_detalle($lectura)
+    {
+
+        $sql = "select p.id_param,p.descip_param,p.dias_param,p.monto_param,p.estado,p.detalle_param,  (DATEDIFF(date(now()), t.fecha_lec)) as moradias from parametros p,(select * from lectura where id_lec=".$lectura.") as t where p.estado='ACTIVO' and (DATEDIFF(date(now()), t.fecha_lec)) >= p.dias_param and p.monto_param >0 ";        
+        $resultado = $this->db->query($sql)->result_array();
+        
+        return $resultado;
+    }
+
+    function get_datos_factura($factura)
+    {
+
+        $sql = "SELECT *
+        FROM factura 
+        WHERE id_fact=".$factura." ";        
+        $resultado = $this->db->query($sql)->result_array();
+        
+        return $resultado;
+    }
 }

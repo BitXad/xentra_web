@@ -2,7 +2,7 @@ $(document).on("ready",inicio);
 
 function inicio(){
     
-        detallecobro();
+       // detallecobro();
        
       // filtro = " and date(orden_fecha) = date(now())";
     //fechaorden(filtro);
@@ -409,12 +409,13 @@ function facturas_pendientes(asociado)
                 var registros = JSON.parse(respuesta);
                 var fin = registros.length;
                 html = "";
+                html2 = "";
                
                 
                 for(var i = 0; i<fin; i++)
                 {
 
-                    html += "<tr onclick='detalle_factura("+registros[i]["id_fact"]+")'>";               
+                    html += "<tr onclick='detalle_factura("+registros[i]["id_fact"]+","+registros[i]["id_lec"]+")'>";               
                     html += "<td>"+(i+1)+"</td>";
                     html += "<td>"+registros[i]["id_fact"]+"</td>";
                     html += "<td>"+registros[i]["id_lec"]+"</td>";
@@ -428,6 +429,12 @@ function facturas_pendientes(asociado)
                 } 
                    
                 $("#lista_pendientes").html(html);
+                $("#detalle_factura").html(html2);
+                $("#detalle_recargo").html(html2);
+                $("#consumo").val(Number(0).toFixed(2));
+                $("#aportes").val(Number(0).toFixed(2));
+                $("#recargos").val(Number(0).toFixed(2));
+                $("#total_factura").val(Number(0).toFixed(2));
 
             },
             error: function(respuesta){
@@ -477,11 +484,12 @@ function multas_pendientes(asociado)
         });
 }*/
 
-function detalle_factura(factura)
+function detalle_factura(factura,lectura)
 {
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"factura/buscar_detalle";
-    
+    buscar_recargos(lectura);
+    tabla_totales(factura);
         $.ajax({url: controlador,
             type:"POST",
             data:{factura:factura},
@@ -490,12 +498,13 @@ function detalle_factura(factura)
                 var registros = JSON.parse(respuesta);
                 var fin = registros.length;
                 html = "";
-               
+                var total =  Number(0);
                 
                 for(var i = 0; i<fin; i++)
                 {
+                    total +=  Number(registros[i]["total_detfact"]);
 
-                    html += "<tr onclick='ver_facturas("+registros[i]["id_fact"]+")'>";               
+                    html += "<tr>";               
                     html += "<td align='center'>"+(i+1)+"</td>";
                     html += "<td align='center'>"+registros[i]["id_fact"]+"</td>";
                     html += "<td align='center'>"+registros[i]["cant_detfact"]+"</td>";
@@ -503,12 +512,61 @@ function detalle_factura(factura)
                     html += "<td align='right'>"+Number(registros[i]["punit_detfact"]).toFixed(2)+"</td>";
                     html += "<td align='right'>"+Number(registros[i]["desc_detfact"]).toFixed(2)+"</td>";
                     html += "<td align='right'>"+Number(registros[i]["total_detfact"]).toFixed(2)+"</td>";
-                   
-                    
                     html += "</tr>";
                 } 
+                    html += "<tr>";               
+                    html += "<td colspan='2' align='center'><b>TOTAL</b></td>";
+                    html += "<td colspan='4'></td>";
+                    html += "<td align='right'><b>"+Number(total).toFixed(2)+"</b></td>";
+                    html += "</tr>";
                    
                 $("#detalle_factura").html(html);
+                $("#factura_id").val(factura);
+                
+
+            },
+            error: function(respuesta){
+              alert('No existen Facturas Pendientes');
+            }
+        });
+}
+
+function buscar_recargos(lectura)
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"factura/buscar_recargos";
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{lectura:lectura},
+            success:function(respuesta){
+                
+                var registros = JSON.parse(respuesta);
+                var fin = registros.length;
+                html = "";
+                var total =  Number(0);
+                
+                for(var i = 0; i<fin; i++)
+                {
+                    total +=  Number(registros[i]["monto_param"]);
+
+                    html += "<tr>";               
+                    html += "<td align='center'>"+(i+1)+"</td>";
+                    html += "<td>"+registros[i]["descip_param"]+" "+registros[i]["detalle_param"]+"</td>";
+                    html += "<td align='center'>1</td>";
+                    html += "<td align='right'>"+Number(registros[i]["monto_param"]).toFixed(2)+"</td>";
+                    html += "<td align='right'>"+Number(0).toFixed(2)+"</td>";
+                    html += "<td align='right'>"+Number(registros[i]["monto_param"]).toFixed(2)+"</td>";
+                    html += "</tr>";
+                } 
+
+                    html += "<tr>";               
+                    html += "<td colspan='2' align='center'><b>TOTAL</b></td>";
+                    html += "<td colspan='3'></td>";
+                    html += "<td align='right'><b>"+Number(total).toFixed(2)+"</b></td>";
+                    html += "</tr>";
+                   
+                $("#detalle_recargo").html(html);
 
             },
             error: function(respuesta){
@@ -518,9 +576,50 @@ function detalle_factura(factura)
 }
 
 
+function tabla_totales(factura)
+{
+    var base_url    = document.getElementById('base_url').value;
+    var multar    = document.getElementById('multar').checked;
+    var controlador = base_url+"factura/datos_factura";
+    var consumo = Number(0);
+    var aportes = Number(0);
+    var recargos = Number(0);
+    var total_factura = Number(0);
+    
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{factura:factura},
+            success:function(respuesta){
+                
+                registros = JSON.parse(respuesta);
+                consumo = (Number(registros[0]["totalconsumo_fact"]).toFixed(2));
+                aportes = (Number(registros[0]["totalaportes_fact"]).toFixed(2));
+            if(multar==true){
+                recargos = (Number(registros[0]["totalrecargos_fact"]).toFixed(2));    
+            } else {
+                recargos = (Number(0).toFixed(2));  
+            }                
+                total_factura = Number(consumo)+Number(aportes)+Number(recargos);
+                $("#consumo").val(Number(consumo).toFixed(2));
+                $("#aportes").val(Number(aportes).toFixed(2));
+                $("#recargos").val(Number(recargos).toFixed(2));
+                $("#total_factura").val(Number(total_factura).toFixed(2));
 
+            },
+            error: function(respuesta){
+              alert('No existen Facturas Pendientes');
+            }
+        });
+}
 
-function busqueda_ot()
+function multar(){
+    
+    var factura = document.getElementById('factura_id').value;
+    tabla_totales(factura);
+    
+}
+
+/*function busqueda_ot()
 {
     var base_url    = document.getElementById('base_url').value;
     var opcion      = document.getElementById('select_fecha').value;
@@ -573,7 +672,7 @@ function mostrar_ocultar_buscador(parametro){
     else{
         document.getElementById('buscador_oculto').style.display = 'none';}
     
-}
+}*/
 
 
 

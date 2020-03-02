@@ -238,5 +238,21 @@ class Factura extends CI_Controller{
         echo json_encode($datos);  
         
     }
+
+    function buscar_recargos()
+    {
+        $lectura = $this->input->post('lectura');
+        $datos = $this->Factura_model->get_recargo_detalle($lectura);
+        echo json_encode($datos);  
+        
+    }
+
+    function datos_factura()
+    {
+        $factura = $this->input->post('factura');
+        $datos = $this->Factura_model->get_datos_factura($factura);
+        echo json_encode($datos);  
+        
+    }
     
 }

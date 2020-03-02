@@ -134,7 +134,7 @@ input[type=number] { -moz-appearance:textfield; }
     <h4 class="modal-title" >Facturas Pendientes</h4>
                           
                 <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">
+                <table class="table table-striped table-condensed" id="mitabla_xs">
                     <tr>
                             <th>Nº</th>
                             <th>Fact.</th>
@@ -158,7 +158,7 @@ input[type=number] { -moz-appearance:textfield; }
     <h4 class="modal-title" >Detalle</h4>
                           
                 <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">
+                <table class="table table-striped table-condensed" id="mitabla_xs">
                     <tr>
                             <th>Nº</th>
                             <th>Factura</th>
@@ -175,9 +175,71 @@ input[type=number] { -moz-appearance:textfield; }
                 </table>
             </div>
     </div>
-  </div> 
+  </div>
+  </div>
+<div class="col-md-12">
+  <div class="col-md-6" style="padding-left:0px;">
+    <div class="box">
+    <h4 class="modal-title">Multas y Recargos  <button class="btn btn-info btn-xs" type="button">
+              <input type="checkbox" name="multar" id="multar" checked  onclick="multar()"  />
+              <label for="multar"> Cobrar Multas</label></button> </h4>
+                         
+                <div class="box-body table-responsive">
+                <table class="table table-striped table-condensed" id="mitabla_xs">
+                    <tr>
+                            <th>Nº</th>
+                            <th>Descripción</th>
+                            <th>Cant.</th>
+                            <th>P. Unit.</th>
+                            <th>Desc.</th>
+                            <th>Total</th>
+                           
+                    </tr>
+                    <tbody class="buscar3" id="detalle_recargo">
+                       
+                    </tbody>
+                </table>
+            </div>
+    </div>
+  </div>  
 			
-					
+		  <div class="col-md-6" style="padding-left:0px;">
+    <div class="box">
+
+        <div class="box-body table-responsive table-condensed">
+            <!--<form method="post" name="descuento">-->
+                
+            <table class="table table-striped table-condensed" id="miotratabla" >
+                
+
+                <tr>
+                        <td>Consumo Bs.</td>
+                        <td><input class="btn btn-default" type="text" size="8" readonly id="consumo" name="consumo" value="0.00"></td>
+                    
+                </tr>                
+                <tr>
+                        <td>Multas/Aps Bs.</td>
+                        <td><input class="btn btn-default" type="text" size="8" readonly id="aportes" name="aportes" value="0.00"></td>
+                    
+                </tr>
+                <tr>                      
+                        <td>Recargos Bs.</td>
+                        <td>
+                              <input class="btn btn-default" id="recargos" size="8" name="recargos" value="0.00" readonly>
+                        </td>
+                </tr>
+                <tr>                      
+                        <td><b>Total Bs.</b></td>
+                        <td>
+                         <input class="btn btn-warning" id="total_factura" name="total_factura" size="8" value="0.00" readonly> 
+                         <input class="hidden" id="factura_id" name="factura_id" size="8" value="" readonly> 
+                        </td>
+                </tr>
+                              
+            </table>
+              </div>
+              </div>
+  </div>			
 
 </div>
 <div class="col-md-11" align="right">
