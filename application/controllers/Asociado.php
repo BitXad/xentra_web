@@ -166,5 +166,31 @@ class Asociado extends CI_Controller{
             show_404();
         }
     }
+
+    function dashboard($asociado_id)
+    {
+        $data['asociado'] = $this->Asociado_model->get_asociado($asociado_id);
+        $data['pendientes'] = $this->Asociado_model->get_pendientes($asociado_id);
+        $data['canceladas'] = $this->Asociado_model->get_canceladas($asociado_id);
+        $data['_view'] = 'asociado/dashboard';
+        $this->load->view('layouts/main',$data);
+    }
+    function ultimas_lecturas()
+    {
+        $asociado_id = $this->input->post('asociado_id');
+        $ultimas = "SELECT l.*, a.nombres_asoc, a.apellidos_asoc, a.tipo_asoc, a.categoria_asoc  from lectura l, asociado a where a.id_asoc=l.id_asoc and l.id_asoc=".$asociado_id." order by l.fecha_lec DESC limit 5";
+        $result= $this->db->query($ultimas)->result_array();
+        //foreach($result as $res){
+        //$mes=intval(date("m",strtotime($res['fecha_lec']) ) );
+        
+        //$suma=$res['consumo_lec'];
+        
+        //$registros[$mes]+=$suma;    
+        //}
+        echo json_encode($result);
+         return true;
+        //$data=array("registrosdia" =>$registros,);
+        //echo   json_encode($data);
+    }
     
 }
