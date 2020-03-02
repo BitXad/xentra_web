@@ -78,7 +78,11 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
+<<<<<<< Updated upstream
 	'database' => 'aqua_lorenzo',
+=======
+	'database' => 'xentra_web',
+>>>>>>> Stashed changes
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
