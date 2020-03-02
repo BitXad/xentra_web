@@ -22,6 +22,14 @@ class Factura extends CI_Controller{
         $this->load->view('layouts/main',$data);
     }
 
+    function cobranza()
+    {
+        $data['_view'] = 'factura/cobranza';
+        $this->load->view('layouts/main',$data);
+    }
+
+
+
     /*
      * Adding a new factura
      */
@@ -145,6 +153,90 @@ class Factura extends CI_Controller{
         }
         else
             show_error('The factura you are trying to delete does not exist.');
+    }
+
+    function buscarasociado()
+    {
+      
+        //**************** inicio contenido ***************
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $ci = $this->input->post('ci');                    
+                    $datos = $this->Factura_model->buscar_asociado($ci);
+                    echo json_encode($datos);                        
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+                
+        //**************** fin contenido ***************
+        
+                
+               
+    }
+    function buscar_idasociado()
+    {
+      
+        //**************** inicio contenido ***************
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $id = $this->input->post('asociado');                    
+                    $datos = $this->Factura_model->buscar_id_asociado($id);
+                    echo json_encode($datos);                        
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+                
+        //**************** fin contenido ***************
+        
+                
+               
+    }
+
+    function buscar_asociados()
+    {
+      
+        //**************** inicio contenido ***************
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $nombre = $this->input->post('nombre');                    
+                    $apellido = $this->input->post('apellido');                    
+                    $datos = $this->Factura_model->busqueda_asociados($nombre,$apellido);
+                    echo json_encode($datos);                        
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+                
+        //**************** fin contenido ***************
+    
+               
+    }
+
+    function buscar_pendientes()
+    {
+        $asociado = $this->input->post('asociado');
+        $datos = $this->Factura_model->get_pendiente_factura($asociado);
+        echo json_encode($datos);  
+        
+    }
+
+    function buscar_detalle()
+    {
+        $factura = $this->input->post('factura');
+        $datos = $this->Factura_model->get_pendiente_detalle($factura);
+        echo json_encode($datos);  
+        
     }
     
 }

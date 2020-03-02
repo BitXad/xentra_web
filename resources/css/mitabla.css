@@ -34,3 +34,34 @@
     width:500px;
     background-color:lightgray;
 }    
+
+#mitabla_xs {
+    /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
+    font-family: "Arial", Arial, Arial, arial;
+    
+    border-collapse: collapse;
+    width: 100%;
+    padding : 0 0 0 0;
+}
+
+#mitabla_xs td {
+    font-size: 9.5px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    
+}
+
+#mitabla_xs tr:nth-child(even){background-color: #f2f2f2;}
+
+#mitabla_xs tr:hover {background-color: #3c8dbc;}
+
+#mitabla_xs th {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    text-align: center;
+    background-color: #3c8dbc;
+    color: white;
+    font-size: 11px;
+}
