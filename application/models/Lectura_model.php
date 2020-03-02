@@ -52,6 +52,28 @@ class Lectura_model extends CI_Model
     }
         
     /*
+     * Get all lectura
+     */
+    function get_all_zonas()
+    {
+        $sql = "select DISTINCT(zona_asoc) from asociado";
+        $zonas = $this->db->query($sql)->result_array();
+
+        return $zonas;
+    }
+        
+    /*
+     * Get all lectura
+     */
+    function get_all_direcciones()
+    {
+        $sql = "select DISTINCT(direccion_asoc) from asociado";
+        $direcciones = $this->db->query($sql)->result_array();
+
+        return $direcciones;
+    }
+        
+    /*
      * function to add new lectura
      */
     function add_lectura($params)
@@ -76,4 +98,14 @@ class Lectura_model extends CI_Model
     {
         return $this->db->delete('lectura',array('id_lec'=>$id_lec));
     }
-}
+
+    /*
+     * function para ejecutrar una consulta
+     */
+    function consultar($sql)
+    {
+        return $this->db->query($sql)->result_array();
+    }
+
+    
+    }

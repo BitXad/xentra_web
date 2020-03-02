@@ -40,7 +40,7 @@
         <div class="container">
                 <h3 class="box-title">Documentos de <b><?php echo $nombre_asoc; ?></b></h3>
             <div class="box-tools">
-                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modalgaleria" title="Añadir Documento"><font size="5"><span class="fa fa-image "></span></font><br><small> Añadir Dcto.</small></a>
+                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modalgaleria" title="Añadir Documento"><font size="5"><span class="fa fa-file-text-o "></span></font><br><small> Añadir Dcto.</small></a>
                 <a href="<?php echo site_url('imagen_asociado/galeriasociado/'.$id_asoc); ?>" class="btn btn-warning btn-foursquarexs" ><font size="5"><span class="fa fa-image"></span></font><br><small>Ver Slider..</small></a>
 
             </div>
@@ -166,7 +166,13 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="galeria_imagen" class="control-label"><span class="text-danger">*</span>Imagen</label>
+                        <label for="imagenasoc_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                        <div class="form-group">
+                            <input type="text" name="imagenasoc_nombre" value="<?php echo $this->input->post('imagenasoc_nombre'); ?>" class="form-control" id="imagenasoc_nombre" required/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="galeria_imagen" class="control-label"><span class="text-danger">*</span>Documento</label>
                         <div class="form-group">
                             <input type="file" name="galeria_imagen" value="<?php echo $this->input->post('galeria_imagen'); ?>" class="form-control" id="galeria_imagen" required/>
                         </div>
