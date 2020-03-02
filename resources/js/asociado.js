@@ -101,7 +101,7 @@ function tablaresultadosasociado(limite)
                         if(tamres >27){
                             tamaniofont = 1;
                         }
-                        html += "<font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["nombres_asoc"]+" "+registros[i]["apellidos_asoc"]+"</b></font><br>";
+                        html += "<font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["apellidos_asoc"]+" "+registros[i]["nombres_asoc"]+"</b></font><br>";
                         html += "C.I.: "+registros[i]["ci_asoc"]+"<br>";
                         html += "DIR.: "+registros[i]["direccion_asoc"]+"<br>";
                         html += "TELF.: "+registros[i]["telefono_asoc"]+"<br>";
@@ -144,7 +144,7 @@ function tablaresultadosasociado(limite)
                         html += registros[i]["ciudad"];
                         html += "</td>";
                         html += "<td>";
-                        html += "<a href='"+base_url+"imagen_asociado/catalogo/"+registros[i]["id_asoc"]+"' class='btn btn-success btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
+                        html += "<a href='"+base_url+"imagen_asociado/catalogo/"+registros[i]["id_asoc"]+"' class='btn btn-success btn-xs' title='Documentos' ><span class='fa fa-folder-open'></span></a>";
                         html += "</td>";
                         
                         

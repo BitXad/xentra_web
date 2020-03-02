@@ -62,8 +62,10 @@ class Asociado extends CI_Controller{
         }
         else
         {
-			$this->load->model('Empresa_model');
-			$data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $this->load->model('Expedido_model');
+            $data['all_expedido'] = $this->Expedido_model->get_all_expedido();
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
             
             $data['_view'] = 'asociado/add';
             $this->load->view('layouts/main',$data);

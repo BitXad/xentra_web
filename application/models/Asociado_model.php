@@ -42,7 +42,7 @@ class Asociado_model extends CI_Model
                 asociado a
             WHERE
                 1 = 1
-            ORDER By a.nombres_asoc, a.apellidos_asoc
+            ORDER By a.apellidos_asoc, a.nombres_asoc
         ")->result_array();
 
         return $asociado;
@@ -88,7 +88,7 @@ class Asociado_model extends CI_Model
                       or a.zona_asoc like '%".$parametro."%' or a.medidor_asoc like '%".$parametro."%'
                       or a.servicios_asoc like '%".$parametro."%' or a.categoria_asoc like '%".$parametro."%')
                       ".$categoriaestado."
-                ORDER By a.nombres_asoc, a.apellidos_asoc";
+                ORDER By a.apellidos_asoc, a.nombres_asoc";
         $asociado = $this->db->query($sql)->result_array();
         return $asociado;
 
