@@ -125,21 +125,17 @@
     </div>
 </div>
 
-<div class="box-body">
+<div class="box-body table-responsive">
     <table class="table table-striped" id="mitabla">
         <tr>
             <th>#</th>
             <th>Código</th>
             <th>Nombre Asociado</th>
-            <th>Dirección</th>
-            <th>C.I.</th>
             <th>Tipo</th>
-            <th>Fecha Nac.</th>
-            <th>Teléfono</th>
-            <th>N.I.T.</th>
-            <th>Razón Soc.</th>
+            <th>Servicio(s)</th>   
+            <th>Dirección</th>
             <th>Medidor</th>
-            <th>Servicio</th>
+            <th> </th>
                                     
         </tr>
         <tbody id="tabla_lecturas">
@@ -147,4 +143,32 @@
         
     </table>
 
+</div>
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_lectura" id="boton_lectura">
+  Registrar Lectura
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_lectura" tabindex="-1" role="dialog" aria-labelledby="modal_lectura" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="font-family: Arial; font-size: 11px;">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><b><fa class="fa fa-book"></fa>   REGISTRAR LECTURA</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="datos_lectura">
+       
+          
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+        <button type="button" class="btn btn-success"><fa class="fa fa-floppy-o"></fa> Registrar Lectura</button>
+      </div>
+    </div>
+  </div>
 </div>
