@@ -53,10 +53,10 @@ class Configuracion extends CI_Controller{
     /*
      * Editing a configuracion
      */
-    function edit($)
+    function edit($xxx)
     {   
         // check if the configuracion exists before trying to edit it
-        $data['configuracion'] = $this->Configuracion_model->get_configuracion($);
+        $data['configuracion'] = $this->Configuracion_model->get_configuracion($xxx);
         
         if(isset($data['configuracion']['']))
         {
@@ -73,7 +73,7 @@ class Configuracion extends CI_Controller{
 					'opcion' => $this->input->post('opcion'),
                 );
 
-                $this->Configuracion_model->update_configuracion($,$params);            
+                $this->Configuracion_model->update_configuracion($xxx,$params);            
                 redirect('configuracion/index');
             }
             else
@@ -89,14 +89,14 @@ class Configuracion extends CI_Controller{
     /*
      * Deleting configuracion
      */
-    function remove($)
+    function remove($xxx)
     {
-        $configuracion = $this->Configuracion_model->get_configuracion($);
+        $configuracion = $this->Configuracion_model->get_configuracion($xxx);
 
         // check if the configuracion exists before trying to delete it
         if(isset($configuracion['']))
         {
-            $this->Configuracion_model->delete_configuracion($);
+            $this->Configuracion_model->delete_configuracion($xxx);
             redirect('configuracion/index');
         }
         else

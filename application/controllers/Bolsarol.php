@@ -55,10 +55,10 @@ class Bolsarol extends CI_Controller{
     /*
      * Editing a bolsarol
      */
-    function edit($)
+    function edit($xxx)
     {   
         // check if the bolsarol exists before trying to edit it
-        $data['bolsarol'] = $this->Bolsarol_model->get_bolsarol($);
+        $data['bolsarol'] = $this->Bolsarol_model->get_bolsarol($xxx);
         
         if(isset($data['bolsarol']['']))
         {
@@ -74,7 +74,7 @@ class Bolsarol extends CI_Controller{
 					'rol' => $this->input->post('rol'),
                 );
 
-                $this->Bolsarol_model->update_bolsarol($,$params);            
+                $this->Bolsarol_model->update_bolsarol($xxx,$params);            
                 redirect('bolsarol/index');
             }
             else
@@ -93,14 +93,14 @@ class Bolsarol extends CI_Controller{
     /*
      * Deleting bolsarol
      */
-    function remove($)
+    function remove($xxx)
     {
-        $bolsarol = $this->Bolsarol_model->get_bolsarol($);
+        $bolsarol = $this->Bolsarol_model->get_bolsarol($xxx);
 
         // check if the bolsarol exists before trying to delete it
         if(isset($bolsarol['']))
         {
-            $this->Bolsarol_model->delete_bolsarol($);
+            $this->Bolsarol_model->delete_bolsarol($xxx);
             redirect('bolsarol/index');
         }
         else

@@ -154,14 +154,108 @@ class Lectura extends CI_Controller{
             show_error('The lectura you are trying to delete does not exist.');
     }
     
-    
     function buscar_asociados(){
         
         $sql = $this->input->post("sql");
+       /// echo $sql;
         $resultado = $this->Lectura_model->consultar($sql);
         echo json_encode($resultado);
         
     }
     
+    function historial($id_asoc){
+        
+        //historial de lecturas
+        $sql ="select * from lectura l, factura f ".
+             "where l.id_lec = f.id_lec and f.estado_fact='PENDIENTE'  and ".
+             "l.id_asoc=".$id_asoc;
+        
+        $data['facturas_pendientes'] = $this->Lectura_model->consultar($sql);
+        
+        //historial de facturas
+        $sql = "select * from lectura where id_asoc= ".$id_asoc." order by fecha_lec desc";
+        $data['lecturas_anteriores'] = $this->Lectura_model->consultar($sql);
+        
+        //historial de facturas
+        $sql = "select * from asociado where id_asoc=".$id_asoc;
+        $data['asociado'] = $this->Lectura_model->consultar($sql);
+        
+        $data['_view'] = 'lectura/historial';
+        $this->load->view('layouts/main',$data);
+        
+        
+    }
+    
+    function mostrar_multas(){
+        
+        $mes = $this->input->post("mes");
+        $gestion = $this->input->post("gestion");
+        $asociado = $this->input->post("asociado"); //id_asoc
+        
+        //historial de lecturas
+        $sql = "(select 'multa',motivo_multa as motivo,detalle_multa as detalle,monto_multa as monto,mes_multa as mes,gestion_multa as gestion,tipo_multa as tipo,exento_multa as exento, ice_multa as ice ".
+           "from multa ".
+           "where estado_multa = 'ACTIVO' and ".
+           "(mes_multa = '".$mes."' and gestion_multa = '".$gestion."' and tipo_multa= 'GENERAL') or ".
+           "(mes_multa='".$mes."' and gestion_multa = '".$gestion."' and id_asoc=".$asociado.")) union ".
+           "(select 'APORTE',motivo_ap as motivo,detalle_ap as detalle,monto_ap as monto,mes_ap as mes,gestion_ap as gestion,tipo_ap as tipo, exento_ap as exento, ice_ap as ice from aporte ".
+           "where ".
+           "tipo_ap = 'PERMANENTE' and estado_ap = 'ACTIVO' or ".
+           "(mes_ap = '".$mes."' and gestion_ap = '".$gestion."' and tipo_ap = 'PARCIAL' and estado_ap = 'ACTIVO'))";
+        
+        $result = $this->Lectura_model->consultar($sql);
+        
+        echo json_encode($result);
+    }
+    
+    function facturas_adeudadas(){
+//        
+//        $mes = $this->input->post("mes");
+//        $gestion = $this->input->post("gestion");
+        $asociado = $this->input->post("asociado"); //id_asoc
+        
+        $sql = "select if(sum(f.montototal_fact)>0,sum(f.montototal_fact),0) as sumafact, if(count(*)>0,count(*),0) as cantfact ".
+         "from factura f, lectura l where f.estado_fact = 'PENDIENTE' and f.id_lec=l.id_lec and l.id_asoc = ".$asociado;
+        
+        $result = $this->Lectura_model->consultar($sql);
+        
+        echo json_encode($result);
+    }
+    
+    function lecturas_anteriores(){
+//        
+//        $mes = $this->input->post("mes");
+//        $gestion = $this->input->post("gestion");
+        $asociado = $this->input->post("asociado"); //id_asoc
+        
+        $sql = "select * from lectura where id_asoc=".$asociado." order by id_lec desc";
+        
+        $result = $this->Lectura_model->consultar($sql);
+        
+        echo json_encode($result);
+    }
+    
+    
+    function calcular_consumo(){
+//        
+//        $mes = $this->input->post("mes");
+//        $gestion = $this->input->post("gestion");
+        $consumo = $this->input->post("consumo"); //id_asoc
+        $asociado = $this->input->post("asociado"); //id_asoc
+        
+ // Tarifa parametrizable       
+//        $sql = "select * from  tarifa t where t.desde >= ".$consumo." and ".$consumo." <= t.hasta and ".
+//                "t.tipo= (select a.tipo_asoc from asociado a where a.id_asoc=".$asociado+')';
+       
+        
+        $sql = "select * from  tarifa t where t.desde >=".$consumo." and ".$consumo."<= t.hasta and ".
+               "t.tipo= (select a.tipo_asoc from asociado a where a.id_asoc=".$asociado.")";
+        
+        $result = $this->Lectura_model->consultar($sql);
+        
+        echo json_encode($result);
+    }
+    
+   
     
 }

@@ -1,3 +1,68 @@
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script type="text/javascript">
+    function mostrar(a) {
+        obj = document.getElementById('oculto'+a);
+        obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
+        //objm = document.getElementById('map');
+        if(obj.style.visibility == 'hidden'){
+            $('#map').css({ 'width':'0px', 'height':'0px' });
+            $('#mosmapa').text("Obtener Ubicación del negocio");
+        }else{
+            $('#map').css({ 'width':'100%', 'height':'400px' });
+            $('#mosmapa').text("Cerrar mapa");
+        }
+
+    }
+    function cambiarcod(){
+        var estetime = new Date();
+        var anio = estetime.getFullYear();
+        anio = anio -2000;
+        var mes = parseInt(estetime.getMonth())+1;
+        if(mes>0&&mes<10){
+            mes = "0"+mes;
+        }
+        var dia = parseInt(estetime.getDate());
+        if(dia>0&&dia<10){
+            dia = "0"+dia;
+        }
+        var hora = estetime.getHours();
+        if(hora>0&&hora<10){
+            hora = "0"+hora;
+        }
+        var min = estetime.getMinutes();
+        if(min>0&&min<10){
+            min = "0"+min;
+        }
+        var seg = estetime.getSeconds();
+        if(seg>0&&seg<10){
+            seg = "0"+seg;
+        }
+        $('#cliente_codigo').val(anio+mes+dia+hora+min+seg);
+    }
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+    $("#apellidos_asoc").change(function(){
+        var nombre   = $("#nombres_asoc").val();
+        var apellido = $("#apellidos_asoc").val();
+        var nombre = $("#cliente_nombre").val();
+        var cad1 = nombre.substring(0,2);
+        var cad2 = nombre.substring(nombre.length-1,nombre.length);
+        var fecha = new Date();
+        var pararand = fecha.getFullYear()+fecha.getMonth()+fecha.getDay();
+        var cad3 = Math.floor((Math.random(1001,9999) * pararand));
+        var cad = cad1+cad2+cad3;
+        $('#cliente_codigo').val(cad);
+        $('#cliente_razon').val(nombre);
+    });
+    $("#cliente_ci").change(function(){
+        var ci = $("#cliente_ci").val();
+        $('#cliente_nit').val(ci);
+    });
+  });
+    
+</script>
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
@@ -7,14 +72,14 @@
             <?php echo form_open('asociado/add'); ?>
             <div class="box-body">
                 <div class="row clearfix">
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <label for="nombres_asoc" class="control-label"><span class="text-danger">*</span>Nombres</label>
                         <div class="form-group">
                             <input type="text" name="nombres_asoc" value="<?php echo $this->input->post('nombres_asoc'); ?>" class="form-control" id="nombres_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                             <span class="text-danger"><?php echo form_error('nombres_asoc');?></span>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <label for="apellidos_asoc" class="control-label"><span class="text-danger">*</span>Apellidos</label>
                         <div class="form-group">
                             <input type="text" name="apellidos_asoc" value="<?php echo $this->input->post('apellidos_asoc'); ?>" class="form-control" id="apellidos_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -91,7 +156,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="direccion_asoc" class="control-label">Direccion Asoc</label>
+                        <label for="direccion_asoc" class="control-label">Dirección</label>
                         <div class="form-group">
                             <input type="text" name="direccion_asoc" value="<?php echo $this->input->post('direccion_asoc'); ?>" class="form-control" id="direccion_asoc" />
                         </div>

@@ -52,10 +52,10 @@ class Rol_usuario extends CI_Controller{
     /*
      * Editing a rol_usuario
      */
-    function edit($)
+    function edit($xxx)
     {   
         // check if the rol_usuario exists before trying to edit it
-        $data['rol_usuario'] = $this->Rol_usuario_model->get_rol_usuario($);
+        $data['rol_usuario'] = $this->Rol_usuario_model->get_rol_usuario($xxx);
         
         if(isset($data['rol_usuario']['']))
         {
@@ -68,7 +68,7 @@ class Rol_usuario extends CI_Controller{
 					'fecha' => $this->input->post('fecha'),
                 );
 
-                $this->Rol_usuario_model->update_rol_usuario($,$params);            
+                $this->Rol_usuario_model->update_rol_usuario($xxx,$params);            
                 redirect('rol_usuario/index');
             }
             else
@@ -87,14 +87,14 @@ class Rol_usuario extends CI_Controller{
     /*
      * Deleting rol_usuario
      */
-    function remove($)
+    function remove($xxx)
     {
-        $rol_usuario = $this->Rol_usuario_model->get_rol_usuario($);
+        $rol_usuario = $this->Rol_usuario_model->get_rol_usuario($xxx);
 
         // check if the rol_usuario exists before trying to delete it
         if(isset($rol_usuario['']))
         {
-            $this->Rol_usuario_model->delete_rol_usuario($);
+            $this->Rol_usuario_model->delete_rol_usuario($xxx);
             redirect('rol_usuario/index');
         }
         else
