@@ -39,9 +39,9 @@
     <div class="box-header">
         <div class="container">
                 <h3 class="box-title">Documentos de <b><?php echo $nombre_asoc; ?></b></h3>
-            <div class="box-tools">
+            <div class="box-tools text-center">
                 <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modalgaleria" title="Añadir Documento"><font size="5"><span class="fa fa-file-text-o "></span></font><br><small> Añadir Dcto.</small></a>
-                <a href="<?php echo site_url('imagen_asociado/galeriasociado/'.$id_asoc); ?>" class="btn btn-warning btn-foursquarexs" ><font size="5"><span class="fa fa-image"></span></font><br><small>Ver Slider..</small></a>
+                <!--<a href="<?php //echo site_url('imagen_asociado/galeriasociado/'.$id_asoc); ?>" class="btn btn-warning btn-foursquarexs" ><font size="5"><span class="fa fa-image"></span></font><br><small>Ver Slider..</small></a>-->
 
             </div>
         </div>
@@ -56,7 +56,7 @@
                 Buscar 
             </span>           
             <!--<input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código" onkeypress="validar2(event,4)">-->
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, estado" >
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, descripcion" >
         </div>
         <!--este es FIN de input buscador-->
         <div class="container" id="categoria">
@@ -83,13 +83,13 @@
                             <div id="horizontal">
                             <div>
                             <?php
-                            if(substr($imagen['imagenasoc_archivo'], -4) == ".jpg" || substr($imagen['imagenasoc_archivo'], -4) == ".png" || substr($imagen['imagenasoc_archivo'], -5) == ".jpeg" || substr($imagen['imagenasoc_archivo'], -4) == ".gif") {
+                            //if(substr($imagen['imagenasoc_archivo'], -4) == ".jpg" || substr($imagen['imagenasoc_archivo'], -4) == ".png" || substr($imagen['imagenasoc_archivo'], -5) == ".jpeg" || substr($imagen['imagenasoc_archivo'], -4) == ".gif") {
                                // $mimagen = str_replace(".", "_thumb.", $imagen['imagenprod_archivo']);
-                                echo '<img src="'.site_url('/resources/images/asociados/'."thumb_".$imagen['imagenasoc_archivo']).'" />';
-                            }else{ ?>
-                                <a href="<?php echo site_url('/resources/images/asociados/'.$imagen['imagenasoc_archivo']) ?>" target="_blank"><?php echo $imagen['imagenasoc_archivo']; ?></a>
+                              //  echo '<img src="'.site_url('/resources/images/imgasociados/'."thumb_".$imagen['imagenasoc_archivo']).'" />';
+                           // }else{ ?>
+                                <a href="<?php echo site_url('/resources/images/imgasociados/'.$imagen['imagenasoc_archivo']) ?>" target="_blank"><?php echo $imagen['imagenasoc_titulo']; ?></a>
                             <?php
-                            }
+                            //}
                             ?>
                            </div>
                            <!--<div>
@@ -145,7 +145,7 @@
 </div>
 </div>
 
-
+<!-- ************************* INICIO modal para registrar un nuevo documento ******************************* -->
 <div class="modal fade" id="modalgaleria" tabindex="-1" role="dialog" aria-labelledby="modalgaleriaLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -160,19 +160,19 @@
             
                 <div class="row clearfix">
                     <div class="col-md-6">
-                        <label for="imagenasoc_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                        <label for="imagenasoc_titulo" class="control-label"><span class="text-danger">*</span>Documento</label>
                         <div class="form-group">
-                            <input type="text" name="imagenasoc_nombre" value="<?php echo $this->input->post('imagenasoc_nombre'); ?>" class="form-control" id="imagenasoc_nombre" required/>
+                            <input type="text" name="imagenasoc_titulo" value="<?php echo $this->input->post('imagenasoc_titulo'); ?>" class="form-control" id="imagenasoc_titulo" required/>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="imagenasoc_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                        <label for="imagenasoc_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
                         <div class="form-group">
-                            <input type="text" name="imagenasoc_nombre" value="<?php echo $this->input->post('imagenasoc_nombre'); ?>" class="form-control" id="imagenasoc_nombre" required/>
+                            <input type="text" name="imagenasoc_descripcion" value="<?php echo $this->input->post('imagenasoc_descripcion'); ?>" class="form-control" id="imagenasoc_descripcion" required/>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="galeria_imagen" class="control-label"><span class="text-danger">*</span>Documento</label>
+                        <label for="galeria_imagen" class="control-label"><span class="text-danger">*</span>Archivo</label>
                         <div class="form-group">
                             <input type="file" name="galeria_imagen" value="<?php echo $this->input->post('galeria_imagen'); ?>" class="form-control" id="galeria_imagen" required/>
                         </div>
@@ -181,15 +181,23 @@
         
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="submit" class="btn btn-success"><span class="fa fa-check"></span> Guardar</button>
             <!--<a onclick="refrescar()" class="btn btn-success" data-dismiss="modal"><span class="fa fa-check"></span> Guardar</a>-->
+            <a onclick="iniciar()" data-dismiss="modal" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar</a>
             <?php echo form_close(); ?>
         </div>
     </div>
   </div>
 </div>
+<!-- ************************* FIN modal para registrar un nuevo documento ******************************* -->
 
 <script type="text/javascript">
+    function iniciar(){
+        $("#imagenasoc_titulo").val("");
+        $("#imagenasoc_descripcion").val("");
+        $("#galeria_imagen").val("");
+    }
     function refrescar(){
         location.reload();
     }

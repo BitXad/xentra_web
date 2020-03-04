@@ -45,7 +45,7 @@ class Servicio_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `servicio` DESC
+            ORDER BY `servicio`
         ")->result_array();
 
         return $servicios;

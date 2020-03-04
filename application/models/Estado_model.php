@@ -45,7 +45,7 @@ class Estado_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `estado` DESC
+            ORDER BY `estado`
         ")->result_array();
 
         return $estados;

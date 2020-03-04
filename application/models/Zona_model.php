@@ -45,7 +45,7 @@ class Zona_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `zona_med` DESC
+            ORDER BY `zona_med`
         ")->result_array();
 
         return $zonas;

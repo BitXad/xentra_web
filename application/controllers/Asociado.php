@@ -17,6 +17,10 @@ class Asociado extends CI_Controller{
     function index()
     {
         $data['asociado'] = $this->Asociado_model->get_all_asociado();
+        $this->load->model('Servicio_model');
+        $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
+        $this->load->model('Categoria_model');
+        $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
         
         $data['_view'] = 'asociado/index';
         $this->load->view('layouts/main',$data);
@@ -26,35 +30,91 @@ class Asociado extends CI_Controller{
      * Adding a new asociado
      */
     function add()
-    {   
+    {
         $this->load->library('form_validation');
+        $this->form_validation->set_rules('nombres_asoc','Nombres','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('apellidos_asoc','Apellidos','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())
+        {
+            /* *********************INICIO imagen***************************** */
+            $foto="";
+            if (!empty($_FILES['foto_asoc']['name'])){
+                    $this->load->library('image_lib');
+                    $config['upload_path'] = './resources/images/asociados/';
+                    $img_full_path = $config['upload_path'];
 
-		$this->form_validation->set_rules('nombres_asoc','Nombres Asoc','required');
-		$this->form_validation->set_rules('apellidos_asoc','Apellidos Asoc','required');
-		
-		if($this->form_validation->run())     
-        {   
+                    $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 0;
+                    $config['max_height'] = 0;
+
+                    $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                    $config['file_name'] = $new_name; //.$extencion;
+                    $config['file_ext_tolower'] = TRUE;
+
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload('foto_asoc');
+
+                    $img_data = $this->upload->data();
+                    $extension = $img_data['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        $conf['image_library'] = 'gd2';
+                        $conf['source_image'] = $img_data['full_path'];
+                        $conf['new_image'] = './resources/images/asociados/';
+                        $conf['maintain_ratio'] = TRUE;
+                        $conf['create_thumb'] = FALSE;
+                        $conf['width'] = 800;
+                        $conf['height'] = 600;
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($conf);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
+                    }
+                    /* ********************F I N  para resize***************************** */
+                    $confi['image_library'] = 'gd2';
+                    $confi['source_image'] = './resources/images/asociados/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/images/asociados/'."thumb_".$new_name.$extension;
+                    $confi['create_thumb'] = FALSE;
+                    $confi['maintain_ratio'] = TRUE;
+                    $confi['width'] = 50;
+                    $confi['height'] = 50;
+
+                    $this->image_lib->clear();
+                    $this->image_lib->initialize($confi);
+                    $this->image_lib->resize();
+
+                    $foto = $new_name.$extension;
+            }
+            /* *********************FIN imagen***************************** */
+            $id_empresa = 1;
+            $estado = "ACTIVO";
+            date_default_timezone_set('America/La_Paz');
+            $fechahora_res = date('Y-m-d H:i:s');
             $params = array(
-				'id_emp' => $this->input->post('id_emp'),
-				'estado' => $this->input->post('estado'),
-				'tipo_asoc' => $this->input->post('tipo_asoc'),
-				'zona_asoc' => $this->input->post('zona_asoc'),
-				'servicios_asoc' => $this->input->post('servicios_asoc'),
-				'categoria_asoc' => $this->input->post('categoria_asoc'),
-				'ciudad' => $this->input->post('ciudad'),
-				'nombres_asoc' => $this->input->post('nombres_asoc'),
-				'apellidos_asoc' => $this->input->post('apellidos_asoc'),
-				'ci_asoc' => $this->input->post('ci_asoc'),
-				'direccion_asoc' => $this->input->post('direccion_asoc'),
-				'fechanac_asoc' => $this->input->post('fechanac_asoc'),
-				'telefono_asoc' => $this->input->post('telefono_asoc'),
-				'codigo_asoc' => $this->input->post('codigo_asoc'),
-				'nit_asoc' => $this->input->post('nit_asoc'),
-				'razon_asoc' => $this->input->post('razon_asoc'),
-				'foto_asoc' => $this->input->post('foto_asoc'),
-				'fechahora_asoc' => $this->input->post('fechahora_asoc'),
-				'medidor_asoc' => $this->input->post('medidor_asoc'),
-				'orden_asoc' => $this->input->post('orden_asoc'),
+                'id_emp' => $id_empresa,
+                'estado' => $estado,
+                'tipo_asoc' => $this->input->post('tipo_asoc'),
+                'ciudad' => $this->input->post('ciudad'),
+                'nombres_asoc' => $this->input->post('nombres_asoc'),
+                'apellidos_asoc' => $this->input->post('apellidos_asoc'),
+                'ci_asoc' => $this->input->post('ci_asoc'),
+                'direccion_asoc' => $this->input->post('direccion_asoc'),
+                'fechanac_asoc' => $this->input->post('fechanac_asoc'),
+                'telefono_asoc' => $this->input->post('telefono_asoc'),
+                'codigo_asoc' => $this->input->post('codigo_asoc'),
+                'nit_asoc' => $this->input->post('nit_asoc'),
+                'razon_asoc' => $this->input->post('razon_asoc'),
+                'foto_asoc' => $foto,
+                'fechahora_asoc' => $fechahora_res,
+                'zona_asoc' => $this->input->post('zona_asoc'),
+                'medidor_asoc' => $this->input->post('medidor_asoc'),
+                'servicios_asoc' => $this->input->post('servicios_asoc'),
+                'categoria_asoc' => $this->input->post('categoria_asoc'),
+                'orden_asoc' => $this->input->post('orden_asoc'),
+                'latitud_asoc' => $this->input->post('latitud_asoc'),
+                'longitud_asoc' => $this->input->post('longitud_asoc'),
             );
             
             $asociado_id = $this->Asociado_model->add_asociado($params);
@@ -64,8 +124,16 @@ class Asociado extends CI_Controller{
         {
             $this->load->model('Expedido_model');
             $data['all_expedido'] = $this->Expedido_model->get_all_expedido();
-            $this->load->model('Empresa_model');
-            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $this->load->model('Tipo_asociado_model');
+            $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();
+            $this->load->model('Zona_model');
+            $data['all_zona'] = $this->Zona_model->get_all_zonas();
+            $this->load->model('Servicio_model');
+            $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
+            /*$this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();*/
+            $this->load->model('Categoria_model');
+            $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
             
             $data['_view'] = 'asociado/add';
             $this->load->view('layouts/main',$data);
@@ -83,49 +151,129 @@ class Asociado extends CI_Controller{
         if(isset($data['asociado']['id_asoc']))
         {
             $this->load->library('form_validation');
+            $this->form_validation->set_rules('nombres_asoc','Nombres','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('apellidos_asoc','Apellidos','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
+            {
+                /* *********************INICIO imagen***************************** */
+                $foto="";
+                $foto1= $this->input->post('foto_asoc1');
+                if (!empty($_FILES['foto_asoc']['name']))
+                {
+                    $config['upload_path'] = './resources/images/asociados/';
+                    $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 0;
+                    $config['max_height'] = 0;
 
-			$this->form_validation->set_rules('nombres_asoc','Nombres Asoc','required');
-			$this->form_validation->set_rules('apellidos_asoc','Apellidos Asoc','required');
-		
-			if($this->form_validation->run())     
-            {   
+                    $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                    $config['file_name'] = $new_name; //.$extencion;
+                    $config['file_ext_tolower'] = TRUE;
+                    
+                    $this->load->library('image_lib');
+                    $this->image_lib->initialize($config);
+                    
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload('foto_asoc');
+
+                    $img_data = $this->upload->data();
+                    $extension = $img_data['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        $conf['image_library'] = 'gd2';
+                        $conf['source_image'] = $img_data['full_path'];
+                        $conf['new_image'] = './resources/images/asociados/';
+                        $conf['maintain_ratio'] = TRUE;
+                        $conf['create_thumb'] = FALSE;
+                        $conf['width'] = 800;
+                        $conf['height'] = 600;
+                        
+                        $this->image_lib->initialize($conf);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
+                        $this->image_lib->clear();
+                    }
+                    /* ********************F I N  para resize***************************** */
+                    //$directorio = base_url().'resources/imagenes/';
+                    $base_url = explode('/', base_url());
+                    //$directorio = FCPATH.'resources\images\clientes\\';
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/asociados/';
+                    //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/';
+                    if(isset($foto1) && !empty($foto1)){
+                      if(file_exists($directorio.$foto1)){
+                          unlink($directorio.$foto1);
+                          $mimagenthumb = "thumb_".$foto1;
+                          unlink($directorio.$mimagenthumb);
+                      }
+                  }
+                    $confi['image_library'] = 'gd2';
+                    $confi['source_image'] = './resources/images/asociados/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/images/asociados/'."thumb_".$new_name.$extension;
+                    $confi['create_thumb'] = FALSE;
+                    $confi['maintain_ratio'] = TRUE;
+                    $confi['width'] = 50;
+                    $confi['height'] = 50;
+
+                    $this->image_lib->clear();
+                    $this->image_lib->initialize($confi);
+                    $this->image_lib->resize();
+
+                    $foto = $new_name.$extension;
+                }else{
+                    $foto = $foto1;
+                }
+                /* *********************FIN imagen***************************** */
                 $params = array(
-					'id_emp' => $this->input->post('id_emp'),
-					'estado' => $this->input->post('estado'),
-					'tipo_asoc' => $this->input->post('tipo_asoc'),
-					'zona_asoc' => $this->input->post('zona_asoc'),
-					'servicios_asoc' => $this->input->post('servicios_asoc'),
-					'categoria_asoc' => $this->input->post('categoria_asoc'),
-					'ciudad' => $this->input->post('ciudad'),
-					'nombres_asoc' => $this->input->post('nombres_asoc'),
-					'apellidos_asoc' => $this->input->post('apellidos_asoc'),
-					'ci_asoc' => $this->input->post('ci_asoc'),
-					'direccion_asoc' => $this->input->post('direccion_asoc'),
-					'fechanac_asoc' => $this->input->post('fechanac_asoc'),
-					'telefono_asoc' => $this->input->post('telefono_asoc'),
-					'codigo_asoc' => $this->input->post('codigo_asoc'),
-					'nit_asoc' => $this->input->post('nit_asoc'),
-					'razon_asoc' => $this->input->post('razon_asoc'),
-					'foto_asoc' => $this->input->post('foto_asoc'),
-					'fechahora_asoc' => $this->input->post('fechahora_asoc'),
-					'medidor_asoc' => $this->input->post('medidor_asoc'),
-					'orden_asoc' => $this->input->post('orden_asoc'),
+                    'id_emp' => $this->input->post('id_emp'),
+                    'estado' => $this->input->post('estado'),
+                    'tipo_asoc' => $this->input->post('tipo_asoc'),
+                    'ciudad' => $this->input->post('ciudad'),
+                    'nombres_asoc' => $this->input->post('nombres_asoc'),
+                    'apellidos_asoc' => $this->input->post('apellidos_asoc'),
+                    'ci_asoc' => $this->input->post('ci_asoc'),
+                    'direccion_asoc' => $this->input->post('direccion_asoc'),
+                    'fechanac_asoc' => $this->input->post('fechanac_asoc'),
+                    'telefono_asoc' => $this->input->post('telefono_asoc'),
+                    'codigo_asoc' => $this->input->post('codigo_asoc'),
+                    'nit_asoc' => $this->input->post('nit_asoc'),
+                    'razon_asoc' => $this->input->post('razon_asoc'),
+                    'foto_asoc' => $foto,
+                    //'fechahora_asoc' => $fechahora_res,
+                    'zona_asoc' => $this->input->post('zona_asoc'),
+                    'medidor_asoc' => $this->input->post('medidor_asoc'),
+                    'servicios_asoc' => $this->input->post('servicios_asoc'),
+                    'categoria_asoc' => $this->input->post('categoria_asoc'),
+                    'orden_asoc' => $this->input->post('orden_asoc'),
+                    'latitud_asoc' => $this->input->post('latitud_asoc'),
+                    'longitud_asoc' => $this->input->post('longitud_asoc'),
                 );
-
                 $this->Asociado_model->update_asociado($id_asoc,$params);            
                 redirect('asociado/index');
             }
             else
             {
-				$this->load->model('Empresa_model');
-				$data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+		$this->load->model('Expedido_model');
+                $data['all_expedido'] = $this->Expedido_model->get_all_expedido();
+                $this->load->model('Tipo_asociado_model');
+                $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();
+                $this->load->model('Zona_model');
+                $data['all_zona'] = $this->Zona_model->get_all_zonas();
+                $this->load->model('Servicio_model');
+                $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estados();
+                $this->load->model('Empresa_model');
+                $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+                $this->load->model('Categoria_model');
+                $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
 
                 $data['_view'] = 'asociado/edit';
                 $this->load->view('layouts/main',$data);
             }
         }
         else
-            show_error('The asociado you are trying to edit does not exist.');
+            show_error('El Asociado que intestas modificar no existe...');
     } 
 
     /*
@@ -159,8 +307,8 @@ class Asociado extends CI_Controller{
     {
         if($this->input->is_ajax_request()){
             $parametro       = $this->input->post('parametro');   
-            $categoriaestado = $this->input->post('categoriaestado');   
-                $datos = $this->Asociado_model->get_busqueda_asociado_parametro($parametro, $categoriaestado);
+            $servicioestado = $this->input->post('servicioestado');   
+                $datos = $this->Asociado_model->get_busqueda_asociado_parametro($parametro, $servicioestado);
             echo json_encode($datos);
         }else{                 
             show_404();

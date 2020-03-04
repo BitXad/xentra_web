@@ -34,45 +34,57 @@
     <div class="col-md-8">
         <div class="box-header">
             <font class="text-bold" size='4' face='Arial'>Asociados</font>
-            <br><font size='2' face='Arial' id="encontrados"></font> 
+            <br><font size='2' face='Arial' id="encontrados"></font>
+            <span style="font-size: 8pt;" id="busquedacategoria"></span>
         </div>
-        <div class="col-md-12" style="padding-left: 0px">
-            <div class="col-md-7" style="padding-left: 0px">
+    </div>
+    <div class="col-md-4">
+            <div class="box-tools text-center">
+            <a href="<?php echo site_url('asociado/add'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar a nuevo Asociado"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
+           <!-- <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="tablaresultadosproducto(3)" title="Mostrar todos los Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
+            <a href="<?php //echo site_url('producto/existenciaminima'); ?>" class="btn btn-info btn-foursquarexs" target="_blank" ><font size="5" title="Productos con Existencia minima"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
+           --> <?php
+           /* if($rol[106-1]['rolusuario_asignado'] == 1){ ?>
+            <a onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <?php }*/ ?>
+            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
+    </div>
+    </div>
+    <div class="col-md-12">
+            <div class="col-md-6" style="padding-left: 0px">
                 <div class="input-group">
                     <span class="input-group-addon"> Buscar </span>           
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código" onkeypress="buscarasociado(event)" autocomplete="off">
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, dirección, código, teléfono,.." onkeypress="buscarasociado(event)" autocomplete="off">
                 </div>
             </div>
-            <!--<div class="col-md-3">
-                
+            <div class="col-md-3" style="padding-left: 0px">
                 <div class="box-tools">
-                    <select name="categoria_id" class="btn-primary btn-sm" id="categoria_id" onchange="tablaresultadosproducto(2)">
-                        <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
-                        <option value="0"> Todas Las Categorias </option>
+                    <select name="servicio_id" class="btn-primary btn-sm btn-block" id="servicio_id" onchange="tablaresultadosasociado(2)">
+                        <option value="" disabled selected >-- BUSCAR POR SERVICIOS --</option>
+                        <option value="0"> Todos los Servicios </option>
                         <?php 
-                       /* foreach($all_categoria as $categoria)
+                        foreach($all_servicio as $servicio)
                         {
-                            echo '<option value="'.$categoria['categoria_id'].'">'.$categoria['categoria_nombre'].'</option>';
+                            echo '<option value="'.$servicio['servicio'].'">'.$servicio['servicio'].'</option>';
                         } 
                         ?>
                     </select>
                 </div>
             </div>
-            <div class="col-md-2">
-                
+            <div class="col-md-3" style="padding-left: 0px">
                 <div class="box-tools">
-                    <select name="estado_id" class="btn-primary btn-sm" id="estado_id" onchange="tablaresultadosproducto(2)">
-                        <option value="" disabled selected >-- BUSCAR POR ESTADOS --</option>
-                        <option value="0">Todos Los Estados</option>
+                    <select name="categoria_id" class="btn-primary btn-sm btn-block" id="categoria_id" onchange="tablaresultadosasociado(2)">
+                        <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
+                        <option value="0">Todas las Categoriás</option>
                         <?php 
-                        foreach($all_estado as $estado)
+                        foreach($all_categoria as $categoria)
                         {
-                            echo '<option value="'.$estado['estado_id'].'">'.$estado['estado_descripcion'].'</option>';
-                        } */
+                            echo '<option value="'.$categoria['categoria'].'">'.$categoria['categoria'].'</option>';
+                        }
                         ?>
                     </select>
                 </div>
-            </div>-->
+            </div>
            <!-- <div class="col-md-3">
                 
                 <div class="box-tools">
@@ -90,32 +102,11 @@
                 </div>
             </div>-->
         </div>
-           
-            
-        <!--este es FIN de input buscador-->
-
         <!-- **** INICIO de BUSCADOR select y productos encontrados *** -->
          <div class="row" id='loader'  style='display:none; text-align: center'>
             <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
         </div>
         <!-- **** FIN de BUSCADOR select y productos encontrados *** -->
-        
-        
-    </div>
-    <!---------------- BOTONES --------->
-    <div class="col-md-4">
-        
-            <div class="box-tools text-center">
-            <a href="<?php echo site_url('asociado/add'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar a nuevo Asociado"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
-           <!-- <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="tablaresultadosproducto(3)" title="Mostrar todos los Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
-            <a href="<?php //echo site_url('producto/existenciaminima'); ?>" class="btn btn-info btn-foursquarexs" target="_blank" ><font size="5" title="Productos con Existencia minima"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
-           --> <?php
-           /* if($rol[106-1]['rolusuario_asignado'] == 1){ ?>
-            <a onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
-            <?php }*/ ?>
-            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
-    </div>
-    </div>
     <!---------------- FIN BOTONES --------->
 </div>
 <div class="row">

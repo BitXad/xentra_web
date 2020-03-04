@@ -103,8 +103,8 @@
                             $mimagen = "thumb_".$imagen['imagenasoc_archivo'];
                     
                             //echo "<div id='colum5'>";
-                            echo "<a class='fancybox' href='".site_url('/resources/images/asociados/'.$imagen['imagenasoc_archivo'])."' data-fancybox-group='gallery' title='".$imagen['imagenasoc_titulo']."'>";
-                            echo "<img src='".site_url('/resources/images/asociados/'.$mimagen)."' alt='' /></a>";
+                            echo "<a class='fancybox' href='".site_url('/resources/images/imgasociados/'.$imagen['imagenasoc_archivo'])."' data-fancybox-group='gallery' title='".$imagen['imagenasoc_titulo']."'>";
+                            echo "<img src='".site_url('/resources/images/imgasociados/'.$mimagen)."' alt='' /></a>";
                             //echo "</div>";
                             if(($cont % $colum) == 0){
                                 echo "<br>";

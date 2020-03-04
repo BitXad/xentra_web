@@ -8,22 +8,22 @@
                 <div class="box-body">
                     <div class="row clearfix">
                         <div class="col-md-6">
-                                <label for="imagenasoc_titulo" class="control-label"><span class="text-danger">*</span>Título</label>
+                                <label for="imagenasoc_titulo" class="control-label"><span class="text-danger">*</span>Documento</label>
                                 <div class="form-group">
                                         <input type="text" name="imagenasoc_titulo" value="<?php echo ($this->input->post('imagenasoc_titulo') ? $this->input->post('imagenasoc_titulo') : $imagen_asociado['imagenasoc_titulo']); ?>" class="form-control" id="imagenasoc_titulo" required />
-                                </div>
-                        </div>
-                        <div class="col-md-6">
-                                <label for="imagenasoc_archivo" class="control-label">Imagen Archivo</label>
-                                <div class="form-group">
-                                    <input type="file" name="imagenasoc_archivo" value="<?php echo $this->input->post('imagenasoc_archivo'); ?>" class="form-control" id="imagenasoc_archivo" accept="image/png, image/jpeg, image/jpg, image/gif" />
-                                    <input type="hidden" name="imagenasoc_archivo1" value="<?php echo ($this->input->post('imagenasoc_archivo') ? $this->input->post('imagenasoc_archivo') : $imagen_asociado['imagenasoc_archivo']); ?>" class="form-control" id="imagenasoc_archivo1" />
                                 </div>
                         </div>
                         <div class="col-md-6">
                                 <label for="imagenasoc_descripcion" class="control-label">Descripción</label>
                                 <div class="form-group">
                                         <input type="text" name="imagenasoc_descripcion" value="<?php echo ($this->input->post('imagenasoc_descripcion') ? $this->input->post('imagenasoc_descripcion') : $imagen_asociado['imagenasoc_descripcion']); ?>" class="form-control" id="imagenasoc_descripcion" />
+                                </div>
+                        </div>
+                        <div class="col-md-6">
+                                <label for="imagenasoc_archivo" class="control-label">Archivo</label>
+                                <div class="form-group">
+                                    <input type="file" name="imagenasoc_archivo" value="<?php echo $this->input->post('imagenasoc_archivo'); ?>" class="form-control" id="imagenasoc_archivo" accept="image/png, image/jpeg, image/jpg, image/gif" />
+                                    <input type="hidden" name="imagenasoc_archivo1" value="<?php echo ($this->input->post('imagenasoc_archivo') ? $this->input->post('imagenasoc_archivo') : $imagen_asociado['imagenasoc_archivo']); ?>" class="form-control" id="imagenasoc_archivo1" />
                                 </div>
                         </div>
                     </div>
