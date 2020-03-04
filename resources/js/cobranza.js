@@ -163,8 +163,16 @@ function actualizarDetalle(detalleorden_id,usuario_id){
     });
 
 } 
+*/
+function finalizar(detalleorden_id){
+
+    alert('EXITO');
+    location.reload();
+    //var controlador = base_url+'orden_trabajo/quitar/'+detalleorden_id;
 
 
+
+}   
 
 function quitardetallec(detalleorden_id){
 
@@ -181,7 +189,7 @@ function quitardetallec(detalleorden_id){
     });
 
 }   
-*/
+
 //esta funcion verifica 2 parametros: la tecla presionada y otro parametro que le indica que hacer
 
 function buscarasoc(e,opcion) {

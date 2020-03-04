@@ -243,7 +243,7 @@ input[type=number] { -moz-appearance:textfield; }
 
 </div>
 <div class="col-md-11" align="right">
-            <a type="button" onclick="myFunction()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+            <a type="button" onclick="finalizar()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br>
                Cobrar<br>Factura<br>
             </a>
@@ -251,7 +251,7 @@ input[type=number] { -moz-appearance:textfield; }
                 <i class="fa fa-ban fa-4x"></i><br><br>
                Cancelar<br>
             </a>   
-            <a  href="<?php echo site_url('orden_trabajo/index'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
+            <a  href="<?php echo site_url('factura/index'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
                Salir<br>
             </a>    
@@ -260,75 +260,5 @@ input[type=number] { -moz-appearance:textfield; }
 </div>
 
 <!---------------modal  producto--------------->
-</div>
-
-
-<!---------------------- fin modal productos --------------------------------------------------->
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title" id="exampleModalLabel">Finalizar OT</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row clearfix">
-        <?php echo form_open('orden_trabajo/add'); ?>
-        <div class="col-md-4">
-            <label for="total" class="control-label">Total</label>
-            <div class="form-group">
-              <input type="number" name="total" readonly value="" class="form-control" id="total" required/>
-            </div>
-          </div>
-          
-          <input type="hidden" name="numero" value=""  class="form-control" id="numero" required/>
-          <input type="hidden" name="cliente_nit" value=""  class="form-control" id="cliente_nit" required/>
-          <input type="hidden" name="cliente_nombre" value=""  class="form-control" id="cliente_nombre" required/>
-          <input type="hidden" name="cliente_telefono" value=""  class="form-control" id="cliente_telefono" required/>
-          <input type="hidden" name="cliente_codigo" value=""  class="form-control" id="cliente_codigo" required/>
-          
-           
-          <div class="col-md-4">
-            <label for="cuenta" class="control-label">A cuenta</label>
-            <div class="form-group">
-              <input type="number" name="cuenta" min="0" value="" onkeyup='saldar()' step="any" class="form-control" id="cuenta" required/>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label for="saldo" class="control-label">Saldo</label>
-            <div class="form-group">
-              <input type="number" name="saldo" readonly value="" class="form-control" id="saldo" required/>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label for="orden_trabajo_fecha" class="control-label">Fecha Entrega</label>
-            <div class="form-group">
-              <input type="date" name="orden_trabajo_fecha" value="" class="form-control" id="orden_fecha" required/>
-            </div>
-          </div>
-          <div class="col-md-8">
-            <label for="nota" class="control-label">Nota</label>
-            <div class="form-group">
-              <input type="text" name="nota" value="" class="form-control" id="nota" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-success">
-                <i class="fa fa-check"></i> Finalizar OT
-              </button>
-              <button type="button" class="btn btn-danger" data-dismiss="modal">
-                <i class="fa fa-times"></i> Cancelar
-              </button>
-      </div>
-      <?php echo form_close(); ?>
-    </div>
-  </div>
 </div>
 
