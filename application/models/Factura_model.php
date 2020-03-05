@@ -142,9 +142,42 @@ class Factura_model extends CI_Model
 
         $sql = "SELECT *
         FROM factura 
-        WHERE id_fact=".$factura." ";        
+        WHERE id_fact=".$factura;        
         $resultado = $this->db->query($sql)->result_array();
         
         return $resultado;
     }
+
+    function recargosadetalle($id_param,$factura_id)
+    {
+
+        $sql = "INSERT INTO detalle_factura
+        (
+        id_fact,
+        cant_detfact,
+        descip_detfact,
+        punit_detfact,
+        desc_detfact,
+        total_detfact,
+        tipo_detfact
+        ) 
+        (
+        SELECT
+        ".$factura_id.",
+        1,
+        detalle_param,
+        monto_param,
+        0,
+        monto_param,
+        2
+        FROM 
+        parametros
+        WHERE 
+        id_param = ".$id_param.")";        
+        $resultado = $this->db->query($sql)->result_array();
+        
+        return $resultado;
+    }
+
+    
 }

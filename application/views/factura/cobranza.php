@@ -164,9 +164,9 @@ input[type=number] { -moz-appearance:textfield; }
                             <th>Factura</th>
                             <th>Cant.</th>
                             <th>Detalle</th>
-                            <th>SubTotal<br>BS.</th>
-                            <th>Des.<br>BS.</th>
-                            <th>Total<br>BS.</th>
+                            <th>SubTotal BS.</th>
+                            <th>Desc. BS.</th>
+                            <th>Total BS.</th>
                            
                     </tr>
                     <tbody class="buscar2" id="detalle_factura">
@@ -232,18 +232,31 @@ input[type=number] { -moz-appearance:textfield; }
                         <td><b>Total Bs.</b></td>
                         <td>
                          <input class="btn btn-warning" id="total_factura" name="total_factura" size="8" value="0.00" readonly> 
-                         <input class="hidden" id="factura_id" name="factura_id" size="8" value="" readonly> 
+                         <input class="text" id="factura_id" name="factura_id" size="8" value="" readonly> 
+                         <input class="text" id="lectura_id" name="lectura_id" size="8" value="" readonly> 
                         </td>
                 </tr>
+
                               
             </table>
+             <hr style="margin: 0;border: 2px solid #f2f2f2">
+                  <div class="col-md-4">
+                    <input type="checkbox" id="generar_factura" name="generar_factura" size="8" value=""><label for="generar_factura"> Generar Factura </label> 
+                  </div>
+                  <div class="col-md-4">
+                   <input type="checkbox" id="imprimir_factura" name="imprimir_factura" size="8" value=""><label for="imprimir_factura"> Imprimir Factura </label> 
+                  </div>
+                  <div class="col-md-4">
+                   <input type="checkbox" id="imprimir_copia" name="imprimir_copia" size="8" value=""><label for="imprimir_copia"> Imprimir Copia </label> 
+                  </div>
               </div>
+
               </div>
   </div>			
 
 </div>
 <div class="col-md-11" align="right">
-            <a type="button" onclick="finalizar()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+            <a onclick="finalizar()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br>
                Cobrar<br>Factura<br>
             </a>

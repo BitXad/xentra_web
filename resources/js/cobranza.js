@@ -8,187 +8,50 @@ function inicio(){
     //fechaorden(filtro);
 }
 
-function detallecobro(){
-     var controlador = "";
-     
-     var base_url = document.getElementById('base_url').value;
-     var usuario_id = document.getElementById('usuario_id').value;
-     controlador = base_url+'orden_trabajo/detalle_orden_trabajo/';
-     
-      $.ajax({url: controlador,
-           type:"POST",
-           data:{usuario_id:usuario_id},
-           success:function(respuesta){     
-                              
-               var registros =  JSON.parse(respuesta);
-                
-               if (registros != null){                   
-                   
-                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
-                    var total_detalle = Number(0);
-                    var total_preciodetalle = Number(0);
-                    
-                    var subtotal = Number(0);
-                    var subpreciototal = Number(0);
-                    var rango = Number(1);
-                    var cantis = Number(0);
-                    html = "";
-                    
-                    
-                    for (var i = 0; i < n ; i++){
-                        
-                     
-                        subtotal += Number(registros[i]["detalleorden_total"]);
-                        subpreciototal += Number(registros[i]["detalleorden_preciototal"]);
-                        total_detalle = Number(subtotal);
-                        total_preciodetalle = Number(subpreciototal);
-
-                        html += "<tr>";
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td>"+rango+"-"+Number(Number(cantis)+Number(registros[i]["detalleorden_cantidad"]))+"</td>";
-                       
-                        html += "<td><b>"+registros[i]["producto_nombre"]+"</b><br>";
-                        html += "Obs.: <b>"+registros[i]["tipoorden_nombre"]+"</b></td>"; 
-                        html += "<td> <input id='usuario_id'  name='usuario_id' type='hidden' class='form-control' value='"+usuario_id+"'>";
-                        
-                        html += "<input id='detalleorden_cantidad"+registros[i]["detalleorden_id"]+"' name='cantidad' type='text' size='3' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detalleorden_id"]+","+usuario_id+")' value='"+registros[i]["detalleorden_cantidad"]+"' ></td> ";
-                        html += "<td><input id='detalleorden_precio"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detalleorden_id"]+","+usuario_id+")' value='"+registros[i]["detalleorden_precio"]+"' ></td>";
-                        html += "<td><input id='ancho"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detalleorden_id"]+","+usuario_id+")' value='"+registros[i]["detalleorden_ancho"]+"' ></td>";
-                        html += "<td><input id='largo"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detalleorden_id"]+","+usuario_id+")' value='"+registros[i]["detalleorden_largo"]+"' ></td>";
-                        html += "<td><center><font size='3'> <b>"+Number(registros[i]["detalleorden_total"]).toFixed(2)+"</b></font>";
-                        html += "</center></td>";
-                        
-                      
-                        html += "</tr>";
-                       }
-                       html += "<tr>";
-                       html += "<td></td>";
-                       html += "<td></td>";
-                       html += "</tr>";
-                       
-                       html += "<tr>";
-                      
-                       html += "<th'></th>";
-                       
-                       html += "<th></th>";
-                       html += "<th></th>";
-                       html += "<th><font size='3'>TOTAL</th>";
-                       html += "<th></th>";
-                       html += "<th></th>";
-                       html += "<th></th>";
-                       html += "<th><font size='3'></th>";
-                       html += "<th><font size='3'><b>"+Number(total_detalle).toFixed(2)+" M2</th>";
-                       html += "<th><font size='3'><b>"+Number(total_preciodetalle).toFixed(2)+" Bs.</th>";
-                       html += "</tr>";
-                        //$('#orden_trabajo_total').value(total_detalle.toFixed(2));
-                       $("#detalleordeniza").html(html);
-                       $("#total").val(total_preciodetalle);
-                       totality(total_detalle);
-                       
-          }  
-        },
-        error:function(respuesta){
-          
-       
-   }
-    });
-
-}
-function totality(total_detalle){
-  var totalfinal = Number(total_detalle);
-  $("#orden_trabajo_total").val(totalfinal.toFixed(2));
-}
 
 
-function actualizadetalle(e,detalle_id,usuario_id) {
+function finalizar(){
 
-  tecla = (document.all) ? e.keyCode : e.which;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'factura/registrarfactura';
+    var id_asoc = document.getElementById('id_asoc').value;
+    var factura_id = document.getElementById('factura_id').value;
+    var lectura_id = document.getElementById('lectura_id').value;
+    var multar = document.getElementById('multar').checked;
+    var generar_factura = document.getElementById('generar_factura').checked;
+    $.ajax({url:controlador,
 
-    if (tecla==13){ 
+            type:"POST",
+
+            data:{factura_id:factura_id,multar:multar,generar_factura:generar_factura,lectura_id:lectura_id},
+
+            success:function(respuesta){
+
+                var registros = JSON.parse(respuesta);
+                alert('EXITO');
+           
+                location.reload();
              
-            actualizarDetalle(detalle_id,usuario_id);            
 
-        }
-}
+            },
 
-function detalleordena(usuario_id,producto_id){
-       
-        var controlador = "";
-   
-        var cantidad = document.getElementById('cantidad'+producto_id).value; 
-        var ancho = document.getElementById('ancho'+producto_id).value;
-        var largo = document.getElementById('largo'+producto_id).value;
-        var producto_precio = document.getElementById('producto_precio'+producto_id).value;
-        var total = document.getElementById('total'+producto_id).value;
-        var producto_factor = document.getElementById('select_factor'+producto_id).value;
-        var tipo_orden = document.getElementById('selec_tipo'+producto_id).value;
+            error:function(respuesta){          
 
-    var base_url = document.getElementById('base_url').value;
-    
-    controlador = base_url+'orden_trabajo/insertarproducto/';
-   
-    
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{usuario_id:usuario_id, producto_id:producto_id, cantidad:cantidad, ancho:ancho, largo:largo, producto_precio:producto_precio, total:total, producto_factor:producto_factor, tipo_orden:tipo_orden},
-           success:function(respuesta){     
-               //alert (producto_factor);
-               detalleordeni();                      
-            
-        }
+               alert('No tiene una factura seleccionada');
         
-    });
-}
+            }                
+
+    }); 
 
 
-/*
-
-
-function actualizarDetalle(detalleorden_id,usuario_id){
-
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'orden_trabajo/updatedetalleorden/';
-    var precio = document.getElementById('detalleorden_precio'+detalleorden_id).value;
-    var cantidad = document.getElementById('detalleorden_cantidad'+detalleorden_id).value;
-    var ancho = document.getElementById('ancho'+detalleorden_id).value;
-    var largo = document.getElementById('largo'+detalleorden_id).value;
-
-   
- $.ajax({url: controlador,
-            type:"POST",
-            data:{detalleorden_id:detalleorden_id,precio:precio,cantidad:cantidad,ancho:ancho,largo:largo,usuario_id:usuario_id},
-            success:function(respuesta){
-                detalleordeni();
-            }        
-    });
-
-} 
-*/
-function finalizar(detalleorden_id){
-
-    alert('EXITO');
-    location.reload();
-    //var controlador = base_url+'orden_trabajo/quitar/'+detalleorden_id;
 
 
 
 }   
 
-function quitardetallec(detalleorden_id){
 
 
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'orden_trabajo/quitar/'+detalleorden_id;
 
-    $.ajax({url: controlador,
-            type:"POST",
-            data:{},
-            success:function(respuesta){
-                detalleordeni();
-            }        
-    });
-
-}   
 
 //esta funcion verifica 2 parametros: la tecla presionada y otro parametro que le indica que hacer
 
@@ -228,29 +91,6 @@ function buscarasoc(e,opcion) {
 
 }
 
-
-//Selecciona los datos del nit
-
-/*function seleccionar(opcion) {
-
-        if (opcion==1){             
-            document.getElementById('nit').select();
-        }      
-
-        if (opcion==2){
-            document.getElementById('razon_social').select();
-        }      
-
-        if (opcion==3){
-            document.getElementById('telefono').select();
-        }
-}*/
-
-// esta funcion busca la cliente mediante su nit e inserta los datos 
-
-// en cada input corresponiente si es que existe
-
-// sino existe.. deja abierta la posibilidad de ingresar datos de nuevos de clientes
 
 function buscarasociado(){
 
@@ -335,7 +175,7 @@ function buscar_asociados()
                 html += "<th>Telefono</th>";
                 html += "<th>Nit</th>";
                 html += "<th>Razon</th>";
-                html += "<th></th>";
+               // html += "<th></th>";
                 html += "</tr>";
                 
                 for(var i = 0; i<fin; i++)
@@ -351,7 +191,7 @@ function buscar_asociados()
                     html += "<td align='center'>"+registros[i]["telefono_asoc"]+"</td>";  
                     html += "<td align='center'>"+registros[i]["nit_asoc"]+"</td>";  
                     html += "<td>"+registros[i]["razon_asoc"]+"</td>";  
-                    html += "<td><button onclick='ver_facturas("+registros[i]["id_asoc"]+")' class='btn btn-success btn-xs' title='Ver Facturas Pendientes' ><span class='fa fa-money'></span></button></td>";
+                    //html += "<td><button onclick='ver_facturas("+registros[i]["id_asoc"]+")' class='btn btn-success btn-xs' title='Ver Facturas Pendientes' ><span class='fa fa-money'></span></button></td>";
  
                     html += "</tr>";
                 } 
@@ -530,6 +370,7 @@ function detalle_factura(factura,lectura)
                    
                 $("#detalle_factura").html(html);
                 $("#factura_id").val(factura);
+                $("#lectura_id").val(lectura);
                 
 
             },
