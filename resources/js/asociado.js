@@ -19,9 +19,9 @@ function tablaresultadosasociado(limite)
 {
     var controlador = "";
     var parametro = "";
+    var serviciotext = "";
     var categoriatext = "";
-    var estadotext = "";
-    var categoriaestado = "";
+    var servicioestado = "";
     var base_url = document.getElementById('base_url').value;
     //var tipousuario_id = document.getElementById('tipousuario_id').value;
     //var lapresentacion = JSON.parse(document.getElementById('lapresentacion').value);
@@ -34,25 +34,23 @@ function tablaresultadosasociado(limite)
      // busca por categoria
     }else{
         controlador = base_url+'asociado/buscarasociados/';
-        /*var categoria = document.getElementById('categoria_id').value;
-        var estado    = document.getElementById('estado_id').value;
-        if(categoria == 0){
-           categoriaestado = "";
+        var servicio  = document.getElementById('servicio_id').value;
+        var categoria = document.getElementById('categoria_id').value;
+        if(servicio == 0){
+           servicioestado = "";
         }else{
-           categoriaestado = " and p.categoria_id = cp.categoria_id and p.categoria_id = "+categoria+" ";
+           servicioestado = " and a.servicios_asoc = '"+servicio+"' ";
+           serviciotext = $('select[name="servicio_id"] option:selected').text();
+           serviciotext = "Servicio: "+serviciotext;
+        }
+        if(categoria == 0){
+           servicioestado += "";
+        }else{
+           servicioestado += " and a.categoria_asoc = '"+categoria+"' ";
            categoriatext = $('select[name="categoria_id"] option:selected').text();
            categoriatext = "Categoria: "+categoriatext;
         }
-        if(estado == 0){
-           categoriaestado += "";
-        }else{
-           categoriaestado += " and p.estado_id = "+estado+" ";
-           estadotext = $('select[name="estado_id"] option:selected').text();
-           estadotext = "Estado: "+estadotext;
-        }
-        
-        $("#busquedacategoria").html(categoriatext+" "+estadotext);
-        */
+        $("#busquedacategoria").html("<br>"+serviciotext+" "+categoriatext);
         parametro = document.getElementById('filtrar').value;
     }
     
@@ -61,7 +59,7 @@ function tablaresultadosasociado(limite)
 
     $.ajax({url: controlador,
            type:"POST",
-           data:{parametro:parametro, categoriaestado:categoriaestado},
+           data:{parametro:parametro, servicioestado:servicioestado},
            success:function(respuesta){    
                 //$("#encontrados").val("- 0 -");
                var registros =  JSON.parse(respuesta);
@@ -75,10 +73,10 @@ function tablaresultadosasociado(limite)
                     html = "";
                     for(var i = 0; i < n ; i++){
 //                        html += "<td>";
-                        var caracteristica = "";
+                        /*var caracteristica = "";
                         if(registros[i]["producto_caracteristicas"] != null){
                             caracteristica = "<div style='word-wrap: break-word !important; max-width: 400px !important; white-space: normal'>"+registros[i]["producto_caracteristicas"]+"</div>";
-                        }
+                        }*/
 //                        html+= caracteristica+"</td>";                        
                         html += "<tr>";
                         html += "<td>"+(i+1)+"</td>";
@@ -144,8 +142,9 @@ function tablaresultadosasociado(limite)
                         html += registros[i]["ciudad"];
                         html += "</td>";
                         html += "<td>";
+                        html += "<a href='"+base_url+"asociado/edit/"+registros[i]["id_asoc"]+"' class='btn btn-info btn-xs' title='Modificar información de Asociado' ><span class='fa fa-pencil'></span></a>";
                         html += "<a href='"+base_url+"imagen_asociado/catalogo/"+registros[i]["id_asoc"]+"' class='btn btn-success btn-xs' title='Documentos' ><span class='fa fa-folder-open'></span></a>";
-                        html += "</td>";
+                        
                         
                         
                         

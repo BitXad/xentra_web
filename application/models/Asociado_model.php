@@ -110,7 +110,7 @@ class Asociado_model extends CI_Model
         return $this->db->delete('asociado',array('id_asoc'=>$id_asoc));
     }
     /* busca asociados relacionados con un parametro dado. */
-    function get_busqueda_asociado_parametro($parametro, $categoriaestado)
+    function get_busqueda_asociado_parametro($parametro, $servicioestado)
     {
         $sql = "SELECT
                         a.*
@@ -123,7 +123,7 @@ class Asociado_model extends CI_Model
                       or a.nit_asoc like '%".$parametro."%' or a.razon_asoc like '%".$parametro."%'
                       or a.zona_asoc like '%".$parametro."%' or a.medidor_asoc like '%".$parametro."%'
                       or a.servicios_asoc like '%".$parametro."%' or a.categoria_asoc like '%".$parametro."%')
-                      ".$categoriaestado."
+                      ".$servicioestado."
                 ORDER By a.apellidos_asoc, a.nombres_asoc";
         $asociado = $this->db->query($sql)->result_array();
         return $asociado;

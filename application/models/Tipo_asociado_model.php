@@ -45,7 +45,7 @@ class Tipo_asociado_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `tipo_asoc` DESC
+            ORDER BY `tipo_asoc`
         ")->result_array();
 
         return $tipo_asociado;

@@ -34,7 +34,7 @@ class Imagen_asociado extends CI_Controller{
             if (!empty($_FILES['galeria_imagen']['name'])){
 		
                         $this->load->library('image_lib');
-                        $config['upload_path'] = './resources/images/asociados/';
+                        $config['upload_path'] = './resources/images/imgasociados/';
                         $img_full_path = $config['upload_path'];
 
                         //$config['allowed_types'] = 'gif|jpeg|jpg|png';
@@ -57,7 +57,7 @@ class Imagen_asociado extends CI_Controller{
                         if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
                             $conf['image_library'] = 'gd2';
                             $conf['source_image'] = $img_data['full_path'];
-                            $conf['new_image'] = './resources/images/asociados/';
+                            $conf['new_image'] = './resources/images/imgasociados/';
                             $conf['maintain_ratio'] = TRUE;
                             $conf['create_thumb'] = FALSE;
                             $conf['width'] = 800;
@@ -68,8 +68,8 @@ class Imagen_asociado extends CI_Controller{
                                 echo $this->image_lib->display_errors('','');
                             }
                             $confi['image_library'] = 'gd2';
-                            $confi['source_image'] = './resources/images/asociados/'.$new_name.$extension;
-                            $confi['new_image'] = './resources/images/asociados/'."thumb_".$new_name.$extension;
+                            $confi['source_image'] = './resources/images/imgasociados/'.$new_name.$extension;
+                            $confi['new_image'] = './resources/images/imgasociados/'."thumb_".$new_name.$extension;
                             $confi['create_thumb'] = FALSE;
                             $confi['maintain_ratio'] = TRUE;
                             $confi['width'] = 50;
@@ -88,9 +88,9 @@ class Imagen_asociado extends CI_Controller{
             $estado_id = 1;
             $params = array(
                 'asociado_id' => $asociado_id,
-                'imagenasoc_titulo' => $foto,
+                'imagenasoc_titulo' => $this->input->post('imagenasoc_titulo'),
                 'imagenasoc_archivo' => $foto,
-                'imagenasoc_descripcion' => $this->input->post('imagenasoc_nombre'),
+                'imagenasoc_descripcion' => $this->input->post('imagenasoc_descripcion'),
             );
             
             $imagenprod_id = $this->Imagen_asociado_model->add_imagen_asociado($params);
@@ -122,7 +122,7 @@ class Imagen_asociado extends CI_Controller{
                 if (!empty($_FILES['imagenasoc_archivo']['name']))
                 {
                     $this->load->library('image_lib');
-                    $config['upload_path'] = './resources/images/asociados/';
+                    $config['upload_path'] = './resources/images/imgasociados/';
                     //$config['allowed_types'] = 'gif|jpeg|jpg|png';
                     $config['allowed_types'] = '*';
                     $config['max_size'] = 0;
@@ -142,7 +142,7 @@ class Imagen_asociado extends CI_Controller{
                     if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
                         $conf['image_library'] = 'gd2';
                         $conf['source_image'] = $img_data['full_path'];
-                        $conf['new_image'] = './resources/images/asociados/';
+                        $conf['new_image'] = './resources/images/imgasociados/';
                         $conf['maintain_ratio'] = TRUE;
                         $conf['create_thumb'] = FALSE;
                         $conf['width'] = 800;
@@ -154,8 +154,8 @@ class Imagen_asociado extends CI_Controller{
                         }
                         
                         $confi['image_library'] = 'gd2';
-                        $confi['source_image'] = './resources/images/asociados/'.$new_name.$extension;
-                        $confi['new_image'] = './resources/images/asociados/'."thumb_".$new_name.$extension;
+                        $confi['source_image'] = './resources/images/imgasociados/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/imgasociados/'."thumb_".$new_name.$extension;
                         $confi['create_thumb'] = FALSE;
                         $confi['maintain_ratio'] = TRUE;
                         $confi['width'] = 50;
@@ -167,7 +167,7 @@ class Imagen_asociado extends CI_Controller{
                     }
                     /* ********************F I N  para resize***************************** */
                     //$directorio = base_url().'resources/imagenes/';
-                    $directorio = FCPATH.'resources\images\asociados\\';
+                    $directorio = FCPATH.'resources\images\imgasociados\\';
                     //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
                     if(isset($foto1) && !empty($foto1)){
                       if(file_exists($directorio.$foto1)){
