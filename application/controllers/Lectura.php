@@ -256,6 +256,71 @@ class Lectura extends CI_Controller{
         echo json_encode($result);
     }
     
-   
+    function registrar_lectura(){
+
+        $id_usu = 1;
+        
+        $id_asoc = $this->input->post("id_asoc");
+        $mes_lec = "'".$this->input->post("mes_lec")."'";
+        $gestion_lec = $this->input->post("gestion_lec");
+        $anterior_lec = $this->input->post("anterior_lec");
+        $actual_lec = $this->input->post("actual_lec");
+        $fechaant_lec = "'".$this->input->post("fechaant_lec")."'";
+        $consumo_lec = $this->input->post("consumo_lec");
+        $fecha_lec = "'".$this->input->post("fecha_lec")."'";
+        $hora_lec = "'".$this->input->post("hora_lec")."'";
+        $totalcons_lec = $this->input->post("totalcons_lec");
+        $monto_lec = $this->input->post("monto_lec");
+        $estado_lec = "'".$this->input->post("estado_lec")."'";
+        $tipo_asoc = "'".$this->input->post("tipo_asoc")."'";
+        $servicios_asoc = "'".$this->input->post("servicios_asoc")."'";
+        $cantfact_lec = $this->input->post("cantfact_lec");
+        $montofact_lec = $this->input->post("montofact_lec");
+
+        $nit_fact = $this->input->post("nit_fact");
+        $razon_fact = $this->input->post("razon_fact");
+        $fechavenc_fact = $this->input->post("fecha_vencimiento");
+        
+        
+        
+        $sql ="insert into lectura(id_usu,id_asoc,mes_lec,gestion_lec,"
+            ."anterior_lec,actual_lec,fechaant_lec,consumo_lec,fecha_lec,hora_lec,"
+            ."totalcons_lec,monto_lec,estado_lec,tipo_asoc,servicios_asoc,"
+            ."cantfact_lec,montofact_lec) values(".
+            $id_usu.",".$id_asoc.",".$mes_lec.",".$gestion_lec.",".$anterior_lec.",".
+            $actual_lec.",".$fechaant_lec.",".$consumo_lec.",".$fecha_lec.",".
+            $hora_lec.",".$totalcons_lec.",".$monto_lec.",".$estado_lec.",".
+            $tipo_asoc.",".$servicios_asoc.",".$cantfact_lec.",".$montofact_lec.")";
+        $result = $this->Lectura_model->ejecutar($sql);
+        
+        $sql = 'select * from lectura where id_asoc='.$id_asoc.' order by fecha_lec desc';
+        $result = $this->Lectura_model->consultar($sql);
+        
+        $id_lec = $result[0]["id_lec"];
+        
+//        $nit_fact = quotedStr(FormLecturas.ADOPrime.fieldbyname('nit_asoc').AsString);
+//        razon_fact:=quotedStr(FormLecturas.ADOPrime.fieldbyname('razon_asoc').AsString);
+        
+        $montoparc_fact = $totalcons_lec; //Consumo_Bs1.Text;
+        $desc_fact = '0';
+        $montototal_fact = $montofact_lec; //Total_Bs1.Text;
+        $literal_fact = "'-'";
+        $estado_fact = "'PENDIENTE'";
+
+
+        //$fechavenc_fact = (formLecturas.fechaLimite.date));
+
+//        $tamanio = StrLen(Pchar(montototal_fact));
+//        decimal:=montototal_fact[tamanio-1]+montototal_fact[tamanio];
+//        literal_fact:=quotedStr(FormNumeroaLetras.NumeroToLetra(trunc(StrtoFloat(montototal_fact)))+ ' '+decimal+'/100');
+//        
+        $sql = "insert into factura(id_lec,nit_fact,razon_fact,montoparc_fact,desc_fact,montototal_fact,literal_fact,estado_fact,fechavenc_fact) values(".
+            $id_lec.$coma.$nit_fact.$coma.$razon_fact.$coma.$montoparc_fact.$coma.$desc_fact.$coma.$montototal_fact.$coma.$literal_fact.$coma.$estado_fact.$coma.$fechavenc_fact.")";
+        $this->Lectura_model->ejecutar($sql);
+        
+
+        echo json_encode($result);
+    }
+    
     
 }

@@ -107,5 +107,14 @@ class Lectura_model extends CI_Model
         return $this->db->query($sql)->result_array();
     }
 
-    
+    /*
+     * function para realizar uns insercion
+     */
+    function ejecutar($sql)
+    {
+        $this->db->query($sql);
+        return true;
     }
+
+    
+}
