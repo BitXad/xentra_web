@@ -254,5 +254,34 @@ class Factura extends CI_Controller{
         echo json_encode($datos);  
         
     }
+
+    function registrarfactura()
+    {
+        $factura_id = $this->input->post('factura_id');
+        $lectura_id = $this->input->post('lectura_id');
+        $generar_factura = 0;/*$this->input->post('generar_factura');*/  //aca debe venir el check generar
+        $multar = $this->input->post('multar');
+
+        if ($multar==true) { //agregar los recargos al detalle
+            $recargos = $this->Factura_model->get_recargo_detalle($lectura_id);
+            foreach ($recargos as $rec) {
+                $this->Factura_model->recargosadetalle($rec['id_param'],$factura_id);
+            }
+            
+        }
+
+        if ($generar_factura==1) {
+            //aqui si hay q generar la factura...
+        } else {
+            $datos = $this->Factura_model->get_datos_factura($factura_id);
+            echo json_encode($datos);  
+        }
+
+
+
+
+        
+        
+    }
     
 }
