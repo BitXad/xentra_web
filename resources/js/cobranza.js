@@ -12,7 +12,7 @@ function inicio(){
 
 function finalizar(){
 
-
+    var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'factura/registrarfactura';
     var id_asoc = document.getElementById('id_asoc').value;
     var factura_id = document.getElementById('factura_id').value;

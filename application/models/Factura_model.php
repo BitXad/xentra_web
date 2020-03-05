@@ -151,15 +151,17 @@ class Factura_model extends CI_Model
     function recargosadetalle($id_param,$factura_id)
     {
 
-        $sql = "INSERT INTO detalle_factura(
+        $sql = "INSERT INTO detalle_factura
+        (
         id_fact,
         cant_detfact,
         descip_detfact,
         punit_detfact,
         desc_detfact,
         total_detfact,
-        tipo_detfact) 
-        values(
+        tipo_detfact
+        ) 
+        (
         SELECT
         ".$factura_id.",
         1,
