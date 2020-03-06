@@ -1,4 +1,5 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/asociado_parametros.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
     function mostrar(a) {
         obj = document.getElementById('oculto'+a);
@@ -12,6 +13,16 @@
             $('#mosmapa').text("Cerrar mapa");
         }
 
+    }
+    function generarcodigo(){
+        var zona        = document.getElementById('zona_asoc').value;
+        var manzano     = document.getElementById('zona_asoc').value;
+        var calle       = document.getElementById('direccion_asoc').value;
+        var categoria   = document.getElementById('categoria_asoc').value;
+        var distancia   = document.getElementById('distancia_asoc').value;
+        var diametrored = document.getElementById('diametrored_asoc').value;
+        var tipo        = document.getElementById('tipo_asoc').value;
+        $('#codigo_asoc').val(zona);
     }
     /*function cambiarcod(){
         var estetime = new Date();
@@ -82,6 +93,7 @@
   });
     
 </script>
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
@@ -105,10 +117,19 @@
                             <span class="text-danger"><?php echo form_error('apellidos_asoc');?></span>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="codigo_asoc" class="control-label">Código</label>
+                        <!--<div class="form-group" style="display: flex">-->
                         <div class="form-group">
                             <input type="text" name="codigo_asoc" value="<?php echo $this->input->post('codigo_asoc'); ?>" class="form-control" id="codigo_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <!--<a onclick="generarcodigo()" class="btn btn-warning" title="Generar codigo">
+                                <i class="fa fa-file-text-o"></i></a>-->
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="fechanac_asoc" class="control-label">Fecha Nac.</label>
+                        <div class="form-group">
+                            <input type="date" name="fechanac_asoc" value="<?php echo $this->input->post('fechanac_asoc'); ?>" class="form-control" id="fechanac_asoc" />
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -132,13 +153,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="fechanac_asoc" class="control-label">Fecha Nac.</label>
-                        <div class="form-group">
-                            <input type="date" name="fechanac_asoc" value="<?php echo $this->input->post('fechanac_asoc'); ?>" class="form-control" id="fechanac_asoc" />
-                        </div>
-                    </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <label for="telefono_asoc" class="control-label">Telefono</label>
                         <div class="form-group">
                             <input type="text" name="telefono_asoc" value="<?php echo $this->input->post('telefono_asoc'); ?>" class="form-control" id="telefono_asoc" />
@@ -156,28 +171,40 @@
                             <input type="text" name="razon_asoc" value="<?php echo $this->input->post('razon_asoc'); ?>" class="form-control" id="razon_asoc" />
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="ciudad" class="control-label">Ciudad</label>
-                        <div class="form-group">
-                            <input type="text" name="ciudad" value="<?php echo ($this->input->post('ciudad') ? $this->input->post('ciudad') : "TIQUIPAYA"); ?>" class="form-control" id="ciudad" />
-                        </div>
-                    </div>
                     <div class="col-md-4">
                         <label for="foto_asoc" class="control-label">Foto Asoc</label>
                         <div class="form-group">
                             <input type="file" name="foto_asoc" value="<?php echo $this->input->post('foto_asoc'); ?>" class="btn btn-success btn-sm form-control" id="foto_asoc" accept="image/png, image/jpeg, jpg, image/gif" />
                         </div>
                     </div>
-                    <div class="col-md-5">
-                        <label for="direccion_asoc" class="control-label">Dirección</label>
+                    <div class="col-md-3">
+                        <label for="direccion_asoc" class="control-label">Calle</label>
                         <div class="form-group">
                             <input type="text" name="direccion_asoc" value="<?php echo $this->input->post('direccion_asoc'); ?>" class="form-control" id="direccion_asoc" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="nro_asoc" class="control-label">Nro.</label>
+                        <div class="form-group">
+                            <input type="text" name="nro_asoc" value="<?php echo $this->input->post('nro_asoc'); ?>" class="form-control" id="nro_asoc" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="manzano_asoc" class="control-label">Manzano</label>
+                        <div class="form-group">
+                            <input type="text" name="manzano_asoc" value="<?php echo $this->input->post('manzano_asoc'); ?>" class="form-control" id="manzano_asoc" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="referencia_asoc" class="control-label">Referencia</label>
+                        <div class="form-group">
+                            <input type="text" name="referencia_asoc" value="<?php echo $this->input->post('referencia_asoc'); ?>" class="form-control" id="referencia_asoc" />
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label for="zona_asoc" class="control-label">Zona</label>
                         <div class="form-group">
-                            <select name="zona_asoc" class="form-control">
+                            <select name="zona_asoc" class="form-control" id="zona_asoc">
                                 <!--<option value="">select</option>-->
                                 <?php
                                 foreach($all_zona as $zona)
@@ -185,6 +212,89 @@
                                     $selected = ($zona["zona_med"] == $this->input->post('zona_med')) ? ' selected="selected"' : "";
                                     echo '<option value="'.$zona["zona_med"].'" '.$selected.'>'.$zona["zona_med"].'</option>';
                                 } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="distancia_asoc" class="control-label">Distancia</label>
+                        <div class="form-group">
+                            <input type="text" name="distancia_asoc" value="<?php echo $this->input->post('distancia_asoc'); ?>" class="form-control" id="distancia_asoc" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="tipoinmueble_asoc" class="control-label">Inmueble</label>
+                        <div class="form-group">
+                            <select name="tipoinmueble_asoc" class="form-control" id="tipoinmueble_asoc">
+                                <!--<option value="">select</option>-->
+                                <?php
+                                foreach($all_zona as $zona)
+                                {
+                                    $selected = ($zona["zona_med"] == $this->input->post('zona_med')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$zona["zona_med"].'" '.$selected.'>'.$zona["zona_med"].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="diametrored_asoc" class="control-label">Diametro Red</label>
+                        <div class="form-group" style="display: flex">
+                            <select name="diametrored_asoc" class="form-control" id="diametrored_asoc">
+                                <!--<option value="">select</option>-->
+                                <?php
+                                foreach($all_diametro as $diametro)
+                                {
+                                    $selected = ($diametro["nombre_diam"] == $this->input->post('nombre_diam')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$diametro["nombre_diam"].'" '.$selected.'>'.$diametro["nombre_diam"].'</option>';
+                                } 
+                                ?>
+                            </select>
+                            <a data-toggle="modal" data-target="#modaldiametrored" class="btn btn-info" title="Registrar nuevo diametro de Red">
+                                <i class="fa fa-plus-circle"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="tipo_asoc" class="control-label">Tipo</label>
+                        <div class="form-group">
+                            <select name="tipo_asoc" class="form-control" id="tipo_asoc">
+                                <!--<option value="">select</option>-->
+                                <?php
+                                foreach($all_tipo_asociado as $tipo_asociado)
+                                {
+                                    $selected = ($tipo_asociado["tipo_asoc"] == $this->input->post('tipo_asoc')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$tipo_asociado["tipo_asoc"].'" '.$selected.'>'.$tipo_asociado["tipo_asoc"].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="servicios_asoc" class="control-label">Servicios</label>
+                        <div class="form-group">
+                            <select name="servicios_asoc" class="form-control" id="servicios_asoc">
+                                <!--<option value="">select</option>-->
+                                <?php
+                                foreach($all_servicio as $servicio)
+                                {
+                                    $selected = ($servicio["servicio"] == $this->input->post('servicios_asoc')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$servicio["servicio"].'" '.$selected.'>'.$servicio["servicio"].'</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="categoria_asoc" class="control-label">Categoría</label>
+                        <div class="form-group">
+                            <select name="categoria_asoc" class="form-control" id="categoria_asoc">
+                                <!--<option value="">select</option>-->
+                                <?php
+                                foreach($all_categoria as $categoria)
+                                {
+                                    $selected = ($categoria["categoria"] == $this->input->post('categoria_asoc')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$categoria["categoria"].'" '.$selected.'>'.$categoria["categoria"].'</option>';
+                                }
                                 ?>
                             </select>
                         </div>
@@ -268,51 +378,6 @@
                                 <input type="number" step="any" name="longitud_asoc" value="<?php echo $this->input->post('longitud_asoc'); ?>" class="form-control" id="longitud_asoc" />
                             </div>
                     </div>
-                    <div class="col-md-4">
-                        <label for="tipo_asoc" class="control-label">Tipo</label>
-                        <div class="form-group">
-                            <select name="tipo_asoc" class="form-control">
-                                <!--<option value="">select</option>-->
-                                <?php
-                                foreach($all_tipo_asociado as $tipo_asociado)
-                                {
-                                    $selected = ($tipo_asociado["tipo_asoc"] == $this->input->post('tipo_asoc')) ? ' selected="selected"' : "";
-                                    echo '<option value="'.$tipo_asociado["tipo_asoc"].'" '.$selected.'>'.$tipo_asociado["tipo_asoc"].'</option>';
-                                } 
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="servicios_asoc" class="control-label">Servicios</label>
-                        <div class="form-group">
-                            <select name="servicios_asoc" class="form-control">
-                                <!--<option value="">select</option>-->
-                                <?php
-                                foreach($all_servicio as $servicio)
-                                {
-                                    $selected = ($servicio["servicio"] == $this->input->post('servicios_asoc')) ? ' selected="selected"' : "";
-                                    echo '<option value="'.$servicio["servicio"].'" '.$selected.'>'.$servicio["servicio"].'</option>';
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="categoria_asoc" class="control-label">Categoría</label>
-                        <div class="form-group">
-                            <select name="categoria_asoc" class="form-control">
-                                <!--<option value="">select</option>-->
-                                <?php
-                                foreach($all_categoria as $categoria)
-                                {
-                                    $selected = ($categoria["categoria"] == $this->input->post('categoria_asoc')) ? ' selected="selected"' : "";
-                                    echo '<option value="'.$categoria["categoria"].'" '.$selected.'>'.$categoria["categoria"].'</option>';
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
                     <!--<div class="col-md-6">
                         <label for="fechahora_asoc" class="control-label">Fechahora Asoc</label>
                         <div class="form-group">
@@ -348,7 +413,7 @@
                 </div>
             </div>
             <div class="box-footer">
-            	<button type="submit" class="btn btn-success">
+                <button onclick="generarcodigo()" type="submit" class="btn btn-success">
             		<i class="fa fa-check"></i> Guardar
             	</button>
                 <a href="<?php echo site_url('asociado'); ?>" class="btn btn-danger">
@@ -358,3 +423,37 @@
       	</div>
     </div>
 </div>
+
+<!------------------------ INICIO modal para Registrar nueva Categoria ------------------->
+<div class="modal fade" id="modaldiametrored" tabindex="-1" role="dialog" aria-labelledby="modaldiametroredlabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">Registrar Nuevo Diametro de Red</span>
+            </div>
+            <div class="modal-body">
+               <!------------------------------------------------------------------->
+               <div class="col-md-6">
+                    <label for="nuevo_diametronombre" class="control-label">Nombre</label>
+                    <div class="form-group">
+                        <input type="text" name="nuevo_diametronombre"  class="form-control" id="nuevo_diametronombre" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+               <div class="col-md-6">
+                    <label for="nuevo_diametrocodigo" class="control-label">Código</label>
+                    <div class="form-group">
+                        <input type="text" name="nuevo_diametrocodigo"  class="form-control" id="nuevo_diametrocodigo" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+               <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a onclick="registrarnuevodiametrored()" class="btn btn-success"><span class="fa fa-check"></span> Registrar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Registrar nueva Categoria ------------------->

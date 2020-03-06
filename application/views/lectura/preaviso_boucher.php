@@ -134,4 +134,9 @@ border-bottom : 1px solid #aaa;
         <td align="right" style="padding: 0;"><b style="font-size: 12pt;"><?php echo number_format($l["montototal_fact"],2,".",","); ?></b></td>
     
     </tr>
+    <tr>
+        
+        <td align="center" style="padding: 0;" colspan="2"><b style="font-size: 10pt;"><?php echo $empresa['anuncio_emp']; ?></b></td>
+    
+    </tr>
 </table>

@@ -519,6 +519,7 @@ function buscar_asociados() {
                     html += "<img src='" + imagen + "' width='30' height='40' >";
                     html += "<br><br><a href='" + base_url + "lectura/historial/" + res[i].id_asoc + "' class='btn btn-facebook btn-xs' title='Historial de lecturas' target='_BLANK'><fa class='fa fa-list'></fa></a>";
                     html += "<button onclick = 'cargar_lectura(" + JSON.stringify(res[i]) + ")' class='btn btn-warning btn-xs' title='Registrar lecturas'><fa class='fa fa-pencil'></button></a>";
+                    html += "<a href='" + base_url + "lectura/ultimo_preaviso/" + res[i].id_asoc + "' class='btn btn-info btn-xs' title='Ultimo preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
                     html += "</center>";
                     html += "</td>";
                     html += "</tr>";

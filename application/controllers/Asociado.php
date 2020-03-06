@@ -96,7 +96,7 @@ class Asociado extends CI_Controller{
                 'id_emp' => $id_empresa,
                 'estado' => $estado,
                 'tipo_asoc' => $this->input->post('tipo_asoc'),
-                'ciudad' => $this->input->post('ciudad'),
+                'ciudad' => $this->input->post('expedido'),
                 'nombres_asoc' => $this->input->post('nombres_asoc'),
                 'apellidos_asoc' => $this->input->post('apellidos_asoc'),
                 'ci_asoc' => $this->input->post('ci_asoc'),
@@ -115,6 +115,12 @@ class Asociado extends CI_Controller{
                 'orden_asoc' => $this->input->post('orden_asoc'),
                 'latitud_asoc' => $this->input->post('latitud_asoc'),
                 'longitud_asoc' => $this->input->post('longitud_asoc'),
+                'nro_asoc' => $this->input->post('nro_asoc'),
+                'manzano_asoc' => $this->input->post('manzano_asoc'),
+                'referencia_asoc' => $this->input->post('referencia_asoc'),
+                'distancia_asoc' => $this->input->post('distancia_asoc'),
+                'tipoinmueble_asoc' => $this->input->post('tipoinmueble_asoc'),
+                'diametrored_asoc' => $this->input->post('diametrored_asoc'),
             );
             
             $asociado_id = $this->Asociado_model->add_asociado($params);
@@ -130,6 +136,8 @@ class Asociado extends CI_Controller{
             $data['all_zona'] = $this->Zona_model->get_all_zonas();
             $this->load->model('Servicio_model');
             $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
+            $this->load->model('Diametrored_model');
+            $data['all_diametro'] = $this->Diametrored_model->get_all_diametrored();
             /*$this->load->model('Empresa_model');
             $data['all_empresa'] = $this->Empresa_model->get_all_empresa();*/
             $this->load->model('Categoria_model');
@@ -228,7 +236,7 @@ class Asociado extends CI_Controller{
                     'id_emp' => $this->input->post('id_emp'),
                     'estado' => $this->input->post('estado'),
                     'tipo_asoc' => $this->input->post('tipo_asoc'),
-                    'ciudad' => $this->input->post('ciudad'),
+                    'ciudad' => $this->input->post('expedido'),
                     'nombres_asoc' => $this->input->post('nombres_asoc'),
                     'apellidos_asoc' => $this->input->post('apellidos_asoc'),
                     'ci_asoc' => $this->input->post('ci_asoc'),
