@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="<?php echo site_url('resources/css/mitabla.css');?>">
+
 <div class="row">
     <div class="col-md-12">
         <div class="box">

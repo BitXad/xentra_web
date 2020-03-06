@@ -9,6 +9,7 @@ class Factura extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Factura_model');
+        $this->load->helper('numeros');
     } 
 
     /*
@@ -273,15 +274,33 @@ class Factura extends CI_Controller{
         if ($generar_factura==1) {
             //aqui si hay q generar la factura...
         } else {
+            $this->Factura_model->cancelar_factura($factura_id);
             $datos = $this->Factura_model->get_datos_factura($factura_id);
             echo json_encode($datos);  
         }
 
-
-
-
-        
-        
     }
+
+    function imprimir($factura_id){
+      $num = $this->Factura_model->get_datos_factura($factura_id);
+      $este = $num[0]['tipo_fact'];
+        if ($este == 0) {
+           redirect('factura/imprimir_recibo/'.$factura_id);
+        }else{
+           redirect('factura/imprimir_recibo/'.$factura_id);
+     
+    }
+
+    }
+
+    function imprimir_recibo($factura_id){
+
+         $this->load->model('Empresa_model');
+         $data['empresa'] = $this->Empresa_model->get_empresa(1);
+         $data['factura'] = $this->Factura_model->get_factura_completa($factura_id);
+         $data['detalle_factura'] = $this->Factura_model->get_pendiente_detalle($factura_id);         
+         $data['_view'] = 'factura/recibo';
+         $this->load->view('layouts/main',$data);
+     }
     
 }
