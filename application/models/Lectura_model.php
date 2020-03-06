@@ -116,5 +116,17 @@ class Lectura_model extends CI_Model
         return true;
     }
 
+    function get_lecturasocio($id_lec)
+    {
+        $sql = "select l.*, a.*
+                from asociado a
+                LEFT JOIN lectura l on a.id_asoc = l.id_asoc
+                where
+                l.id_lec = ".$id_lec;
+
+        $asociado = $this->db->query($sql)->row_array();
+        return $asociado;
+        
+    }    
     
 }

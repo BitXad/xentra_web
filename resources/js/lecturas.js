@@ -378,7 +378,7 @@ function buscar_asociados() {
         orden = orden + 'apellidos_asoc ';
     if (select_orden == 'NOMBRE')
         orden = orden + 'nombres_asoc ';
-    if (select_orden == 'DIRECCION/ZONA')
+    if (select_orden == 'DIRECCION')
         orden = orden + 'nombres_asoc ';
     if (select_orden == 'NUMERO DE ORDEN')
         orden = orden + ' orden_asoc ';
@@ -404,12 +404,15 @@ function buscar_asociados() {
                 "l.estado_lec = 'LECTURADO')" + orden;//+" and "+
     }
 
+
 //   revisar
     if (select_afiliados = "TODOS")
     {
         sql = "select a.* from asociado a where a.estado='ACTIVO' order by a.apellidos_asoc";
     }
 
+
+        alert(sql);
     // Si la clasificacion es por direccion, se anulan las consultas para ejecutar esta
     if (select_orden == "DIRECCION")
     {
@@ -565,6 +568,11 @@ function registrar_lectura() {
     var montofact_lec = document.getElementById("montofact_lec").value;
     var nit_fact = document.getElementById("nit_fact").value;
     var razon_fact = document.getElementById("razon_fact").value;
+    var fecha_lectura = document.getElementById("fecha_lectura").value;
+    var fecha_vencimiento = document.getElementById("fecha_vencimiento").value;
+    
+    var consumo_agua_bs = document.getElementById("consumo_bs").value;
+    var consumo_alcantarillado_bs = document.getElementById("consumo_alcantarillado").value;
 
 
     //Registrar factura
@@ -575,9 +583,10 @@ function registrar_lectura() {
             actual_lec: actual_lec, fechaant_lec: fechaant_lec, consumo_lec: consumo_lec, fecha_lec: fecha_lec,
             hora_lec: hora_lec, totalcons_lec: totalcons_lec, monto_lec: monto_lec, estado_lec: estado_lec,
             tipo_asoc: tipo_asoc, servicios_asoc: servicios_asoc, cantfact_lec: cantfact_lec, montofact_lec: montofact_lec,
-            nit_fact: nit_fact, razon_fact: razon_fact},
+            nit_fact: nit_fact, razon_fact: razon_fact, fecha_lectura:fecha_lectura, fecha_vencimiento:fecha_vencimiento,
+            consumo_agua_bs:consumo_agua_bs, consumo_alcantarillado_bs:consumo_alcantarillado_bs},
         success: function (result) {
-
+             window.open(base_url+"");
 
 
         }, error: function (result) {

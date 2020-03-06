@@ -1,5 +1,3 @@
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo site_url('resources/js/lecturas.js');?>"></script>
 <script src="<?php echo site_url('resources/js/lecturas.js');?>"></script>
 <link rel="stylesheet" href="<?php echo site_url('resources/css/mitabla.css');?>">
 
@@ -146,10 +144,9 @@
     </table>-->
 
 </div>
-<div>
+
 <input type="text" id="id_asoc" value="" />
 <input type="text" id="mes_lec" value="" />
-    
 <input type="text" id="gestion_lec" value="" />
 <input type="text" id="anterior_lec" value="" />
 <input type="text" id="actual_lec" value="" />
@@ -166,7 +163,6 @@
 <input type="text" id="montofact_lec" value="" />
 <input type="text" id="nit_fact" value="" />
 <input type="text" id="razon_fact" value="" />
-</div>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_lectura" id="boton_lectura">
@@ -182,16 +178,18 @@
                 
                 
           <h5 class="modal-title" id="exampleModalLabel"><b><fa class="fa fa-book"></fa>   REGISTRAR LECTURA</b></h5>
-<!--            <table>
-                <tr>
-                    <td>Fecha Lectura<br><input type="date" id="fecha_lectura" value="<?php echo $date("Y-m-d"); ?>"></td>
-                    <td>Fecha Venc.<br><input type="date" id="fecha_vencimiento" value="<?php echo $date("Y-m-d"); ?>"></td>
-
-                </tr>
-            </table>-->
 <!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>-->
+
+            <table>
+                <tr>
+                    <td>Fecha Lectura<br><input type="date" id="fecha_lectura" value="<?php echo date("Y-m-d"); ?>"></td>
+                    <td>Fecha Venc.<br><input type="date" id="fecha_vencimiento" value="<?php echo date("Y-m-d"); ?>"></td>
+
+                </tr>
+            </table>
+        
             </center>
           
       </div>
