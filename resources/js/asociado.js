@@ -138,6 +138,15 @@ function tablaresultadosasociado(limite)
                         html += "<td>";
                         html += registros[i]["orden_asoc"];
                         html += "</td>";
+                        html += "<td class='no-print' style='text-align: center'>";
+                        if ((registros[i]["latitud_asoc"]==0 && registros[i]["longitud_asoc"]==0) || (registros[i]["latitud_asoc"]==null && registros[i]["longitud_asoc"]==null) || (registros[i]["latitud_asoc"]== "" && registros[i]["longitud_asoc"]=="")){
+                            html += "<img src='"+base_url+"resources/images/noubicacion.png' width='30' height='30'>";
+                        }else{
+                            html += "<a href='https://www.google.com/maps/dir/"+registros[i]["latitud_asoc"]+","+registros[i]["longitud_asoc"]+"' target='_blank' title='lat:"+registros[i]["latitud_asoc"]+", long:"+registros[i]["longitud_asoc"]+"'>";                                                                
+                            html += "<img src='"+base_url+"resources/images/blue.png' width='30' height='30'>";
+                            html += "</a>";
+                        }
+                        html += "</td>";
                         html += "<td>";
                         html += registros[i]["ciudad"];
                         html += "</td>";

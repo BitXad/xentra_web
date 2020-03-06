@@ -11,6 +11,7 @@ class Lectura extends CI_Controller{
         $this->load->model('Lectura_model');
         $this->load->model('Asociado_model');
         $this->load->model('Mes_model');
+        $this->load->model('Empresa_model');
     } 
 
     /*
@@ -192,7 +193,7 @@ class Lectura extends CI_Controller{
         $gestion = $this->input->post("gestion");
         $asociado = $this->input->post("asociado"); //id_asoc
         
-        //historial de lecturas
+        //MOSTRAR MULTAS/APORTES
         $sql = "(select 'multa',motivo_multa as motivo,detalle_multa as detalle,monto_multa as monto,mes_multa as mes,gestion_multa as gestion,tipo_multa as tipo,exento_multa as exento, ice_multa as ice ".
            "from multa ".
            "where estado_multa = 'ACTIVO' and ".
@@ -256,6 +257,178 @@ class Lectura extends CI_Controller{
         echo json_encode($result);
     }
     
-   
+    function registrar_lectura(){
+
+        $id_usu = 1;
+        
+        $id_asoc = $this->input->post("id_asoc");
+        $mes_lec = "'".$this->input->post("mes_lec")."'";
+        $gestion_lec = $this->input->post("gestion_lec");
+        $anterior_lec = $this->input->post("anterior_lec");
+        $actual_lec = $this->input->post("actual_lec");
+        $fechaant_lec = "'".$this->input->post("fechaant_lec")."'";
+        $consumo_lec = $this->input->post("consumo_lec");
+        $fecha_lec = "'".$this->input->post("fecha_lec")."'";
+        $hora_lec = "'".$this->input->post("hora_lec")."'";
+        $totalcons_lec = $this->input->post("totalcons_lec");
+        $monto_lec = $this->input->post("monto_lec");
+        $estado_lec = "'".$this->input->post("estado_lec")."'";
+        $tipo_asoc = "'".$this->input->post("tipo_asoc")."'";
+        $servicios_asoc = "'".$this->input->post("servicios_asoc")."'";
+        $cantfact_lec = $this->input->post("cantfact_lec");
+        $montofact_lec = $this->input->post("montofact_lec");
+
+        $nit_fact = "'".$this->input->post("nit_fact")."'";
+        $razon_fact = "'".$this->input->post("razon_fact")."'";
+        $fechavenc_fact = "'".$this->input->post("fecha_vencimiento")."'";
+        $fechalectura_fact = "'".$this->input->post("fecha_lectura")."'";
+        
+        $consumo_agua_bs = $this->input->post("consumo_agua_bs");
+        $consumo_alcantarillado_bs = $this->input->post("consumo_alcantarillado_bs");
+        
+        
+        
+        $sql ="insert into lectura(id_usu,id_asoc,mes_lec,gestion_lec,"
+            ."anterior_lec,actual_lec,fechaant_lec,consumo_lec,fecha_lec,hora_lec,"
+            ."totalcons_lec,monto_lec,estado_lec,tipo_asoc,servicios_asoc,"
+            ."cantfact_lec,montofact_lec) values(".
+            $id_usu.",".$id_asoc.",".$mes_lec.",".$gestion_lec.",".$anterior_lec.",".
+            $actual_lec.",".$fechaant_lec.",".$consumo_lec.",".$fecha_lec.",".
+            $hora_lec.",".$totalcons_lec.",".$monto_lec.",".$estado_lec.",".
+            $tipo_asoc.",".$servicios_asoc.",".$cantfact_lec.",".$montofact_lec.")";
+        $result = $this->Lectura_model->ejecutar($sql);
+        
+        $sql = 'select * from lectura where id_asoc = '.$id_asoc.' order by fecha_lec desc';
+        $result = $this->Lectura_model->consultar($sql);
+        
+        $id_lec = $result[0]["id_lec"];
+        
+//        $nit_fact = quotedStr(FormLecturas.ADOPrime.fieldbyname('nit_asoc').AsString);
+//        razon_fact:=quotedStr(FormLecturas.ADOPrime.fieldbyname('razon_asoc').AsString);
+        
+        $montoparc_fact = $totalcons_lec; //Consumo_Bs1.Text;
+        $desc_fact = '0';
+        $montototal_fact = $montofact_lec; //Total_Bs1.Text;
+        $literal_fact = "'-'";
+        $estado_fact = "'PENDIENTE'";
+
+
+        //$fechavenc_fact = (formLecturas.fechaLimite.date));
+
+//        $tamanio = StrLen(Pchar(montototal_fact));
+//        decimal:=montototal_fact[tamanio-1]+montototal_fact[tamanio];
+//        literal_fact:=quotedStr(FormNumeroaLetras.NumeroToLetra(trunc(StrtoFloat(montototal_fact)))+ ' '+decimal+'/100');
+        $coma = ",";
+        $sql = "insert into factura(id_lec,nit_fact,razon_fact,montoparc_fact,desc_fact,montototal_fact,literal_fact,estado_fact,fechavenc_fact) values(".
+            $id_lec.$coma.$nit_fact.$coma.$razon_fact.$coma.$montoparc_fact.$coma.$desc_fact.$coma.$montototal_fact.$coma.$literal_fact.$coma.$estado_fact.$coma.$fechavenc_fact.")";
+       
+        
+        $this->Lectura_model->ejecutar($sql);
+        
+        //Obteniendo la ultima factura ingresada
+        $sql = "select * from factura where id_lec = ".$id_lec." order by id_fact desc";
+        $facturas = $this->Lectura_model->consultar($sql);
+        $id_fact = $facturas[0]["id_fact"];
+
+        $totalcons_lec = $consumo_agua_bs;
+        
+        if ($totalcons_lec>0) //Significa que tiene consumo de agua
+        {
+            //Se eliminara el registro del tipo de servicio
+            ///descip_detfact:=servicios_asoc;
+            $cant_detfact = "1";
+            $descip_detfact = "'CONSUMO DE AGUA POTABLE'";
+            $punit_detfact = $totalcons_lec;
+            $desc_detfact = "0";
+            $total_detfact = $totalcons_lec;
+            $sql = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact) values(".
+                   $id_fact.$coma.$cant_detfact.$coma.$descip_detfact.$coma.$punit_detfact.$coma.$desc_detfact.$coma.$total_detfact.")";
+            //FormLogin.Ejecutarx(SQL);
+//            echo $sql;
+            $this->Lectura_model->ejecutar($sql);
+        }
+
+        
+        $alcantarillado = $consumo_alcantarillado_bs;
+        
+       // echo "total agua: ".$consumo_agua_bs." alcantarillado: ".$consumo_alcantarillado_bs;
+        
+        if ($alcantarillado>0) //Significa que tiene consumo de alcantarillado
+        {
+            //Se eliminara el registro del tipo de servicio
+            ///descip_detfact:=servicios_asoc;
+            $cant_detfact = "1";
+            $descip_detfact = "'SERVICIO DE ALCANTARILLADO'";
+            $punit_detfact = $alcantarillado;
+            $desc_detfact = "0";
+            $total_detfact = $alcantarillado;
+            $sql = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact) values(".
+                   $id_fact.$coma.$cant_detfact.$coma.$descip_detfact.$coma.$punit_detfact.$coma.$desc_detfact.$coma.$total_detfact.")";
+//            echo $sql;
+            $this->Lectura_model->ejecutar($sql);
+        }
+        
+        $mes = $mes_lec;
+        $gestion = $gestion_lec;
+        $asociado = $id_asoc;
+        //
+        //MOSTRAR MULTAS/APORTES
+        $sql = "(select 'multa',motivo_multa as motivo,detalle_multa as detalle,monto_multa as monto,mes_multa as mes,gestion_multa as gestion,tipo_multa as tipo,exento_multa as exento, ice_multa as ice ".
+           "from multa ".
+           "where estado_multa = 'ACTIVO' and ".
+           "(mes_multa = ".$mes." and gestion_multa = '".$gestion."' and tipo_multa= 'GENERAL') or ".
+           "(mes_multa= ".$mes." and gestion_multa = '".$gestion."' and id_asoc=".$asociado.")) union ".
+           "(select 'APORTE',motivo_ap as motivo,detalle_ap as detalle,monto_ap as monto,mes_ap as mes,gestion_ap as gestion,tipo_ap as tipo, exento_ap as exento, ice_ap as ice from aporte ".
+           "where ".
+           "tipo_ap = 'PERMANENTE' and estado_ap = 'ACTIVO' or ".
+           "(mes_ap = ".$mes." and gestion_ap = '".$gestion."' and tipo_ap = 'PARCIAL' and estado_ap = 'ACTIVO'))";
+        
+        $multas = $this->Lectura_model->consultar($sql);    
+        
+        foreach($multas as $m){
+            
+            $descip_detfact = "'".$m["motivo"]."'"; //quotedStr(ADOMultas.fieldbyname('motivo').AsString);
+            $punit_detfact = $m["monto"];  //ADOMultas.fieldbyname('monto').AsString;
+            $desc_detfact = "0";
+
+            $total_detfact = $m["monto"]; //ADOMultas.fieldbyname('monto').AsString;
+            $exento_detfact = "'".$m["exento"]."'"; //quotedStr(ADOMultas.fieldbyname('exento').AsString);
+            $ice_detfact = "'".$m["ice"]."'"; //quotedStr(ADOMultas.fieldbyname('ice').AsString);
+            //exento_detfact:=quotedStr('SI');
+            //ice_detfact:=quotedStr('N');
+
+
+            $sql  = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact,tipo_detfact,exento_detfact,ice_detfact) values(".
+                    $id_fact.$coma.$cant_detfact.$coma.$descip_detfact.$coma.$punit_detfact.$coma.$desc_detfact.$coma.$total_detfact.",1,".$exento_detfact.$coma.$ice_detfact.")";
+          // echo $sql;
+            $this->Lectura_model->ejecutar($sql);            
+        }
+        
+        echo json_encode($facturas);
+    }
+    
+    
+function preaviso_boucher($lectura_id)
+{
+    $this->load->model('Empresa_model');
+
+    $data['lectura'] = $this->Lectura_model->get_lecturasocio($lectura_id);
+    $data['empresa'] = $this->Empresa_model->get_empresa(1);
+
+    $data['_view'] = 'lectura/preaviso_boucher';
+    $this->load->view('layouts/main',$data);
+}    
+    
+    
+function ultimo_preaviso($id_asoc)
+{
+    $this->load->model('Empresa_model');
+
+    $data['lectura'] = $this->Lectura_model->get_lecturasocio_asoc($id_asoc);
+    $data['empresa'] = $this->Empresa_model->get_empresa(1);
+
+    $data['_view'] = 'lectura/preaviso_boucher';
+    $this->load->view('layouts/main',$data);
+}    
     
 }

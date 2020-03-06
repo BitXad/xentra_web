@@ -121,6 +121,7 @@
                         <th>SERVICIO</th>
                         <th>FECHAS</th>
                         <th>ORDEN</th>
+                        <th>MAP</th>
                         <th>CIUDAD</th>
                         <th></th>
                     </tr>
