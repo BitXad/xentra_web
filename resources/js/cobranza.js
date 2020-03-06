@@ -19,6 +19,7 @@ function finalizar(){
     var lectura_id = document.getElementById('lectura_id').value;
     var multar = document.getElementById('multar').checked;
     var generar_factura = document.getElementById('generar_factura').checked;
+    var imprimir_factura = document.getElementById('imprimir_factura').checked;
     $.ajax({url:controlador,
 
             type:"POST",
@@ -29,7 +30,9 @@ function finalizar(){
 
                 var registros = JSON.parse(respuesta);
                 alert('EXITO');
-           
+                if (imprimir_factura==true) {
+                    window.open(base_url+"factura/imprimir/"+factura_id, '_blank');
+                }
                 location.reload();
              
 
@@ -258,8 +261,8 @@ function facturas_pendientes(asociado)
                 var fin = registros.length;
                 html = "";
                 html2 = "";
-               
                 
+                if (registros!='') {
                 for(var i = 0; i<fin; i++)
                 {
 
@@ -283,6 +286,10 @@ function facturas_pendientes(asociado)
                 $("#aportes").val(Number(0).toFixed(2));
                 $("#recargos").val(Number(0).toFixed(2));
                 $("#total_factura").val(Number(0).toFixed(2));
+                }
+                else{
+                    alert('El Asociado No Tiene Facturas Pendientes');
+                }
 
             },
             error: function(respuesta){

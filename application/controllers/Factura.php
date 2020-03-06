@@ -9,6 +9,7 @@ class Factura extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Factura_model');
+        $this->load->model('Dosificacion_model');
         $this->load->helper('numeros');
     } 
 
@@ -262,7 +263,9 @@ class Factura extends CI_Controller{
         $lectura_id = $this->input->post('lectura_id');
         $generar_factura = 0;/*$this->input->post('generar_factura');*/  //aca debe venir el check generar
         $multar = $this->input->post('multar');
-
+        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+        $numfact_dosif = $dosificacion['numfact_dosif'];
+        $numfact_dosif1 = $numfact_dosif+1;
         if ($multar==true) { //agregar los recargos al detalle
             $recargos = $this->Factura_model->get_recargo_detalle($lectura_id);
             foreach ($recargos as $rec) {
@@ -274,10 +277,12 @@ class Factura extends CI_Controller{
         if ($generar_factura==1) {
             //aqui si hay q generar la factura...
         } else {
-            $this->Factura_model->cancelar_factura($factura_id);
+            $this->Factura_model->cancelar_factura($factura_id,$numfact_dosif1);
+           
+        }
+            $this->Factura_model->actualizar_dosificacion($numfact_dosif1);
             $datos = $this->Factura_model->get_datos_factura($factura_id);
             echo json_encode($datos);  
-        }
 
     }
 

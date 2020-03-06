@@ -608,7 +608,7 @@
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
-            <footer class="main-footer">
+            <footer class="main-footer no-print">
                 <strong>Copyright(R) <a href="http://www.passwordbolivia.com/">PASSWORD Ingenieria Hardwrae & Software</a> </strong>
             </footer>
 

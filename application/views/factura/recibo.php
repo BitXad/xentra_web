@@ -1,8 +1,14 @@
-
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        window.onload = window.print();
+    });
+</script>
 <?php $padding = "style='padding:0; '"; 
     $ancho = "18cm";
     $ancho2 = "17cm"; ?>
-<div  style="width: <?php echo $ancho ?>">
+<div class="box" style="width: <?php echo $ancho ?>">
 <!-------------------------------------------------------->
 <table class="table" style="width: 100%; padding: 0;" >
     <tr>
@@ -34,26 +40,26 @@
             </center>
         </td>
         <td style="width: 35%; padding: 0;" >
+            <br>
             
-            
-            <div style="width: 100%;border: 1px solid black;">
-            <br><center>
-                <font style="padding: 10px;" size="1" face="arial">REC Nº: 00<?php echo $factura[0]['id_fact']; ?></font></center><br></div>
+            <div style="width: 100%;border: 1px solid black;padding: 10px">
+            <center>
+                <font size="1" face="arial">REC Nº: 00<?php echo $factura[0]['num_fact']; ?></font></center></div>
             <center>
                 <font size="2" face="Arial">SERVICIOS</font>
-            </center>
+            </center><br>
                 
             
             
             <font size="1" face="Arial"><b>MES DE COBRANZA:</b> <?php echo $factura[0]['mes_lec']; ?>/<?php echo $factura[0]['gestion_lec']; ?></font><br>
-            <div style="width: 32%;border: 1px solid black;position: absolute;line-height:15px;">
-                <br>
+            <div style="width: 35%;border: 1px solid black;position: absolute;line-height:15px;padding: 10px">
+                
             <font  size="1" face="arial"><b>&nbspLECT.ACTUAL[<?php echo date('d/m/Y',strtotime($factura[0]['fecha_lec']));?>]:</b> <?php echo $factura[0]['actual_lec']; ?><br>
             <b>&nbspLECT.ANTERIOR[<?php echo date('d/m/Y',strtotime($factura[0]['fechaant_lec']));?>]:</b> <?php echo $factura[0]['anterior_lec']; ?><br>
             <b>&nbspCONSUMO M3:</b> <?php echo $factura[0]['consumo_lec']; ?><br>
             <b>&nbspVENCIMIENTO:</b> <?php echo $factura[0]['fechaemision_fact']; ?><br>
             </font>
-            <br>
+            
             </div>
         </td>
     </tr>
@@ -62,12 +68,12 @@
     
 </table> 
     
-
+<hr style="border: 0.5px solid black;width: 65%;margin-bottom: 0px;margin-top: -10px" align="left" >
     
   <table style="width: 65%; font-family: Arial; font-size:10px;margin-top: 0px;">
         <tr>
             <td><b>LUGAR Y FECHA: </b>
-            <?php echo date('d/m/Y',strtotime($factura[0]['fecha_fact']));?>
+            <?php echo $empresa['ubicacion_emp']; ?>, <?php echo date('d/m/Y',strtotime($factura[0]['fecha_fact']));?>
             </td>
         </tr>
         <tr>    
@@ -94,7 +100,7 @@
         </tr>
     </table>
   
-       
+       <br class="no-print">
     <table style="width: 100%; padding: 0; font-family: Arial; font-size:10px;"> 
    
 <tr>
@@ -125,34 +131,37 @@
     <table style="width: 100%; padding: 0; font-family: Arial; font-size:12px;"> 
    
                       <tr>
-                        <th style="text-align: center;" width="60%" align="center">SON: <?php echo num_to_letras($total); ?></th>
-                        <th width="25%">TOTAL A PAGAR Bs </th>
+                        <th width="20%"></th>
+                        <th style="text-align: left;" width="45%" align="center">SON: <?php echo num_to_letras($total); ?></th>
+                        <th width="20%">TOTAL A PAGAR Bs </th>
                         <th style="text-align: right;" width="15%"><?php echo number_format($total, 2, ".", ","); ?></th>
                         
                       </tr>
 
    
     </table>
-    <hr style="border: 2px solid black;margin-top: 1px">
+    <hr style="width: 80%;border: 2px solid black;margin-top: 1px" align="right">
 
 <table  class="table table-striped table-condensed" style="width: 100%; font-family: Arial; font-size:10px;">
     <tr style="border: 0"><br>
     </tr>
     
     <tr>
-        <td> 
+        <td style="width: 20%;"> </td>
+        <td style="width: 26%;"> TRANS: <?php echo $factura[0]['id_fact']; ?> <BR>CAJERO: CARLOS SOTO S.</td>
+        <td style="width: 27%;"> 
             <center>
 
-                <?php echo "-----------------------------------------------------"; ?><br>
+                <?php echo "-----------------------------------------------"; ?><br>
                 <?php echo "RECIBI CONFORME"; ?><br>
 
             </center>
         </td>
         
-        <td>
+        <td style="width: 27%;">
             <center>
 
-                <?php echo "-----------------------------------------------------"; ?><br>
+                <?php echo "-----------------------------------------------"; ?><br>
                 <?php echo "ENTREGUE CONFORME"; ?><br>   
 
             </center>

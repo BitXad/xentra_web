@@ -232,8 +232,8 @@ input[type=number] { -moz-appearance:textfield; }
                         <td><b>Total Bs.</b></td>
                         <td>
                          <input class="btn btn-warning" id="total_factura" name="total_factura" size="8" value="0.00" readonly> 
-                         <input class="text" id="factura_id" name="factura_id" size="8" value="" readonly> 
-                         <input class="text" id="lectura_id" name="lectura_id" size="8" value="" readonly> 
+                         <input class="hidden" id="factura_id" name="factura_id" size="8" value="" readonly> 
+                         <input class="hidden" id="lectura_id" name="lectura_id" size="8" value="" readonly> 
                         </td>
                 </tr>
 
