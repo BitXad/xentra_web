@@ -148,6 +148,16 @@ class Factura_model extends CI_Model
         return $resultado;
     }
 
+    function cancelar_factura($factura)
+    {
+
+        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime()
+        WHERE id_fact=".$factura;        
+        $resultado = $this->db->query($sql);
+        
+        return $resultado;
+    }
+
     function recargosadetalle($id_param,$factura_id)
     {
 
@@ -174,6 +184,19 @@ class Factura_model extends CI_Model
         parametros
         WHERE 
         id_param = ".$id_param.")";        
+        $resultado = $this->db->query($sql);
+        
+        return $resultado;
+    }
+
+    function get_factura_completa($factura)
+    {
+
+        $sql = "SELECT f.*, l.*, a.*
+        FROM factura f, lectura l, asociado a
+        WHERE f.id_fact=".$factura."
+        AND f.id_lec=l.id_lec
+        AND l.id_asoc=a.id_asoc";        
         $resultado = $this->db->query($sql)->result_array();
         
         return $resultado;

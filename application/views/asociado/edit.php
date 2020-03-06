@@ -1,17 +1,20 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
-function mostrar(a) {
-    obj = document.getElementById('oculto'+a);
-    obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
-    //objm = document.getElementById('map');
-    if(obj.style.visibility == 'hidden'){
-        $('#map').css({ 'width':'0px', 'height':'0px' });
-        $('#mosmapa').text("Modificar ubicación del Asociado");
-    }else{
-        $('#map').css({ 'width':'100%', 'height':'400px' });
-        $('#mosmapa').text("Cerrar mapa");
+    function mostrar(a) {
+        obj = document.getElementById('oculto'+a);
+        obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
+        //objm = document.getElementById('map');
+        if(obj.style.visibility == 'hidden'){
+            $('#map').css({ 'width':'0px', 'height':'0px' });
+            $('#mosmapa').text("Modificar ubicación del Asociado");
+        }else{
+            $('#map').css({ 'width':'100%', 'height':'400px' });
+            $('#mosmapa').text("Cerrar mapa");
+        }
     }
-}
+    function generarcodigo(){
+        alert("Aqui Genera CODIGO");
+    }
 </script>
 <div class="row">
     <div class="col-md-12">
@@ -36,10 +39,12 @@ function mostrar(a) {
                             <span class="text-danger"><?php echo form_error('apellidos_asoc');?></span>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="codigo_asoc" class="control-label">Código</label>
-                        <div class="form-group">
+                        <div class="form-group" style="display: flex">
                             <input type="text" name="codigo_asoc" value="<?php echo ($this->input->post('codigo_asoc') ? $this->input->post('codigo_asoc') : $asociado['codigo_asoc']); ?>" class="form-control" id="codigo_asoc" />
+                            <a onclick="generarcodigo()" class="btn btn-warning" title="Generar codigo">
+                                <i class="fa fa-file-text-o"></i></a>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -85,12 +90,6 @@ function mostrar(a) {
                         <label for="razon_asoc" class="control-label">Razon Social</label>
                         <div class="form-group">
                             <input type="text" name="razon_asoc" value="<?php echo ($this->input->post('razon_asoc') ? $this->input->post('razon_asoc') : $asociado['razon_asoc']); ?>" class="form-control" id="razon_asoc" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="ciudad" class="control-label">Ciudad</label>
-                        <div class="form-group">
-                            <input type="text" name="ciudad" value="<?php echo ($this->input->post('ciudad') ? $this->input->post('ciudad') : $asociado['ciudad']); ?>" class="form-control" id="ciudad" />
                         </div>
                     </div>
                     <div class="col-md-4">
