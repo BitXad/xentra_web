@@ -1,3 +1,4 @@
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo site_url('resources/js/lecturas.js');?>"></script>
 <link rel="stylesheet" href="<?php echo site_url('resources/css/mitabla.css');?>">
 
@@ -113,7 +114,7 @@
                 <div class="col-md-1" style="padding:2px;">
                     <label for="buscar" class="control-label">BUSCAR</label>
                     <div class="form-group">                        
-                        <button onclick="buscar_asociados()" class="btn btn-facebook btn-block"><fa class="fa fa-binoculars"></fa>
+                        <button onclick="buscar_asociados()" class="btn btn-facebook btn-block" id="boton_buscar"><fa class="fa fa-binoculars"></fa>
                             Buscar
                         </button>                        
                     </div>
@@ -144,7 +145,8 @@
     </table>-->
 
 </div>
-
+<div hidden="true">
+    
 <input type="text" id="id_asoc" value="" />
 <input type="text" id="mes_lec" value="" />
 <input type="text" id="gestion_lec" value="" />
@@ -163,6 +165,7 @@
 <input type="text" id="montofact_lec" value="" />
 <input type="text" id="nit_fact" value="" />
 <input type="text" id="razon_fact" value="" />
+</div>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_lectura" id="boton_lectura">
@@ -198,8 +201,8 @@
           
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
-          <button type="button" class="btn btn-success" onclick="registrar_lectura()"><fa class="fa fa-floppy-o"></fa> Registrar Lectura</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrar_lectura"><fa class="fa fa-times"></fa> Cerrar</button>
+          <button type="button" class="btn btn-success" onclick="registrar_lectura()" id="boton_registrar_lectura"><fa class="fa fa-floppy-o"></fa> Registrar Lectura</button>
       </div>
     </div>
   </div>

@@ -351,7 +351,7 @@ class Lectura extends CI_Controller{
         
         $alcantarillado = $consumo_alcantarillado_bs;
         
-        echo "total agua: ".$consumo_agua_bs." alcantarillado: ".$consumo_alcantarillado_bs;
+       // echo "total agua: ".$consumo_agua_bs." alcantarillado: ".$consumo_alcantarillado_bs;
         
         if ($alcantarillado>0) //Significa que tiene consumo de alcantarillado
         {
@@ -404,20 +404,30 @@ class Lectura extends CI_Controller{
             $this->Lectura_model->ejecutar($sql);            
         }
         
-        $this->recibo_boucher($id_lec);
-        
-        echo json_encode(true);
+        echo json_encode($facturas);
     }
     
     
-function recibo_boucher($lectura_id)
+function preaviso_boucher($lectura_id)
 {
     $this->load->model('Empresa_model');
 
     $data['lectura'] = $this->Lectura_model->get_lecturasocio($lectura_id);
     $data['empresa'] = $this->Empresa_model->get_empresa(1);
 
-    $data['_view'] = 'lectura/recibo_boucher';
+    $data['_view'] = 'lectura/preaviso_boucher';
+    $this->load->view('layouts/main',$data);
+}    
+    
+    
+function ultimo_preaviso($id_asoc)
+{
+    $this->load->model('Empresa_model');
+
+    $data['lectura'] = $this->Lectura_model->get_lecturasocio_asoc($id_asoc);
+    $data['empresa'] = $this->Empresa_model->get_empresa(1);
+
+    $data['_view'] = 'lectura/preaviso_boucher';
     $this->load->view('layouts/main',$data);
 }    
     

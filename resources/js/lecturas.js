@@ -1,6 +1,6 @@
 function seleccionar_lectura() {
     $("#lectura_actual").select();
-
+    
 }
 
 function esMobil() {
@@ -110,8 +110,10 @@ function calcular_consumo(e, id_asoc) {
                     $("#estado_lec").val("LECTURADO");
                     $("#canfact_lec").val(1);
                     $("#montofact_lec").val(total_bs);
+                    
+                    $("#boton_registrar_lectura").focus();
 
-
+                    
 
 
 
@@ -247,42 +249,42 @@ function cargar_lectura(lectura) {
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + ";'>";
                 html += "<td style='padding:0;' " + columnas + "><b>LECTURA ANTERIOR (mt3): </b></td>";
-                html += "<td style='padding:0;'><input type='text' value='0.00' id='lectura_anterior' readonly='true' " + ancho + "/></td>";
+                html += "<td style='padding:0;'><input type='text' value='0.00' id='lectura_anterior' style='background: silver;' readonly='true' " + ancho + "/></td>";
                 html += "</tr>";
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + "; font-size:13px; font-style: bold'>";
                 html += "<td style='padding:0;' " + columnas + "><b>LECT. ACTUAL (mt3): </b></td>";
-                html += "<td style='padding:0;'><input type='text' value='0.00' id='lectura_actual' onclick='seleccionar_lectura()' onkeyup='calcular_consumo(event," + asociado + ")' " + ancho + "/></td>";
+                html += "<td style='padding:0;'><input type='text' value='0.00' id='lectura_actual' style='background: yellow;' onclick='seleccionar_lectura()' onkeyup='calcular_consumo(event," + asociado + ")' " + ancho + "/></td>";
                 html += "</tr>";
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + ";'>";
                 html += "<td style='padding:0;' " + columnas + "><b>CONSUMO (mt3): </b></td>";
-                html += "<td style='padding:0;'><input type='text' value='0.00' id='consumo_mt3' readonly='true' " + ancho + "/></td>";
+                html += "<td style='padding:0;'><input type='text' value='0.00' id='consumo_mt3' style='background: silver;' readonly='true' " + ancho + "/></td>";
                 html += "</tr>";
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + ";'>";
                 html += "<td style='padding:0;' " + columnas + "><b>CONSUMO (Bs): </b></td>";
-                html += "<td style='padding:0;'><input type='text' value='0.00' id='consumo_bs' readonly='true' " + ancho + "/></td>";
+                html += "<td style='padding:0;'><input type='text' value='0.00' id='consumo_bs' style='background: silver;' readonly='true' " + ancho + "/></td>";
                 html += "</tr>";
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + ";'>";
                 html += "<td style='padding:0;' " + columnas + "><b>ALCANTARILLADO (Bs): </b></td>";
-                html += "<td style='padding:0;'><input type='text' value='0.00' id='consumo_alcantarillado' readonly='true' " + ancho + "/></td>";
+                html += "<td style='padding:0;'><input type='text' value='0.00' id='consumo_alcantarillado' style='background: silver;' readonly='true' " + ancho + "/></td>";
                 html += "</tr>";
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + ";'>";
                 html += "<td style='padding:0;' " + columnas + "><b>MULTAS Y APORTES (Bs): </b></td>";
-                html += "<td style='padding:0;'><input type='text' value='" + total_multa.toFixed(2) + "' id='aportes_multas' readonly='true' " + ancho + "/></td>";
+                html += "<td style='padding:0;'><input type='text' value='" + total_multa.toFixed(2) + "' id='aportes_multas' style='background: silver;' readonly='true' " + ancho + "/></td>";
                 html += "</tr>";
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + ";'>";
                 html += "<td style='padding:0;' " + columnas + "><b>FACTURAS ADEUDADAS (Bs): </b></td>";
-                html += "<td style='padding:0;'><input type='text' value='0' id='cantidad_adeudadas' readonly='true' " + ancho + "/><input type='text' value='0.00' id='facturas_adeudadas' readonly='true' " + ancho + "/></td>";
+                html += "<td style='padding:0;'><input type='text' value='0' id='cantidad_adeudadas' style='background: silver;' readonly='true' " + ancho + "/><input type='text' value='0.00' id='facturas_adeudadas' style='background: silver;' readonly='true' " + ancho + "/></td>";
                 html += "</tr>";
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + "; font-size:14px; font-style: bold'>";
                 html += "<td style='padding:0;' " + columnas + "><b>TOTAL (Bs): </b></td>";
-                html += "<td style='padding:0;'><input type='text' value='0' id='total_bs' readonly='true' " + ancho + "/></td>";
+                html += "<td style='padding:0;'><input type='text' value='0' id='total_bs' style='background: silver;' readonly='true' " + ancho + "/></td>";
                 html += "</tr>";
 
 
@@ -336,7 +338,8 @@ function cargar_lectura(lectura) {
 
                 //cargar inputs
                 $("#fechaant_lec").val(res[0].fecha_lec);
-
+                
+                
             },
             error: function (result) {
                 $("#lectura_anterior").val('0');
@@ -351,8 +354,17 @@ function cargar_lectura(lectura) {
     } else {
         alert("ERROR: Debe seleccionar un MES SIN LECTURA..!!!");
     }
+    
+                    
+                    //focus lectura
+                $('#modal_lectura').on('shown.bs.modal', function() {
+                    $('#lectura_actual').focus();
+                    $('#lectura_actual').select();
+                }); 
+    
 
 }
+
 
 function buscar_asociados() {
 
@@ -368,6 +380,7 @@ function buscar_asociados() {
     var sql = "";
 
 
+   // alert(select_afiliados);
     orden = " order by ";
 
     if (select_orden == 'CODIGO')
@@ -406,13 +419,13 @@ function buscar_asociados() {
 
 
 //   revisar
-    if (select_afiliados = "TODOS")
+    if (select_afiliados == "TODOS")
     {
         sql = "select a.* from asociado a where a.estado='ACTIVO' order by a.apellidos_asoc";
     }
 
 
-        alert(sql);
+     //   alert(sql);
     // Si la clasificacion es por direccion, se anulan las consultas para ejecutar esta
     if (select_orden == "DIRECCION")
     {
@@ -534,6 +547,7 @@ function buscar_asociados() {
                     html += "<td>";
                     html += "<a href='" + base_url + "lectura/historial/" + res[i].id_asoc + "' class='btn btn-facebook btn-xs' title='Historial de lecturas' target='_BLANK'><fa class='fa fa-list'></fa></a>";
                     html += "<button onclick = 'cargar_lectura(" + JSON.stringify(res[i]) + ")' class='btn btn-warning btn-xs' title='Registrar lecturas'><fa class='fa fa-pencil'></button></a>";
+                    html += "<a href='" + base_url + "lectura/ultimo_preaviso/" + res[i].id_asoc + "' class='btn btn-info btn-xs' title='Ultimo preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
                     html += "</td>";
                     html += "</tr>";
                 }
@@ -586,14 +600,18 @@ function registrar_lectura() {
             nit_fact: nit_fact, razon_fact: razon_fact, fecha_lectura:fecha_lectura, fecha_vencimiento:fecha_vencimiento,
             consumo_agua_bs:consumo_agua_bs, consumo_alcantarillado_bs:consumo_alcantarillado_bs},
         success: function (result) {
-             window.open(base_url+"");
-
-
+             
+             var r = JSON.parse(result);
+            $("#boton_cerrar_lectura").click();
+            $("#boton_buscar").click();
+//            alert(r.length);
+//            window.location.href = base_url+"lectura/preaviso_boucher/"+r[0].id_lec;
+            window.open(base_url+"lectura/preaviso_boucher/"+r[0].id_lec, '_blank');
+            
         }, error: function (result) {
             //$("#consumo_bs").val("0.00");
 
         }
     });
-
 
 }
