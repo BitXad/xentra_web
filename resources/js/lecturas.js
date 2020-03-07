@@ -65,18 +65,17 @@ function formato_numerico(numer) {
     return resultado;
 }
 
-function calcular_consumo(e, id_asoc) {
 
-    var lectura_anterior = document.getElementById("lectura_anterior").value;
-    var lectura_actual = document.getElementById("lectura_actual").value;
-    var base_url = document.getElementById("base_url").value;
-    var controlador = base_url + "lectura/calcular_consumo";
-    var asociado = id_asoc;
 
-    tecla = (document.all) ? e.keyCode : e.which;
 
-    if (tecla == 13) {
-
+function calcular(id_asoc){
+        var lectura_anterior = document.getElementById("lectura_anterior").value;
+        var lectura_actual = document.getElementById("lectura_actual").value;
+        var base_url = document.getElementById("base_url").value;
+        var controlador = base_url + "lectura/calcular_consumo";
+        var asociado = id_asoc;
+    
+    
         if (lectura_actual >= lectura_anterior) {
             var consumo = lectura_actual - lectura_anterior;
             $("#consumo_mt3").val(Number(consumo).toFixed(2));
@@ -111,16 +110,12 @@ function calcular_consumo(e, id_asoc) {
                     $("#canfact_lec").val(1);
                     $("#montofact_lec").val(total_bs);
                     
+                    document.getElementById("boton_registrar_lectura").style.display = 'inline';
+                                       
                     $("#boton_registrar_lectura").focus();
-
-                    
-
-
-
 
                 }, error: function (result) {
                     $("#consumo_bs").val("0.00");
-
                 }
             });
 
@@ -128,6 +123,66 @@ function calcular_consumo(e, id_asoc) {
             alert("ADVERTENCIA: La lectura actual no puede ser menor a la anterior..!!");
             $("#lectura_actual").focus();
         }
+}
+
+function calcular_consumo(e, id_asoc) {
+
+    var lectura_anterior = document.getElementById("lectura_anterior").value;
+    var lectura_actual = document.getElementById("lectura_actual").value;
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url + "lectura/calcular_consumo";
+    var asociado = id_asoc;
+
+    tecla = (document.all) ? e.keyCode : e.which;
+
+    if (tecla == 13) {
+        calcular(id_asoc);
+
+//        if (lectura_actual >= lectura_anterior) {
+//            var consumo = lectura_actual - lectura_anterior;
+//            $("#consumo_mt3").val(Number(consumo).toFixed(2));
+//
+//            $.ajax({
+//                url: controlador,
+//                type: "POST",
+//                data: {consumo: consumo, asociado: asociado},
+//                success: function (result) {
+//
+//                    var res = JSON.parse(result);
+//
+//                    $("#consumo_bs").val(res[0].costo_agua);
+//                    $("#consumo_alcantarillado").val(res[0].costo_alcant);
+//
+//                    var consumo_bs = document.getElementById("consumo_bs").value;
+//                    var consumo_alcantarillado = document.getElementById("consumo_alcantarillado").value;
+//                    var aportes_multas = document.getElementById("aportes_multas").value;
+//                    var total_bs = "0.00";
+//
+//                    total_bs = Number(consumo_bs) + Number(consumo_alcantarillado) + Number(aportes_multas);
+//
+//                    $("#total_bs").val(total_bs.toFixed(2));
+//
+//                    //cargar inputs
+//                    $("#actual_lec").val(lectura_actual);
+//                    $("#anterior_lec").val(lectura_anterior);
+//                    $("#consumo_lec").val(consumo);
+//                    $("#totalcons_lec").val(consumo_bs);
+//                    $("#monto_lec").val(consumo_bs);
+//                    $("#estado_lec").val("LECTURADO");
+//                    $("#canfact_lec").val(1);
+//                    $("#montofact_lec").val(total_bs);
+//                    
+//                    $("#boton_registrar_lectura").focus();
+//
+//                }, error: function (result) {
+//                    $("#consumo_bs").val("0.00");
+//                }
+//            });
+//
+//        } else {
+//            alert("ADVERTENCIA: La lectura actual no puede ser menor a la anterior..!!");
+//            $("#lectura_actual").focus();
+//        }
     }
 }
 
@@ -254,7 +309,9 @@ function cargar_lectura(lectura) {
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + "; font-size:13px; font-style: bold'>";
                 html += "<td style='padding:0;' " + columnas + "><b>LECT. ACTUAL (mt3): </b></td>";
-                html += "<td style='padding:0;'><input type='text' value='0.00' id='lectura_actual' style='background: yellow;' onclick='seleccionar_lectura()' onkeyup='calcular_consumo(event," + asociado + ")' " + ancho + "/></td>";
+                html += "<td style='padding:0;'><input type='number'  value='0.00' min='0' id='lectura_actual' style='background: yellow; width: 50pt;' onclick='seleccionar_lectura()' onkeyup='calcular_consumo(event," + asociado + ")' />";
+                html += "<button class='btn btn-xs btn-facebook' onclick ='calcular(" + asociado + ")'> Calcular</button>";
+                html += "</td>";
                 html += "</tr>";
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + ";'>";
@@ -284,7 +341,7 @@ function cargar_lectura(lectura) {
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + "; font-size:14px; font-style: bold'>";
                 html += "<td style='padding:0;' " + columnas + "><b>TOTAL (Bs): </b></td>";
-                html += "<td style='padding:0;'><input type='text' value='0' id='total_bs' style='background: silver;' readonly='true' " + ancho + "/></td>";
+                html += "<td style='padding:0;'><input type='text' value='0' id='total_bs' style='background: orange;' readonly='true' " + ancho + "/></td>";
                 html += "</tr>";
 
 
@@ -470,7 +527,7 @@ function buscar_asociados() {
 
                 html += "<table class='table table-striped' id='mitabla'>";
                 html += "<tr>";
-                html += "<th>#</th>";
+//                html += "<th>ORD</th>";
                 html += "<th>Nombre Asociado</th>";
                 html += "<th> </th>";
                 html += "</tr>";
@@ -501,13 +558,13 @@ function buscar_asociados() {
                 if (esMobil()) {
 
                     html += "<tr style='line-height:5px;'>";
-                    html += "<td style='padding:0;'>" + (i + 1) + "</td>";
+//                    html += "<td style='padding:0;'><font face='Arial' size='3'>"+res[i].orden_asoc+"</font></td>";
 
                     if (nombrecompleto.length > 30) {
                         nombrecompleto = nombrecompleto.substr(0, 29) + "..";
                     }
 
-                    html += "<td style='padding:0; width:8cm;'><font face='Arial' size='2'><b>" + nombrecompleto + "</b></font>";
+                    html += "<td style='padding:0; width:8cm;'> <font face='Arial' size='2'><b><span class='btn btn-danger btn-xs'>"+res[i].orden_asoc+"</span>"+ nombrecompleto + "</b></font>";
                     html += "<br><b>C.I.: </b>" + res[i].ci_asoc + " <b>| Telef.: </b>" + res[i].telefono_asoc;
                     html += "<br><b>CÓDIGO: </b>" + res[i].codigo_asoc;
                     html += "<br><b>TIPO: </b>" + res[i].tipo_asoc;
@@ -517,8 +574,8 @@ function buscar_asociados() {
                     html += "<td>";
                     html += "<center>";
                     html += "<img src='" + imagen + "' width='30' height='40' >";
-                    html += "<br><br><a href='" + base_url + "lectura/historial/" + res[i].id_asoc + "' class='btn btn-facebook btn-xs' title='Historial de lecturas' target='_BLANK'><fa class='fa fa-list'></fa></a>";
-                    html += "<button onclick = 'cargar_lectura(" + JSON.stringify(res[i]) + ")' class='btn btn-warning btn-xs' title='Registrar lecturas'><fa class='fa fa-pencil'></button></a>";
+                    html += "<br><button onclick = 'cargar_lectura(" + JSON.stringify(res[i]) + ")' class='btn btn-warning btn-xs' title='Registrar lecturas'><fa class='fa fa-pencil'></fa>Lecturar</button></a>";
+                    html += "<br><a href='" + base_url + "lectura/historial/" + res[i].id_asoc + "' class='btn btn-facebook btn-xs' title='Historial de lecturas' target='_BLANK'><fa class='fa fa-list'></fa></a>";
                     html += "<a href='" + base_url + "lectura/ultimo_preaviso/" + res[i].id_asoc + "' class='btn btn-info btn-xs' title='Ultimo preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
                     html += "</center>";
                     html += "</td>";
@@ -538,7 +595,7 @@ function buscar_asociados() {
                         nombrecompleto = nombrecompleto.substr(0, 29) + "..";
                     }
 
-                    html += "<td style='padding:0; width:8cm;'><font face='Arial' size='3'><b>" + nombrecompleto + "</b></font>";
+                    html += "<td style='padding:0; width:8cm;'><font face='Arial' size='3'><b>" + nombrecompleto+ "</b></font>";
                     html += "<br>C.I.: " + res[i].ci_asoc + " | Telef.: " + res[i].telefono_asoc + "</td>";
 
                     html += "<td style='padding:0;'>" + res[i].tipo_asoc + "</td>";
@@ -546,8 +603,8 @@ function buscar_asociados() {
                     html += "<td style='padding:0;'>" + res[i].direccion_asoc + "</td>";
                     html += "<td style='padding:0;'>" + res[i].medidor_asoc + "</td>";
                     html += "<td>";
+                    html += "<button onclick = 'cargar_lectura(" + JSON.stringify(res[i]) + ")' class='btn btn-warning btn-xs' title='Registrar lecturas'><fa class='fa fa-pencil'> </fa> Lecturar </button></a>";
                     html += "<a href='" + base_url + "lectura/historial/" + res[i].id_asoc + "' class='btn btn-facebook btn-xs' title='Historial de lecturas' target='_BLANK'><fa class='fa fa-list'></fa></a>";
-                    html += "<button onclick = 'cargar_lectura(" + JSON.stringify(res[i]) + ")' class='btn btn-warning btn-xs' title='Registrar lecturas'><fa class='fa fa-pencil'></button></a>";
                     html += "<a href='" + base_url + "lectura/ultimo_preaviso/" + res[i].id_asoc + "' class='btn btn-info btn-xs' title='Ultimo preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
                     html += "</td>";
                     html += "</tr>";
@@ -605,10 +662,11 @@ function registrar_lectura() {
              var r = JSON.parse(result);
             $("#boton_cerrar_lectura").click();
             $("#boton_buscar").click();
+            document.getElementById("boton_registrar_lectura").style.display = 'none';
 //            alert(r.length);
 //            window.location.href = base_url+"lectura/preaviso_boucher/"+r[0].id_lec;
             window.open(base_url+"lectura/preaviso_boucher/"+r[0].id_lec, '_blank');
-            
+                   
         }, error: function (result) {
             //$("#consumo_bs").val("0.00");
 

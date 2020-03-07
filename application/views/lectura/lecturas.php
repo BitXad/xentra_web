@@ -168,7 +168,7 @@
 </div>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_lectura" id="boton_lectura">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_lectura" id="boton_lectura" style='display:none;'>
   Registrar Lectura
 </button>
 
@@ -201,9 +201,13 @@
           
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrar_lectura"><fa class="fa fa-times"></fa> Cerrar</button>
-          <button type="button" class="btn btn-success" onclick="registrar_lectura()" id="boton_registrar_lectura"><fa class="fa fa-floppy-o"></fa> Registrar Lectura</button>
+          
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrar_lectura"><fa class="fa fa-times"></fa> Cerrar</button>                        
+            
+            <button type="button" class="btn btn-success" onclick="registrar_lectura()" id="boton_registrar_lectura" style="display: none;"><fa class="fa fa-floppy-o"></fa> Registrar Lectura</button>
+          
       </div>
     </div>
   </div>
 </div>
+
