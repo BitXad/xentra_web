@@ -211,3 +211,6 @@
   </div>
 </div>
 
+<div id='boton_imprimir_todo'>
+    
+</div>
