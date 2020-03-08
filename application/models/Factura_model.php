@@ -80,7 +80,7 @@ class Factura_model extends CI_Model
     function buscar_asociado($ci)
     {
 
-        $sql = "select * from asociado where nit_asoc = ".$ci." or ci_asoc=".$ci." or codigo_asoc=".$ci;        
+        $sql = "select * from asociado where nit_asoc = '".$ci."' or ci_asoc='".$ci."' or codigo_asoc='".$ci."' ";        
         $resultado = $this->db->query($sql)->result_array();
         
         return $resultado;
@@ -148,11 +148,21 @@ class Factura_model extends CI_Model
         return $resultado;
     }
 
-    function cancelar_factura($factura)
+    function cancelar_factura($factura,$numfact_dosif1)
     {
 
-        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime()
+        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), num_fact=".$numfact_dosif1." 
         WHERE id_fact=".$factura;        
+        $resultado = $this->db->query($sql);
+        
+        return $resultado;
+    }
+
+    function actualizar_dosificacion($numfact_dosif1)
+    {
+
+        $sql = "UPDATE dosificacion SET  numfact_dosif=".$numfact_dosif1." 
+        WHERE id_dosif=1 ";        
         $resultado = $this->db->query($sql);
         
         return $resultado;
