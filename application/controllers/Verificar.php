@@ -29,7 +29,7 @@ class Verificar extends CI_Controller
         //var_dump($result);
         
         if($result){
-            if ($result->tipo_usuario == "ADMINISTRADOR") {
+            if ($result->tipo_usuario == "ADMINISTRADOR" or $result->tipo_usuario == "LECTURADOR") {
                 /*$this->load->model('Rol_usuario_model');
                 $this->load->model('Tipo_usuario_model');*/
                 $thumb = "default_thumb.jpg";
