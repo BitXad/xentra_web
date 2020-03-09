@@ -269,7 +269,7 @@ input[type=number] { -moz-appearance:textfield; }
             </a> 
             <a  href="<?php echo site_url('factura/ultima'); ?>" target="_blank" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-print fa-4x"></i><br>Imprimir<br>
-               Ultima<br>
+               Ultimo<br>
             </a>    
 </div>
 <!---------------------------------------FIN TABLA DE DETALLE VENTAAA------------------------------------>
