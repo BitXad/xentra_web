@@ -136,6 +136,17 @@ class Lectura_model extends CI_Model
         $asociado = $this->db->query($sql)->result_array();
         return $asociado;
         
+    }
+
+    function get_lecturasocio_mes($id_asoc, $mes,$gestion)
+    {
+        $sql = "select * from lectura l, factura f, asociado a, detalle_factura d ".
+             "where a.id_asoc = l.id_asoc and l.id_lec = f.id_lec and f.id_fact = d.id_fact and ".
+             "l.id_lec = (select id_lec from lectura where id_asoc = ".$id_asoc." and mes_lec = '".$mes."' and gestion_lec = ".$gestion.") order by d.id_detfact";
+
+        $asociado = $this->db->query($sql)->result_array();
+        return $asociado;
+        
     }    
     
 }
