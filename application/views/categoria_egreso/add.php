@@ -2,22 +2,22 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Categoria Ingreso Add</h3>
+              	<h3 class="box-title">Categoria Egreso Add</h3>
             </div>
-            <?php echo form_open('categoria_ingreso/add'); ?>
+            <?php echo form_open('categoria_egreso/add'); ?>
           	<div class="box-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="nom_cating" class="control-label"><span class="text-danger">*</span>Nombre</label>
+						<label for="nom_categr" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-							<input type="text" name="nom_cating" value="<?php echo $this->input->post('nom_cating'); ?>" class="form-control" id="nom_cating" />
-							<span class="text-danger"><?php echo form_error('nom_cating');?></span>
+							<input type="text" name="nom_categr" value="<?php echo $this->input->post('nom_categr'); ?>" class="form-control" id="nom_categr" />
+							<span class="text-danger"><?php echo form_error('nom_categr');?></span>
 						</div>
 					</div>
 					<div class="col-md-6 hidden">
-						<label for="id_ging" class="control-label">Id Ging</label>
+						<label for="id_gegr" class="control-label">Id Ging</label>
 						<div class="form-group">
-							<input type="text" name="id_ging" value="<?php echo $this->input->post('id_ging'); ?>" class="form-control" id="id_ging" />
+							<input type="text" name="id_gegr" value="<?php echo $this->input->post('id_gegr'); ?>" class="form-control" id="id_gegr" />
 						</div>
 					</div>
 				</div>

@@ -104,8 +104,7 @@ input[type=number] { -moz-appearance:textfield; }
             <label for="tipo" class="control-label">Tipo de Factura</label>
             <div class="form-group">
               <select class="form-control">
-                <option>Pendiente</option>
-                <option>nose</option>
+                <option>PENDIENTE</option>
               </select>
             </div>
             </div>
@@ -267,6 +266,10 @@ input[type=number] { -moz-appearance:textfield; }
             <a  href="<?php echo site_url('factura/index'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
                Salir<br>
+            </a> 
+            <a  href="<?php echo site_url('factura/ultima'); ?>" target="_blank" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-print fa-4x"></i><br>Imprimir<br>
+               Ultima<br>
             </a>    
 </div>
 <!---------------------------------------FIN TABLA DE DETALLE VENTAAA------------------------------------>

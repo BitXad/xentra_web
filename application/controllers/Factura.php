@@ -307,5 +307,12 @@ class Factura extends CI_Controller{
          $data['_view'] = 'factura/recibo';
          $this->load->view('layouts/main',$data);
      }
+
+    function ultima(){
+
+         $dato = $this->Factura_model->get_factura_ultima();
+         redirect('factura/imprimir_recibo/'.$dato['id_fact']);
+   
+     }
     
 }

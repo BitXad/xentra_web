@@ -212,5 +212,14 @@ class Factura_model extends CI_Model
         return $resultado;
     }
 
+    function get_factura_ultima()
+    {
+
+        $sql = "SELECT id_fact FROM factura ORDER BY num_fact DESC";        
+        $resultado = $this->db->query($sql)->row_array();
+        
+        return $resultado;
+    }
+
     
 }

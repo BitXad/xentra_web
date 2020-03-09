@@ -8,13 +8,13 @@
 			<div class="box-body">
 				<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="nom_cating" class="control-label"><span class="text-danger">*</span>Nom Cating</label>
+						<label for="nom_cating" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
 							<input type="text" name="nom_cating" value="<?php echo ($this->input->post('nom_cating') ? $this->input->post('nom_cating') : $categoria_ingreso['nom_cating']); ?>" class="form-control" id="nom_cating" />
 							<span class="text-danger"><?php echo form_error('nom_cating');?></span>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-6 hidden">
 						<label for="id_ging" class="control-label">Id Ging</label>
 						<div class="form-group">
 							<input type="text" name="id_ging" value="<?php echo ($this->input->post('id_ging') ? $this->input->post('id_ging') : $categoria_ingreso['id_ging']); ?>" class="form-control" id="id_ging" />
