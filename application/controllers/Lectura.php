@@ -419,12 +419,22 @@ function preaviso_boucher($lectura_id)
     $this->load->view('layouts/main',$data);
 }    
     
-    
 function ultimo_preaviso($id_asoc)
 {
     $this->load->model('Empresa_model');
 
     $data['lectura'] = $this->Lectura_model->get_lecturasocio_asoc($id_asoc);
+    $data['empresa'] = $this->Empresa_model->get_empresa(1);
+
+    $data['_view'] = 'lectura/preaviso_boucher';
+    $this->load->view('layouts/main',$data);
+}    
+    
+function mes_preaviso($id_asoc,$mes_lec,$gestion_lec)
+{
+    $this->load->model('Empresa_model');
+
+    $data['lectura'] = $this->Lectura_model->get_lecturasocio_mes($id_asoc,$mes_lec,$gestion_lec);
     $data['empresa'] = $this->Empresa_model->get_empresa(1);
 
     $data['_view'] = 'lectura/preaviso_boucher';
