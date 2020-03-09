@@ -64,9 +64,10 @@ class Verificar extends CI_Controller
                 if ($session_data['tipo_usuario'] == 'ADMINISTRADOR') {// admin page
                     redirect('dashboard');
                 }
-                /*if ($session_data['tipousuario_id'] == 2) {
-                    redirect('ingreso');
+                if ($session_data['tipo_usuario'] == 'LECTURADOR') {
+                    redirect('lectura/lecturas');
                 }
+                /*
                 if ($session_data['tipousuario_id'] == 3) {
                     redirect('');
                 }
