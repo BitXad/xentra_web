@@ -138,6 +138,8 @@ class Asociado extends CI_Controller{
             $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
             $this->load->model('Diametrored_model');
             $data['all_diametro'] = $this->Diametrored_model->get_all_diametrored();
+            $this->load->model('Tipoinmueble_model');
+            $data['all_tipoinmueble'] = $this->Tipoinmueble_model->get_all_tipoinmueble();
             /*$this->load->model('Empresa_model');
             $data['all_empresa'] = $this->Empresa_model->get_all_empresa();*/
             $this->load->model('Categoria_model');
