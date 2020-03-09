@@ -381,9 +381,10 @@ function imprimir_todo(a){
     var tam = 0;
     tam = a.length;
 
-    for(var i=0; i<tam; i++){        
-      alert(base_url+"lectura/preaviso_mes/"+a[i]+"/"+select_mes+"/"+select_gestion);
-//      window.open(base_url+"lectura/preaviso_mes/"+a[i]+"/"+select_mes+"/"+select_gestion, '_blank');
+    for(var i=0; i<tam; i++){  
+
+    var pop=window.open(base_url+"lectura/mes_preaviso/"+a[i]+"/"+select_mes+"/"+select_gestion);
+    pop.print();
     }
     
 }
