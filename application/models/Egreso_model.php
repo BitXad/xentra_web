@@ -4,7 +4,7 @@
  * www.crudigniter.com
  */
  
-class Ingreso_model extends CI_Model
+class Egreso_model extends CI_Model
 {
     function __construct()
     {
@@ -12,89 +12,89 @@ class Ingreso_model extends CI_Model
     }
     
     /*
-     * Get ingreso by id_ing
+     * Get egreso by id_egr
      */
-    function get_ingreso($id_ing)
+    function get_egreso($id_egr)
     {
-        return $this->db->get_where('ingreso',array('id_ing'=>$id_ing))->row_array();
+        return $this->db->get_where('egreso',array('id_egr'=>$id_egr))->row_array();
     }
     
     /*
-     * Get all ingreso
+     * Get all egreso
      */
      
-      function get_ingresos($id_ing)
+      function get_egresos($id_egr)
     {
-         $ingreso = $this->db->query("
+         $egreso = $this->db->query("
             SELECT
                 i.*, u.*
 
             FROM
-                ingreso i, usuario u
+                egreso i, usuario u
 
             WHERE
                 i.id_usu = u.id_usu
-                and i.id_ing=".$id_ing."
+                and i.id_egr=".$id_egr."
 
-            ORDER BY `id_ing` DESC
+            ORDER BY `id_egr` DESC
 
             
         ")->result_array();
 
-        return $ingreso;
+        return $egreso;
     }
-    function get_all_ingreso()
+    function get_all_egreso()
     {
         
-        $ingreso = $this->db->query("
+        $egreso = $this->db->query("
             SELECT
                 i.*, u.*
 
             FROM
-                ingreso i, usuario u
+                egreso i, usuario u
 
             WHERE
                 i.id_usu = u.id_usu
 
-            ORDER BY `id_ing` DESC
+            ORDER BY `id_egr` DESC
 
         ")->result_array();
 
-        return $ingreso;
+        return $egreso;
     }
   
     /*
-     * function to add new ingreso
+     * function to add new egreso
      */
-    function add_ingreso($params)
+    function add_egreso($params)
     {
-        $this->db->insert('ingreso',$params);
+        $this->db->insert('egreso',$params);
         return $this->db->insert_id();
     }
     
-    function fechaingreso($condicion)
+    function fechaegreso($condicion)
     {
 
-       $ingreso = $this->db->query("
+       $egreso = $this->db->query("
         SELECT
                e.*, u.*
             FROM
-                ingreso e, usuario u
+                egreso e, usuario u
             WHERE
                 e.id_usu = u.id_usu
                 
                
                 ".$condicion." 
                 
-            ORDER BY e.fechahora_ing DESC 
+            ORDER BY e.fechahora_egr DESC 
         "
         )->result_array();
 
-        return $ingreso;
+        return $egreso;
     }
     
     /*
-     * function to update ingreso
+     * function to update egreso
      */
      
      function numero()
@@ -110,33 +110,33 @@ class Ingreso_model extends CI_Model
         return $nom;
     }
     
-    function update_ingreso($id_ing,$params)
+    function update_egreso($id_egr,$params)
     {
-        $this->db->where('id_ing',$id_ing);
-        $response = $this->db->update('ingreso',$params);
+        $this->db->where('id_egr',$id_egr);
+        $response = $this->db->update('egreso',$params);
         if($response)
         {
-            return "ingreso updated successfully";
+            return "egreso updated successfully";
         }
         else
         {
-            return "Error occuring while updating ingreso";
+            return "Error occuring while updating egreso";
         }
     }
     
     /*
-     * function to delete ingreso
+     * function to delete egreso
      */
-    function delete_ingreso($id_ing)
+    function delete_egreso($id_egr)
     {
-        $response = $this->db->delete('ingreso',array('id_ing'=>$id_ing));
+        $response = $this->db->delete('egreso',array('id_egr'=>$id_egr));
         if($response)
         {
-            return "ingreso deleted successfully";
+            return "egreso deleted successfully";
         }
         else
         {
-            return "Error occuring while deleting ingreso";
+            return "Error occuring while deleting egreso";
         }
     }
 

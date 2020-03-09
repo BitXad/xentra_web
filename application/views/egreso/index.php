@@ -1,6 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/ingresos.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/egresos.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -11,9 +11,10 @@
                         return rex.test($(this).text());
                     }).show();
                 })
-            }(jQuery));
+            }(jQuery)); 
         });
-         function imprimir()
+
+        function imprimir()
         {
            $("#cabeceraprint").css("display", "");
              window.print(); 
@@ -21,7 +22,6 @@
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <div class="row micontenedorep" style="display: none" id="cabeceraprint">
     <table class="table" style="width: 100%; padding: 0;" >
     <tr>
@@ -46,7 +46,7 @@
             <center>
             
                 <br><br>
-                <font size="3" face="arial"><b>INGRESOS</b></font> <br>
+                <font size="3" face="arial"><b>EGRESOS</b></font> <br>
                 
                 <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
 
@@ -71,7 +71,7 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
  <div class="col-md-6 no-print">
              <div class="box-header">
-                <font size='4' face='Arial'><b>Ingresos</b></font>
+                <font size='4' face='Arial'><b>Egresos</b></font>
                 <br><font size='2' face='Arial' id="pillados"></font>
         </div>
         
@@ -86,13 +86,13 @@
       <div class="col-md-4 no-print">
       <div  class="box-tools" >
                           
-                    <select  class="btn btn-primary btn-sm" id="select_compra" onchange="buscar_ingresos()">
+                    <select  class="btn btn-primary btn-sm" id="select_compra" onchange="buscar_egresos()">
                         <option value="0">Elija Fechas</option>
-                        <option value="1">Ingresos de Hoy</option>
-                        <option value="2">Ingresos de Ayer</option>
-                        <option value="3">Ingresos de la semana</option>                                               
+                        <option value="1">Egresos de Hoy</option>
+                        <option value="2">Egresos de Ayer</option>
+                        <option value="3">Egresos de la semana</option>                                               
                                                                  
-                        <option value="5">Ingresos por Fecha</option>
+                        <option value="5">Egresos por Fecha</option>
                     </select>
             
 
@@ -104,9 +104,9 @@
         
     <div class="box-tools">
         <center>    
-            <a href="<?php echo site_url('ingreso/add'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-money"></span></font><br><small>Registrar Ingreso</small></a>
+            <a href="<?php echo site_url('egreso/add'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-money"></span></font><br><small>Registrar Egreso</small></a>
             
-            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadeingreso('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
+            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadeegreso('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
             
             <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
              
@@ -125,27 +125,29 @@
         </div>
         
       
-        
+          
         <div class="col-md-3">
-            
             <button class="btn btn-sm btn-primary btn-sm btn-block"  onclick="buscar_por_fechas()">
                 <h4>
-                <span class="fa fa-search"></span>   Buscar Ingresos  
+                <span class="fa fa-search"></span>   Buscar egresos  
                 </h4>
             </button>
+           
             <br>
         </div>
         
     </center>    
     <br>    
 </div>
- <div class="col-md-12">         
+
+<br>
+  <div class="col-md-12">
   <div class="box">
             
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">     
                         <tr>
-                           <th>#</th>
+							<th>#</th>
                             <th>NOMBRE</th>
                             <th># RECIBO</th>
                             <th>FECHA</th>
@@ -156,7 +158,7 @@
                             <th class="no-print"></th>
                             
                         </tr>
-                           <tbody class="buscar" id="fechadeingreso">
+                           <tbody class="buscar" id="fechadeegreso">
                        
                 </table>
                 
@@ -166,4 +168,3 @@
                 </div>                
         </div>
     </div>
-</div>
