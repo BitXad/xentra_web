@@ -148,6 +148,35 @@ class Factura_model extends CI_Model
         return $resultado;
     }
 
+    function get_consumo_factura($factura)
+    {
+
+        $sql = "SELECT sum(cant_detfact*punit_detfact) as consumo from detalle_factura where tipo_detfact=0 and id_fact=".$factura;        
+        $resultado = $this->db->query($sql)->row_array();
+        
+        return $resultado;
+    }
+
+    function get_aportes_factura($factura)
+    {
+
+        $sql = "select if(sum(total_detfact)>0,sum(total_detfact),0) as multas from detalle_factura where id_fact=".$factura." and tipo_detfact=1";        
+        $resultado = $this->db->query($sql)->row_array();
+        
+        return $resultado;
+    }
+
+    function get_recargos_factura($lectura)
+    {
+
+        $sql = "SELECT if(sum(t1.monto_param)>0,sum(t1.monto_param),0) as recargos from (select p.monto_param from parametros p,(select * from lectura where id_lec=".$lectura.") as t where p.estado='ACTIVO' and (DATEDIFF(date(now()), t.fecha_lec)) >= p.dias_param and p.monto_param >0) as t1";        
+        $resultado = $this->db->query($sql)->row_array();
+        
+        return $resultado;
+    }
+
+    
+
     function cancelar_factura($factura,$numfact_dosif1)
     {
 
