@@ -252,8 +252,12 @@ class Factura extends CI_Controller{
     function datos_factura()
     {
         $factura = $this->input->post('factura');
-        $datos = $this->Factura_model->get_datos_factura($factura);
-        echo json_encode($datos);  
+        $lectura = $this->input->post('lectura');
+        $consumo = $this->Factura_model->get_consumo_factura($factura);
+        $aporte = $this->Factura_model->get_aportes_factura($factura);
+        $recargo = $this->Factura_model->get_recargos_factura($lectura);
+        $data=array("consumo"=>$consumo['consumo'], "multa" =>$aporte['multas'], "recargo" =>$recargo['recargos']);
+        echo json_encode($data);  
         
     }
 
