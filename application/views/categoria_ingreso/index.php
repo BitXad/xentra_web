@@ -10,18 +10,18 @@
             <div class="box-body">
                 <table class="table table-striped">
                     <tr>
-						<th>#</th>
-						<th>Nombre</th>
-						
-						<th></th>
+                        <th>#</th>
+                        <th>Nombre</th>
+
+                        <th></th>
                     </tr>
                     <?php foreach($categoria_ingreso as $c){ ?>
                     <tr>
-						<td><?php echo $c['id_cating']; ?></td>
-						<td><?php echo $c['nom_cating']; ?></td>
-						<td>
-                            <a href="<?php echo site_url('categoria_ingreso/edit/'.$c['id_cating']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> </a> 
-                            <!--<a href="<?php echo site_url('categoria_ingreso/remove/'.$c['id_cating']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>-->
+                        <td><?php echo $c['id_cating']; ?></td>
+                        <td><?php echo $c['nom_cating']; ?></td>
+                        <td>
+                            <a href="<?php echo site_url('categoria_ingreso/edit/'.$c['id_cating']); ?>" class="btn btn-info btn-xs" title="Modificar categoria ingreso"><span class="fa fa-pencil"></span> </a> 
+                            <!--<a href="<?php //echo site_url('categoria_ingreso/remove/'.$c['id_cating']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>-->
                         </td>
                     </tr>
                     <?php } ?>
