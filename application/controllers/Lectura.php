@@ -293,7 +293,7 @@ class Lectura extends CI_Controller{
             ."totalcons_lec,monto_lec,estado_lec,tipo_asoc,servicios_asoc,"
             ."cantfact_lec,montofact_lec) values(".
             $id_usu.",".$id_asoc.",".$mes_lec.",".$gestion_lec.",".$anterior_lec.",".
-            $actual_lec.",".$fechaant_lec.",".$consumo_lec.",".$fecha_lec.",".
+            $actual_lec.",".$fechaant_lec.",".$consumo_lec.",".$fechalectura_fact.",".
             $hora_lec.",".$totalcons_lec.",".$monto_lec.",".$estado_lec.",".
             $tipo_asoc.",".$servicios_asoc.",".$cantfact_lec.",".$montofact_lec.")";
         $result = $this->Lectura_model->ejecutar($sql);
