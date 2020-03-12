@@ -4,74 +4,79 @@
  * www.crudigniter.com
  */
  
-class Tipoinmueble extends CI_Controller{
+class Tipo_inmueble extends CI_Controller{
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Tipoinmueble_model');
+        $this->load->model('Tipo_inmueble_model');
     } 
 
     /*
-     * Listing of tipoinmueble
+     * Listing of tipo_inmueble
      */
     function index()
     {
-        $data['all_tipoinmueble'] = $this->Tipoinmueble_model->get_all_tipoinmueble();
+        $data['all_tipo_inmueble'] = $this->Tipo_inmueble_model->get_all_tipo_inmueble();
         
-        $data['_view'] = 'tipoinmueble/index';
+        $data['_view'] = 'tipo_inmueble/index';
         $this->load->view('layouts/main',$data);
     }
 
     /*
-     * Adding a new tipoinmueble
+     * Adding a new tipo_inmueble
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('nombre_tin','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('codigo_tin','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())     
+        {
             $params = array(
+                'nombre_tin' => $this->input->post('nombre_tin'),
+                'codigo_tin' => $this->input->post('codigo_tin'),
             );
-            
-            $id_tin = $this->Tipoinmueble_model->add_tipoinmueble($params);
-            redirect('tipoinmueble/index');
-        }
-        else
-        {            
-            $data['_view'] = 'tipoinmueble/add';
+            $id_tin = $this->Tipo_inmueble_model->add_tipo_inmueble($params);
+            redirect('tipo_inmueble/index');
+        }else{            
+            $data['_view'] = 'tipo_inmueble/add';
             $this->load->view('layouts/main',$data);
         }
     }  
 
     /*
-     * Editing a tipoinmueble
+     * Editing a tipo_inmueble
      */
     function edit($id_tin)
     {   
         // check if the Diametrored exists before trying to edit it
-        $data['tipoinmueble'] = $this->Tipoinmueble_model->get_tipoinmueble($id_tin);
+        $data['tipo_inmueble'] = $this->Tipo_inmueble_model->get_tipo_inmueble($id_tin);
         
-        if(isset($data['tipoinmueble']['id_tin']))
+        if(isset($data['tipo_inmueble']['id_tin']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-                );
-
-                $this->Tipoinmueble_model->update_tipoinmueble($id_tin,$params);            
-                redirect('tipoinmueble/index');
-            }
-            else
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('nombre_tin','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('codigo_tin','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
             {
-                $data['_view'] = 'tipoinmueble/edit';
+                $params = array(
+                    'nombre_tin' => $this->input->post('nombre_tin'),
+                    'codigo_tin' => $this->input->post('codigo_tin'),
+                );
+                
+                $this->Tipo_inmueble_model->update_tipo_inmueble($id_tin,$params);            
+                redirect('tipo_inmueble/index');
+            }else{
+                $data['_view'] = 'tipo_inmueble/edit';
                 $this->load->view('layouts/main',$data);
             }
         }
         else
-            show_error('The tipoinmueble you are trying to edit does not exist.');
+            show_error('The tipo_inmueble you are trying to edit does not exist.');
     }
     
-    /* * añadir tipoinmueble */
-    /*function aniadirtipoinmueble()
+    /* * añadir tipo_inmueble */
+    /*function aniadirtipo_inmueble()
     {
         if ($this->input->is_ajax_request()) {
             $nombre_tin = $this->input->post('nombre_tin');
@@ -81,8 +86,8 @@ class Tipoinmueble extends CI_Controller{
                 'nombre_tin' => $nombre_tin,
                 'codigo_tin' => $codigo_tin,
                 );
-                $id_tin = $this->Tipoinmueble_model->add_tipoinmueble($params);
-                $datos = $this->Tipoinmueble_model->get_tipoinmueble($id_tin);
+                $id_tin = $this->Tipo_inmueble_model->add_tipo_inmueble($params);
+                $datos = $this->Tipo_inmueble_model->get_tipo_inmueble($id_tin);
                 echo json_encode($datos);
             }else{
                 echo json_encode(null);

@@ -27,9 +27,14 @@ class Diametrored extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('nombre_diam','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('codigo_diam','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())     
+        {
             $params = array(
+                'nombre_diam' => $this->input->post('nombre_diam'),
+                'codigo_diam' => $this->input->post('codigo_diam'),
             );
             
             $id_diam = $this->Diametrored_model->add_diametrored($params);
@@ -52,9 +57,14 @@ class Diametrored extends CI_Controller{
         
         if(isset($data['diametrored']['id_diam']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('nombre_diam','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('codigo_diam','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
+            {
                 $params = array(
+                    'nombre_diam' => $this->input->post('nombre_diam'),
+                    'codigo_diam' => $this->input->post('codigo_diam'),
                 );
 
                 $this->Diametrored_model->update_diametrored($id_diam,$params);            
