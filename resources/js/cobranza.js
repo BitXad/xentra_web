@@ -20,16 +20,22 @@ function finalizar(){
     var multar = document.getElementById('multar').checked;
     var generar_factura = document.getElementById('generar_factura').checked;
     var imprimir_factura = document.getElementById('imprimir_factura').checked;
+    var consumo = document.getElementById('consumo').value;
+    var aportes = document.getElementById('aportes').value;
+    var recargos = document.getElementById('recargos').value;
+    var total = document.getElementById('total_factura').value;
+
     $.ajax({url:controlador,
 
             type:"POST",
 
-            data:{factura_id:factura_id,multar:multar,generar_factura:generar_factura,lectura_id:lectura_id},
+            data:{factura_id:factura_id,multar:multar,generar_factura:generar_factura,lectura_id:lectura_id,
+                consumo:consumo,aportes:aportes,recargos:recargos,total:total},
 
             success:function(respuesta){
 
                 var registros = JSON.parse(respuesta);
-                alert('EXITO');
+                alert('COBRO REALIZADO CON EXITO');
                 if (imprimir_factura==true) {
                     window.open(base_url+"factura/imprimir/"+factura_id, '_blank');
                 }
@@ -447,11 +453,13 @@ function tabla_totales(factura,lectura)
                 var registros = JSON.parse(respuesta);
                 var consumos = (Number(registros.consumo).toFixed(2));
                 var multas = (Number(registros.multa).toFixed(2));
+          
             if(multar==true){
                 var recargos = (Number(registros.recargo).toFixed(2));    
             } else {
                 var recargos = (Number(0).toFixed(2));  
-            }                
+            }    
+
                 var total_factura = Number(consumos)+Number(multas)+Number(recargos);
                 $("#consumo").val(Number(consumos).toFixed(2));
                 $("#aportes").val(Number(multas).toFixed(2));

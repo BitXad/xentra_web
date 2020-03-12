@@ -177,10 +177,10 @@ class Factura_model extends CI_Model
 
     
 
-    function cancelar_factura($factura,$numfact_dosif1)
+    function cancelar_factura($factura,$numfact_dosif1,$consumo,$aportes,$recargos,$total)
     {
 
-        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), num_fact=".$numfact_dosif1." 
+        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), num_fact=".$numfact_dosif1.", totalconsumo_fact=".$consumo.", totalaportes_fact=".$aportes.",totalrecargos_fact=".$recargos.", montototal_fact=".$total."   
         WHERE id_fact=".$factura;        
         $resultado = $this->db->query($sql);
         
