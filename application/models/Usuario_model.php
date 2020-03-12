@@ -45,10 +45,27 @@ class Usuario_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `id_usu` DESC
+            ORDER BY `id_usu` 
         ")->result_array();
 
         return $usuario;
+    }
+
+     public function getCurrentPassword($id_usu)
+    {
+       $query = $this->db->where('id_usu',$id_usu)
+                        ->get('usuario');
+            if ($query->num_rows() > 0) {
+                return $query->row();
+            }
+    }
+    public function password($id_usu, $new_password)
+    {
+            $data = array(
+                    'clave_usu'=> $new_password
+            );
+            $this->db->where('id_usu',$id_usu);
+             return $this->db->update('usuario',$data);
     }
         
     /*
@@ -75,5 +92,36 @@ class Usuario_model extends CI_Model
     function delete_usuario($id_usu)
     {
         return $this->db->delete('usuario',array('id_usu'=>$id_usu));
+    }
+
+    function inactivar_usuario($id_usu)
+    {
+        $sql = "update usuario set estado_usu = 'INACTIVO' where id_usu = ".$id_usu;
+        
+        return $this->db->query($sql);
+    }
+    function activar_usuario($id_usu)
+    {
+        $sql = "update usuario set estado_usu = 'ACTIVO' where id_usu = ".$id_usu;
+        
+        return $this->db->query($sql);
+    }
+    
+    function get_all_usuario_activo()
+    {
+        $usuario = $this->db->query("
+            SELECT
+                u.*
+
+            FROM
+                usuario u
+
+            WHERE
+                u.estado_usu = 'ACTIVO'
+
+            ORDER BY u.nombre_usu
+        ")->result_array();
+
+        return $usuario;
     }
 }

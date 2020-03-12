@@ -110,7 +110,6 @@
 
                     </div>
                 </div>
-
                 <div class="col-md-1" style="padding:2px;">
                     <label for="buscar" class="control-label">BUSCAR</label>
                     <div class="form-group">                        
@@ -119,8 +118,7 @@
                         </button>                        
                     </div>
                 </div>
-
-
+                <div id="boton_imprimir_todo"></div>
             </div>
         </div>
     </div>
@@ -209,8 +207,4 @@
       </div>
     </div>
   </div>
-</div>
-
-<div id='boton_imprimir_todo'>
-    
 </div>

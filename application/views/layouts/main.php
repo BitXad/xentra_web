@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>xentra_web</title>
+        <title>Xentra web<?php if(isset($page_title)){ echo " - ".$page_title; }?> </title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.6 -->
@@ -20,7 +20,9 @@
              folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="<?php echo site_url('resources/css/_all-skins.min.css');?>">
     </head>
-    
+    <?php
+        $session_data = $this->session->userdata('logged_in');
+    ?>
     <body class="hold-transition skin-purple sidebar-mini">
         <div class="wrapper">
             <header class="main-header">
@@ -46,26 +48,29 @@
                         <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="<?php echo site_url('resources/img/user2-160x160.jpg');?>" class="user-image" alt="User Image">
-                                    <span class="hidden-xs">Alexander Pierce</span>
+                                    <img src="<?php echo site_url('resources/images/usuarios/'.$session_data['thumb']);?>" class="user-image" alt="Imagen usuario">
+                                    <span class="hidden-xs"><?php echo $session_data['nombre_usu']?></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
-                                        <img src="<?php echo site_url('resources/img/user2-160x160.jpg');?>" class="img-circle" alt="User Image">
-
+                                        <?php if($session_data['imagen_usu']!= ""){ ?>
+                                        <img src="<?php echo site_url('resources/images/usuarios/'.$session_data['imagen_usu']);?>" class="img-circle" alt="Imagen usuario">
+                                        <?php }else{ ?>
+                                        <img src="<?php echo site_url('resources/images/usuarios/default.jpg');?>" class="img-circle" alt="Imagen usuario">
+                                        <?php } ?>
                                     <p>
-                                        Alexander Pierce - Web Developer
-                                        <small>Member since Nov. 2012</small>
+                                        <?php echo $session_data['nombre_usu']?> - <?php echo $session_data['tipo_usuario']?>
+                                        <!--<small><?php //echo "Gestión ".$session_data['gestion_nombre']?></small>-->
                                     </p>
                                     </li>
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
-                                        <div class="pull-left">
-                                            <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                        </div>
+                                        <!--<div class="pull-left">
+                                            <a href="<?php //echo site_url() ?>admin/dashb/cuenta" class="btn btn-default btn-flat">Mi Cuenta</a>
+                                        </div>-->
                                         <div class="pull-right">
-                                            <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                            <a href="<?php echo site_url() ?>login/logout" class="btn btn-default btn-flat">Salir</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -81,19 +86,19 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="<?php echo site_url('resources/img/user2-160x160.jpg');?>" class="img-circle" alt="User Image">
+                            <img src="<?php echo site_url('resources/images/usuarios/'.$session_data['thumb']);?>" class="img-circle" alt="Imagen usuario">
                         </div>
                         <div class="pull-left info">
-                            <p>Alexander Pierce</p>
+                            <div  style=" white-space: normal; word-wrap: break-word;"><?php echo $session_data['nombre_usu']?></div>
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>
                     </div>
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
-                        <li class="header">MAIN NAVIGATION</li>
+                        <li class="header">MENU PRINCIPAL</li>
                         <li>
-                            <a href="<?php echo site_url();?>">
-                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            <a href="<?php echo site_url('dashboard');?>">
+                                <i class="fa fa-dashboard"></i> <span>Panel de Control</span>
                             </a>
                         </li>
 						<li>
@@ -163,14 +168,14 @@
                         </li>
 						<li>
                             <a href="#">
-                                <i class="fa fa-list-ol"></i> <span>Categoria</span>
+                                <i class="fa fa-list-ol"></i> <span>Categoria Egreso</span>
                             </a>
                             <ul class="treeview-menu">
 								<li class="active">
-                                    <a href="<?php echo site_url('categoria/add');?>"><i class="fa fa-plus"></i> Add</a>
+                                    <a href="<?php echo site_url('categoria_egreso/add');?>"><i class="fa fa-plus"></i> Add</a>
                                 </li>
 								<li>
-                                    <a href="<?php echo site_url('categoria/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
+                                    <a href="<?php echo site_url('categoria_egreso/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
                                 </li>
 							</ul>
                         </li>

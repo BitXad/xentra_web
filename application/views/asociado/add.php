@@ -223,16 +223,16 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label for="tipoinmueble_asoc" class="control-label">Inmueble</label>
+                        <label for="tipoinmueble_asoc" class="control-label">Tipo Inmueble</label>
                         <div class="form-group">
                             <select name="tipoinmueble_asoc" class="form-control" id="tipoinmueble_asoc">
                                 <!--<option value="">select</option>-->
                                 <?php
-                                foreach($all_zona as $zona)
+                                foreach($all_tipoinmueble as $inmueble)
                                 {
-                                    $selected = ($zona["zona_med"] == $this->input->post('zona_med')) ? ' selected="selected"' : "";
-                                    echo '<option value="'.$zona["zona_med"].'" '.$selected.'>'.$zona["zona_med"].'</option>';
-                                } 
+                                    $selected = ($inmueble["nombre_tin"] == $this->input->post('nombre_tin')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$inmueble["nombre_tin"].'" '.$selected.'>'.$inmueble["nombre_tin"].'</option>';
+                                }
                                 ?>
                             </select>
                         </div>

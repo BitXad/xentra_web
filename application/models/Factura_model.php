@@ -148,10 +148,39 @@ class Factura_model extends CI_Model
         return $resultado;
     }
 
-    function cancelar_factura($factura,$numfact_dosif1)
+    function get_consumo_factura($factura)
     {
 
-        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), num_fact=".$numfact_dosif1." 
+        $sql = "SELECT sum(cant_detfact*punit_detfact) as consumo from detalle_factura where tipo_detfact=0 and id_fact=".$factura;        
+        $resultado = $this->db->query($sql)->row_array();
+        
+        return $resultado;
+    }
+
+    function get_aportes_factura($factura)
+    {
+
+        $sql = "select if(sum(total_detfact)>0,sum(total_detfact),0) as multas from detalle_factura where id_fact=".$factura." and tipo_detfact=1";        
+        $resultado = $this->db->query($sql)->row_array();
+        
+        return $resultado;
+    }
+
+    function get_recargos_factura($lectura)
+    {
+
+        $sql = "SELECT if(sum(t1.monto_param)>0,sum(t1.monto_param),0) as recargos from (select p.monto_param from parametros p,(select * from lectura where id_lec=".$lectura.") as t where p.estado='ACTIVO' and (DATEDIFF(date(now()), t.fecha_lec)) >= p.dias_param and p.monto_param >0) as t1";        
+        $resultado = $this->db->query($sql)->row_array();
+        
+        return $resultado;
+    }
+
+    
+
+    function cancelar_factura($factura,$numfact_dosif1,$consumo,$aportes,$recargos,$total)
+    {
+
+        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), num_fact=".$numfact_dosif1.", totalconsumo_fact=".$consumo.", totalaportes_fact=".$aportes.",totalrecargos_fact=".$recargos.", montototal_fact=".$total."   
         WHERE id_fact=".$factura;        
         $resultado = $this->db->query($sql);
         
@@ -208,6 +237,15 @@ class Factura_model extends CI_Model
         AND f.id_lec=l.id_lec
         AND l.id_asoc=a.id_asoc";        
         $resultado = $this->db->query($sql)->result_array();
+        
+        return $resultado;
+    }
+
+    function get_factura_ultima()
+    {
+
+        $sql = "SELECT id_fact FROM factura ORDER BY num_fact DESC";        
+        $resultado = $this->db->query($sql)->row_array();
         
         return $resultado;
     }

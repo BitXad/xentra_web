@@ -16,13 +16,13 @@
                         <img src="<?php echo base_url("resources/images/system/")."lecturas.png"; ?>" >                                              
                     </a>
             
-                    <a href="" style="padding: 0; background: yellow" class="btn btn-facebook">
+                    <a href="<?php echo base_url("factura/cobranza"); ?>" style="padding: 0; background: yellow" class="btn btn-facebook">
                         <img src="<?php echo base_url("resources/images/system/")."facturacion.png"; ?>" >                                              
                     </a>
-                    <a href=""  style="padding: 0; background: yellow" class="btn btn-facebook">
+                    <a href="<?php echo base_url("ingreso"); ?>"  style="padding: 0; background: yellow" class="btn btn-facebook">
                         <img src="<?php echo base_url("resources/images/system/")."ingresos.png"; ?>" >                                              
                     </a>
-                    <a href="" style="padding: 0; background: yellow" class="btn btn-facebook">
+                    <a href="<?php echo base_url("egreso"); ?>" style="padding: 0; background: yellow" class="btn btn-facebook">
                         <img src="<?php echo base_url("resources/images/system/")."egresos.png"; ?>" >                                              
                     </a>
                     <a href="" style="padding: 0; background: yellow" class="btn btn-facebook">

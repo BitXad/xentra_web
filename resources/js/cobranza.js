@@ -20,16 +20,22 @@ function finalizar(){
     var multar = document.getElementById('multar').checked;
     var generar_factura = document.getElementById('generar_factura').checked;
     var imprimir_factura = document.getElementById('imprimir_factura').checked;
+    var consumo = document.getElementById('consumo').value;
+    var aportes = document.getElementById('aportes').value;
+    var recargos = document.getElementById('recargos').value;
+    var total = document.getElementById('total_factura').value;
+
     $.ajax({url:controlador,
 
             type:"POST",
 
-            data:{factura_id:factura_id,multar:multar,generar_factura:generar_factura,lectura_id:lectura_id},
+            data:{factura_id:factura_id,multar:multar,generar_factura:generar_factura,lectura_id:lectura_id,
+                consumo:consumo,aportes:aportes,recargos:recargos,total:total},
 
             success:function(respuesta){
 
                 var registros = JSON.parse(respuesta);
-                alert('EXITO');
+                alert('COBRO REALIZADO CON EXITO');
                 if (imprimir_factura==true) {
                     window.open(base_url+"factura/imprimir/"+factura_id, '_blank');
                 }
@@ -344,7 +350,7 @@ function detalle_factura(factura,lectura)
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"factura/buscar_detalle";
     buscar_recargos(lectura);
-    tabla_totales(factura);
+    tabla_totales(factura,lectura);
         $.ajax({url: controlador,
             type:"POST",
             data:{factura:factura},
@@ -432,32 +438,31 @@ function buscar_recargos(lectura)
 }
 
 
-function tabla_totales(factura)
+function tabla_totales(factura,lectura)
 {
     var base_url    = document.getElementById('base_url').value;
     var multar    = document.getElementById('multar').checked;
     var controlador = base_url+"factura/datos_factura";
-    var consumo = Number(0);
-    var aportes = Number(0);
-    var recargos = Number(0);
-    var total_factura = Number(0);
+   
     
     $.ajax({url: controlador,
             type:"POST",
-            data:{factura:factura},
+            data:{factura:factura,lectura:lectura},
             success:function(respuesta){
-                
-                registros = JSON.parse(respuesta);
-                consumo = (Number(registros[0]["totalconsumo_fact"]).toFixed(2));
-                aportes = (Number(registros[0]["totalaportes_fact"]).toFixed(2));
+              
+                var registros = JSON.parse(respuesta);
+                var consumos = (Number(registros.consumo).toFixed(2));
+                var multas = (Number(registros.multa).toFixed(2));
+          
             if(multar==true){
-                recargos = (Number(registros[0]["totalrecargos_fact"]).toFixed(2));    
+                var recargos = (Number(registros.recargo).toFixed(2));    
             } else {
-                recargos = (Number(0).toFixed(2));  
-            }                
-                total_factura = Number(consumo)+Number(aportes)+Number(recargos);
-                $("#consumo").val(Number(consumo).toFixed(2));
-                $("#aportes").val(Number(aportes).toFixed(2));
+                var recargos = (Number(0).toFixed(2));  
+            }    
+
+                var total_factura = Number(consumos)+Number(multas)+Number(recargos);
+                $("#consumo").val(Number(consumos).toFixed(2));
+                $("#aportes").val(Number(multas).toFixed(2));
                 $("#recargos").val(Number(recargos).toFixed(2));
                 $("#total_factura").val(Number(total_factura).toFixed(2));
 
@@ -471,7 +476,8 @@ function tabla_totales(factura)
 function multar(){
     
     var factura = document.getElementById('factura_id').value;
-    tabla_totales(factura);
+    var lectura = document.getElementById('lectura_id').value;
+    tabla_totales(factura,lectura);
     
 }
 
