@@ -69,10 +69,12 @@ function formato_numerico(numer) {
 function calcular(id_asoc){
         var lectura_anterior = document.getElementById("lectura_anterior").value;
         var lectura_actual = document.getElementById("lectura_actual").value;
+        var servicios_asoc = document.getElementById("servicios_asoc").value;
         var base_url = document.getElementById("base_url").value;
         var controlador = base_url + "lectura/calcular_consumo";
         var asociado = id_asoc;
     
+        //alert(servicios_asoc);
     
         if (Number(lectura_actual) >= Number(lectura_anterior)) {
             var consumo = lectura_actual - lectura_anterior;
@@ -86,14 +88,31 @@ function calcular(id_asoc){
 
                     var res = JSON.parse(result);
 
-                    $("#consumo_bs").val(res[0].costo_agua);
-                    $("#consumo_alcantarillado").val(res[0].costo_alcant);
 
-                    var consumo_bs = document.getElementById("consumo_bs").value;
-                    var consumo_alcantarillado = document.getElementById("consumo_alcantarillado").value;
+//                    var consumo_bs = document.getElementById("consumo_bs").value;
+                    var consumo_bs = res[0].costo_agua;
+                    
+//                    var consumo_alcantarillado = document.getElementById("consumo_alcantarillado").value;
+                    var consumo_alcantarillado = res[0].costo_alcant;
+                    
+                    
                     var aportes_multas = document.getElementById("aportes_multas").value;
                     var total_bs = "0.00";
 
+                    //alert(consumo_bs+" - "+consumo_alcantarillado);
+                    
+                    if (servicios_asoc == "AGUA"){ 
+                        consumo_alcantarillado = 0; 
+                    }
+                    
+                    if (servicios_asoc == "ALCANTARILLADO"){ 
+                        consumo_bs = 0;
+                    }
+
+                    $("#consumo_bs").val(Number(consumo_bs));
+                    $("#consumo_alcantarillado").val(Number(consumo_alcantarillado));
+                    
+                    
                     total_bs = Number(consumo_bs) + Number(consumo_alcantarillado) + Number(aportes_multas);
 
                     $("#total_bs").val(total_bs.toFixed(2));
