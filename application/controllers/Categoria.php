@@ -27,11 +27,15 @@ class Categoria extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('categoria','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('codigo_cat','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())     
+        {
             $params = array(
+                'categoria' => $this->input->post('categoria'),
+                'codigo_cat' => $this->input->post('codigo_cat'),
             );
-            
             $categoria_id = $this->Categoria_model->add_categoria($params);
             redirect('categoria/index');
         }
@@ -45,18 +49,23 @@ class Categoria extends CI_Controller{
     /*
      * Editing a categoria
      */
-    function edit($categoria)
+    function edit($esta_categoria)
     {   
         // check if the categoria exists before trying to edit it
+        $categoria = str_replace("%20", " ", $esta_categoria);
         $data['categoria'] = $this->Categoria_model->get_categoria($categoria);
         
         if(isset($data['categoria']['categoria']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('categoria','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('codigo_cat','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
+            {
                 $params = array(
+                    'categoria' => $this->input->post('categoria'),
+                    'codigo_cat' => $this->input->post('codigo_cat'),
                 );
-
                 $this->Categoria_model->update_categoria($categoria,$params);            
                 redirect('categoria/index');
             }

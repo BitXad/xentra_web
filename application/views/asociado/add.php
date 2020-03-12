@@ -217,7 +217,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label for="distancia_asoc" class="control-label">Distancia</label>
+                        <label for="distancia_asoc" class="control-label">Distancia(Mts.)</label>
                         <div class="form-group">
                             <input type="text" name="distancia_asoc" value="<?php echo $this->input->post('distancia_asoc'); ?>" class="form-control" id="distancia_asoc" />
                         </div>
@@ -228,7 +228,7 @@
                             <select name="tipoinmueble_asoc" class="form-control" id="tipoinmueble_asoc">
                                 <!--<option value="">select</option>-->
                                 <?php
-                                foreach($all_tipoinmueble as $inmueble)
+                                foreach($all_tipo_inmueble as $inmueble)
                                 {
                                     $selected = ($inmueble["nombre_tin"] == $this->input->post('nombre_tin')) ? ' selected="selected"' : "";
                                     echo '<option value="'.$inmueble["nombre_tin"].'" '.$selected.'>'.$inmueble["nombre_tin"].'</option>';

@@ -24,8 +24,7 @@ class Zona_model extends CI_Model
                 `zonas`
 
             WHERE
-                `zona_med` = ?
-        ",array($zona_med))->row_array();
+                `zona_med` = '".$zona_med."'")->row_array();
 
         return $zona;
     }

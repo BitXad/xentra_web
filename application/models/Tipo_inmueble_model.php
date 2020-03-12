@@ -4,7 +4,7 @@
  * www.crudigniter.com
  */
  
-class Tipoinmueble_model extends CI_Model
+class Tipo_inmueble_model extends CI_Model
 {
     function __construct()
     {
@@ -12,11 +12,11 @@ class Tipoinmueble_model extends CI_Model
     }
     
     /*
-     * Get estado by tipoinmueble
+     * Get estado by tipo_inmueble
      */
-    function get_tipoinmueble($id_tin)
+    function get_tipo_inmueble($id_tin)
     {
-        $tipoinmueble = $this->db->query("
+        $tipo_inmueble = $this->db->query("
             SELECT
                 *
             FROM
@@ -25,15 +25,15 @@ class Tipoinmueble_model extends CI_Model
                 `id_tin` = ?
         ",array($id_tin))->row_array();
 
-        return $tipoinmueble;
+        return $tipo_inmueble;
     }
         
     /*
-     * Get all tipoinmueble
+     * Get all tipo_inmueble
      */
-    function get_all_tipoinmueble()
+    function get_all_tipo_inmueble()
     {
-        $tipoinmueble = $this->db->query("
+        $tipo_inmueble = $this->db->query("
             SELECT
                 *
             FROM
@@ -42,22 +42,22 @@ class Tipoinmueble_model extends CI_Model
                 1 = 1
         ")->result_array();
 
-        return $tipoinmueble;
+        return $tipo_inmueble;
     }
         
     /*
-     * function to add new tipoinmueble
+     * function to add new tipo_inmueble
      */
-    function add_tipoinmueble($params)
+    function add_tipo_inmueble($params)
     {
         $this->db->insert('tipo_inmueble',$params);
         return $this->db->insert_id();
     }
     
     /*
-     * function to update tipoinmueble
+     * function to update tipo_inmueble
      */
-    function update_tipoinmueble($id_tin,$params)
+    function update_tipo_inmueble($id_tin,$params)
     {
         $this->db->where('id_tin',$id_tin);
         return $this->db->update('tipo_inmueble',$params);

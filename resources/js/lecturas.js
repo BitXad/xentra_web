@@ -74,7 +74,7 @@ function calcular(id_asoc){
         var asociado = id_asoc;
     
     
-        if (lectura_actual >= lectura_anterior) {
+        if (Number(lectura_actual) >= Number(lectura_anterior)) {
             var consumo = lectura_actual - lectura_anterior;
             $("#consumo_mt3").val(Number(consumo).toFixed(2));
 
@@ -644,7 +644,7 @@ function registrar_lectura() {
             document.getElementById("boton_registrar_lectura").style.display = 'none';
 //            alert(r.length);
 //            window.location.href = base_url+"lectura/preaviso_boucher/"+r[0].id_lec;
-            window.open(base_url+"lectura/preaviso_boucher/"+r[0].id_lec, '_blank');
+            //window.open(base_url+"lectura/preaviso_boucher/"+r[0].id_lec, '_blank');
                    
         }, error: function (result) {
             //$("#consumo_bs").val("0.00");
