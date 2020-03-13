@@ -30,7 +30,8 @@
                     <tr>
 						<td><?php echo $cont; ?></td>
                         <td><?php echo $d['direccion']; ?></td>
-                        <td>Consumo M3<br>Consumo Bs.</td>
+                        <td>Consumo M3</td>
+                        <td><?php echo $d['consumo']; ?></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -42,8 +43,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td><?php echo $d['consumo']; ?><br><?php echo $d['agua']; ?><br><?php echo $d['alcantarillado']; ?></td>
+                        <td><?php echo $d['consumo']; ?></td>
 						
                     </tr>
                     <?php $cont++; } ?>

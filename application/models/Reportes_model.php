@@ -17,13 +17,8 @@ class Reportes_model extends CI_Model
     function get_direcciones()
     {
 
-        $sql = "SELECT a.direccion_asoc AS 'direccion', SUM(l.consumo_lec) as 'consumo', SUM(dg.total_detfact) as 'agua', SUM(dl.total_detfact) as 'alcantarillado' FROM lectura l
-LEFT JOIN asociado a on a.`id_asoc`=l.`id_asoc`
-LEFT JOIN factura f on l.`id_lec`=f.`id_lec`
-LEFT JOIN detalle_factura dg on f.`id_fact`=dg.`id_fact`
-LEFT JOIN detalle_factura dl on f.`id_fact`=dl.`id_fact`
-WHERE dg.descip_detfact='CONSUMO DE AGUA POTABLE'
-      and dl.descip_detfact='SERVICIO DE ALCANTARILLADO'
+        $sql = "SELECT a.direccion_asoc AS 'direccion', SUM(l.consumo_lec) as 'consumo' FROM asociado a
+LEFT JOIN lectura l on a.`id_asoc`=l.`id_asoc`
 GROUP BY direccion";
         $direcciones = $this->db->query($sql)->result_array();
 
