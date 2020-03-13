@@ -234,7 +234,7 @@ class Lectura extends CI_Controller {
 //                "t.tipo= (select a.tipo_asoc from asociado a where a.id_asoc=".$asociado+')';
 
 
-        $sql = "select * from  tarifa t where t.desde >=" . $consumo . " and " . $consumo . "<= t.hasta and " .
+        $sql = "select * from  tarifa t where ".$consumo." >= t.desde and " . $consumo . "<= t.hasta and " .
                 "t.tipo = (select a.tipo_asoc from asociado a where a.id_asoc=" . $asociado . ")";
 
         $result = $this->Lectura_model->consultar($sql);
