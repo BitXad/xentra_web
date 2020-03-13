@@ -18,7 +18,7 @@ class Factura extends CI_Controller{
      */
     function index()
     {
-        $data['factura'] = $this->Factura_model->get_all_factura();
+        $data['factura'] = $this->Factura_model->get_all_facturacancelada();
         
         $data['_view'] = 'factura/index';
         $this->load->view('layouts/main',$data);
