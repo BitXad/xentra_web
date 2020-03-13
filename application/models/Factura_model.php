@@ -43,7 +43,24 @@ class Factura_model extends CI_Model
                 `factura`
 
             WHERE
-                1 = 1
+                1=1
+            ORDER BY `id_fact` DESC
+        ")->result_array();
+
+        return $factura;
+    }
+
+    function get_all_facturacancelada()
+    {
+        $factura = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `factura`
+
+            WHERE
+                estado_fact = 'CANCELADA'
 
             ORDER BY `id_fact` DESC
         ")->result_array();

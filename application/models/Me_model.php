@@ -45,7 +45,7 @@ class Me_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `id_mes` DESC
+            ORDER BY `id_mes` ASC
         ")->result_array();
 
         return $mes;

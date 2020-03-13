@@ -90,8 +90,10 @@ function calcular(id_asoc){
 
 
 //                    var consumo_bs = document.getElementById("consumo_bs").value;
-                    var consumo_bs = res[0].costo_agua;
+                    var consumo_bs = Number(res[0].costo_agua) + ((Number(consumo)-Number(res[0].consumo_basico)) * Number(res[0].costo_mt3));
                     
+                    
+                    alert(consumo_bs);
 //                    var consumo_alcantarillado = document.getElementById("consumo_alcantarillado").value;
                     var consumo_alcantarillado = res[0].costo_alcant;
                     
