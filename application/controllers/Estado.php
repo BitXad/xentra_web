@@ -27,11 +27,13 @@ class Estado extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('estado','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())     
+        {
             $params = array(
+                'estado' => $this->input->post('estado'),
             );
-            
             $estado_id = $this->Estado_model->add_estado($params);
             redirect('estado/index');
         }
@@ -45,18 +47,21 @@ class Estado extends CI_Controller{
     /*
      * Editing a estado
      */
-    function edit($estado)
+    function edit($estado_nom)
     {   
         // check if the estado exists before trying to edit it
+        $estado = str_replace("%20", " ", $estado_nom);
         $data['estado'] = $this->Estado_model->get_estado($estado);
         
         if(isset($data['estado']['estado']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('estado','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
+            {
                 $params = array(
+                    'estado' => $this->input->post('estado'),
                 );
-
                 $this->Estado_model->update_estado($estado,$params);            
                 redirect('estado/index');
             }

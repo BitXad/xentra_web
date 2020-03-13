@@ -9,6 +9,13 @@ class Asociado extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Asociado_model');
+        $this->load->library('form_validation');
+        $this->session_data = $this->session->userdata('logged_in');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
 
     /*
@@ -121,9 +128,35 @@ class Asociado extends CI_Controller{
                 'distancia_asoc' => $this->input->post('distancia_asoc'),
                 'tipoinmueble_asoc' => $this->input->post('tipoinmueble_asoc'),
                 'diametrored_asoc' => $this->input->post('diametrored_asoc'),
+                'codigocatastral_asoc' => $this->input->post('codigocatastral_asoc'),
+                'lecturabase_asoc' => $this->input->post('lecturabase_asoc'),
             );
-            
             $asociado_id = $this->Asociado_model->add_asociado($params);
+            
+            $id_usu = $this->session_data['id_usu'];
+            $paramsl = array(
+                'id_usu' => $id_usu,
+                'id_asoc' => $asociado_id,
+                'mes_lec' => $this->input->post('tipo_asoc'),
+                'gestion_lec' => $this->input->post('expedido'),
+                'anterior_lec' => 0,
+                'actual_lec' => $this->input->post('lecturabase_asoc'),
+                'fechaant_lec' => $this->input->post('ci_asoc'),
+                'consumo_lec' => 0,
+                'fecha_lec' => $this->input->post('fechanac_asoc'),
+                'hora_lec' => $this->input->post('telefono_asoc'),
+                'totalcons_lec' => 0,
+                'fechahora_lec' => $this->input->post('nit_asoc'),
+                'monto_lec' => $this->input->post('razon_asoc'),
+                'estado_lec' => 'LECTURADO',
+                'tipo_asoc' => '-',
+                'servicios_asoc' => '-',
+                'totalmultas_' => 0,
+                'cantfact_lec' => 0,
+                'montofact_lec' => 0,
+            );
+            $this->load->model('Lectura_model');
+            $id_lec = $this->lectura_model->add_lectura($paramsl);
             redirect('asociado/index');
         }
         else

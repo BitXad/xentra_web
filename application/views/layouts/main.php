@@ -197,13 +197,31 @@
                                 <i class="fa fa-cubes"></i> <span>Categoria</span>
                             </a>
                             <ul class="treeview-menu">
-								<li class="active">
-                                    <a href="<?php echo site_url('categoria/add');?>"><i class="fa fa-plus"></i> Add</a>
+                                <li class="active">
+                                    <a href="<?php echo site_url('categoria');?>"><i class="fa fa-group"></i> Asociado</a>
                                 </li>
-								<li>
-                                    <a href="<?php echo site_url('categoria/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
+                                <li>
+                                    <a href="<?php echo site_url('diametrored');?>"><i class="fa fa-support"></i> Diametro de Red</a>
                                 </li>
-							</ul>
+                                <li>
+                                    <a href="<?php echo site_url('estado');?>"><i class="fa fa-toggle-on"></i> Estado</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('expedido');?>"><i class="fa fa-reorder"></i> Expedido C.I.</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('servicio');?>"><i class="fa fa-tasks"></i> Servicio</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('tipo');?>"><i class="fa fa-list-ul"></i> Tipo Asociado</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('tipo_inmueble');?>"><i class="fa fa-building-o"></i> Tipo Inmueble</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('zona');?>"><i class="fa fa-map-marker"></i> Zona</a>
+                                </li>
+                            </ul>
                         </li>
 						<li>
                             <a href="#">
@@ -280,32 +298,6 @@
                                 </li>
 								<li>
                                     <a href="<?php echo site_url('estado_factura/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
-                                </li>
-							</ul>
-                        </li>
-						<li>
-                            <a href="#">
-                                <i class="fa fa-gg"></i> <span>Estado</span>
-                            </a>
-                            <ul class="treeview-menu">
-								<li class="active">
-                                    <a href="<?php echo site_url('estado/add');?>"><i class="fa fa-plus"></i> Add</a>
-                                </li>
-								<li>
-                                    <a href="<?php echo site_url('estado/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
-                                </li>
-							</ul>
-                        </li>
-						<li>
-                            <a href="#">
-                                <i class="fa fa-clone"></i> <span>Expedido</span>
-                            </a>
-                            <ul class="treeview-menu">
-								<li class="active">
-                                    <a href="<?php echo site_url('expedido/add');?>"><i class="fa fa-plus"></i> Add</a>
-                                </li>
-								<li>
-                                    <a href="<?php echo site_url('expedido/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
                                 </li>
 							</ul>
                         </li>
@@ -480,19 +472,6 @@
                         </li>
 						<li>
                             <a href="#">
-                                <i class="fa fa-fax"></i> <span>Servicio</span>
-                            </a>
-                            <ul class="treeview-menu">
-								<li class="active">
-                                    <a href="<?php echo site_url('servicio/add');?>"><i class="fa fa-plus"></i> Add</a>
-                                </li>
-								<li>
-                                    <a href="<?php echo site_url('servicio/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
-                                </li>
-							</ul>
-                        </li>
-						<li>
-                            <a href="#">
                                 <i class="fa fa-stack-overflow"></i> <span>Tarifa</span>
                             </a>
                             <ul class="treeview-menu">
@@ -579,19 +558,6 @@
                                 </li>
 								<li>
                                     <a href="<?php echo site_url('usuario/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
-                                </li>
-							</ul>
-                        </li>
-						<li>
-                            <a href="#">
-                                <i class="fa fa-slideshare"></i> <span>Zona</span>
-                            </a>
-                            <ul class="treeview-menu">
-								<li class="active">
-                                    <a href="<?php echo site_url('zona/add');?>"><i class="fa fa-plus"></i> Add</a>
-                                </li>
-								<li>
-                                    <a href="<?php echo site_url('zona/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
                                 </li>
 							</ul>
                         </li>

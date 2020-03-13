@@ -1,5 +1,9 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/asociado_parametros.js'); ?>" type="text/javascript"></script>
+<input type="hidden" name="all_zona" id="all_zona" value='<?php echo json_encode($all_zona); ?>' />
+<input type="hidden" name="all_categoria" id="all_categoria" value='<?php echo json_encode($all_categoria); ?>' />
+<input type="hidden" name="all_tipo_inmueble" id="all_tipo_inmueble" value='<?php echo json_encode($all_tipo_inmueble); ?>' />
+<input type="hidden" name="all_diametro" id="all_diametro" value='<?php echo json_encode($all_diametro); ?>' />
 <script type="text/javascript">
     function mostrar(a) {
         obj = document.getElementById('oculto'+a);
@@ -15,14 +19,49 @@
 
     }
     function generarcodigo(){
-        var zona        = document.getElementById('zona_asoc').value;
-        var manzano     = document.getElementById('zona_asoc').value;
-        var calle       = document.getElementById('direccion_asoc').value;
-        var categoria   = document.getElementById('categoria_asoc').value;
-        var distancia   = document.getElementById('distancia_asoc').value;
-        var diametrored = document.getElementById('diametrored_asoc').value;
-        var tipo        = document.getElementById('tipo_asoc').value;
-        $('#codigo_asoc').val(zona);
+        var all_zona          = JSON.parse(document.getElementById('all_zona').value);
+        var all_categoria     = JSON.parse(document.getElementById('all_categoria').value);
+        var all_tipo_inmueble = JSON.parse(document.getElementById('all_tipo_inmueble').value);
+        var all_diametro      = JSON.parse(document.getElementById('all_diametro').value);
+        
+        var zona         = document.getElementById('zona_asoc').value;
+        var manzano      = document.getElementById('manzano_asoc').value;
+        var calle        = document.getElementById('nro_asoc').value;
+        var distancia    = document.getElementById('distancia_asoc').value;
+        var categoria    = document.getElementById('categoria_asoc').value;
+        var tipoinmueble = document.getElementById('tipoinmueble_asoc').value;
+        var diametrored  = document.getElementById('diametrored_asoc').value;
+        
+        var z = all_zona.length;
+        var cod_zona = "";
+        for (var i = 0; i < z; i++) {
+            if(all_zona[i]['zona_med'] == zona){
+                cod_zona = all_zona[i]['codigozona_med'];
+            }
+        }
+        var c = all_categoria.length;
+        var cod_categoria = "";
+        for (var j = 0; j < c; j++) {
+            if(all_categoria[j]['categoria'] == categoria){
+                cod_categoria = all_categoria[j]['codigo_cat'];
+            }
+        }
+        var t = all_tipo_inmueble.length;
+        var cod_tipoinmueble = "";
+        for (var k = 0; k < t; k++) {
+            if(all_tipo_inmueble[k]['nombre_tin'] == tipoinmueble){
+                cod_tipoinmueble = all_tipo_inmueble[k]['codigo_tin'];
+            }
+        }
+        var d = all_diametro.length;
+        var cod_diametrored = "";
+        for (var h = 0; h < d; h++) {
+            if(all_diametro[h]['nombre_diam'] == diametrored){
+                cod_diametrored = all_diametro[h]['codigo_diam'];
+            }
+        }
+        
+        $('#codigocatastral_asoc').val(cod_zona+manzano+calle+distancia+cod_categoria+cod_tipoinmueble+cod_diametrored);
     }
     /*function cambiarcod(){
         var estetime = new Date();
@@ -106,14 +145,14 @@
                     <div class="col-md-3">
                         <label for="nombres_asoc" class="control-label"><span class="text-danger">*</span>Nombres</label>
                         <div class="form-group">
-                            <input type="text" name="nombres_asoc" value="<?php echo $this->input->post('nombres_asoc'); ?>" class="form-control" id="nombres_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <input type="text" name="nombres_asoc" value="<?php echo $this->input->post('nombres_asoc'); ?>" class="form-control" id="nombres_asoc" autocomplete="off" autofocus required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                             <span class="text-danger"><?php echo form_error('nombres_asoc');?></span>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label for="apellidos_asoc" class="control-label"><span class="text-danger">*</span>Apellidos</label>
                         <div class="form-group">
-                            <input type="text" name="apellidos_asoc" value="<?php echo $this->input->post('apellidos_asoc'); ?>" class="form-control" id="apellidos_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <input type="text" name="apellidos_asoc" value="<?php echo $this->input->post('apellidos_asoc'); ?>" class="form-control" id="apellidos_asoc" autocomplete="off" autofocus required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                             <span class="text-danger"><?php echo form_error('apellidos_asoc');?></span>
                         </div>
                     </div>
@@ -135,13 +174,13 @@
                     <div class="col-md-2">
                         <label for="ci_asoc" class="control-label">C.I.</label>
                         <div class="form-group">
-                            <input type="text" name="ci_asoc" value="<?php echo $this->input->post('ci_asoc'); ?>" class="form-control" id="ci_asoc" />
+                            <input type="text" name="ci_asoc" value="<?php echo $this->input->post('ci_asoc'); ?>" class="form-control" id="ci_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                     <div class="col-md-2">
                         <label for="expedido" class="control-label">Expedido</label>
                         <div class="form-group">
-                            <select name="expedido" class="form-control">
+                            <select name="expedido" class="form-control" required>
                                 <option value="">- EXPEDIDO -</option>
                                 <?php 
                                 foreach($all_expedido as $expedido)
@@ -153,22 +192,22 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="telefono_asoc" class="control-label">Telefono</label>
                         <div class="form-group">
-                            <input type="text" name="telefono_asoc" value="<?php echo $this->input->post('telefono_asoc'); ?>" class="form-control" id="telefono_asoc" />
+                            <input type="text" name="telefono_asoc" value="<?php echo $this->input->post('telefono_asoc'); ?>" class="form-control" id="telefono_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                     <div class="col-md-2">
                         <label for="nit_asoc" class="control-label">Nit</label>
                         <div class="form-group">
-                            <input type="text" name="nit_asoc" value="<?php echo $this->input->post('nit_asoc'); ?>" class="form-control" id="nit_asoc" />
+                            <input type="number" min="0" name="nit_asoc" value="<?php echo $this->input->post('nit_asoc'); ?>" class="form-control" id="nit_asoc" />
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="razon_asoc" class="control-label">Razon Social</label>
                         <div class="form-group">
-                            <input type="text" name="razon_asoc" value="<?php echo $this->input->post('razon_asoc'); ?>" class="form-control" id="razon_asoc" />
+                            <input type="text" name="razon_asoc" value="<?php echo $this->input->post('razon_asoc'); ?>" class="form-control" id="razon_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -180,25 +219,25 @@
                     <div class="col-md-3">
                         <label for="direccion_asoc" class="control-label">Calle</label>
                         <div class="form-group">
-                            <input type="text" name="direccion_asoc" value="<?php echo $this->input->post('direccion_asoc'); ?>" class="form-control" id="direccion_asoc" />
+                            <input type="text" name="direccion_asoc" value="<?php echo $this->input->post('direccion_asoc'); ?>" class="form-control" id="direccion_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="nro_asoc" class="control-label">Nro.</label>
+                        <label for="nro_asoc" class="control-label"><span class="text-bold">*</span>Nro.</label>
                         <div class="form-group">
-                            <input type="text" name="nro_asoc" value="<?php echo $this->input->post('nro_asoc'); ?>" class="form-control" id="nro_asoc" />
+                            <input type="text" name="nro_asoc" value="<?php echo $this->input->post('nro_asoc'); ?>" class="form-control" id="nro_asoc" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label for="manzano_asoc" class="control-label">Manzano</label>
                         <div class="form-group">
-                            <input type="text" name="manzano_asoc" value="<?php echo $this->input->post('manzano_asoc'); ?>" class="form-control" id="manzano_asoc" />
+                            <input type="text" name="manzano_asoc" value="<?php echo $this->input->post('manzano_asoc'); ?>" class="form-control" id="manzano_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label for="referencia_asoc" class="control-label">Referencia</label>
                         <div class="form-group">
-                            <input type="text" name="referencia_asoc" value="<?php echo $this->input->post('referencia_asoc'); ?>" class="form-control" id="referencia_asoc" />
+                            <input type="text" name="referencia_asoc" value="<?php echo $this->input->post('referencia_asoc'); ?>" class="form-control" id="referencia_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -219,7 +258,7 @@
                     <div class="col-md-3">
                         <label for="distancia_asoc" class="control-label">Distancia(Mts.)</label>
                         <div class="form-group">
-                            <input type="text" name="distancia_asoc" value="<?php echo $this->input->post('distancia_asoc'); ?>" class="form-control" id="distancia_asoc" />
+                            <input type="number" step="any" min="0" name="distancia_asoc" value="<?php echo $this->input->post('distancia_asoc'); ?>" class="form-control" id="distancia_asoc" />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -394,6 +433,18 @@
                         <label for="orden_asoc" class="control-label">Orden</label>
                         <div class="form-group">
                             <input type="text" name="orden_asoc" value="<?php echo $this->input->post('orden_asoc'); ?>" class="form-control" id="orden_asoc" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="codigocatastral_asoc" class="control-label">Código Catastral</label>
+                        <div class="form-group">
+                            <input type="text" name="codigocatastral_asoc" value="<?php echo $this->input->post('codigocatastral_asoc'); ?>" class="form-control" id="codigocatastral_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="lecturabase_asoc" class="control-label">Lectura base</label>
+                        <div class="form-group">
+                            <input type="number" step="any" min="0" name="lecturabase_asoc" value="<?php echo $this->input->post('lecturabase_asoc'); ?>" class="form-control" id="lecturabase_asoc" />
                         </div>
                     </div>
                     <!--<div class="col-md-6">
