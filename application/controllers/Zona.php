@@ -27,9 +27,14 @@ class Zona extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('zona_med','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('codigozona_med','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())     
+        {
             $params = array(
+                'zona_med' => $this->input->post('zona_med'),
+                'codigozona_med' => $this->input->post('codigozona_med'),
             );
             
             $zona_id = $this->Zona_model->add_zona($params);
@@ -45,16 +50,22 @@ class Zona extends CI_Controller{
     /*
      * Editing a zona
      */
-    function edit($zona_med)
+    function edit($esta_zona)
     {   
         // check if the zona exists before trying to edit it
+        $zona_med = str_replace("%20", " ", $esta_zona);
         $data['zona'] = $this->Zona_model->get_zona($zona_med);
         
         if(isset($data['zona']['zona_med']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('zona_med','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('codigozona_med','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
+            {
                 $params = array(
+                    'zona_med' => $this->input->post('zona_med'),
+                    'codigozona_med' => $this->input->post('codigozona_med'),
                 );
 
                 $this->Zona_model->update_zona($zona_med,$params);            
@@ -67,7 +78,7 @@ class Zona extends CI_Controller{
             }
         }
         else
-            show_error('The zona you are trying to edit does not exist.');
+            show_error('La Zona que intentas modificar no existe.');
     } 
 
     /*
