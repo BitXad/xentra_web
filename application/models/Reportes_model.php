@@ -19,7 +19,8 @@ class Reportes_model extends CI_Model
 
         $sql = "SELECT a.direccion_asoc AS 'direccion', SUM(l.consumo_lec) as 'consumo' FROM asociado a
 LEFT JOIN lectura l on a.`id_asoc`=l.`id_asoc`
-GROUP BY direccion";
+GROUP BY direccion
+ORDER BY direccion";
         $direcciones = $this->db->query($sql)->result_array();
 
         return $direcciones;

@@ -41,7 +41,9 @@ class Tarifa extends CI_Controller{
             redirect('tarifa/index');
         }
         else
-        {            
+        {   
+            $this->load->model('Tipo_asociado_model');
+            $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();      
             $data['_view'] = 'tarifa/add';
             $this->load->view('layouts/main',$data);
         }
@@ -72,6 +74,8 @@ class Tarifa extends CI_Controller{
             }
             else
             {
+                $this->load->model('Tipo_asociado_model');
+                $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();      
                 $data['_view'] = 'tarifa/edit';
                 $this->load->view('layouts/main',$data);
             }
