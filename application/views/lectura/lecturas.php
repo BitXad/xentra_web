@@ -2,7 +2,6 @@
 <script src="<?php echo site_url('resources/js/lecturas.js');?>"></script>
 <link rel="stylesheet" href="<?php echo site_url('resources/css/mitabla.css');?>">
 
-
 <input id="base_url" value="<?php echo base_url(); ?>" hidden="">
 
 <div class="row">
