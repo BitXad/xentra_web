@@ -63,32 +63,7 @@
         
         $('#codigocatastral_asoc').val(cod_zona+manzano+calle+distancia+cod_categoria+cod_tipoinmueble+cod_diametrored);
     }
-    /*function cambiarcod(){
-        var estetime = new Date();
-        var anio = estetime.getFullYear();
-        anio = anio -2000;
-        var mes = parseInt(estetime.getMonth())+1;
-        if(mes>0&&mes<10){
-            mes = "0"+mes;
-        }
-        var dia = parseInt(estetime.getDate());
-        if(dia>0&&dia<10){
-            dia = "0"+dia;
-        }
-        var hora = estetime.getHours();
-        if(hora>0&&hora<10){
-            hora = "0"+hora;
-        }
-        var min = estetime.getMinutes();
-        if(min>0&&min<10){
-            min = "0"+min;
-        }
-        var seg = estetime.getSeconds();
-        if(seg>0&&seg<10){
-            seg = "0"+seg;
-        }
-        $('#cliente_codigo').val(anio+mes+dia+hora+min+seg);
-    }*/
+
 
 </script>
 <script type="text/javascript">
@@ -96,35 +71,9 @@
     $("#apellidos_asoc").change(function(){
         var nombre   = $("#nombres_asoc").val();
         var apellido = $("#apellidos_asoc").val();
-        /*var cad1 = nombre.substring(0,1);
-        var cad1 = apellido.substring(0,1);
-        var cad2 = apellido.substring(apellido.length-1,apellido.length);
-        var estetime = new Date();
-        var anio = estetime.getFullYear();
-        anio = anio -2000;
-        var mes = parseInt(estetime.getMonth())+1;
-        if(mes>0&&mes<10){
-            mes = "0"+mes;
-        }
-        var dia = parseInt(estetime.getDate());
-        if(dia>0&&dia<10){
-            dia = "0"+dia;
-        }
-        var hora = estetime.getHours();
-        if(hora>0&&hora<10){
-            hora = "0"+hora;
-        }
-        var min = estetime.getMinutes();
-        if(min>0&&min<10){
-            min = "0"+min;
-        }
-        var seg = estetime.getSeconds();
-        if(seg>0&&seg<10){
-            seg = "0"+seg;
-        var cad = cad1+cad2+anio+mes+dia+hora+min+seg;
-        $('#cliente_codigo').val(cad);*/
         $('#razon_asoc').val(nombre+" "+apellido);
     });
+    
     $("#ci_asoc").change(function(){
         var ci = $("#ci_asoc").val();
         $('#nit_asoc').val(ci);
@@ -229,15 +178,15 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label for="manzano_asoc" class="control-label">Manzano</label>
-                        <div class="form-group">
-                            <input type="text" name="manzano_asoc" value="<?php echo $this->input->post('manzano_asoc'); ?>" class="form-control" id="manzano_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
                         <label for="referencia_asoc" class="control-label">Referencia</label>
                         <div class="form-group">
                             <input type="text" name="referencia_asoc" value="<?php echo $this->input->post('referencia_asoc'); ?>" class="form-control" id="referencia_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="manzano_asoc" class="control-label">Manzano</label>
+                        <div class="form-group">
+                            <input type="text" name="manzano_asoc" value="<?php echo $this->input->post('manzano_asoc'); ?>" class="form-control" id="manzano_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -436,31 +385,68 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label for="codigocatastral_asoc" class="control-label">Código Catastral</label>
+                        <label for="codigocatastral_asoc" class="control-label"><span class="text-danger">*</span>Código Catastral</label>
                         <div class="form-group">
-                            <input type="text" name="codigocatastral_asoc" value="<?php echo $this->input->post('codigocatastral_asoc'); ?>" class="form-control" id="codigocatastral_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <input type="text" name="codigocatastral_asoc" value="<?php echo $this->input->post('codigocatastral_asoc'); ?>" class="form-control" id="codigocatastral_asoc" required="true" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <label for="lecturabase_asoc" class="control-label">Lectura base</label>
+                    <div class="col-md-3">
+                        <label for="lecturabase_asoc" class="control-label">Lectura base(Mts3)</label>
                         <div class="form-group">
-                            <input type="number" step="any" min="0" name="lecturabase_asoc" value="<?php echo $this->input->post('lecturabase_asoc'); ?>" class="form-control" id="lecturabase_asoc" />
+                            <input style="background: #ccffeb" type="number" step="any" min="0" name="lecturabase_asoc" value="<?php echo $this->input->post('lecturabase_asoc'); ?>" class="form-control" id="lecturabase_asoc" />
                         </div>
                     </div>
-                    <!--<div class="col-md-6">
-                        <label for="id_emp" class="control-label">Empresa</label>
+                    <div class="col-md-3">
+                        <label for="meslec_asoc" class="control-label"><span class="text-danger">*</span>Mes</label>
                         <div class="form-group">
-                            <select name="id_emp" class="form-control">
-                                <?php
-                                /*foreach($all_empresa as $empresa)
+                            <select style="background: #ccffeb" name="meslec_asoc" id="meslec_asoc" class="form-control" required>
+                                <option value="">- MES -</option>
+                                <?php 
+                                $meslec_asoc_values = array(
+                                    'ENERO'=>'ENERO',
+                                    'FEBRERO'=>'FEBRERO',
+                                    'MARZO'=>'MARZO',
+                                    'ABRIL'=>'ABRIL',
+                                    'MAYO'=>'MAYO',
+                                    'JUNIO'=>'JUNIO',
+                                    'JULIO'=>'JULIO',
+                                    'AGOSTO'=>'AGOSTO',
+                                    'SEPTIEMBRE'=>'SEPTIEMBRE',
+                                    'OCTUBRE'=>'OCTUBRE',
+                                    'NOVIEMBRE'=>'NOVIEMBRE',
+                                    'DICIEMBRE'=>'DICIEMBRE',
+                                );
+
+                                foreach($meslec_asoc_values as $value => $display_text)
                                 {
-                                    $selected = ($empresa['id_emp'] == $this->input->post('id_emp')) ? ' selected="selected"' : "";
-                                    echo '<option value="'.$empresa['id_emp'].'" '.$selected.'>'.$empresa['nombre_emp'].'</option>';
-                                } */
+                                    $selected = ($value == $this->input->post('meslec_asoc')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$value.'" '.$selected.'>'.$display_text.'</option>';
+                                } 
                                 ?>
                             </select>
                         </div>
-                    </div>-->
+                    </div>
+                    <div class="col-md-2">
+                        <label for="gestionlec_asoc" class="control-label">Gestión</label>
+                        <div class="form-group">
+                            <select style="background: #ccffeb" name="gestionlec_asoc" class="form-control" id="gestionlec_asoc">
+                                <!--<option value="">select</option>-->
+                                <?php
+                                foreach($all_gestion as $gestion)
+                                {
+                                    $selected = ($gestion["gestion_lec"] == $this->input->post('gestion_lec')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$gestion["gestion_lec"].'" '.$selected.'>'.$gestion["gestion_lec"].'</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="fechalec_asoc" class="control-label">Fecha Lec.</label>
+                        <div class="form-group">
+                            <input style="background: #ccffeb" type="date" name="fechalec_asoc" value="<?php echo ($this->input->post('fechalec_asoc')? $this->input->post('fechalec_asoc'): date("Y-m-d")); ?>" class="form-control" id="fechalec_asoc" required/>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-footer">

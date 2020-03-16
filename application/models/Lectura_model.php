@@ -147,6 +147,24 @@ class Lectura_model extends CI_Model
         $asociado = $this->db->query($sql)->result_array();
         return $asociado;
         
-    }    
+    }
+    /*
+     * Get lectura by id_lec
+     */
+    function get_lectura_basesocio($id_asoc)
+    {
+        $lectura = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `lectura`
+
+            WHERE
+                `id_asoc` = ?
+        ",array($id_asoc))->row_array();
+
+        return $lectura;
+    }
     
 }
