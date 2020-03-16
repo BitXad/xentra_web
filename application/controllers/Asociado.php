@@ -38,7 +38,6 @@ class Asociado extends CI_Controller{
      */
     function add()
     {
-        $this->load->library('form_validation');
         $this->form_validation->set_rules('nombres_asoc','Nombres','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         $this->form_validation->set_rules('apellidos_asoc','Apellidos','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         if($this->form_validation->run())
@@ -133,21 +132,24 @@ class Asociado extends CI_Controller{
             );
             $asociado_id = $this->Asociado_model->add_asociado($params);
             
+            date_default_timezone_set('America/La_Paz');
+            $fecha_reg = date('Y-m-d');
+            $hora_reg = date('H:i:s');
             $id_usu = $this->session_data['id_usu'];
             $paramsl = array(
                 'id_usu' => $id_usu,
                 'id_asoc' => $asociado_id,
-                'mes_lec' => $this->input->post('tipo_asoc'),
-                'gestion_lec' => $this->input->post('expedido'),
+                'mes_lec' => $this->input->post('meslec_asoc'),
+                'gestion_lec' => $this->input->post('gestionlec_asoc'),
                 'anterior_lec' => 0,
                 'actual_lec' => $this->input->post('lecturabase_asoc'),
-                'fechaant_lec' => $this->input->post('ci_asoc'),
+                'fechaant_lec' => $this->input->post('fechalec_asoc'),
                 'consumo_lec' => 0,
-                'fecha_lec' => $this->input->post('fechanac_asoc'),
-                'hora_lec' => $this->input->post('telefono_asoc'),
+                'fecha_lec' => $this->input->post('fechalec_asoc'),
+                'hora_lec' => $hora_reg,
                 'totalcons_lec' => 0,
-                'fechahora_lec' => $this->input->post('nit_asoc'),
-                'monto_lec' => $this->input->post('razon_asoc'),
+                'fechahora_lec' => $fecha_reg." ".$hora_reg,
+                'monto_lec' => 0,
                 'estado_lec' => 'LECTURADO',
                 'tipo_asoc' => '-',
                 'servicios_asoc' => '-',
@@ -156,11 +158,14 @@ class Asociado extends CI_Controller{
                 'montofact_lec' => 0,
             );
             $this->load->model('Lectura_model');
-            $id_lec = $this->lectura_model->add_lectura($paramsl);
+            $id_lec = $this->Lectura_model->add_lectura($paramsl);
+            
             redirect('asociado/index');
         }
         else
         {
+            $this->load->model('Gestion_model');
+            $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
             $this->load->model('Expedido_model');
             $data['all_expedido'] = $this->Expedido_model->get_all_expedido();
             $this->load->model('Tipo_asociado_model');
@@ -193,7 +198,9 @@ class Asociado extends CI_Controller{
         
         if(isset($data['asociado']['id_asoc']))
         {
-            $this->load->library('form_validation');
+            $this->load->model('Lectura_model');
+            $data['lectura_basesocio'] = $this->Lectura_model->get_lectura_basesocio($id_asoc);
+            
             $this->form_validation->set_rules('nombres_asoc','Nombres','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             $this->form_validation->set_rules('apellidos_asoc','Apellidos','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             if($this->form_validation->run())     
@@ -290,13 +297,34 @@ class Asociado extends CI_Controller{
                     'orden_asoc' => $this->input->post('orden_asoc'),
                     'latitud_asoc' => $this->input->post('latitud_asoc'),
                     'longitud_asoc' => $this->input->post('longitud_asoc'),
+                    'nro_asoc' => $this->input->post('nro_asoc'),
+                    'manzano_asoc' => $this->input->post('manzano_asoc'),
+                    'referencia_asoc' => $this->input->post('referencia_asoc'),
+                    'distancia_asoc' => $this->input->post('distancia_asoc'),
+                    'tipoinmueble_asoc' => $this->input->post('tipoinmueble_asoc'),
+                    'diametrored_asoc' => $this->input->post('diametrored_asoc'),
+                    'codigocatastral_asoc' => $this->input->post('codigocatastral_asoc'),
+                    'lecturabase_asoc' => $this->input->post('lecturabase_asoc'),
                 );
-                $this->Asociado_model->update_asociado($id_asoc,$params);            
+                $this->Asociado_model->update_asociado($id_asoc,$params);
+                
+                $id_usu = $this->session_data['id_usu'];
+                $paramsl = array(
+                    'id_usu' => $id_usu,
+                    'mes_lec' => $this->input->post('meslec_asoc'),
+                    'gestion_lec' => $this->input->post('gestionlec_asoc'),
+                    'actual_lec' => $this->input->post('lecturabase_asoc'),
+                    'fechaant_lec' => $this->input->post('fechalec_asoc'),
+                    'fecha_lec' => $this->input->post('fechalec_asoc'),
+                );
+                $this->Lectura_model->update_lectura($data['lectura_basesocio']['id_lec'],$paramsl);
                 redirect('asociado/index');
             }
             else
             {
-		$this->load->model('Expedido_model');
+		$this->load->model('Gestion_model');
+                $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+                $this->load->model('Expedido_model');
                 $data['all_expedido'] = $this->Expedido_model->get_all_expedido();
                 $this->load->model('Tipo_asociado_model');
                 $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();
@@ -304,12 +332,16 @@ class Asociado extends CI_Controller{
                 $data['all_zona'] = $this->Zona_model->get_all_zonas();
                 $this->load->model('Servicio_model');
                 $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
-                $this->load->model('Estado_model');
-                $data['all_estado'] = $this->Estado_model->get_all_estados();
+                $this->load->model('Diametrored_model');
+                $data['all_diametro'] = $this->Diametrored_model->get_all_diametrored();
+                $this->load->model('Tipo_inmueble_model');
+                $data['all_tipo_inmueble'] = $this->Tipo_inmueble_model->get_all_tipo_inmueble();
                 $this->load->model('Empresa_model');
                 $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
                 $this->load->model('Categoria_model');
                 $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estados();
 
                 $data['_view'] = 'asociado/edit';
                 $this->load->view('layouts/main',$data);

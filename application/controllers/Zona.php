@@ -54,6 +54,7 @@ class Zona extends CI_Controller{
     {   
         // check if the zona exists before trying to edit it
         $zona_med = str_replace("%20", " ", $esta_zona);
+        $zona_med = str_replace("a123k", "-", $zona_med);
         $data['zona'] = $this->Zona_model->get_zona($zona_med);
         
         if(isset($data['zona']['zona_med']))

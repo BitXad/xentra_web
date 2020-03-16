@@ -4,7 +4,8 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Modificar Zona</h3>
             </div>
-            <?php echo form_open('zona/edit/'.$zona['zona_med']); ?>
+            <?php $esta_zona = str_replace("-", "a123k", $zona['zona_med']);
+                  echo form_open('zona/edit/'.$esta_zona); ?>
             <div class="box-body">
                 <div class="row clearfix">
                     <div class="col-md-6">
