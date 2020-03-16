@@ -307,7 +307,7 @@
                                 <?php
                                 foreach($all_estado as $estado)
                                 {
-                                    $selected = ($estado == $asociado["estado"]) ? ' selected="selected"' : "";
+                                    $selected = ($estado['estado'] == $asociado["estado"]) ? ' selected="selected"' : "";
                                     echo '<option value="'.$estado["estado"].'" '.$selected.'>'.$estado["estado"].'</option>';
                                 } 
                                 ?>

@@ -37,9 +37,10 @@
                         <th></th>
                     </tr>
                     <tbody class="buscar">
-                    <?php foreach($all_tipo_inmueble as $e){ ?>
+                    <?php $i = 0;
+                          foreach($all_tipo_inmueble as $e){ ?>
                     <tr>
-                        <td class="text-center"><?php echo $e['id_tin']; ?></td>
+                        <td class="text-center"><?php echo $i+1;; ?></td>
                         <td class="text-bold" style="font-size: 12pt"><?php echo $e['nombre_tin']; ?></td>
                         <td class="text-center"><?php echo $e['codigo_tin']; ?></td>
                         <td class="text-center">
@@ -47,7 +48,7 @@
                             <!--<a href="<?php //echo site_url('tipo_inmueble/remove/'.$e['id_tin']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>
-                    <?php } ?>
+                    <?php $i++; } ?>
                     </tbody>
                 </table>
                                 
