@@ -11,6 +11,7 @@
 
 ?>
 
+<input id="base_url" value="<?php echo base_url(); ?>" hidden="">
 
 <div class="row" style="padding: 0; background-color: white; font-family: Arial; font-size: 10px;">
     
@@ -128,8 +129,12 @@
                             <td <?php echo $estilo; ?>><?php echo $f['monto_lec']; ?></td>
                             <td <?php echo $estilo; ?>><?php echo $f['estado_lec']; ?></td>
                             <td <?php echo $estilo; ?>>
-                                <a href="<?php echo site_url('lectura/edit/'.$f['id_lec']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
-                                <a href="<?php echo site_url('lectura/remove/'.$f['id_lec']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
+                                <!--<a href="<?php echo site_url('lectura/edit/'.$f['id_lec']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a>--> 
+                            <?php if($cont==1){?>
+                                <button  class="btn btn-danger btn-xs" onclick="anular_lectura(<?php echo $f['id_lec']; ?>)"><span class="fa fa-trash"></span> Anular</button>
+                            
+                            <?php } ?>
+                            
                             </td>
                     </tr>
                     <?php } ?>
