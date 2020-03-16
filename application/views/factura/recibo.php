@@ -148,7 +148,7 @@
     
     <tr>
         <td style="width: 20%;"> </td>
-        <td style="width: 26%;"> TRANS: <?php echo $factura[0]['id_fact']; ?> <BR>CAJERO: CARLOS SOTO S.</td>
+        <td style="width: 26%;"> TRANS: <?php echo $factura[0]['id_fact']; ?> <BR>CAJERO: <?php $usuario = $this->session_data['nombre_usu']; echo $usuario; ?> </td>
         <td style="width: 27%;"> 
             <center>
 

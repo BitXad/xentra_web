@@ -8,26 +8,20 @@
 			<div class="box-body">
 				<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="tipo" class="control-label">Tipo</label>
-						<div class="form-group">
-							<select name="tipo" class="form-control">
-								<option value="">select</option>
-								<?php 
-								$tipo_values = array(
-									'ASOCIADO'=>'ASOCIADO',
-									'EXTERNO'=>'EXTERNO',
-								);
-
-								foreach($tipo_values as $value => $display_text)
-								{
-									$selected = ($value == $tarifa['tipo']) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$value.'" '.$selected.'>'.$display_text.'</option>';
-								} 
-								?>
-							</select>
-						</div>
-					</div>
+                        <label for="tipo_asoc" class="control-label">Tipo</label>
+                        <div class="form-group">
+                            <select name="tipo_asoc" class="form-control">
+                                <!--<option value="">select</option>-->
+                                <?php 
+                                foreach($all_tipo_asociado as $tipo_asociado)
+                                {
+                                    $selected = ($tipo_asociado["tipo_asoc"] == $asociado["tipo_asoc"]) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$tipo_asociado["tipo_asoc"].'" '.$selected.'>'.$tipo_asociado["tipo_asoc"].'</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
 					<div class="col-md-6">
 						<label for="desde" class="control-label">Desde</label>
 						<div class="form-group">
@@ -56,8 +50,9 @@
 			</div>
 			<div class="box-footer">
             	<button type="submit" class="btn btn-success">
-					<i class="fa fa-check"></i> Save
-				</button>
+					<i class="fa fa-check"></i> Guardar
+				</button><a href="<?php echo site_url('tarifa'); ?>" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar</a>
 	        </div>				
 			<?php echo form_close(); ?>
 		</div>

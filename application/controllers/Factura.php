@@ -11,6 +11,11 @@ class Factura extends CI_Controller{
         $this->load->model('Factura_model');
         $this->load->model('Dosificacion_model');
         $this->load->helper('numeros');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
 
     /*
