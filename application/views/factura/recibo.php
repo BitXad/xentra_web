@@ -57,7 +57,7 @@
             <font  size="1" face="arial"><b>&nbspLECT.ACTUAL[<?php echo date('d/m/Y',strtotime($factura[0]['fecha_lec']));?>]:</b> <?php echo $factura[0]['actual_lec']; ?><br>
             <b>&nbspLECT.ANTERIOR[<?php echo date('d/m/Y',strtotime($factura[0]['fechaant_lec']));?>]:</b> <?php echo $factura[0]['anterior_lec']; ?><br>
             <b>&nbspCONSUMO M3:</b> <?php echo $factura[0]['consumo_lec']; ?><br>
-            <b>&nbspVENCIMIENTO:</b> <?php echo $factura[0]['fechaemision_fact']; ?><br>
+            <b>&nbspVENCIMIENTO:</b> <?php echo date('d/m/Y',strtotime($factura[0]['fechavenc_fact']));?><br>
             </font>
             
             </div>
