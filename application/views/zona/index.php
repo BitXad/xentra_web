@@ -45,7 +45,8 @@
                         <td class="text-bold" style="font-size: 12pt"><?php echo $z['zona_med']; ?></td>
                         <td class="text-center"><?php echo $z['codigozona_med']; ?></td>
                         <td class="text-center">
-                            <a href="<?php echo site_url('zona/edit/'.$z['zona_med']); ?>" class="btn btn-info btn-xs" title="Modificar zona"><span class="fa fa-pencil"></span></a> 
+                            <?php $estazona = str_replace("-", "a123k", $z['zona_med']); ?>
+                            <a href="<?php echo site_url('zona/edit/'.$estazona); ?>" class="btn btn-info btn-xs" title="Modificar zona"><span class="fa fa-pencil"></span></a> 
                             <!--<a href="<?php //echo site_url('zona/remove/'.$z['zona_med']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>-->
                         </td>
                     </tr>

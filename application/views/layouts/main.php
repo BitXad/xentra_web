@@ -213,7 +213,7 @@
                                     <a href="<?php echo site_url('servicio');?>"><i class="fa fa-tasks"></i> Servicio</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('tipo');?>"><i class="fa fa-list-ul"></i> Tipo Asociado</a>
+                                    <a href="<?php echo site_url('tipo_asociado');?>"><i class="fa fa-list-ul"></i> Tipo Asociado</a>
                                 </li>
                                 <li>
                                     <a href="<?php echo site_url('tipo_inmueble');?>"><i class="fa fa-building-o"></i> Tipo Inmueble</a>

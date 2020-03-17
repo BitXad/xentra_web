@@ -564,7 +564,11 @@ function buscar_asociados() {
                     html += "<td>";
                     html += "<center>";
                     html += "<img src='" + imagen + "' width='30' height='40' >";
-                    html += "<br><button onclick = 'cargar_lectura(" + JSON.stringify(res[i]) + ")' class='btn btn-warning btn-xs' title='Registrar lecturas'><fa class='fa fa-pencil'></fa>Lecturar</button></a>";
+                    
+                    if (select_afiliados == "SIN LECTURA"){
+                        html += "<br><button onclick = 'cargar_lectura(" + JSON.stringify(res[i]) + ")' class='btn btn-warning btn-xs' title='Registrar lecturas'><fa class='fa fa-pencil'></fa>Lecturar</button>";
+                    }
+                    
                     html += "<br><a href='" + base_url + "lectura/historial/" + res[i].id_asoc + "' class='btn btn-facebook btn-xs' title='Historial de lecturas' target='_BLANK'><fa class='fa fa-list'></fa></a>";
                     html += "<a href='" + base_url + "lectura/ultimo_preaviso/" + res[i].id_asoc + "' class='btn btn-info btn-xs' title='Ultimo preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
                     html += "</center>";
@@ -593,7 +597,12 @@ function buscar_asociados() {
                     html += "<td style='padding:0;'>" + res[i].direccion_asoc + "</td>";
                     html += "<td style='padding:0;'>" + res[i].medidor_asoc + "</td>";
                     html += "<td>";
-                    html += "<button onclick = 'cargar_lectura(" + JSON.stringify(res[i]) + ")' class='btn btn-warning btn-xs' title='Registrar lecturas'><fa class='fa fa-pencil'> </fa> Lecturar </button></a>";
+                                            
+                    if (select_afiliados == "SIN LECTURA"){
+                        html += "<button onclick = 'cargar_lectura(" + JSON.stringify(res[i]) + ")' class='btn btn-warning btn-xs' title='Registrar lecturas'><fa class='fa fa-pencil'> </fa> Lecturar </button></a>";
+                    }
+                    
+
                     html += "<a href='" + base_url + "lectura/historial/" + res[i].id_asoc + "' class='btn btn-facebook btn-xs' title='Historial de lecturas' target='_BLANK'><fa class='fa fa-list'></fa></a>";
                     html += "<a href='" + base_url + "lectura/ultimo_preaviso/" + res[i].id_asoc + "' class='btn btn-info btn-xs' title='Ultimo preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
                     html += "<a href='" + base_url + "lectura/mes_preaviso/" + res[i].id_asoc +"/"+select_mes+"/"+select_gestion+"' class='btn btn-success btn-xs' title='Reimprimir preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
@@ -672,5 +681,40 @@ function registrar_lectura() {
 
         }
     });
+
+}
+
+function anular_lectura(id_lec) {
+
+
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url + "lectura/anular_lectura";
+
+    var mensaje;
+
+    var opcion = confirm("Esta a punto de anular la LECTURA Nº: 00"+id_lec+" y toda la información relacionada. ¿Desea continuar?");
+    
+    if (opcion == true) {
+
+        //Registrar factura
+        $.ajax({
+            url: controlador,
+            type: "POST",
+            data: {id_lec: id_lec},
+            success: function (result) {
+
+                // var r = JSON.parse(result);
+                //$("#boton_cerrar_lectura").click();
+                //$("#boton_buscar").click();
+                //document.getElementById("boton_registrar_lectura").style.display = 'none';
+                alert("Lectura Nº:"+id_lec+" ANULADA CORRECTAMENTE..!!");
+                location.reload();
+
+            }, error: function (result) {
+                //$("#consumo_bs").val("0.00");
+            }
+        });
+    
+        } 
 
 }
