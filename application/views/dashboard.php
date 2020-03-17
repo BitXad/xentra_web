@@ -45,7 +45,7 @@
     <div class="col-md-12" >
         <center>
             
-                    <a href="" style="padding: 0;">
+                    <a href="<?php echo base_url("asociado"); ?>"  style="padding: 0;">
                         <img src="<?php echo base_url("resources/images/system/")."asociados.png"; ?>" >                                              
                     </a>
                     <a href="" style="padding: 0;">

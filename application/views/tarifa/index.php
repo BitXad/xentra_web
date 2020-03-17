@@ -7,7 +7,7 @@
             <div class="box-header">
                 <h3 class="box-title">Tarifa</h3>
             	<div class="box-tools">
-                    <!--<a href="<?php echo site_url('tarifa/add'); ?>" class="btn btn-success btn-sm"> Registrar</a>--> 
+                    <a href="<?php echo site_url('tarifa/add'); ?>" class="btn btn-success btn-sm"> Registrar</a>
                 </div>
             </div>
             <div class="box-body">
@@ -19,6 +19,8 @@
 						<th>Hasta</th>
 						<th>Costo Agua</th>
 						<th>Costo Alcantarillado</th>
+                        <th>Costo M3</th>
+                        <th>Consumo Basico</th>
 						<th></th>
                     </tr>
                     <?php foreach($tarifa as $t){ ?>
@@ -29,8 +31,10 @@
 						<td><?php echo $t['hasta']; ?></td>
 						<td><?php echo $t['costo_agua']; ?></td>
 						<td><?php echo $t['costo_alcant']; ?></td>
+                        <td><?php echo $t['costo_mt3']; ?></td>
+                        <td><?php echo $t['consumo_basico']; ?></td>
 						<td>
-                            <!--<a href="<?php echo site_url('tarifa/edit/'.$t['id_tarifa']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> -->
+                            <a href="<?php echo site_url('tarifa/edit/'.$t['id_tarifa']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
                         </td>
                     </tr>
                     <?php } ?>

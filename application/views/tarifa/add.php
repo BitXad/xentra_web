@@ -7,10 +7,10 @@
             <?php echo form_open('tarifa/add'); ?>
           	<div class="box-body">
           		<div class="row clearfix">
-					<div class="col-md-6">
-                        <label for="tipo_asoc" class="control-label">Tipo</label>
+					<div class="col-md-4">
+                        <label for="tipo" class="control-label">Tipo</label>
                         <div class="form-group">
-                            <select name="tipo_asoc" class="form-control" id="tipo_asoc">
+                            <select name="tipo" class="form-control" id="tipo" required>
                                 <!--<option value="">select</option>-->
                                 <?php
                                 foreach($all_tipo_asociado as $tipo_asociado)
@@ -22,30 +22,42 @@
                             </select>
                         </div>
                     </div>
-					<div class="col-md-6">
-						<label for="desde" class="control-label">Desde</label>
+					<div class="col-md-4">
+						<label for="desde" class="control-label">Desde (M3)</label>
 						<div class="form-group">
-							<input type="text" name="desde" value="<?php echo $this->input->post('desde'); ?>" class="form-control" id="desde" />
+							<input type="number" step="any" name="desde" value="0" class="form-control" id="desde" required/>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="hasta" class="control-label">Hasta</label>
+					<div class="col-md-4">
+						<label for="hasta" class="control-label">Hasta (M3)</label>
 						<div class="form-group">
-							<input type="text" name="hasta" value="<?php echo $this->input->post('hasta'); ?>" class="form-control" id="hasta" />
+							<input type="number" step="any" name="hasta" value="<?php echo $this->input->post('hasta'); ?>" class="form-control" id="hasta" required/>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="costo_agua" class="control-label">Costo Agua</label>
+					<div class="col-md-3">
+						<label for="costo_agua" class="control-label">Costo Agua (Bs)</label>
 						<div class="form-group">
-							<input type="text" name="costo_agua" value="<?php echo $this->input->post('costo_agua'); ?>" class="form-control" id="costo_agua" />
+							<input type="number" step="any" name="costo_agua" value="<?php echo $this->input->post('costo_agua'); ?>" class="form-control" id="costo_agua" required />
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="costo_alcant" class="control-label">Costo Alcant</label>
+					<div class="col-md-3">
+						<label for="costo_alcant" class="control-label">Costo Alcantarilla (Bs)</label>
 						<div class="form-group">
-							<input type="text" name="costo_alcant" value="<?php echo $this->input->post('costo_alcant'); ?>" class="form-control" id="costo_alcant" />
+							<input type="number" step="any" name="costo_alcant" value="<?php echo $this->input->post('costo_alcant'); ?>" class="form-control" id="costo_alcant" required/>
 						</div>
 					</div>
+          <div class="col-md-3">
+            <label for="costo_mt3" class="control-label">Costo (M3)</label>
+            <div class="form-group">
+              <input type="number" step="any" name="costo_mt3" value="<?php echo $this->input->post('costo_mt3'); ?>" class="form-control" id="costo_mt3" required/>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label for="consumo_basico" class="control-label">Consumo Basico (M3)</label>
+            <div class="form-group">
+              <input type="number" step="any" name="consumo_basico" value="<?php echo $this->input->post('consumo_basico'); ?>" class="form-control" id="consumo_basico" required/>
+            </div>
+          </div>
 				</div>
 			</div>
           	<div class="box-footer">
