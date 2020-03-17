@@ -113,9 +113,10 @@ class Asociado_model extends CI_Model
     function get_busqueda_asociado_parametro($parametro, $servicioestado)
     {
         $sql = "SELECT
-                        a.*
+                        a.*, l.mes_lec, l.gestion_lec, l.actual_lec, l.fecha_lec
                 FROM
                         asociado a
+                LEFT JOIN lectura l on a.id_asoc = l.id_asoc
                 WHERE
                      (a.nombres_asoc like '%".$parametro."%' or a.apellidos_asoc like '%".$parametro."%'
                       or a.ci_asoc like '%".$parametro."%' or a.direccion_asoc like '%".$parametro."%'
@@ -124,6 +125,7 @@ class Asociado_model extends CI_Model
                       or a.zona_asoc like '%".$parametro."%' or a.medidor_asoc like '%".$parametro."%'
                       or a.servicios_asoc like '%".$parametro."%' or a.categoria_asoc like '%".$parametro."%')
                       ".$servicioestado."
+                GROUP by a.id_asoc
                 ORDER By a.apellidos_asoc, a.nombres_asoc";
         $asociado = $this->db->query($sql)->result_array();
         return $asociado;
