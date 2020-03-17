@@ -129,4 +129,21 @@ class Asociado_model extends CI_Model
         return $asociado;
 
     }
+    /* Get all asociado and lectura inicial*/
+    function get_all_asociado_lecturainicial()
+    {
+        $asociado = $this->db->query("
+            SELECT
+                a.*, l.mes_lec, l.gestion_lec, l.actual_lec, l.fecha_lec
+            FROM
+                asociado a
+            LEFT JOIN lectura l on a.id_asoc = l.id_asoc
+            WHERE
+                1 = 1
+            GROUP by a.id_asoc
+            ORDER By a.apellidos_asoc, a.nombres_asoc
+        ")->result_array();
+
+        return $asociado;
+    }
 }

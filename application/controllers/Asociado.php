@@ -129,6 +129,7 @@ class Asociado extends CI_Controller{
                 'diametrored_asoc' => $this->input->post('diametrored_asoc'),
                 'codigocatastral_asoc' => $this->input->post('codigocatastral_asoc'),
                 'lecturabase_asoc' => $this->input->post('lecturabase_asoc'),
+                'sistemared_asoc' => $this->input->post('sistemared_asoc'),
             );
             $asociado_id = $this->Asociado_model->add_asociado($params);
             
@@ -172,6 +173,8 @@ class Asociado extends CI_Controller{
             $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();
             $this->load->model('Zona_model');
             $data['all_zona'] = $this->Zona_model->get_all_zonas();
+            $this->load->model('Sistema_red_model');
+            $data['all_sistema_red'] = $this->Sistema_red_model->get_all_sistema_red();
             $this->load->model('Servicio_model');
             $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
             $this->load->model('Diametrored_model');
@@ -305,6 +308,7 @@ class Asociado extends CI_Controller{
                     'diametrored_asoc' => $this->input->post('diametrored_asoc'),
                     'codigocatastral_asoc' => $this->input->post('codigocatastral_asoc'),
                     'lecturabase_asoc' => $this->input->post('lecturabase_asoc'),
+                    'sistemared_asoc' => $this->input->post('sistemared_asoc'),
                 );
                 $this->Asociado_model->update_asociado($id_asoc,$params);
                 
@@ -330,6 +334,8 @@ class Asociado extends CI_Controller{
                 $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();
                 $this->load->model('Zona_model');
                 $data['all_zona'] = $this->Zona_model->get_all_zonas();
+                $this->load->model('Sistema_red_model');
+                $data['all_sistema_red'] = $this->Sistema_red_model->get_all_sistema_red();
                 $this->load->model('Servicio_model');
                 $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
                 $this->load->model('Diametrored_model');
@@ -371,7 +377,7 @@ class Asociado extends CI_Controller{
     function buscarasociadosall()
     {
         if ($this->input->is_ajax_request()){
-            $datos = $this->Asociado_model->get_all_asociado();
+            $datos = $this->Asociado_model->get_all_asociado_lecturainicial();
             echo json_encode($datos);
         }else{
             echo json_encode(null);

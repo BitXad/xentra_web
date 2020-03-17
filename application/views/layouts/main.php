@@ -213,6 +213,9 @@
                                     <a href="<?php echo site_url('servicio');?>"><i class="fa fa-tasks"></i> Servicio</a>
                                 </li>
                                 <li>
+                                    <a href="<?php echo site_url('sistema_red');?>"><i class="fa fa-sitemap"></i> Sistema Red</a>
+                                </li>
+                                <li>
                                     <a href="<?php echo site_url('tipo_asociado');?>"><i class="fa fa-list-ul"></i> Tipo Asociado</a>
                                 </li>
                                 <li>

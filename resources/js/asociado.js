@@ -77,7 +77,7 @@ function tablaresultadosasociado(limite)
                         if(registros[i]["producto_caracteristicas"] != null){
                             caracteristica = "<div style='word-wrap: break-word !important; max-width: 400px !important; white-space: normal'>"+registros[i]["producto_caracteristicas"]+"</div>";
                         }*/
-//                        html+= caracteristica+"</td>";                        
+//                        html+= caracteristica+"</td>";
                         html += "<tr>";
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td>";
@@ -100,18 +100,28 @@ function tablaresultadosasociado(limite)
                             tamaniofont = 1;
                         }
                         html += "<font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["apellidos_asoc"]+" "+registros[i]["nombres_asoc"]+"</b></font><br>";
-                        html += "C.I.: "+registros[i]["ci_asoc"]+"<br>";
-                        html += "DIR.: "+registros[i]["direccion_asoc"]+"<br>";
+                        html += "C.I.: "+registros[i]["ci_asoc"]+" "+registros[i]["ciudad"]+"<br>";
+                        html += "DIR.: "+registros[i]["direccion_asoc"]+" ";
+                        if(registros[i]["nro_asoc"] != null && registros[i]["nro_asoc"] != ""){
+                            html += registros[i]["nro_asoc"]+" ";
+                        }
+                        if(registros[i]["referencia_asoc"] != null && registros[i]["referencia_asoc"] != ""){
+                            html += registros[i]["referencia_asoc"]+" ";
+                        }
+                        html += "<br>";
+                        html += "MANZANO: ";
+                        if(registros[i]["manzano_asoc"] != null && registros[i]["manzano_asoc"] != ""){
+                            html += registros[i]["manzano_asoc"]+" ";
+                        }
+                        html += "<br>";
                         html += "TELF.: "+registros[i]["telefono_asoc"]+"<br>";
+                        html += "TIPO: ";
+                        if(registros[i]["tipo_asoc"] != null && registros[i]["tipo_asoc"] != ""){
+                            html += registros[i]["tipo_asoc"];
+                        }
                         html += "</div>";
                         html += "</div>";
                         html += "</td>";
-                        var escategoria="";
-                        if(registros[i]["categoria_id"] == null || registros[i]["categoria_id"] == 0 || registros[i]["categoria_id"] ==""){
-                            escategoria = "No definido";
-                        }else{
-                            escategoria = registros[i]["categoria_nombre"];
-                        }
                         html += "<td>";
                         html += registros[i]["codigo_asoc"]+"<br>";
                         html += registros[i]["categoria_asoc"]+"<br>";
@@ -122,6 +132,16 @@ function tablaresultadosasociado(limite)
                         html += "<td>";
                         html += "SERV.: "+registros[i]["servicios_asoc"]+"<br>";
                         html += "ZONA: "+registros[i]["zona_asoc"];
+                        html += "<br>";
+                        html += "SISTEMA RED: ";
+                        if(registros[i]["sistemared_asoc"] != null && registros[i]["sistemared_asoc"] != ""){
+                            html += registros[i]["sistemared_asoc"];
+                        }
+                        html += "<br>";
+                        html += "TIPO INMUEBLE: ";
+                        if(registros[i]["tipoinmueble_asoc"] != null && registros[i]["tipoinmueble_asoc"] != ""){
+                            html += registros[i]["tipoinmueble_asoc"];
+                        }
                         html += "</td>";
                         html += "<td>";
                         if(registros[i]["fechanac_asoc"] != null && registros[i]["fechanac_asoc"] != "0000-00-00"){
@@ -135,8 +155,9 @@ function tablaresultadosasociado(limite)
                             html += "F. REG.:<br>"
                         }
                         html += "</td>";
-                        html += "<td>";
-                        html += registros[i]["orden_asoc"];
+                        html += "<td class='text-center'>";
+                        html += registros[i]["orden_asoc"]+"<br>";
+                        html += registros[i]["estado"];
                         html += "</td>";
                         html += "<td class='no-print' style='text-align: center'>";
                         if ((registros[i]["latitud_asoc"]==0 && registros[i]["longitud_asoc"]==0) || (registros[i]["latitud_asoc"]==null && registros[i]["longitud_asoc"]==null) || (registros[i]["latitud_asoc"]== "" && registros[i]["longitud_asoc"]=="")){
@@ -148,7 +169,40 @@ function tablaresultadosasociado(limite)
                         }
                         html += "</td>";
                         html += "<td>";
-                        html += registros[i]["ciudad"];
+                        if(registros[i]["codigocatastral_asoc"] != null && registros[i]["codigocatastral_asoc"] != ""){
+                            html += registros[i]["codigocatastral_asoc"]+" ";
+                        }
+                        html += "<br>";
+                        html += "DIST. (Mts.): ";
+                        if(registros[i]["distancia_asoc"] != null && registros[i]["distancia_asoc"] != ""){
+                            html += registros[i]["distancia_asoc"]+" ";
+                        }
+                        html += "<br>";
+                        html += "DIAM. RED: ";
+                        if(registros[i]["diametrored_asoc"] != null && registros[i]["diametrored_asoc"] != ""){
+                            html += registros[i]["diametrored_asoc"]+" ";
+                        }
+                        html += "</td>";
+                        html += "<td>";
+                        html += "LEC.: ";
+                        if(registros[i]["actual_lec"] != null && registros[i]["actual_lec"] != ""){
+                            html += registros[i]["actual_lec"]+" ";
+                        }
+                        html += "<br>";
+                        html += "MES: ";
+                        if(registros[i]["mes_lec"] != null && registros[i]["mes_lec"] != ""){
+                            html += registros[i]["mes_lec"]+" ";
+                        }
+                        html += "<br>";
+                        html += "GEST.: ";
+                        if(registros[i]["gestion_lec"] != null && registros[i]["gestion_lec"] != ""){
+                            html += registros[i]["gestion_lec"]+" ";
+                        }
+                        html += "<br>";
+                        html += "FECHA: ";
+                        if(registros[i]["fecha_lec"] != null && registros[i]["fecha_lec"] != ""){
+                            html += moment(registros[i]["fecha_lec"]).format("DD/MM/YYYY");
+                        }
                         html += "</td>";
                         html += "<td>";
                         html += "<a href='"+base_url+"asociado/edit/"+registros[i]["id_asoc"]+"' class='btn btn-info btn-xs' title='Modificar información de Asociado' ><span class='fa fa-pencil'></span></a>";
