@@ -45,7 +45,7 @@ class Tarifa_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `id_tarifa` DESC
+            ORDER BY `id_tarifa` ASC
         ")->result_array();
 
         return $tarifa;

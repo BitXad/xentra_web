@@ -39,7 +39,11 @@ function finalizar(){
                 if (imprimir_factura==true) {
                     window.open(base_url+"factura/imprimir/"+factura_id, '_blank');
                 }
-                location.reload();
+                var nada = "";
+                $("#lista_pendientes").html(nada);
+                $("#detalle_factura").html(nada);
+                $("#detalle_recargo").html(nada);
+                facturas_pendientes(id_asoc);
              
 
             },

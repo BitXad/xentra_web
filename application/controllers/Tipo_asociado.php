@@ -27,9 +27,12 @@ class Tipo_asociado extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('tipo_asoc','tipo_asoc','is_unique[tipo_asociado.tipo_asoc]', array('is_unique' => 'Este TIPO ya fue Registrado.'));
+        if($this->form_validation->run())     
         {   
             $params = array(
+                'tipo_asoc' => $this->input->post('tipo_asoc'),
             );
             
             $tipo_asociado_id = $this->Tipo_asociado_model->add_tipo_asociado($params);
@@ -45,16 +48,26 @@ class Tipo_asociado extends CI_Controller{
     /*
      * Editing a tipo_asociado
      */
-    function edit($tipo_asoc)
+    function edit($este_tipo)
     {   
         // check if the tipo_asociado exists before trying to edit it
+
+        $tipo_asoc = str_replace("%20", " ", $este_tipo);
         $data['tipo_asociado'] = $this->Tipo_asociado_model->get_tipo_asociado($tipo_asoc);
+        if ($this->input->post('tipo_asoc') != $data['tipo_asociado']['tipo_asoc']) {
+            $is_unique = '|is_unique[tipo_asociado.tipo_asoc]';
+        } else {
+            $is_unique = '';
+        }
         
         if(isset($data['tipo_asociado']['tipo_asoc']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('tipo_asoc', 'tipo_asoc', 'required' . $is_unique, array('is_unique' => 'Este TIPO ya fue Registrado.'));
+            if($this->form_validation->run())    
             {   
                 $params = array(
+                    'tipo_asoc' => $this->input->post('tipo_asoc'),
                 );
 
                 $this->Tipo_asociado_model->update_tipo_asociado($tipo_asoc,$params);            
