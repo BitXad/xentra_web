@@ -1,5 +1,5 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<input type="hidden" name="all_zona" id="all_zona" value='<?php echo json_encode($all_zona); ?>' />
+<input type="hidden" name="all_sistema_red" id="all_sistema_red" value='<?php echo json_encode($all_sistema_red); ?>' />
 <input type="hidden" name="all_categoria" id="all_categoria" value='<?php echo json_encode($all_categoria); ?>' />
 <input type="hidden" name="all_tipo_inmueble" id="all_tipo_inmueble" value='<?php echo json_encode($all_tipo_inmueble); ?>' />
 <input type="hidden" name="all_diametro" id="all_diametro" value='<?php echo json_encode($all_diametro); ?>' />
@@ -18,12 +18,12 @@
     }
     
     function generarcodigo(){
-        var all_zona          = JSON.parse(document.getElementById('all_zona').value);
+        var all_sistema_red   = JSON.parse(document.getElementById('all_sistema_red').value);
         var all_categoria     = JSON.parse(document.getElementById('all_categoria').value);
         var all_tipo_inmueble = JSON.parse(document.getElementById('all_tipo_inmueble').value);
         var all_diametro      = JSON.parse(document.getElementById('all_diametro').value);
         
-        var zona         = document.getElementById('zona_asoc').value;
+        var sistemared   = document.getElementById('sistemared_asoc').value;
         var manzano      = document.getElementById('manzano_asoc').value;
         var calle        = document.getElementById('nro_asoc').value;
         var distancia    = document.getElementById('distancia_asoc').value;
@@ -31,11 +31,11 @@
         var tipoinmueble = document.getElementById('tipoinmueble_asoc').value;
         var diametrored  = document.getElementById('diametrored_asoc').value;
         
-        var z = all_zona.length;
-        var cod_zona = "";
-        for (var i = 0; i < z; i++) {
-            if(all_zona[i]['zona_med'] == zona){
-                cod_zona = all_zona[i]['codigozona_med'];
+        var z = all_sistema_red.length;
+        var cod_sistemared = "";
+        for (var i = 0; i < z; i++){
+            if(all_sistema_red[i]['nombre_sred'] == sistemared){
+                cod_sistemared = all_sistema_red[i]['codigo_sred'];
             }
         }
         var c = all_categoria.length;
@@ -60,7 +60,7 @@
             }
         }
         
-        $('#codigocatastral_asoc').val(cod_zona+manzano+calle+distancia+cod_categoria+cod_tipoinmueble+cod_diametrored);
+        $('#codigocatastral_asoc').val(cod_sistemared+manzano+calle+distancia+cod_categoria+cod_tipoinmueble+cod_diametrored);
         alert("Codigo de Catastro modiicado con exito!");
     }
 </script>
@@ -372,6 +372,21 @@
                             <div class="form-group">
                                 <input type="number" step="any" name="longitud_asoc" value="<?php echo ($this->input->post('longitud_asoc') ? $this->input->post('longitud_asoc') : $asociado['longitud_asoc']); ?>" class="form-control" id="longitud_asoc" />
                             </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="sistemared_asoc" class="control-label">Sistema Red</label>
+                        <div class="form-group">
+                            <select name="sistemared_asoc" class="form-control" id="sistemared_asoc" required>
+                                <!--<option value="">select</option>-->
+                                <?php
+                                foreach($all_sistema_red as $sistemared)
+                                {
+                                    $selected = ($sistemared["nombre_sred"] == $asociado['sistemared_asoc']) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$sistemared["nombre_sred"].'" '.$selected.'>'.$sistemared["nombre_sred"].'</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <label for="medidor_asoc" class="control-label">Medidor</label>

@@ -122,7 +122,8 @@
                         <th>FECHAS</th>
                         <th>ORDEN</th>
                         <th>MAP</th>
-                        <th>CIUDAD</th>
+                        <th>COD. CAT.</th>
+                        <th>LEC. BASE</th>
                         <th></th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
