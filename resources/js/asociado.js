@@ -1,6 +1,6 @@
 $(document).on("ready",inicio);
 function inicio(){
-    tablaresultadosasociado(3);
+    //tablaresultadosasociado(3);
 }
 
 /*
@@ -19,6 +19,7 @@ function tablaresultadosasociado(limite)
 {
     var controlador = "";
     var parametro = "";
+    var direcciontext = "";
     var serviciotext = "";
     var categoriatext = "";
     var servicioestado = "";
@@ -34,6 +35,7 @@ function tablaresultadosasociado(limite)
      // busca por categoria
     }else{
         controlador = base_url+'asociado/buscarasociados/';
+        var direccion = document.getElementById('id_dir').value;
         var servicio  = document.getElementById('servicio_id').value;
         var categoria = document.getElementById('categoria_id').value;
         if(servicio == 0){
@@ -42,6 +44,13 @@ function tablaresultadosasociado(limite)
            servicioestado = " and a.servicios_asoc = '"+servicio+"' ";
            serviciotext = $('select[name="servicio_id"] option:selected').text();
            serviciotext = "Servicio: "+serviciotext;
+        }
+        if(direccion == 0){
+           servicioestado += "";
+        }else{
+           servicioestado += " and a.direccion_asoc = '"+direccion+"' ";
+           direcciontext = $('select[name="id_dir"] option:selected').text();
+           direcciontext = "Dirección: "+direcciontext;
         }
         if(categoria == 0){
            servicioestado += "";
@@ -133,11 +142,11 @@ function tablaresultadosasociado(limite)
                         html += "SERV.: "+registros[i]["servicios_asoc"]+"<br>";
                         html += "ZONA: "+registros[i]["zona_asoc"];
                         html += "<br>";
-                        html += "SISTEMA RED: ";
+                        /*html += "SISTEMA RED: ";
                         if(registros[i]["sistemared_asoc"] != null && registros[i]["sistemared_asoc"] != ""){
                             html += registros[i]["sistemared_asoc"];
                         }
-                        html += "<br>";
+                        html += "<br>";*/
                         html += "TIPO INMUEBLE: ";
                         if(registros[i]["tipoinmueble_asoc"] != null && registros[i]["tipoinmueble_asoc"] != ""){
                             html += registros[i]["tipoinmueble_asoc"];
@@ -173,9 +182,19 @@ function tablaresultadosasociado(limite)
                             html += registros[i]["codigocatastral_asoc"]+" ";
                         }
                         html += "<br>";
-                        html += "DIST. (Mts.): ";
+                        html += "SIST. RED: ";
+                        if(registros[i]["sistemared_asoc"] != null && registros[i]["sistemared_asoc"] != ""){
+                            html += registros[i]["sistemared_asoc"]+" ";
+                        }
+                        html += "<br>";
+                        html += "DIST. N.O.(Mts.): ";
                         if(registros[i]["distancia_asoc"] != null && registros[i]["distancia_asoc"] != ""){
                             html += registros[i]["distancia_asoc"]+" ";
+                        }
+                        html += "<br>";
+                        html += "DIST. RED(Mts.): ";
+                        if(registros[i]["distanciar_asoc"] != null && registros[i]["distanciar_asoc"] != ""){
+                            html += registros[i]["distanciar_asoc"]+" ";
                         }
                         html += "<br>";
                         html += "DIAM. RED: ";
@@ -205,8 +224,8 @@ function tablaresultadosasociado(limite)
                         }
                         html += "</td>";
                         html += "<td>";
-                        html += "<a href='"+base_url+"asociado/edit/"+registros[i]["id_asoc"]+"' class='btn btn-info btn-xs' title='Modificar información de Asociado' ><span class='fa fa-pencil'></span></a>";
-                        html += "<a href='"+base_url+"imagen_asociado/catalogo/"+registros[i]["id_asoc"]+"' class='btn btn-success btn-xs' title='Documentos' ><span class='fa fa-folder-open'></span></a>";
+                        html += "<a href='"+base_url+"asociado/edit/"+registros[i]["id_asoc"]+"' class='btn btn-info btn-xs' target='_blank' title='Modificar información de Asociado' ><span class='fa fa-pencil'></span></a>";
+                        html += "<a href='"+base_url+"imagen_asociado/catalogo/"+registros[i]["id_asoc"]+"' class='btn btn-success btn-xs' target='_blank' title='Documentos' ><span class='fa fa-folder-open'></span></a>";
                         
                         
                         

@@ -140,7 +140,7 @@
     </div>
     <div style="float: right">
     <center>
-        <a href="<?php echo site_url('asociado'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
+        <a onclick="cerrar_pestania()" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
     </center>
 </div>
 </div>
@@ -166,9 +166,9 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="imagenasoc_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
+                        <label for="imagenasoc_descripcion" class="control-label">Descripción</label>
                         <div class="form-group">
-                            <input type="text" name="imagenasoc_descripcion" value="<?php echo $this->input->post('imagenasoc_descripcion'); ?>" class="form-control" id="imagenasoc_descripcion" required/>
+                            <input type="text" name="imagenasoc_descripcion" value="<?php echo $this->input->post('imagenasoc_descripcion'); ?>" class="form-control" id="imagenasoc_descripcion"/>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -207,4 +207,8 @@
             location.reload();
         });
     });
+    
+    function cerrar_pestania(){
+        window.close();
+    }
 </script>

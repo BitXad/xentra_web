@@ -1,5 +1,7 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="all_sistema_red" id="all_sistema_red" value='<?php echo json_encode($all_sistema_red); ?>' />
+<input type="hidden" name="all_zona" id="all_zona" value='<?php echo json_encode($all_zona); ?>' />
+<input type="hidden" name="all_direccion" id="all_direccion" value='<?php echo json_encode($all_direccion); ?>' />
 <input type="hidden" name="all_categoria" id="all_categoria" value='<?php echo json_encode($all_categoria); ?>' />
 <input type="hidden" name="all_tipo_inmueble" id="all_tipo_inmueble" value='<?php echo json_encode($all_tipo_inmueble); ?>' />
 <input type="hidden" name="all_diametro" id="all_diametro" value='<?php echo json_encode($all_diametro); ?>' />
@@ -19,23 +21,41 @@
     
     function generarcodigo(){
         var all_sistema_red   = JSON.parse(document.getElementById('all_sistema_red').value);
+        var all_zona          = JSON.parse(document.getElementById('all_zona').value);
+        var all_direccion     = JSON.parse(document.getElementById('all_direccion').value);
         var all_categoria     = JSON.parse(document.getElementById('all_categoria').value);
         var all_tipo_inmueble = JSON.parse(document.getElementById('all_tipo_inmueble').value);
         var all_diametro      = JSON.parse(document.getElementById('all_diametro').value);
         
         var sistemared   = document.getElementById('sistemared_asoc').value;
+        var zona         = document.getElementById('zona_asoc').value;
+        var calle        = document.getElementById('direccion_asoc').value;
         var manzano      = document.getElementById('manzano_asoc').value;
-        var calle        = document.getElementById('nro_asoc').value;
+        //var calle        = document.getElementById('nro_asoc').value;
         var distancia    = document.getElementById('distancia_asoc').value;
         var categoria    = document.getElementById('categoria_asoc').value;
         var tipoinmueble = document.getElementById('tipoinmueble_asoc').value;
         var diametrored  = document.getElementById('diametrored_asoc').value;
         
-        var z = all_sistema_red.length;
-        var cod_sistemared = "";
-        for (var i = 0; i < z; i++){
+        var s = all_sistema_red.length;
+        var cod_sred = "";
+        for (var i = 0; i < s; i++) {
             if(all_sistema_red[i]['nombre_sred'] == sistemared){
-                cod_sistemared = all_sistema_red[i]['codigo_sred'];
+                cod_sred = all_sistema_red[i]['codigo_sred'];
+            }
+        }
+        var z = all_zona.length;
+        var cod_zona = "";
+        for (var i = 0; i < z; i++){
+            if(all_zona[i]['zona_med'] == zona){
+                cod_zona = all_zona[i]['codigozona_med'];
+            }
+        }
+        var cd = all_direccion.length;
+        var cod_dirnum = "";
+        for (var j = 0; j < cd; j++) {
+            if(all_direccion[j]['nombre_dir'] == calle){
+                cod_dirnum = all_direccion[j]['codigo_dir'];
             }
         }
         var c = all_categoria.length;
@@ -60,7 +80,7 @@
             }
         }
         
-        $('#codigocatastral_asoc').val(cod_sistemared+manzano+calle+distancia+cod_categoria+cod_tipoinmueble+cod_diametrored);
+        $('#codigocatastral_asoc').val(cod_sred+cod_zona+manzano+cod_dirnum+distancia+cod_categoria+cod_tipoinmueble+cod_diametrored);
         alert("Codigo de Catastro modiicado con exito!");
     }
 </script>
@@ -147,15 +167,24 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label for="direccion_asoc" class="control-label">Calle</label>
+                        <label for="direccion_asoc" class="control-label"><span class="text-bold">*</span>Dirección</label>
                         <div class="form-group">
-                            <input type="text" name="direccion_asoc" value="<?php echo ($this->input->post('direccion_asoc') ? $this->input->post('direccion_asoc') : $asociado['direccion_asoc']); ?>" class="form-control" id="direccion_asoc" />
+                            <select name="direccion_asoc" class="form-control" id="direccion_asoc" required>
+                                <option value="">- DIRECCION -</option>
+                                <?php 
+                                foreach($all_direccion as $direccion)
+                                {
+                                    $selected = ($direccion['nombre_dir'] == $asociado['direccion_asoc']) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$direccion['nombre_dir'].'" '.$selected.'>'.$direccion['nombre_dir'].'</option>';
+                                } 
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="nro_asoc" class="control-label"><span class="text-bold">*</span>Nro.</label>
+                        <label for="nro_asoc" class="control-label">Nro.</label>
                         <div class="form-group">
-                            <input type="text" name="nro_asoc" value="<?php echo ($this->input->post('nro_asoc') ? $this->input->post('nro_asoc') : $asociado['nro_asoc']); ?>" class="form-control" id="nro_asoc" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <input type="text" name="nro_asoc" value="<?php echo ($asociado['nro_asoc'] ? $asociado['nro_asoc'] : 'S/N'); ?>" class="form-control" id="nro_asoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -185,13 +214,19 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="distancia_asoc" class="control-label">Distancia(Mts.)</label>
+                    <div class="col-md-2">
+                        <label for="distancia_asoc" class="control-label">Distancia N.O.(Mts.)</label>
                         <div class="form-group">
                             <input type="number" step="any" min="0" name="distancia_asoc" value="<?php echo ($this->input->post('distancia_asoc') ? $this->input->post('distancia_asoc') : $asociado['distancia_asoc']); ?>" class="form-control" id="distancia_asoc" />
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
+                        <label for="distanciar_asoc" class="control-label">Distancia Red(Mts.)</label>
+                        <div class="form-group">
+                            <input type="number" step="any" min="0" name="distanciar_asoc" value="<?php echo ($this->input->post('distanciar_asoc') ? $this->input->post('distanciar_asoc') : $asociado['distanciar_asoc']); ?>" class="form-control" id="distanciar_asoc" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
                         <label for="tipoinmueble_asoc" class="control-label">Tipo Inmueble</label>
                         <div class="form-group">
                             <select name="tipoinmueble_asoc" class="form-control" id="tipoinmueble_asoc">
@@ -506,10 +541,15 @@
             	<button type="submit" class="btn btn-success">
                     <i class="fa fa-check"></i> Guardar
                 </button>
-                <a href="<?php echo site_url('asociado'); ?>" class="btn btn-danger">
+                <a onclick="cerrar_pestania()" class="btn btn-danger">
                     <i class="fa fa-times"></i> Cancelar</a>
             </div>				
             <?php echo form_close(); ?>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function cerrar_pestania(){
+        window.close();
+    }
+</script>

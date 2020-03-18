@@ -23,11 +23,13 @@ class Asociado extends CI_Controller{
      */
     function index()
     {
-        $data['asociado'] = $this->Asociado_model->get_all_asociado();
+        //$data['asociado'] = $this->Asociado_model->get_all_asociado();
         $this->load->model('Servicio_model');
         $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
         $this->load->model('Categoria_model');
         $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
+        $this->load->model('Direccion_model');
+        $data['all_direccion'] = $this->Direccion_model->get_all_direccion();
         
         $data['_view'] = 'asociado/index';
         $this->load->view('layouts/main',$data);
@@ -95,12 +97,12 @@ class Asociado extends CI_Controller{
             }
             /* *********************FIN imagen***************************** */
             $id_empresa = 1;
-            $estado = "ACTIVO";
+            //$estado = "ACTIVO";
             date_default_timezone_set('America/La_Paz');
             $fechahora_res = date('Y-m-d H:i:s');
             $params = array(
                 'id_emp' => $id_empresa,
-                'estado' => $estado,
+                'estado' => $this->input->post('estado_asoc'),
                 'tipo_asoc' => $this->input->post('tipo_asoc'),
                 'ciudad' => $this->input->post('expedido'),
                 'nombres_asoc' => $this->input->post('nombres_asoc'),
@@ -130,6 +132,7 @@ class Asociado extends CI_Controller{
                 'codigocatastral_asoc' => $this->input->post('codigocatastral_asoc'),
                 'lecturabase_asoc' => $this->input->post('lecturabase_asoc'),
                 'sistemared_asoc' => $this->input->post('sistemared_asoc'),
+                'distanciar_asoc' => $this->input->post('distanciar_asoc'),
             );
             $asociado_id = $this->Asociado_model->add_asociado($params);
             
@@ -175,6 +178,8 @@ class Asociado extends CI_Controller{
             $data['all_zona'] = $this->Zona_model->get_all_zonas();
             $this->load->model('Sistema_red_model');
             $data['all_sistema_red'] = $this->Sistema_red_model->get_all_sistema_red();
+            $this->load->model('Direccion_model');
+            $data['all_direccion'] = $this->Direccion_model->get_all_direccion();
             $this->load->model('Servicio_model');
             $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
             $this->load->model('Diametrored_model');
@@ -183,6 +188,8 @@ class Asociado extends CI_Controller{
             $data['all_tipo_inmueble'] = $this->Tipo_inmueble_model->get_all_tipo_inmueble();
             /*$this->load->model('Empresa_model');
             $data['all_empresa'] = $this->Empresa_model->get_all_empresa();*/
+            $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estados();
             $this->load->model('Categoria_model');
             $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
             
@@ -309,6 +316,7 @@ class Asociado extends CI_Controller{
                     'codigocatastral_asoc' => $this->input->post('codigocatastral_asoc'),
                     'lecturabase_asoc' => $this->input->post('lecturabase_asoc'),
                     'sistemared_asoc' => $this->input->post('sistemared_asoc'),
+                    'distanciar_asoc' => $this->input->post('distanciar_asoc'),
                 );
                 $this->Asociado_model->update_asociado($id_asoc,$params);
                 
@@ -336,6 +344,8 @@ class Asociado extends CI_Controller{
                 $data['all_zona'] = $this->Zona_model->get_all_zonas();
                 $this->load->model('Sistema_red_model');
                 $data['all_sistema_red'] = $this->Sistema_red_model->get_all_sistema_red();
+                $this->load->model('Direccion_model');
+                $data['all_direccion'] = $this->Direccion_model->get_all_direccion();
                 $this->load->model('Servicio_model');
                 $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
                 $this->load->model('Diametrored_model');
