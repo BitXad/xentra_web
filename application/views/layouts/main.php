@@ -204,6 +204,12 @@
                                     <a href="<?php echo site_url('diametrored');?>"><i class="fa fa-support"></i> Diametro de Red</a>
                                 </li>
                                 <li>
+                                    <a href="<?php echo site_url('direccion');?>"><i class="fa fa-address-book"></i> Dirección</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('documento');?>"><i class="fa fa-book"></i> Documento</a>
+                                </li>
+                                <li>
                                     <a href="<?php echo site_url('estado');?>"><i class="fa fa-toggle-on"></i> Estado</a>
                                 </li>
                                 <li>

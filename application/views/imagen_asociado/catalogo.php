@@ -162,7 +162,16 @@
                     <div class="col-md-6">
                         <label for="imagenasoc_titulo" class="control-label"><span class="text-danger">*</span>Documento</label>
                         <div class="form-group">
-                            <input type="text" name="imagenasoc_titulo" value="<?php echo $this->input->post('imagenasoc_titulo'); ?>" class="form-control" id="imagenasoc_titulo" required/>
+                            <select name="imagenasoc_titulo" class="form-control" id="imagenasoc_titulo" required>
+                                <!--<option value="">- EXPEDIDO -</option>-->
+                                <?php 
+                                foreach($all_documento as $documento)
+                                {
+                                    $selected = ($documento['nombre_doc'] == $this->input->post('nombre_doc')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$documento['nombre_doc'].'" '.$selected.'>'.$documento['nombre_doc'].'</option>';
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
