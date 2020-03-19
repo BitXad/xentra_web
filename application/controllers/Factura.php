@@ -268,6 +268,8 @@ class Factura extends CI_Controller{
 
     function registrarfactura()
     {
+        $session_data = $this->session->userdata('logged_in');
+        $usuario_id = $session_data['id_usu'];
         $factura_id = $this->input->post('factura_id');
         $lectura_id = $this->input->post('lectura_id');
         $generar_factura = 0;/*$this->input->post('generar_factura');*/  //aca debe venir el check generar
@@ -291,7 +293,7 @@ class Factura extends CI_Controller{
         if ($generar_factura==1) {
             //aqui si hay q generar la factura...
         } else {
-            $this->Factura_model->cancelar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total);
+            $this->Factura_model->cancelar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id);
            
         }
             $this->Factura_model->actualizar_dosificacion($numfact_dosif1);

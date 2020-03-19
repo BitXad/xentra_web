@@ -194,10 +194,10 @@ class Factura_model extends CI_Model
 
     
 
-    function cancelar_factura($factura,$numfact_dosif1,$consumo,$aportes,$recargos,$total)
+    function cancelar_factura($factura,$numfact_dosif1,$consumo,$aportes,$recargos,$total,$usuario_id)
     {
 
-        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), num_fact=".$numfact_dosif1.", totalconsumo_fact=".$consumo.", totalaportes_fact=".$aportes.",totalrecargos_fact=".$recargos.", montototal_fact=".$total."   
+        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), num_fact=".$numfact_dosif1.", totalconsumo_fact=".$consumo.", totalaportes_fact=".$aportes.",totalrecargos_fact=".$recargos.", montototal_fact=".$total.", id_usu=".$usuario_id."
         WHERE id_fact=".$factura;        
         $resultado = $this->db->query($sql);
         
@@ -248,11 +248,12 @@ class Factura_model extends CI_Model
     function get_factura_completa($factura)
     {
 
-        $sql = "SELECT f.*, l.*, a.*
-        FROM factura f, lectura l, asociado a
+        $sql = "SELECT f.*, l.*, a.*, u.*
+        FROM factura f, lectura l, asociado a, usuario u
         WHERE f.id_fact=".$factura."
         AND f.id_lec=l.id_lec
-        AND l.id_asoc=a.id_asoc";        
+        AND l.id_asoc=a.id_asoc
+        AND f.id_usu=u.id_usu";        
         $resultado = $this->db->query($sql)->result_array();
         
         return $resultado;
