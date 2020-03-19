@@ -14,9 +14,9 @@
     });
 </script>
 <div class="box-header" style="padding-left: 0px">
-    <h3 class="box-title">Tipo de Inmueble</h3>
+    <h3 class="box-title">Dirección</h3>
     <div class="box-tools">
-        <a href="<?php echo site_url('tipo_inmueble/add'); ?>" class="btn btn-success btn-sm">Añadir</a> 
+        <a href="<?php echo site_url('direccion/add'); ?>" class="btn btn-success btn-sm">Añadir</a> 
     </div>
 </div>
 <div class="col-md-6" style="padding-left: 0px">
@@ -38,14 +38,14 @@
                     </tr>
                     <tbody class="buscar">
                     <?php $i = 0;
-                          foreach($all_tipo_inmueble as $e){ ?>
+                          foreach($all_direccion as $e){ ?>
                     <tr>
                         <td class="text-center"><?php echo $i+1;; ?></td>
-                        <td class="text-bold" style="font-size: 12pt"><?php echo $e['nombre_tin']; ?></td>
-                        <td class="text-center"><?php echo $e['codigo_tin']; ?></td>
+                        <td class="text-bold" style="font-size: 12pt"><?php echo $e['nombre_dir']; ?></td>
+                        <td class="text-center"><?php echo $e['codigo_dir']; ?></td>
                         <td class="text-center">
-                            <a href="<?php echo site_url('tipo_inmueble/edit/'.$e['id_tin']); ?>" class="btn btn-info btn-xs" title="Modificar tipo de inueble"><span class="fa fa-pencil"></span></a> 
-                            <!--<a href="<?php //echo site_url('tipo_inmueble/remove/'.$e['id_tin']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
+                            <a href="<?php echo site_url('direccion/edit/'.$e['id_dir']); ?>" class="btn btn-info btn-xs" title="Modificar dirección"><span class="fa fa-pencil"></span></a> 
+                            <!--<a href="<?php //echo site_url('direccion/remove/'.$e['id_dir']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>
                     <?php $i++; } ?>

@@ -40,7 +40,8 @@
     </div>
     <div class="col-md-4">
             <div class="box-tools text-center">
-            <a href="<?php echo site_url('asociado/add'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar a nuevo Asociado"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
+                <a href="<?php echo site_url('asociado/add'); ?>" class="btn btn-success btn-foursquarexs" target="_blank" title="Registrar a nuevo Asociado"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
+            <a onclick="tablaresultadosasociado(3)" class="btn btn-warning btn-foursquarexs" title="Registrar todos los Asociados"><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></a>
            <!-- <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="tablaresultadosproducto(3)" title="Mostrar todos los Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
             <a href="<?php //echo site_url('producto/existenciaminima'); ?>" class="btn btn-info btn-foursquarexs" target="_blank" ><font size="5" title="Productos con Existencia minima"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
            --> <?php
@@ -51,40 +52,54 @@
     </div>
     </div>
     <div class="col-md-12">
-            <div class="col-md-6" style="padding-left: 0px">
-                <div class="input-group">
-                    <span class="input-group-addon"> Buscar </span>           
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, dirección, código, teléfono,.." onkeypress="buscarasociado(event)" autocomplete="off">
-                </div>
+        <div class="col-md-5" style="padding-left: 0px">
+            <div class="input-group">
+                <span class="input-group-addon"> Buscar </span>           
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, dirección, código, teléfono,.." onkeypress="buscarasociado(event)" autofocus autocomplete="off">
             </div>
-            <div class="col-md-3" style="padding-left: 0px">
-                <div class="box-tools">
-                    <select name="servicio_id" class="btn-primary btn-sm btn-block" id="servicio_id" onchange="tablaresultadosasociado(2)">
-                        <option value="" disabled selected >-- BUSCAR POR SERVICIOS --</option>
-                        <option value="0"> Todos los Servicios </option>
-                        <?php 
-                        foreach($all_servicio as $servicio)
-                        {
-                            echo '<option value="'.$servicio['servicio'].'">'.$servicio['servicio'].'</option>';
-                        } 
-                        ?>
-                    </select>
-                </div>
+        </div>
+        <div class="col-md-3" style="padding-left: 0px">
+            <div class="box-tools">
+                <select name="id_dir" class="btn-primary btn-sm btn-block" id="id_dir" onchange="tablaresultadosasociado(2)">
+                    <option value="" disabled selected >-- BUSCAR POR DIRECCION --</option>
+                    <option value="0"> Todos las Direcciones </option>
+                    <?php 
+                    foreach($all_direccion as $direccion)
+                    {
+                        echo '<option value="'.$direccion['nombre_dir'].'">'.$direccion['nombre_dir'].'</option>';
+                    } 
+                    ?>
+                </select>
             </div>
-            <div class="col-md-3" style="padding-left: 0px">
-                <div class="box-tools">
-                    <select name="categoria_id" class="btn-primary btn-sm btn-block" id="categoria_id" onchange="tablaresultadosasociado(2)">
-                        <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
-                        <option value="0">Todas las Categoriás</option>
-                        <?php 
-                        foreach($all_categoria as $categoria)
-                        {
-                            echo '<option value="'.$categoria['categoria'].'">'.$categoria['categoria'].'</option>';
-                        }
-                        ?>
-                    </select>
-                </div>
+        </div>
+        <div class="col-md-2" style="padding-left: 0px">
+            <div class="box-tools">
+                <select name="servicio_id" class="btn-primary btn-sm btn-block" id="servicio_id" onchange="tablaresultadosasociado(2)">
+                    <option value="" disabled selected >-- BUSCAR POR SERVICIOS --</option>
+                    <option value="0"> Todos los Servicios </option>
+                    <?php 
+                    foreach($all_servicio as $servicio)
+                    {
+                        echo '<option value="'.$servicio['servicio'].'">'.$servicio['servicio'].'</option>';
+                    } 
+                    ?>
+                </select>
             </div>
+        </div>
+        <div class="col-md-2" style="padding-left: 0px">
+            <div class="box-tools">
+                <select name="categoria_id" class="btn-primary btn-sm btn-block" id="categoria_id" onchange="tablaresultadosasociado(2)">
+                    <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
+                    <option value="0">Todas las Categoriás</option>
+                    <?php 
+                    foreach($all_categoria as $categoria)
+                    {
+                        echo '<option value="'.$categoria['categoria'].'">'.$categoria['categoria'].'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
            <!-- <div class="col-md-3">
                 
                 <div class="box-tools">

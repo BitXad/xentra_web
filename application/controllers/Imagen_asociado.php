@@ -15,6 +15,8 @@ class Imagen_asociado extends CI_Controller{
     {
         $this->load->model('Asociado_model');
 	$asociado = $this->Asociado_model->get_asociado($id_asoc);
+        $this->load->model('Documento_model');
+	$data['all_documento'] = $this->Documento_model->get_all_documento();
         $data['id_asoc'] = $id_asoc;
         $data['nombre_asoc'] = $asociado['nombres_asoc']." ".$asociado['apellidos_asoc'];
         $data['all_imagen_asociado'] = $this->Imagen_asociado_model->get_all_imagen_asociado($id_asoc);
@@ -196,6 +198,8 @@ class Imagen_asociado extends CI_Controller{
             }
             else
             {
+                $this->load->model('Documento_model');
+                $data['all_documento'] = $this->Documento_model->get_all_documento();
 		$data['id_asoc'] = $id_asoc;
 
                 $data['_view'] = 'imagen_asociado/edit';
