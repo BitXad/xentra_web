@@ -30,7 +30,7 @@ class Parametro extends CI_Controller{
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
-				'estado' => $this->input->post('estado'),
+				'estado' => 'ACTIVO',
 				'descip_param' => $this->input->post('descip_param'),
 				'dias_param' => $this->input->post('dias_param'),
 				'monto_param' => $this->input->post('monto_param'),
