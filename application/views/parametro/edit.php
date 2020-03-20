@@ -17,13 +17,13 @@
 					<div class="col-md-6">
 						<label for="dias_param" class="control-label">Dias</label>
 						<div class="form-group">
-							<input type="text" name="dias_param" value="<?php echo ($this->input->post('dias_param') ? $this->input->post('dias_param') : $parametro['dias_param']); ?>" class="form-control" id="dias_param" />
+							<input type="number" name="dias_param" value="<?php echo ($this->input->post('dias_param') ? $this->input->post('dias_param') : $parametro['dias_param']); ?>" class="form-control" id="dias_param" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="monto_param" class="control-label">Monto (Bs)</label>
 						<div class="form-group">
-							<input type="text" name="monto_param" value="<?php echo ($this->input->post('monto_param') ? $this->input->post('monto_param') : $parametro['monto_param']); ?>" class="form-control" id="monto_param" />
+							<input type="number" step="any" name="monto_param" value="<?php echo ($this->input->post('monto_param') ? $this->input->post('monto_param') : $parametro['monto_param']); ?>" class="form-control" id="monto_param" />
 						</div>
 					</div>
 					<div class="col-md-6">
