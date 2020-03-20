@@ -57,7 +57,7 @@
         var cod_dirnum = "";
         for (var j = 0; j < cd; j++) {
             if(all_direccion[j]['nombre_dir'] == calle){
-                cod_dirnum = all_direccion[j]['codigo_dir'];
+                cod_dirnum = all_direccion[j]['id_dir'];
             }
         }
         var c = all_categoria.length;
@@ -386,7 +386,7 @@
                             }
                             initMap();
                         </script>                                            
-                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>                                            
+                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClNsJugfWI4xOf1Or9Wdg5lD_qUqaik58&callback=initMap"></script>                                            
                         </div>
                         <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
                     </div>
