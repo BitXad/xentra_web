@@ -28,8 +28,8 @@ class Asociado extends CI_Controller{
         $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
         $this->load->model('Categoria_model');
         $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
-        $this->load->model('Direccion_model');
-        $data['all_direccion'] = $this->Direccion_model->get_all_direccion();
+        $this->load->model('Direccion_orden_model');
+        $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_orden();
         
         $data['_view'] = 'asociado/index';
         $this->load->view('layouts/main',$data);
@@ -178,8 +178,8 @@ class Asociado extends CI_Controller{
             $data['all_zona'] = $this->Zona_model->get_all_zonas();
             $this->load->model('Sistema_red_model');
             $data['all_sistema_red'] = $this->Sistema_red_model->get_all_sistema_red();
-            $this->load->model('Direccion_model');
-            $data['all_direccion'] = $this->Direccion_model->get_all_direccion();
+            $this->load->model('Direccion_orden_model');
+            $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_orden();
             $this->load->model('Servicio_model');
             $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
             $this->load->model('Diametrored_model');
@@ -344,8 +344,8 @@ class Asociado extends CI_Controller{
                 $data['all_zona'] = $this->Zona_model->get_all_zonas();
                 $this->load->model('Sistema_red_model');
                 $data['all_sistema_red'] = $this->Sistema_red_model->get_all_sistema_red();
-                $this->load->model('Direccion_model');
-                $data['all_direccion'] = $this->Direccion_model->get_all_direccion();
+                $this->load->model('Direccion_orden_model');
+                $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_orden();
                 $this->load->model('Servicio_model');
                 $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
                 $this->load->model('Diametrored_model');
