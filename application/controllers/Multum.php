@@ -55,11 +55,8 @@ class Multum extends CI_Controller{
         }
         else
         {
-			$this->load->model('Asociado_model');
-			$data['all_asociado'] = $this->Asociado_model->get_all_asociado();
+			
 
-			$this->load->model('Usuario_model');
-			$data['all_usuario'] = $this->Usuario_model->get_all_usuario();
 
             $this->load->model('Me_model');
             $data['all_mes'] = $this->Me_model->get_all_mes();
@@ -100,6 +97,8 @@ class Multum extends CI_Controller{
      */
     function edit($id_multa)
     {   
+        $session_data = $this->session->userdata('logged_in');
+        $usuario_id = $session_data['id_usu'];
         // check if the multum exists before trying to edit it
         $data['multum'] = $this->Multum_model->get_multum($id_multa);
         
@@ -113,11 +112,10 @@ class Multum extends CI_Controller{
 					'tipo_multa' => $this->input->post('tipo_multa'),
 					'id_asoc' => $this->input->post('id_asoc'),
 					'estado_multa' => $this->input->post('estado_multa'),
-					'id_usu' => $this->input->post('id_usu'),
+					'id_usu' => $usuario_id,
 					'motivo_multa' => $this->input->post('motivo_multa'),
 					'detalle_multa' => $this->input->post('detalle_multa'),
 					'monto_multa' => $this->input->post('monto_multa'),
-					'fechahora_multa' => $this->input->post('fechahora_multa'),
 					'nombre_asoc' => $this->input->post('nombre_asoc'),
 					'exento_multa' => $this->input->post('exento_multa'),
 					'ice_multa' => $this->input->post('ice_multa'),
@@ -128,11 +126,16 @@ class Multum extends CI_Controller{
             }
             else
             {
-				$this->load->model('Asociado_model');
-				$data['all_asociado'] = $this->Asociado_model->get_all_asociado();
+				/*$this->load->model('Asociado_model');
+                $data['asociado'] = $this->Asociado_model->get_asociado($data['multum']['id_asoc']);*/
 
-				$this->load->model('Usuario_model');
-				$data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+                
+
+                $this->load->model('Me_model');
+                $data['all_mes'] = $this->Me_model->get_all_mes();
+
+                $this->load->model('Gestion_model');
+                $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
 
                 $data['_view'] = 'multum/edit';
                 $this->load->view('layouts/main',$data);

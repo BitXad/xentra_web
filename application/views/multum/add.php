@@ -43,7 +43,7 @@
 						<label for="mes_multa" class="control-label">Mes</label>
 						<div class="form-group">
 							<select name="mes_multa" class="form-control">
-								
+								<option value="">-</option>
 								<?php 
 								foreach($all_mes as $mes)
 								{
@@ -59,7 +59,7 @@
 						<label for="gestion_multa" class="control-label">Gestion</label>
 						<div class="form-group">
 							<select name="gestion_multa" class="form-control">
-								
+								<option value="">-</option>
 								<?php 
 								foreach($all_gestion as $gestion)
 								{

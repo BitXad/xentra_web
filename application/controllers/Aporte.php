@@ -9,6 +9,11 @@ class Aporte extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Aporte_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
 
     /*
@@ -27,6 +32,8 @@ class Aporte extends CI_Controller{
      */
     function add()
     {   
+        $session_data = $this->session->userdata('logged_in');
+        $usuario_id = $session_data['id_usu'];
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('motivo_ap','Motivo Ap','required');
@@ -38,14 +45,14 @@ class Aporte extends CI_Controller{
 				'mes_ap' => $this->input->post('mes_ap'),
 				'gestion_ap' => $this->input->post('gestion_ap'),
 				'tipo_ap' => $this->input->post('tipo_ap'),
-				'estado_ap' => $this->input->post('estado_ap'),
-				'id_usu' => $this->input->post('id_usu'),
+				'estado_ap' => 'ACTIVO',
+				'id_usu' => $usuario_id,
 				'exento_ap' => $this->input->post('exento_ap'),
 				'ice_ap' => $this->input->post('ice_ap'),
 				'motivo_ap' => $this->input->post('motivo_ap'),
 				'detalle_ap' => $this->input->post('detalle_ap'),
 				'monto_ap' => $this->input->post('monto_ap'),
-				'fechahora_ap' => $this->input->post('fechahora_ap'),
+				
             );
             
             $aporte_id = $this->Aporte_model->add_aporte($params);
@@ -53,9 +60,13 @@ class Aporte extends CI_Controller{
         }
         else
         {
-			$this->load->model('Usuario_model');
-			$data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-            
+
+            $this->load->model('Me_model');
+            $data['all_mes'] = $this->Me_model->get_all_mes();
+
+            $this->load->model('Gestion_model');
+            $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+
             $data['_view'] = 'aporte/add';
             $this->load->view('layouts/main',$data);
         }
@@ -66,6 +77,8 @@ class Aporte extends CI_Controller{
      */
     function edit($id_ap)
     {   
+        $session_data = $this->session->userdata('logged_in');
+        $usuario_id = $session_data['id_usu'];
         // check if the aporte exists before trying to edit it
         $data['aporte'] = $this->Aporte_model->get_aporte($id_ap);
         
@@ -83,13 +96,13 @@ class Aporte extends CI_Controller{
 					'gestion_ap' => $this->input->post('gestion_ap'),
 					'tipo_ap' => $this->input->post('tipo_ap'),
 					'estado_ap' => $this->input->post('estado_ap'),
-					'id_usu' => $this->input->post('id_usu'),
+					'id_usu' => $usuario_id,
 					'exento_ap' => $this->input->post('exento_ap'),
 					'ice_ap' => $this->input->post('ice_ap'),
 					'motivo_ap' => $this->input->post('motivo_ap'),
 					'detalle_ap' => $this->input->post('detalle_ap'),
 					'monto_ap' => $this->input->post('monto_ap'),
-					'fechahora_ap' => $this->input->post('fechahora_ap'),
+					
                 );
 
                 $this->Aporte_model->update_aporte($id_ap,$params);            
@@ -97,8 +110,12 @@ class Aporte extends CI_Controller{
             }
             else
             {
-				$this->load->model('Usuario_model');
-				$data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+				
+                $this->load->model('Me_model');
+                $data['all_mes'] = $this->Me_model->get_all_mes();
+
+                $this->load->model('Gestion_model');
+                $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
 
                 $data['_view'] = 'aporte/edit';
                 $this->load->view('layouts/main',$data);
