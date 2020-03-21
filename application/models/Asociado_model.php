@@ -148,4 +148,22 @@ class Asociado_model extends CI_Model
 
         return $asociado;
     }
+    /*
+     * Get all asociado modificado en una fecha determinada
+     */
+    function get_all_asociado_modificado($fecha1, $fecha2)
+    {
+        $asociado = $this->db->query("
+            SELECT
+                a.*
+            FROM
+                asociado a
+            WHERE
+                date(a.fechahora_asoc) >= '".$fecha1."'
+                and date(a.fechahora_asoc) <= '".$fecha2."'
+            /*ORDER By a.apellidos_asoc, a.nombres_asoc*/
+        ")->result_array();
+
+        return $asociado;
+    }
 }
