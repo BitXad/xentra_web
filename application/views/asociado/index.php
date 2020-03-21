@@ -39,9 +39,10 @@
         </div>
     </div>
     <div class="col-md-4">
-            <div class="box-tools text-center">
-                <a href="<?php echo site_url('asociado/add'); ?>" class="btn btn-success btn-foursquarexs" target="_blank" title="Registrar a nuevo Asociado"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
-            <a onclick="tablaresultadosasociado(3)" class="btn btn-warning btn-foursquarexs" title="Registrar todos los Asociados"><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></a>
+        <div class="box-tools text-center">
+            <a style="width: 80px !important" href="<?php echo site_url('asociado/add'); ?>" class="btn btn-success btn-foursquarexs" target="_blank" title="Registrar a nuevo Asociado"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
+            <a style="width: 80px !important" onclick="tablaresultadosasociado(3)" class="btn btn-warning btn-foursquarexs" title="Registrar todos los Asociados"><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></a>
+            <a style="width: 80px !important" href="<?php echo site_url('asociado/modif'); ?>" class="btn btn-facebook btn-foursquarexs" target="_blank" title="Lista de Asociados modificados"><font size="5"><span class="fa fa-list-ol"></span></font><br><small>Lista Asoc.</small></a>
            <!-- <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="tablaresultadosproducto(3)" title="Mostrar todos los Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
             <a href="<?php //echo site_url('producto/existenciaminima'); ?>" class="btn btn-info btn-foursquarexs" target="_blank" ><font size="5" title="Productos con Existencia minima"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
            --> <?php
@@ -49,7 +50,7 @@
             <a onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
             <?php }*/ ?>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
-    </div>
+        </div>
     </div>
     <div class="col-md-12">
         <div class="col-md-5" style="padding-left: 0px">
