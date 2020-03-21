@@ -28,15 +28,15 @@
         <td style="width: 25%; padding: 0; line-height:10px;" >
                 
             <center>
-                               
-                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
-                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
-                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
-                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
-                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                     
+                    <img src="<?php echo base_url('resources/images/empresas/logo.jpg') ?>" width="80px" height="60px"><br>
+                    <font size="2" face="Arial"><b><?php echo $empresa['nombre_emp']; ?></b></font><br>
+                    <font size="2" face="Arial"><b><?php echo $empresa['eslogan_emp']; ?></b></font><br>
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa['empresa_propietario']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['sucursal_emp'];?><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa['direccion_emp']; ?></font><br>
+                    <font size="1" face="Arial"><?php echo $empresa['telefono_emp']; ?></font><br>
+                    <font size="1" face="Arial"><?php echo $empresa['ubicacion_emp']; ?></font>
                 
 
             </center>                      
