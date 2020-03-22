@@ -36,14 +36,14 @@ class Aporte_model extends CI_Model
     function get_all_aporte()
     {
         $aporte = $this->db->query("
-            SELECT
-                *
+           SELECT
+                a.*, u.*
 
             FROM
-                `aporte`
+                aporte a, usuario u
 
             WHERE
-                1 = 1
+                 a.id_usu=u.id_usu
 
             ORDER BY `id_ap` DESC
         ")->result_array();

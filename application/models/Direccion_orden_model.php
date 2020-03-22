@@ -45,7 +45,7 @@ class Direccion_orden_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `id_dir` DESC
+            ORDER BY `orden_dir`
         ")->result_array();
 
         return $direccion_orden;

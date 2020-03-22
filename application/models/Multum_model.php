@@ -37,13 +37,13 @@ class Multum_model extends CI_Model
     {
         $multa = $this->db->query("
             SELECT
-                *
+                m.*, u.*
 
             FROM
-                `multa`
+                multa m, usuario u
 
             WHERE
-                1 = 1
+                m.id_usu=u.id_usu
 
             ORDER BY `id_multa` DESC
         ")->result_array();

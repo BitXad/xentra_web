@@ -231,6 +231,7 @@
                                 <i class="fa fa-map"></i> <span>Direccion Orden</span>
                             </a>
                         </li>
+                        
 						<!--<li>
                             <a href="#">
                                 <i class="fa fa-stack-overflow"></i> <span>Dosificacion</span>
@@ -244,6 +245,11 @@
                                 </li>
 							</ul>
                         </li>-->
+                        <li>
+                            <a href="<?php echo site_url('egreso/index');?>">
+                                <i class="fa fa-arrow-up"></i> <span>Egreso</span>
+                            </a>
+                        </li>
 						<li>
                             <a href="#">
                                 <i class="fa fa-bank"></i> <span>Empresa</span>

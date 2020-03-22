@@ -48,19 +48,19 @@
                     <a href="<?php echo base_url("asociado"); ?>"  style="padding: 0;">
                         <img src="<?php echo base_url("resources/images/system/")."asociados.png"; ?>" >                                              
                     </a>
-                    <a href="" style="padding: 0;">
+                    <a href="<?php echo base_url("aporte"); ?>" style="padding: 0;">
                         <img src="<?php echo base_url("resources/images/system/")."aportes.png"; ?>" >                                              
                     </a>
-                    <a href="" style="padding: 0;">
+                    <a href="<?php echo base_url("multum"); ?>" style="padding: 0;">
                         <img src="<?php echo base_url("resources/images/system/")."multas.png"; ?>" >                                              
                     </a>
-                    <a href="" style="padding: 0;">
+                    <a href="<?php echo base_url("parametro"); ?>" style="padding: 0;">
                         <img src="<?php echo base_url("resources/images/system/")."parametros.png"; ?>" >                                              
                     </a>
                     <a href="" style="padding: 0;">
                         <img src="<?php echo base_url("resources/images/system/")."dosificaciones.png"; ?>" >                                              
                     </a>
-                    <a href="" style="padding: 0;">
+                    <a href="<?php echo base_url("usuario"); ?>" style="padding: 0;">
                         <img src="<?php echo base_url("resources/images/system/")."usuarios.png"; ?>" >                                              
                     </a>
 <!--                    <button style="padding: 0;">

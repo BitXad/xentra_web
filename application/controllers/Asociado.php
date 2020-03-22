@@ -28,8 +28,8 @@ class Asociado extends CI_Controller{
         $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
         $this->load->model('Categoria_model');
         $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
-        $this->load->model('Direccion_model');
-        $data['all_direccion'] = $this->Direccion_model->get_all_direccion();
+        $this->load->model('Direccion_orden_model');
+        $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_orden();
         
         $data['_view'] = 'asociado/index';
         $this->load->view('layouts/main',$data);
@@ -99,7 +99,7 @@ class Asociado extends CI_Controller{
             $id_empresa = 1;
             //$estado = "ACTIVO";
             date_default_timezone_set('America/La_Paz');
-            $fechahora_res = date('Y-m-d H:i:s');
+            //$fechahora_res = date('Y-m-d H:i:s');
             $params = array(
                 'id_emp' => $id_empresa,
                 'estado' => $this->input->post('estado_asoc'),
@@ -115,7 +115,7 @@ class Asociado extends CI_Controller{
                 'nit_asoc' => $this->input->post('nit_asoc'),
                 'razon_asoc' => $this->input->post('razon_asoc'),
                 'foto_asoc' => $foto,
-                'fechahora_asoc' => $fechahora_res,
+                //'fechahora_asoc' => $fechahora_res,
                 'zona_asoc' => $this->input->post('zona_asoc'),
                 'medidor_asoc' => $this->input->post('medidor_asoc'),
                 'servicios_asoc' => $this->input->post('servicios_asoc'),
@@ -136,8 +136,7 @@ class Asociado extends CI_Controller{
             );
             $asociado_id = $this->Asociado_model->add_asociado($params);
             
-            date_default_timezone_set('America/La_Paz');
-            $fecha_reg = date('Y-m-d');
+            //$fecha_reg = date('Y-m-d');
             $hora_reg = date('H:i:s');
             $id_usu = $this->session_data['id_usu'];
             $paramsl = array(
@@ -152,7 +151,7 @@ class Asociado extends CI_Controller{
                 'fecha_lec' => $this->input->post('fechalec_asoc'),
                 'hora_lec' => $hora_reg,
                 'totalcons_lec' => 0,
-                'fechahora_lec' => $fecha_reg." ".$hora_reg,
+                //'fechahora_lec' => $fecha_reg." ".$hora_reg,
                 'monto_lec' => 0,
                 'estado_lec' => 'LECTURADO',
                 'tipo_asoc' => '-',
@@ -178,8 +177,8 @@ class Asociado extends CI_Controller{
             $data['all_zona'] = $this->Zona_model->get_all_zonas();
             $this->load->model('Sistema_red_model');
             $data['all_sistema_red'] = $this->Sistema_red_model->get_all_sistema_red();
-            $this->load->model('Direccion_model');
-            $data['all_direccion'] = $this->Direccion_model->get_all_direccion();
+            $this->load->model('Direccion_orden_model');
+            $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_orden();
             $this->load->model('Servicio_model');
             $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
             $this->load->model('Diametrored_model');
@@ -344,8 +343,8 @@ class Asociado extends CI_Controller{
                 $data['all_zona'] = $this->Zona_model->get_all_zonas();
                 $this->load->model('Sistema_red_model');
                 $data['all_sistema_red'] = $this->Sistema_red_model->get_all_sistema_red();
-                $this->load->model('Direccion_model');
-                $data['all_direccion'] = $this->Direccion_model->get_all_direccion();
+                $this->load->model('Direccion_orden_model');
+                $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_orden();
                 $this->load->model('Servicio_model');
                 $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
                 $this->load->model('Diametrored_model');
@@ -431,5 +430,39 @@ class Asociado extends CI_Controller{
         //$data=array("registrosdia" =>$registros,);
         //echo   json_encode($data);
     }
-    
+    /* Listing of asociado modifcados */
+    function modif()
+    {
+        $data['_view'] = 'asociado/modif';
+        $this->load->view('layouts/main',$data);
+    }
+    function buscarmodificados()
+    {
+        if ($this->input->is_ajax_request()) {
+            $fecha1 = $this->input->post('fecha1');   
+            $fecha2 = $this->input->post('fecha2'); 
+            $valfecha1 = "";
+            $valfecha2 = "";
+
+            if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
+                $valfecha1 = $fecha1;
+                $valfecha2 = $fecha2;
+            }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
+                $valfecha1 = $fecha1;
+                $valfecha2 = $fecha1;
+            }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
+                $valfecha1 = $fecha2;
+                $valfecha2 = $fecha2;
+            }else{
+                $fecha1 = null;
+                $fecha2 = null;
+            }
+            $datos = $this->Asociado_model->get_all_asociado_modificado($valfecha1, $valfecha2);
+            echo json_encode($datos);
+        }   
+        else
+        {
+            show_404();
+        }   
+    }
 }
