@@ -28,16 +28,13 @@ class Direccion_orden extends CI_Controller{
     function add()
     {   
         $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('nombre_dir','Nombre Dir','required');
-		
-		if($this->form_validation->run())     
+        $this->form_validation->set_rules('nombre_dir','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));	
+        if($this->form_validation->run())
         {   
             $params = array(
-				'nombre_dir' => $this->input->post('nombre_dir'),
-				'orden_dir' => $this->input->post('orden_dir'),
+                'nombre_dir' => $this->input->post('nombre_dir'),
+                'orden_dir' => $this->input->post('orden_dir'),
             );
-            
             $direccion_orden_id = $this->Direccion_orden_model->add_direccion_orden($params);
             redirect('direccion_orden/index');
         }
@@ -59,16 +56,13 @@ class Direccion_orden extends CI_Controller{
         if(isset($data['direccion_orden']['id_dir']))
         {
             $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('nombre_dir','Nombre Dir','required');
-		
-			if($this->form_validation->run())     
+            $this->form_validation->set_rules('nombre_dir','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));	
+            if($this->form_validation->run())     
             {   
                 $params = array(
-					'nombre_dir' => $this->input->post('nombre_dir'),
-					'orden_dir' => $this->input->post('orden_dir'),
+                    'nombre_dir' => $this->input->post('nombre_dir'),
+                    'orden_dir' => $this->input->post('orden_dir'),
                 );
-
                 $this->Direccion_orden_model->update_direccion_orden($id_dir,$params);            
                 redirect('direccion_orden/index');
             }
@@ -85,7 +79,7 @@ class Direccion_orden extends CI_Controller{
     /*
      * Deleting direccion_orden
      */
-    function remove($id_dir)
+    /*function remove($id_dir)
     {
         $direccion_orden = $this->Direccion_orden_model->get_direccion_orden($id_dir);
 
@@ -97,6 +91,6 @@ class Direccion_orden extends CI_Controller{
         }
         else
             show_error('The direccion_orden you are trying to delete does not exist.');
-    }
+    }*/
     
 }
