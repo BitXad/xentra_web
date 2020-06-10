@@ -1,5 +1,5 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/reporte_ingreso.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/reporte_movimiento.js'); ?>" type="text/javascript"></script>
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
@@ -41,7 +41,7 @@
 
 <div style="width: 100% !important; padding: 0; overflow-y:hidden;" class="table table-responsive">
 <div class="box-header no-print col-md-6" style="width: 100% !important;">
-    <h3 class="box-title"><b>REPORTE DE INGRESOS</b></h3><br><br>
+    <h3 class="box-title"><b>REPORTE DE MOVIMIENTO DIARIO</b></h3><br><br>
     <div class="col-md-3">
         Desde: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
     </div>
@@ -58,21 +58,11 @@
         </select>
     </div>
     <div class="col-md-3">
-        Ordenado por:
-        <select  class="btn btn-primary btn-sm form-control" id="ordenado_por" name="ordenado_por" required>
-            <option value="nombre" selected> NOMBRE </option>
-            <option value="codigo"> CODIGO </option>
-            <option value="fact"> FACTURA </option>
-            <option value="monto"> MONTO </option>
-        </select>
-    </div>
-    <div class="col-md-3">
         Estado:
         <select  class="btn btn-primary btn-sm form-control" id="estado_id" name="estado_id" required>
             <option value="no" selected> TODOS </option>
-            <option value="CANCELADA"> CANCELADA </option>
-            <option value="PENDIENTE"> PENDIENTE </option>
-            <option value="ANULADA"> ANULADA </option>
+            <option value="ACTIVO"> ACTIVO </option>
+            <option value="INACTIVO"> INACTIVO </option>
         </select>
     </div>
     <div class="col-md-3">
@@ -122,8 +112,7 @@
                         <td style="width: 90%; padding: 0" > 
                             <center>
                                 <br><br>
-                                <font size="4" face="arial"><b>REPORTE DE INGRESOS</b></font> <br>
-                                <font size="1" face="arial"><b>COBRO POR SERVICIOS DE AGUA</b></font> <br>
+                                <font size="4" face="arial"><b>REPORTE DE INGRESOS Y EGRESOS</b></font> <br>
                                     <label id="fechaimpresion"></label><br>
                             </center>
                         </td>

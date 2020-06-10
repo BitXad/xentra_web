@@ -87,5 +87,84 @@ ORDER BY direccion";
         return $ingresos;
 
     }
-    
+    /* busca los movimientos de ingresos y egresos */
+    function get_reportemovimiento($fecha1, $fecha2, $usuario_id, $estado_id){
+        if($usuario_id == 0){
+          $cadusuario1 = "";
+          $cadusuario2 = "";
+          $cadusuario8 = "";
+        }else{
+            $cadusuario1 = " and i.id_usu = ".$usuario_id." ";
+            $cadusuario2 = " and f.id_usu = ".$usuario_id." ";
+            $cadusuario8 = " and e.id_usu = ".$usuario_id." ";
+        }
+        if($estado_id == "no"){
+            $cadestado1 = "";
+            $cadestado8 = "";
+        }else{
+            $cadestado1 = " and i.estado_ing = '".$estado_id."' ";
+            $cadestado8 = " and e.estado_egr = '".$estado_id."' ";
+        }
+        /*if($orden_por == "nombre"){
+            $cadorden = " order by a.nombres_asoc, a.apellidos_asoc ";
+        }elseif($orden_por == "codigo"){
+            $cadorden = " order by abs(a.codigo_asoc) ";
+        }elseif($orden_por == "fact"){
+            $cadorden = " order by f.id_fact ";
+        }elseif ($orden_por == "monto"){
+            $cadorden = " order by f.montototal_fact ";
+        }else{
+            $cadorden = "";
+        }*/
+        $ingresos = $this->db->query("
+            (select
+                i.id_ing as id, i.fechahora_ing as fecha,
+                concat('INGRESO N°: ', i.id_ing, ', ', if(i.id_asoc > 0, concat('SOCIO: ', a.nombres_asoc, ' ', a.apellidos_asoc, ', '), ''), concat('Pagado por: ', i.nombre_ing, '(', i.ci_ing, ')'), ',', concat('Concepto:', i.detalle_ing, '(', i.descripcion_ing, ')')) as detalle,
+                i.monto_ing as ingreso, 0 as egreso,
+                0 as utilidad, 1 as tipo
+            from
+                ingreso i
+            left join asociado a on i.id_asoc = a.id_asoc
+            where
+                date(i.fechahora_ing) >= '".$fecha1."'
+                and date(i.fechahora_ing) <= '".$fecha2."'
+                ".$cadusuario1."
+                ".$cadestado1."
+            order by i.fechahora_ing desc)
+            UNION
+            (select
+                f.id_fact as id, f.fechahora_fact as fecha,
+                concat('COBRO, Recibo N°: ', f.num_fact, ', ', concat('de: ', a.nombres_asoc, ' ', a.apellidos_asoc, '(', a.codigo_asoc, ')'), ', ', concat(l.mes_lec, l.gestion_lec)) as detalle,
+                f.montototal_fact as ingreso, 0 as egreso,
+                0 as utilidad, 2 as tipo
+            from
+                factura f
+            left join lectura l on f.id_lec = l.id_lec
+            left join asociado a on l.id_asoc = a.id_asoc
+            where
+                date(f.fechahora_fact) >= '".$fecha1."'
+                and date(f.fechahora_fact) <= '".$fecha2."'
+                and estado_fact = 'CANCELADA'
+                ".$cadusuario2."
+      order by f.fechahora_fact desc)
+            UNION
+            (select
+                e.id_egr as id, e.fechahora_egr as fecha,
+                concat('EGRESO N°: ', e.id_egr, ', ', concat('A: ', e.nombre_egr), ', ', concat('Concepto: ', e.detalle_egr, '(', e.descripcion_egr, ')')) as detalle,
+                0 as ingreso, e.monto_egr as egreso,
+                0 as utilidad, 8 as tipo
+            from
+                egreso e
+            where
+                date(e.fechahora_egr) >= '".$fecha1."'
+                and date(e.fechahora_egr) <= '".$fecha2."'
+                ".$cadusuario8."
+                ".$cadestado8."
+            order by e.fechahora_egr desc)
+                
+        ")->result_array();
+
+        return $ingresos;
+
+    }
 }
