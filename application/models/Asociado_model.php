@@ -120,7 +120,7 @@ class Asociado_model extends CI_Model
                 WHERE
                      (a.nombres_asoc like '%".$parametro."%' or a.apellidos_asoc like '%".$parametro."%'
                       or a.ci_asoc like '%".$parametro."%' or a.direccion_asoc like '%".$parametro."%'
-                      or a.codigo_asoc like '%".$parametro."%' or a.telefono_asoc like '%".$parametro."%'
+                      or a.codigo_asoc ='".$parametro."' or a.telefono_asoc like '%".$parametro."%'
                       or a.nit_asoc like '%".$parametro."%' or a.razon_asoc like '%".$parametro."%'
                       or a.zona_asoc like '%".$parametro."%' or a.medidor_asoc like '%".$parametro."%'
                       or a.servicios_asoc like '%".$parametro."%' or a.categoria_asoc like '%".$parametro."%')
