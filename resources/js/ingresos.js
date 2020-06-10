@@ -3,6 +3,7 @@ function inicio(){
      filtro = " and date(fechahora_ing) = date(now())";   
         
         fechadeingreso(filtro); 
+        nombreasoc(); 
      
         
 } 
@@ -115,14 +116,17 @@ function fechadeingreso(filtro)
                         html += "<td align='center'>"+registros[i]["id_ing"]+"</td>"; 
                         html += "<td align='center'>"+moment(registros[i]["fechahora_ing"]).format('DD/MM/YYYY HH:mm:ss')+"</td>"; 
                         html += "<td>"+registros[i]["detalle_ing"]+"</br>"; 
-                        html += "<b>"+registros[i]["descripcion_ing"]+"</b></td>"; 
-                        html += "<td align='right'>"+Number(registros[i]["monto_ing"]).toFixed(2)+"</td>"; 
+                        html += "<b>"+registros[i]["descripcion_ing"]+"</b>"; 
+                        if (registros[i]["id_asoc"]>0) {
+                        html += "<b> /Asociado: "+registros[i]["nombres_asoc"]+" "+registros[i]["apellidos_asoc"]+"</b>";     
+                        }
+                        html += "</td><td align='right'>"+Number(registros[i]["monto_ing"]).toFixed(2)+"</td>"; 
                         html += "<td>"+registros[i]["estado_ing"]+"</td>"; 
                         html += "<td>"+registros[i]["nombre_usu"]+"</td>"; 
                         html += "<td class='no-print'><a href='"+base_url+"ingreso/pdf/"+registros[i]["id_ing"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
                         //html += "<a href='"+base_url+"ingreso/boucher/"+registros[i]["id_ing"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
-                        html += "<a href='"+base_url+"ingreso/edit/"+registros[i]["id_ing"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
-                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
+                        html += " <a href='"+base_url+"ingreso/edit/"+registros[i]["id_ing"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
+                        html += " <a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminaci«Ñn ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
@@ -176,3 +180,127 @@ function fechadeingreso(filtro)
     });   
 
 } 
+
+
+function buscarasoc(e) {
+
+  tecla = (document.all) ? e.keyCode : e.which;
+
+  
+
+    if (tecla==13){ 
+
+    
+       // if (opcion==1){             
+
+            buscar_asociados();            
+
+       // }
+
+   
+     
+
+     
+
+    }   
+
+}
+
+function buscar_asociados()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"ingreso/buscar_asociados";
+    var buscar = document.getElementById('buscar').value;
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{buscar:buscar},
+            success:function(respuesta){
+                
+                var registros = JSON.parse(respuesta);
+                var fin = registros.length;
+                html = "";
+                html += "<div class='box-body table-responsive'>";
+                html += "<table class='table table-striped table-condensed' id='mitabla_xs'>";
+                html += "<tr>";
+                html += "<th>Nº</th>";
+                html += "<th>Apellido</th>";
+                html += "<th>Nombres</th>";
+                html += "<th>Codigo</th>";
+                html += "<th>C.I.</th>";
+                html += "<th>Direccion</th>";
+                html += "<th>Telefono</th>";
+                html += "<th>Nit</th>";
+                html += "<th>Razon</th>";
+               // html += "<th></th>";
+                html += "</tr>";
+                
+                for(var i = 0; i<fin; i++)
+                {
+
+                    html += "<tr onclick='elegir_asoc("+registros[i]["id_asoc"]+")'>";               
+                    html += "<td>"+(i+1)+"</td>";
+                    html += "<td>"+registros[i]["apellidos_asoc"]+"</td>";  
+                    html += "<td>"+registros[i]["nombres_asoc"]+"</td>";
+                    html += "<td align='center'>"+registros[i]["codigo_asoc"]+"</td>";
+                    html += "<td align='center'>"+registros[i]["ci_asoc"]+"</td>";
+                    html += "<td>"+registros[i]["direccion_asoc"]+"</td>";
+                    html += "<td align='center'>"+registros[i]["telefono_asoc"]+"</td>";  
+                    html += "<td align='center'>"+registros[i]["nit_asoc"]+"</td>";  
+                    html += "<td>"+registros[i]["razon_asoc"]+"</td>";  
+                    //html += "<td><button onclick='ver_facturas("+registros[i]["id_asoc"]+")' class='btn btn-success btn-xs' title='Ver Facturas Pendientes' ><span class='fa fa-money'></span></button></td>";
+ 
+                    html += "</tr>";
+                } 
+                html += "</table>";   
+                html += "</div>";   
+                $("#lista_asociados").html(html);
+
+            },
+            error: function(respuesta){
+              alert('No existe');
+            }
+        });
+}
+
+function elegir_asoc(asociado)
+{
+   
+   var base_url = document.getElementById('base_url').value;
+   var controlador = base_url+'ingreso/buscar_idasociado';
+ 
+    $.ajax({url:controlador,
+
+            type:"POST",
+
+            data:{asociado:asociado},
+
+            success:function(respuesta){
+
+                var registros = eval(respuesta);
+                if (registros[0]!=null){
+
+                    $("#asociado").val(registros[0]["nombres_asoc"] +" "+ registros[0]["apellidos_asoc"] +" ("+registros[0]["codigo_asoc"]+")" );
+                    $("#id_asoc").val(registros[0]["id_asoc"]);
+
+                    //facturas_pendientes(asociado); 
+                   // multas_pendientes(asociado); 
+                    }             
+
+            },
+
+            error:function(respuesta){      
+
+
+
+            }                
+
+    }); 
+
+}
+
+
+function nombreasoc(){
+        var id_asoc = document.getElementById('id_asoc').value;
+        elegir_asoc(id_asoc)
+}
