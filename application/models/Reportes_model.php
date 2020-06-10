@@ -52,23 +52,32 @@ ORDER BY direccion";
         if($estado_id == "no"){
             $cadestado = "";
         }else{
-            $cadestado = " AND f.estado_fact = '".$estado_id."' ";
+            $cadestado = " and f.estado_fact = '".$estado_id."' ";
         }
-        if($orden_por == "fact"){
+        if($orden_por == "nombre"){
+            $cadorden = " order by a.nombres_asoc, a.apellidos_asoc ";
+        }elseif($orden_por == "codigo"){
+            $cadorden = " order by abs(a.codigo_asoc) ";
+        }elseif($orden_por == "fact"){
             $cadorden = " order by f.id_fact ";
-        }elseif($orden_por == "nombre"){
-            $cadorden = " order by f.razon_fact ";
+        }elseif ($orden_por == "monto"){
+            $cadorden = " order by f.montototal_fact ";
+        }else{
+            $cadorden = "";
         }
         $ingresos = $this->db->query("
-            SELECT 
-                    *
-            FROM 
+            select 
+                    a.id_asoc, a.codigo_asoc, a.nombres_asoc, a.apellidos_asoc, a.razon_asoc,
+                    l.mes_lec, l.gestion_lec, f.num_fact, l.id_lec, f.estado_fact,
+                    l.actual_lec, anterior_lec, l.consumo_lec, l.totalcons_lec,
+                    f.totalaportes_fact, f.totalrecargos_fact, f.montototal_fact
+            from 
                 asociado a,  lectura l,  factura f
-            WHERE
+            where
                 a.id_asoc = l.id_asoc 
-                AND l.id_lec = f.id_lec 
-                AND date(l.fecha_lec) >='".$fecha1."'
-                AND date(l.fecha_lec) <='".$fecha2."' 
+                and l.id_lec = f.id_lec 
+                and date(l.fecha_lec) >='".$fecha1."'
+                and date(l.fecha_lec) <='".$fecha2."' 
                 ".$cadusuario."
                 ".$cadestado."
                 ".$cadorden."

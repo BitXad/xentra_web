@@ -60,8 +60,10 @@
     <div class="col-md-3">
         Ordenado por:
         <select  class="btn btn-primary btn-sm form-control" id="ordenado_por" name="ordenado_por" required>
-            <option value="fact" selected> FACTURA </option>
-            <option value="nombre"> NOMBRE </option>
+            <option value="nombre" selected> NOMBRE </option>
+            <option value="codigo"> CODIGO </option>
+            <option value="fact"> FACTURA </option>
+            <option value="monto"> MONTO </option>
         </select>
     </div>
     <div class="col-md-3">
