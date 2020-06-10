@@ -42,5 +42,41 @@ ORDER BY direccion";
 
         return $multa;
     }
+    /* busca los ingresos */
+    function get_ingresoreportes($fecha1, $fecha2, $usuario_id, $estado_id, $orden_por){
+        if($usuario_id == 0){
+          $cadusuario = "";
+        }else{
+            $cadusuario = " and f.id_usu = ".$usuario_id." ";
+        }
+        if($estado_id == "no"){
+            $cadestado = "";
+        }else{
+            $cadestado = " AND f.estado_fact = '".$estado_id."' ";
+        }
+        if($orden_por == "fact"){
+            $cadorden = " order by f.id_fact ";
+        }elseif($orden_por == "nombre"){
+            $cadorden = " order by f.razon_fact ";
+        }
+        $ingresos = $this->db->query("
+            SELECT 
+                    *
+            FROM 
+                asociado a,  lectura l,  factura f
+            WHERE
+                a.id_asoc = l.id_asoc 
+                AND l.id_lec = f.id_lec 
+                AND date(l.fecha_lec) >='".$fecha1."'
+                AND date(l.fecha_lec) <='".$fecha2."' 
+                ".$cadusuario."
+                ".$cadestado."
+                ".$cadorden."
+                
+        ")->result_array();
+
+        return $ingresos;
+
+    }
     
 }
