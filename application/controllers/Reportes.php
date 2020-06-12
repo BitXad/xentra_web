@@ -11,21 +11,45 @@ class Reportes extends CI_Controller{
         $this->load->model('Reportes_model');
         $this->load->model('Lectura_model');
         $this->load->model('Me_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
         
     }
     /* reporte de ingresos */
     function index()
     {
+        $data['nombre_usu'] = $this->session_data['nombre_usu'];
         $this->load->model('Usuario_model');
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $this->load->model('Estado_model');
         $data['all_estado'] = $this->Estado_model->get_all_estados();
         $this->load->model('Empresa_model');
         $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+        $this->load->model('Direccion_orden_model');
+        $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_alfab();
         $data['_view'] = 'reportes/index';
         $this->load->view('layouts/main',$data);
     }
-
+    
+    /* reporte de ingresos por cobros por facturacion */
+    function ingresof()
+    {
+        $data['nombre_usu'] = $this->session_data['nombre_usu'];
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $this->load->model('Estado_model');
+        $data['all_estado'] = $this->Estado_model->get_all_estados();
+        $this->load->model('Empresa_model');
+        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+        $this->load->model('Direccion_orden_model');
+        $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_alfab();
+        $data['_view'] = 'reportes/ingresof';
+        $this->load->view('layouts/main',$data);
+    }
+    
     /*
      * Listing of categorias
      */
@@ -56,11 +80,12 @@ class Reportes extends CI_Controller{
     {
         if ($this->input->is_ajax_request()) {
 
-            $fecha1 = $this->input->post('fecha1');   
-            $fecha2 = $this->input->post('fecha2'); 
-            $usuario = $this->input->post('usuario_id'); 
+            $fecha1    = $this->input->post('fecha1');   
+            $fecha2    = $this->input->post('fecha2'); 
+            $usuario   = $this->input->post('usuario_id'); 
             $estado_id = $this->input->post('esteestado');
             $orden_por = $this->input->post('orden_por');
+            $nombre_dir    = $this->input->post('nombre_dir');
             $valfecha1 = "";
             $valfecha2 = "";
             $usuario_id = "";
@@ -84,7 +109,50 @@ class Reportes extends CI_Controller{
             }else{
                 $usuario_id = 0;
             }
-            $datos = $this->Reportes_model->get_ingresoreportes($valfecha1, $valfecha2, $usuario_id, $estado_id, $orden_por);
+            $datos = $this->Reportes_model->get_ingresoreportes($valfecha1, $valfecha2, $usuario_id, $estado_id, $orden_por, $nombre_dir);
+            echo json_encode($datos);
+        }   
+        else
+        {                 
+            show_404();
+        }
+            
+    }
+    /* busca reportes de ingreso */
+    function buscarlosingresosf()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $fecha1    = $this->input->post('fecha1');   
+            $fecha2    = $this->input->post('fecha2'); 
+            $usuario   = $this->input->post('usuario_id'); 
+            $estado_id = $this->input->post('esteestado');
+            $orden_por = $this->input->post('orden_por');
+            $nombre_dir    = $this->input->post('nombre_dir');
+            $valfecha1 = "";
+            $valfecha2 = "";
+            $usuario_id = "";
+
+            if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
+                $valfecha1 = $fecha1;
+                $valfecha2 = $fecha2;
+            }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
+                $valfecha1 = $fecha1;
+                $valfecha2 = $fecha1;
+            }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
+                $valfecha1 = $fecha2;
+                $valfecha2 = $fecha2;
+            }else{
+                $fecha1 = null;
+                $fecha2 = null;
+            }
+
+            if($usuario >  0){
+                $usuario_id = $usuario;
+            }else{
+                $usuario_id = 0;
+            }
+            $datos = $this->Reportes_model->get_ingresoreportesf($valfecha1, $valfecha2, $usuario_id, $estado_id, $orden_por, $nombre_dir);
             echo json_encode($datos);
         }   
         else

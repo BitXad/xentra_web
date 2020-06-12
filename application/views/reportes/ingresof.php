@@ -1,5 +1,5 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/reporte_ingreso.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/reporte_ingresof.js'); ?>" type="text/javascript"></script>
 <!--<link href="<?php //echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />

@@ -97,24 +97,18 @@
                             <!--<img src="<?php //echo base_url('resources/images/empresas/').$all_empresa[0]['logo_emp']; ?>" width="100" height="60"><br>-->
                             <img src="<?php echo base_url('resources/images/empresas/logo.jpg'); ?>" width="100" height="60"><br>
                         </td>
-                        <td style="width: 85%;" >
-                            <center>
-
+                        <td class="text-center" style="width: 85%; padding: 0" >
                                 <font size="3" face="Arial"><b><?php echo $all_empresa[0]['nombre_emp']; ?></b></font><br>
                                 <font size="1" face="Arial"><?php echo $all_empresa[0]['direccion_emp']; ?><br>
-                                <font size="1" face="Arial"><?php echo $all_empresa[0]['telefono_emp']; ?></font><br>
-                            </center>                      
+                                <font size="1" face="Arial"><?php echo $all_empresa[0]['telefono_emp']; ?></font>
                         </td>
                     </tr>
                 </table>       
-                <table class="table" style="width: 100%; padding: 0;" >
+                <table class="table" style="width: 100%; padding: 0; margin-bottom: 5px" >
                     <tr>
-                        <td style="width: 90%; padding: 0" > 
-                            <center>
-                                <br><br>
+                        <td class="text-center" style="width: 90%; padding: 0" > 
                                 <font size="4" face="arial"><b>REPORTE DE INGRESOS Y EGRESOS</b></font> <br>
-                                    <label id="fechaimpresion"></label><br>
-                            </center>
+                                    <label id="fechaimpresion"></label>
                         </td>
                     </tr>
                 </table>

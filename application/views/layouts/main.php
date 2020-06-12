@@ -372,6 +372,9 @@
                                     <a href="<?php echo site_url('reportes');?>"><i class="fa fa-paste"></i> Reporte</a>
                                 </li>
                                 <li>
+                                    <a href="<?php echo site_url('reportes/ingresof');?>"><i class="fa fa-paste"></i> Reporte Ingresos</a>
+                                </li>
+                                <li>
                                     <a href="<?php echo site_url('reportes/movimiento');?>"><i class="fa fa-exchange"></i> Movimiento Diario</a>
                                 </li>
                                 <li>

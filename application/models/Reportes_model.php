@@ -43,11 +43,16 @@ ORDER BY direccion";
         return $multa;
     }
     /* busca los ingresos */
-    function get_ingresoreportes($fecha1, $fecha2, $usuario_id, $estado_id, $orden_por){
+    function get_ingresoreportes($fecha1, $fecha2, $usuario_id, $estado_id, $orden_por, $nombre_dir){
         if($usuario_id == 0){
           $cadusuario = "";
         }else{
             $cadusuario = " and f.id_usu = ".$usuario_id." ";
+        }
+        if($nombre_dir == "ning"){
+          $cadirecion = "";
+        }else{
+            $cadirecion = " and a.direccion_asoc = '".$nombre_dir."' ";
         }
         if($estado_id == "no"){
             $cadestado = "";
@@ -79,6 +84,58 @@ ORDER BY direccion";
                 and date(l.fecha_lec) >='".$fecha1."'
                 and date(l.fecha_lec) <='".$fecha2."' 
                 ".$cadusuario."
+                ".$cadirecion."
+                ".$cadestado."
+                ".$cadorden."
+                
+        ")->result_array();
+
+        return $ingresos;
+
+    }
+    /* busca los ingresos */
+    function get_ingresoreportesf($fecha1, $fecha2, $usuario_id, $estado_id, $orden_por, $nombre_dir){
+        if($usuario_id == 0){
+          $cadusuario = "";
+        }else{
+            $cadusuario = " and f.id_usu = ".$usuario_id." ";
+        }
+        if($nombre_dir == "ning"){
+          $cadirecion = "";
+        }else{
+            $cadirecion = " and a.direccion_asoc = '".$nombre_dir."' ";
+        }
+        if($estado_id == "no"){
+            $cadestado = "";
+        }else{
+            $cadestado = " and f.estado_fact = '".$estado_id."' ";
+        }
+        if($orden_por == "nombre"){
+            $cadorden = " order by a.nombres_asoc, a.apellidos_asoc ";
+        }elseif($orden_por == "codigo"){
+            $cadorden = " order by abs(a.codigo_asoc) ";
+        }elseif($orden_por == "fact"){
+            $cadorden = " order by f.id_fact ";
+        }elseif ($orden_por == "monto"){
+            $cadorden = " order by f.montototal_fact ";
+        }else{
+            $cadorden = "";
+        }
+        $ingresos = $this->db->query("
+            select 
+                    a.id_asoc, a.codigo_asoc, a.nombres_asoc, a.apellidos_asoc, a.razon_asoc,
+                    l.mes_lec, l.gestion_lec, f.num_fact, l.id_lec, f.estado_fact,
+                    l.actual_lec, anterior_lec, l.consumo_lec, l.totalcons_lec,
+                    f.totalaportes_fact, f.totalrecargos_fact, f.montototal_fact
+            from 
+                asociado a,  lectura l,  factura f
+            where
+                a.id_asoc = l.id_asoc 
+                and l.id_lec = f.id_lec 
+                and date(f.fechahora_fact) >='".$fecha1."'
+                and date(f.fechahora_fact) <='".$fecha2."' 
+                ".$cadusuario."
+                ".$cadirecion."
                 ".$cadestado."
                 ".$cadorden."
                 

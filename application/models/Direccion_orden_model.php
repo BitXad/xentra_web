@@ -38,19 +38,31 @@ class Direccion_orden_model extends CI_Model
         $direccion_orden = $this->db->query("
             SELECT
                 *
-
             FROM
                 `direccion_orden`
-
             WHERE
                 1 = 1
-
             ORDER BY `orden_dir`
         ")->result_array();
-
         return $direccion_orden;
     }
-        
+    
+    /*
+     * Get all direccion_orden
+     */
+    function get_all_direccion_alfab()
+    {
+        $direccion_orden = $this->db->query("
+            SELECT
+                *
+            FROM
+                `direccion_orden`
+            WHERE
+                1 = 1
+            ORDER BY `nombre_dir`
+        ")->result_array();
+        return $direccion_orden;
+    }
     /*
      * function to add new direccion_orden
      */

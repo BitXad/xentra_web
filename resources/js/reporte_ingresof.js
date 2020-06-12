@@ -81,7 +81,7 @@ function numberFormat(numero){
 
 function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden_por, nombre_dir){
     var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"reportes/buscarlosingresos";
+    var controlador = base_url+"reportes/buscarlosingresosf";
      /*var limite = 1000; */
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
