@@ -223,8 +223,9 @@ function ver_facturas(asociado)
 {
 
    var base_url = document.getElementById('base_url').value;
+   
    var controlador = base_url+'factura/buscar_idasociado';
- 
+  
     $.ajax({url:controlador,
 
             type:"POST",
@@ -261,10 +262,10 @@ function facturas_pendientes(asociado)
 {
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"factura/buscar_pendientes";
-    
+    var estado = document.getElementById('estado').value;
         $.ajax({url: controlador,
             type:"POST",
-            data:{asociado:asociado},
+            data:{asociado:asociado,estado:estado},
             success:function(respuesta){
                 
                 var registros = JSON.parse(respuesta);
@@ -296,9 +297,19 @@ function facturas_pendientes(asociado)
                 $("#aportes").val(Number(0).toFixed(2));
                 $("#recargos").val(Number(0).toFixed(2));
                 $("#total_factura").val(Number(0).toFixed(2));
+                if (estado == 'PENDIENTE') {
+                    document.getElementById('btn_pendiente').style.display = 'block';
+                    document.getElementById('btn_cancelada').style.display = 'none';
+                }
+                if (estado == 'CANCELADA') {
+                    document.getElementById('btn_cancelada').style.display = 'block';
+                    document.getElementById('btn_pendiente').style.display = 'none';
+                    
+                }
+
                 }
                 else{
-                    alert('El Asociado No Tiene Facturas Pendientes');
+                    alert('El Asociado No Tiene Facturas '+estado);
                 }
 
             },
@@ -543,134 +554,6 @@ function mostrar_ocultar_buscador(parametro){
 
 
 
-function fechaorden(parametro){
-  var base_url    = document.getElementById('base_url').value;
-  var controlador = base_url+"orden_trabajo/buscar_ot";
-   
-
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{parametro:parametro},
-          
-           success:function(resul){     
-              
-                            
-                
-               var registros =  JSON.parse(resul);
-           
-               if (registros != null){
-                   
-                    
-                    var cont = 0;
-                    var total = Number(0);
-                    var total_acuenta = Number(0);
-                    var total_saldo = Number(0);
-                    
-                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
-                    $("#pillados").html("Registros Encontrados: "+n+" ");
-                   
-                    html = "";
-                 
-                    
-                    for (var i = 0; i < n ; i++){
-
-                        total += Number(registros[i]["orden_total"]);
-                        total_acuenta += Number(registros[i]["orden_acuenta"]);
-                        total_saldo += Number(registros[i]["orden_saldo"]);
-                        
-                        html += "<tr>";
-                      
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td>"+registros[i]["cliente_nombre"]+"</td>";  
-                        html += "<td align='center'><b>"+registros[i]["orden_numero"]+"</b></td>";  
-                        html += "<td align='center'>"+moment(registros[i]["orden_fecha"]).format('DD/MM/YYYY')+"<br>"+registros[i]["orden_hora"]+"</td>";
-                        html += "<td align='center'>"+moment(registros[i]["orden_fechaentrega"]).format('DD/MM/YYYY')+"</td>";
-                        html += "<td align='right'>"+Number(registros[i]["orden_total"]).toFixed(2)+"</td>";
-                        html += "<td align='right'>"+Number(registros[i]["orden_acuenta"]).toFixed(2)+"</td>";
-                        html += "<td align='right'>"+Number(registros[i]["orden_saldo"]).toFixed(2)+"</td>";
-                        html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
-                        if (registros[i]["venta_id"]>0) {
-                        html += "<td><a href='"+base_url+"seguimiento/seguimiento/"+registros[i]["orden_id"]+"/"+registros[i]["venta_id"]+"' target='_blank' title='Proceso OT' class='btn btn-warning btn-xs'><span class='fa fa-spinner'></span> ";  
-                        html += "OT: "+registros[i]['orden_id']+" Cod.: "+registros[i]['venta_id']+"</a></td>";
-                        }
-                        html += "<td class='no-print'>";
-                        
-                        html += " <a href='"+base_url+"orden_trabajo/editar/"+registros[i]["orden_id"]+"' target='_blank' title='Editar OT' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
-                        html += " <a href='"+base_url+"orden_trabajo/ordendoc/"+registros[i]["orden_id"]+"' target='_blank' title='Imp. OT' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a>";
-                        html += " <a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"' target='_blank' title='Nota OT' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
-                        
-                        html += " <a href='#' data-toggle='modal'  data-target='#modalanular"+registros[i]["orden_id"]+"' title='Anular OT' class='btn btn-xs btn-danger' style=''><i class='fa fa-ban'></i></a>";
-                        html += "                       <!------------------------ modal para eliminar el producto ------------------->";
-                        html += " <div class='modal fade' id='modalanular"+registros[i]['orden_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+registros[i]['orden_id']+"'>";
-                        html += " <div class='modal-dialog' role='document'>";
-                        html += "  <br><br>";
-                        html += " <div class='modal-content'>";
-                        html += " <div class='modal-header'>";
-                        html += " <h1 class='modal-title' id='myModalLabel'>ADVERTENCIA</h1>";
-                        html += " </div>";
-                        html += " <div class='modal-body'>";
-                        html += " <div class='panel panel-primary'>";
-                        html += " ";
-                        html += " <center>";
-                        html += " <!------------------------------------------------------------------->";
-                        html += " <h1 style='font-size: 80px'> <b> <em class='fa fa-trash'></em></b></h1> ";
-                        html += " <h4>";
-                        html += " ";
-                        html += " ¿Desea anular la OT? <b> <br>";
-                        html += " Orden de  Trabajo: "+registros[i]['orden_id']+"<br>";
-    //                    
-                        html += " </h4>";
-                        html += "     <!------------------------------------------------------------------->";
-                        html += " ";
-                        html += "   </center>";
-                        html += "   </div>";
-                        html += "   </div>";
-                        html += "    <div class='modal-footer aligncenter'>";
-                        html += "   <center>";                                        
-                        html += "  <a href='"+base_url+"orden_trabajo/anular/"+registros[i]['orden_id']+"' class='btn btn-danger  btn-sm'><em class='fa fa-pencil'></em> Si </a>";
-
-                        html += "  <a href='#' class='btn btn-success btn-sm' data-dismiss='modal'><em class='fa fa-times'></em> No </a>";
-                        html += "  </center>";
-
-                        html += "   </div>";
-                        html += "   </div>";
-                        html += "   </div>";
-                        html += "   </div>";
-
-                        html += " <!------------------------ fin modal --------------------------------->   ";      
-                        html += "</td>";
-                        html += "</tr>";
-                           
-                       }
-                       html += "<tr>";
-                       html += "<th colspan='2'>TOTAL</th>";
-                       html += "<th></th>";
-                       html += "<th></th>";
-                       html += "<th></th>";
-                       html += "<th align='right'>"+Number(total).toFixed(2)+"</th>";
-                       html += "<th align='right'>"+Number(total_acuenta).toFixed(2)+"</th>";
-                       html += "<th align='right'>"+Number(total_saldo).toFixed(2)+"</th>";
-                       html += "<th></th>";
-                       html += "<th></th>";
-                       html += "<th></th>";
-                       html += "</tr>";
-                            
-                   
-                   $("#fechadeorden").html(html);
-                   
-            }
-                
-        },
-        error:function(resul){
-          // alert("Algo salio mal...!!!");
-           html = "";
-           $("#fechadeorden").html(html);
-        }
-        
-    });   
-
-} 
-
 
 function buscar_por_fecha()
 {
@@ -689,3 +572,85 @@ function buscar_por_fecha()
     
     fechaorden(filtro);
 }
+
+function reimprimirbusqueda()
+{
+    var base_url    = document.getElementById('base_url').value;
+    var numero    = document.getElementById('numero').value;
+    var tipoimpresion    = document.getElementById('tipoimpresion').checked;
+    if (numero=='') {
+         alert('Debe ingresar un numero');   
+         alert(tipoimpresion);   
+    }else{
+        if (tipoimpresion==false) {
+            var controlador = base_url+"factura/buscar_lectura";
+
+            $.ajax({url: controlador,
+            type:"POST",
+            data:{numero:numero},
+            success:function(respuesta){
+              
+            window.open(base_url+'lectura/preaviso_boucher/'+numero, '_blank'); 
+
+
+            },
+            error: function(respuesta){
+              alert('Esta lectura no existe');
+            }
+        });
+           
+        }
+        else{
+            var controlador = base_url+"factura/buscar_recibo";
+            $.ajax({url: controlador,
+            type:"POST",
+            data:{numero:numero},
+            success:function(respuesta){
+            
+            var registros = JSON.parse(respuesta);
+            window.open(base_url+'factura/imprimir_recibo/'+registros['id_fact'], '_blank'); 
+
+            },
+            error: function(respuesta){
+              alert('Esta lectura no tiene una factura cancelada');
+            }
+        }); 
+        }  
+        }
+}
+
+function reimprimir()
+{
+    var base_url    = document.getElementById('base_url').value;
+    var factura_id    = document.getElementById('factura_id').value;
+    if (factura_id=='') {
+         alert('No selecciono ninguna factura.');   
+    }else{
+         window.open(base_url+'factura/imprimir_recibo/'+factura_id, '_blank'); 
+    }  
+}
+
+
+function anular()
+{
+    var base_url    = document.getElementById('base_url').value;
+    var factura_id    = document.getElementById('factura_id').value;
+    var controlador = base_url+"factura/anular";
+   
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{factura_id:factura_id},
+            success:function(respuesta){
+              
+            alert('Factura Anulada con Exito'); 
+
+
+            },
+            error: function(respuesta){
+              alert('Esta Factura no se puede Anular');
+            }
+        });
+   
+}
+
+

@@ -101,10 +101,12 @@ input[type=number] { -moz-appearance:textfield; }
             </div>
           </div>
 						<div class="col-md-2">
-            <label for="tipo" class="control-label">Tipo de Factura</label>
+            <label for="estado" class="control-label">Tipo de Factura</label>
             <div class="form-group">
-              <select class="form-control">
-                <option>PENDIENTE</option>
+              <select class="form-control" id="estado">
+                <option value="PENDIENTE" >PENDIENTES</option>
+                <option value="CANCELADA">CANCELADAS</option>
+                <option value="ANULADA">ANULADAS</option>
               </select>
             </div>
             </div>
@@ -130,7 +132,7 @@ input[type=number] { -moz-appearance:textfield; }
 <div class="col-md-12">
   <div class="col-md-6" style="padding-left:0px;">
     <div class="box">
-    <h4 class="modal-title" >Facturas Pendientes</h4>
+    <h4 class="modal-title" id="tipo_facturas">Facturas Pendientes</h4>
                           
                 <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla_xs">
@@ -254,7 +256,7 @@ input[type=number] { -moz-appearance:textfield; }
   </div>			
 
 </div>
-<div class="col-md-11" align="right">
+<div class="col-md-11" align="right" id="btn_pendiente" style="display:  block;">
             <a onclick="finalizar()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br>
                Cobrar<br>Factura<br>
@@ -263,17 +265,107 @@ input[type=number] { -moz-appearance:textfield; }
                 <i class="fa fa-ban fa-4x"></i><br><br>
                Cancelar<br>
             </a>   
-            <a  href="<?php echo site_url('factura/index'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
+            <!--<a  href="<?php echo site_url('factura/index'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
                Salir<br>
-            </a> 
+            </a> -->
             <a  href="<?php echo site_url('factura/ultima'); ?>" target="_blank" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-print fa-4x"></i><br>Imprimir<br>
                Ultimo<br>
+            </a>
+            <a data-toggle="modal" data-target="#modalbuscarimprimir" class="btn btn-sq-lg bg-navy" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-search fa-4x"></i><br>Bucar<br>
+               Imprimir<br>
+            </a>    
+</div>
+
+<div class="col-md-11" align="right" id="btn_cancelada" style="display:  none;">
+            <a data-toggle="modal" data-target="#modaleliminar" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-times-circle fa-4x"></i><br>
+               Anular<br>Factura<br>
+            </a>
+
+<!------------------------ INICIO modal para Registrar nueva Categoria ------------------->
+<div class="modal fade" id="modaleliminar" tabindex="-1" role="dialog" aria-labelledby="modaleliminarlabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header btn-danger text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <H2>ADVERTENCIA</H2>
+            </div>
+            <div class="modal-body">
+               <!------------------------------------------------------------------->
+             <h3>ESTA SEGURO(A) DE ANULAR ESTA FACTURA?</h3>
+               <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a onclick="anular()" class="btn btn-success"><span class="fa fa-check"></span> Anular</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Registrar nueva Categoria ------------------->
+
+
+            <a  href="<?php echo site_url('factura/cobranza'); ?>" class="btn btn-sq-lg btn-warning" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-ban fa-4x"></i><br><br>
+               Cancelar<br>
+            </a>   
+            <a onclick="reimprimir()" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-print fa-4x"></i><br>Reimprimir<br>
+               Factura<br>
+            </a>
+            <a data-toggle="modal" data-target="#modalbuscarimprimir" class="btn btn-sq-lg bg-navy" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-search fa-4x"></i><br>Bucar<br>
+               Imprimir<br>
             </a>    
 </div>
 <!---------------------------------------FIN TABLA DE DETALLE VENTAAA------------------------------------>
 </div>
+<!------------------------ INICIO modal para Registrar nueva Categoria ------------------->
+<div class="modal fade" id="modalbuscarimprimir" tabindex="-1" role="dialog" aria-labelledby="modalbuscarimprimirlabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header bg-navy text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <H2>REIMPRIMIR</H2>
+            </div>
+            <div class="modal-body">
+               <!------------------------------------------------------------------->
+            <div class="row">
+             <div class="col-md-6">
+              <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" class="" name="tipoimpresion" id="tipoimpresion" value="recibo" checked>Factura/Recibo
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="tipoimpresion" id="tipoimpresion" value="preaviso" >Preaviso
+                    </label>
+                  </div>
+                </div>
+               
+             </div>
+             <div class="col-md-6">
+              <label for="numero">Nº de Lectura (ID)</label>
+              <input type="text" name="numero" id="numero" autocomplete="off" class="form-control">
+             </div>
+               <!------------------------------------------------------------------->
+            </div>
+            </div>
+            <div class="modal-footer aligncenter">
+                <a onclick="reimprimirbusqueda()" class="btn btn-success"><span class="fa fa-print"></span> Imprimir</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Registrar nueva Categoria ------------------->
 
 <!---------------modal  producto--------------->
 </div>
