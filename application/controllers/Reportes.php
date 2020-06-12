@@ -12,7 +12,19 @@ class Reportes extends CI_Controller{
         $this->load->model('Lectura_model');
         $this->load->model('Me_model');
         
-    } 
+    }
+    /* reporte de ingresos */
+    function index()
+    {
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $this->load->model('Estado_model');
+        $data['all_estado'] = $this->Estado_model->get_all_estados();
+        $this->load->model('Empresa_model');
+        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+        $data['_view'] = 'reportes/index';
+        $this->load->view('layouts/main',$data);
+    }
 
     /*
      * Listing of categorias
@@ -26,8 +38,103 @@ class Reportes extends CI_Controller{
         $data['_view'] = 'reportes/mensual';
         $this->load->view('layouts/main',$data);
     }
-
     
+    /* reporte de movimiento */
+    function movimiento()
+    {
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $this->load->model('Estado_model');
+        $data['all_estado'] = $this->Estado_model->get_all_estados();
+        $this->load->model('Empresa_model');
+        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+        $data['_view'] = 'reportes/movimiento';
+        $this->load->view('layouts/main',$data);
+    }
+    /* busca reportes de ingreso */
+    function buscarlosingresos()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $fecha1 = $this->input->post('fecha1');   
+            $fecha2 = $this->input->post('fecha2'); 
+            $usuario = $this->input->post('usuario_id'); 
+            $estado_id = $this->input->post('esteestado');
+            $orden_por = $this->input->post('orden_por');
+            $valfecha1 = "";
+            $valfecha2 = "";
+            $usuario_id = "";
+
+            if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
+                $valfecha1 = $fecha1;
+                $valfecha2 = $fecha2;
+            }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
+                $valfecha1 = $fecha1;
+                $valfecha2 = $fecha1;
+            }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
+                $valfecha1 = $fecha2;
+                $valfecha2 = $fecha2;
+            }else{
+                $fecha1 = null;
+                $fecha2 = null;
+            }
+
+            if($usuario >  0){
+                $usuario_id = $usuario;
+            }else{
+                $usuario_id = 0;
+            }
+            $datos = $this->Reportes_model->get_ingresoreportes($valfecha1, $valfecha2, $usuario_id, $estado_id, $orden_por);
+            echo json_encode($datos);
+        }   
+        else
+        {                 
+            show_404();
+        }
+            
+    }
+    /* busca reportes de ingreso */
+    function buscarlosmovimientos()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $fecha1 = $this->input->post('fecha1');   
+            $fecha2 = $this->input->post('fecha2'); 
+            $usuario = $this->input->post('usuario_id'); 
+            $estado_id = $this->input->post('esteestado');
+            //$orden_por = $this->input->post('orden_por');
+            $valfecha1 = "";
+            $valfecha2 = "";
+            $usuario_id = "";
+
+            if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
+                $valfecha1 = $fecha1;
+                $valfecha2 = $fecha2;
+            }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
+                $valfecha1 = $fecha1;
+                $valfecha2 = $fecha1;
+            }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
+                $valfecha1 = $fecha2;
+                $valfecha2 = $fecha2;
+            }else{
+                $fecha1 = null;
+                $fecha2 = null;
+            }
+
+            if($usuario >  0){
+                $usuario_id = $usuario;
+            }else{
+                $usuario_id = 0;
+            }
+            $datos = $this->Reportes_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id, $estado_id);
+            echo json_encode($datos);
+        }   
+        else
+        {                 
+            show_404();
+        }
+            
+    }
     
 }
 
