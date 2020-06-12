@@ -120,14 +120,14 @@ class Factura_model extends CI_Model
         return $resultado;
     }
 
-    function get_pendiente_factura($asociado)
+    function get_pendiente_factura($asociado,$estado)
     {
 
         $sql = "SELECT f.*, l.*
         FROM factura f, lectura l
         WHERE 
         l.id_lec=f.id_lec 
-        and f.estado_fact='PENDIENTE'
+        and f.estado_fact='".$estado."'
         and l.id_asoc=".$asociado." ";        
         $resultado = $this->db->query($sql)->result_array();
         

@@ -233,7 +233,8 @@ class Factura extends CI_Controller{
     function buscar_pendientes()
     {
         $asociado = $this->input->post('asociado');
-        $datos = $this->Factura_model->get_pendiente_factura($asociado);
+        $estado = $this->input->post('estado');
+        $datos = $this->Factura_model->get_pendiente_factura($asociado,$estado);
         echo json_encode($datos);  
         
     }
@@ -245,6 +246,46 @@ class Factura extends CI_Controller{
         echo json_encode($datos);  
         
     }
+
+    function anular()
+    {
+        $factura = $this->input->post('factura_id');
+        $datos = true;
+
+        echo json_encode($datos);  
+        
+    }
+
+    function buscar_recibo()
+    {
+        $numero = $this->input->post('numero');
+        $datos = "SELECT id_fact from factura where id_lec=".$numero." and estado_fact='CANCELADA' ";
+        $respuesta = $this->db->query($datos)->row_array();
+        if (isset($respuesta['id_fact'])) {
+        echo json_encode($respuesta);  
+           
+        }else{
+       show_404();
+        }
+        
+        
+    }
+
+    function buscar_lectura()
+    {
+        $numero = $this->input->post('numero');
+        $datos = "SELECT id_lec from lectura where id_lec=".$numero." ";
+        $respuesta = $this->db->query($datos)->row_array();
+        if (isset($respuesta['id_lec'])) {
+        echo json_encode($respuesta);  
+           
+        }else{
+       show_404();
+        }
+        
+        
+    }
+
 
     function buscar_recargos()
     {
