@@ -1,47 +1,81 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/reporte_movimiento.js'); ?>" type="text/javascript"></script>
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 
 <script type="text/javascript">
-
     function imprimirdetalle(){
-
         var f = new Date();
-
-        
-
-        var estafecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()+" "+
-
-                        f.getHours()+":"+f.getMinutes()+":"+f.getSeconds();
-
+        var estafecha = moment(f).format("DD/MM/YYYY HH:mm:ss")
         $('#fechaimpresion').html(estafecha);
-
         window.print();
-
     }
-
 </script>
-<style type="text/css">
+<style> 
+    /*.lebo {
+        border: 2px solid black; border-right: 0px; border-top: 0px; padding-right: 3px;
+    }*/
+    .lder {
+        border-right: 2px solid black;
+    }
+    .lizq {
+        border-left: 2px solid black;
+    }
+    .lizq1 {
+        border-left: 3px solid black;
+    }
+    .labj {
+        border-bottom: 2px solid black; border-right: 0px; border-top: 0px; padding-right: 3px;
+    }
+    .labjf {
+        border-bottom: 2px solid black; border-right: 0px; border-top: 0px; padding-right: 3px;
+    }
+    .larrf {
+        border-top: 3px solid black !important; border-right: 0px; padding-right: 3px;
+    }
+    .labjder {
+        border-bottom: 2px solid black; border-right: 2px solid black; border-top: 0px;
+    }
+    .labjizqder {
+        border-left: 2px solid black; border-right: 2px solid black; padding:3px !important; margin: 3px !important;
+    }
+    .pintado {
+        background-color: #a9afe8; padding: 3px; /* rgb: 169,175,232 */ 
+    }
+    .boxtabla {
+        border: 3px solid black;
+        background-color: #a9afe8 !important;
+    }
+    .vacio {
+        border: 0px; 
+    }
+    
     @media print {
-        .cabeceratabla th {
-            background-color: rgba(127,127,127,0.5) !important;
-            color: black !important;
+        
+        .pintado {
+            background-color: rgba(169,175,232) !important;
             -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+        }
+        .boxtabla {
+            background-color: rgba(169,175,232) !important;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
         }
     }
-    table th{
-        font-size: 10px !important;
+
+</style>
+<style type="text/css">
+    .table1 th{
+        font-size: 12px;
     }
-    table td{
-        font-size: 9px !important;
+    .table1 td{
+        font-size: 10px;
     }
 </style>
 
-<div style="width: 100% !important; padding: 0; overflow-y:hidden;" class="table table-responsive">
-<div class="box-header no-print col-md-6" style="width: 100% !important;">
-    <h3 class="box-title"><b>REPORTE DE MOVIMIENTO DIARIO</b></h3><br><br>
+<div class="box-header no-print">
+    <h3 class="box-title"><b>REPORTE DE MOVIMIENTO DIARIO</b></h3><br>
     <div class="col-md-3">
         Desde: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
     </div>
@@ -86,49 +120,59 @@
     <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
 </div>
 <!-- *********** FIN de BUSCADOR select y productos encontrados ****** -->
-<div class="row" style="width: 100%">
+<div class="row">
     <div class="col-md-12">
-        <div class="box" style="width: 100%">
-        <!-- ********************************INICIO Cabecera******************************* -->
-            <div class="row micontenedorep" id="cabeceraprint" style="width: 100%">
-                <table class="table" style="width: 100%; padding: 0;" >
+        <div class="box">
+            <div class="box-body">
+                <table style="width: 100%; font-family: Arial !important;" >
                     <tr>
-                        <td style="width: 15%; padding: 0; padding-left: 10px; line-height:10px;" >
+                        <td class="labj text-center" style="width: 15%; padding-bottom: 0px; padding-right: 0px">
                             <!--<img src="<?php //echo base_url('resources/images/empresas/').$all_empresa[0]['logo_emp']; ?>" width="100" height="60"><br>-->
                             <img src="<?php echo base_url('resources/images/empresas/logo.jpg'); ?>" width="100" height="60"><br>
                         </td>
-                        <td class="text-center" style="width: 85%; padding: 0" >
-                                <font size="3" face="Arial"><b><?php echo $all_empresa[0]['nombre_emp']; ?></b></font><br>
-                                <font size="1" face="Arial"><?php echo $all_empresa[0]['direccion_emp']; ?><br>
-                                <font size="1" face="Arial"><?php echo $all_empresa[0]['telefono_emp']; ?></font>
-                        </td>
-                    </tr>
-                </table>       
-                <table class="table" style="width: 100%; padding: 0; margin-bottom: 5px" >
-                    <tr>
-                        <td class="text-center" style="width: 90%; padding: 0" > 
-                                <font size="4" face="arial"><b>REPORTE DE INGRESOS Y EGRESOS</b></font> <br>
-                                    <label id="fechaimpresion"></label>
+                        <td class="labjder text-center" style="width: 85%; padding-bottom: 0px; padding-right: 0px; line-height: 0.9">
+                            <span class="text-bold" style="font-size: 15px;"><?php echo $all_empresa[0]['nombre_emp']; ?></span><br>
+                            <span class="text-bold" style="font-size: 15px;"><?php echo $all_empresa[0]['eslogan_emp']; ?></span><br>
+                            <span style="font-size: 10px;"><?php echo $all_empresa[0]['direccion_emp']; ?></span><br>
+                            <span style="font-size: 10px;"><?php echo $all_empresa[0]['telefono_emp']; ?></span>
                         </td>
                     </tr>
                 </table>
-            </div>
-            <div class=" table-responsive" id="cabizquierdafechas" style="width: 100%">
-                <span id="elusuario" style="font-size: 10px"></span><br>
-                <span id="fecha1impresion" style="font-size: 10px"></span>
-                <span id="fecha2impresion" style="font-size: 10px"></span>
-            </div>
-        
-            <div id="tablatotalresultados" style="width: 100%"></div>
-            
-            <div style="text-align: center">
-                <div id="parafirmas" style="font-size: 10px; width: 60%">
-                    <div id="firmaizquierda">
-                      <br>
-                      <br>
-                      ________________________<br>FIRMA RESPONSABLE
-                    </div>
+                <table style="width: 100%; font-family: Arial !important;" >
+                    <tr>
+                        <td class="lizq" colspan="2" style="width: 100%; padding: 1px"></td>
+                    </tr>
+                    <tr>
+                        <td class="labjizqder labjf text-center" style="width: 80%; line-height: 0.9">
+                            <font size="4" face="arial"><b>REPORTE DE INGRESOS Y EGRESOS</b></font> <br>
+                            <span id="ladireccion" style="font-size: 10px"></span><br>
+                        </td>
+                        <td class="pintado" rowspan="3" style="width: 20%; vertical-align: middle; line-height: 0.9">
+                            <span id="fecha1impresion" style="font-size: 10px"></span><br>
+                            <span id="fecha2impresion" style="font-size: 10px"></span><br>
+                            <span id="elusuario" style="font-size: 10px"></span><br>
+                            <span class="text-bold" style="font-size: 10px">Impreso por: </span>
+                            <span><?php echo $nombre_usu; ?></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lder text-center" style="width: 80%; padding: 1px; font-size: 10px">
+                            <span id="fechaimpresion"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lder" style="width: 80%; padding: 1px">
+                            <span style="font-size: 10px">Expresado en moneda nacional (Bs)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="vacio" colspan="2" style="width: 100%; padding: 1px"></td>
+                    </tr>
+                </table>
+                <div class=" table-responsive" style="width: 100%">
+                    
                 </div>
+                <div id="tablatotalresultados" class="table-responsive" style="width: 100%"></div>
             </div>
         </div>
     </div>
