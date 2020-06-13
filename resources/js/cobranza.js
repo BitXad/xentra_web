@@ -277,7 +277,7 @@ function facturas_pendientes(asociado)
                 for(var i = 0; i<fin; i++)
                 {
 
-                    html += "<tr onclick='detalle_factura("+registros[i]["id_fact"]+","+registros[i]["id_lec"]+")'>";               
+                    html += "<tr>";               
                     html += "<td>"+(i+1)+"</td>";
                     html += "<td>"+registros[i]["id_fact"]+"</td>";
                     html += "<td>"+registros[i]["id_lec"]+"</td>";
@@ -285,8 +285,14 @@ function facturas_pendientes(asociado)
                     html += "<td>"+registros[i]["anterior_lec"]+"</td>";
                     html += "<td>"+registros[i]["consumo_lec"]+"</td>";
                     html += "<td>"+registros[i]["mes_lec"]+"</td>";  
-                    html += "<td>"+registros[i]["gestion_lec"]+"</td>";  
-                    
+                    html += "<td>"+registros[i]["gestion_lec"];  
+                      if (i==0 && estado == 'PENDIENTE') {
+                    html += " <button class='btn-success btn-xs' onclick='detalle_factura("+registros[i]["id_fact"]+","+registros[i]["id_lec"]+")'> COBRAR</button>";
+                    }
+                       if (i==(fin-1) && estado == 'CANCELADA') {
+                    html += " <button class='btn-warning btn-xs' onclick='detalle_factura("+registros[i]["id_fact"]+","+registros[i]["id_lec"]+")'> ANULAR</button>";
+                    }
+                    html += "</td>";
                     html += "</tr>";
                 } 
                    
@@ -636,14 +642,20 @@ function anular()
     var base_url    = document.getElementById('base_url').value;
     var factura_id    = document.getElementById('factura_id').value;
     var controlador = base_url+"factura/anular";
-   
+    var id_asoc = document.getElementById('id_asoc').value;
     $.ajax({url: controlador,
             type:"POST",
             data:{factura_id:factura_id},
             success:function(respuesta){
               
             alert('Factura Anulada con Exito'); 
-
+            $("#modaleliminar").modal('hide');
+            var nada = "";
+                $("#lista_pendientes").html(nada);
+                $("#detalle_factura").html(nada);
+                $("#detalle_recargo").html(nada);
+                facturas_pendientes(id_asoc);
+             
 
             },
             error: function(respuesta){

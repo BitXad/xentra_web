@@ -250,6 +250,8 @@ class Factura extends CI_Controller{
     function anular()
     {
         $factura = $this->input->post('factura_id');
+        $sql="UPDATE factura set estado_fact='PENDIENTE', num_fact=0,tipo_fact=0,desc_fact=0 WHERE id_fact=".$factura;
+        $this->db->query($sql);
         $datos = true;
 
         echo json_encode($datos);  

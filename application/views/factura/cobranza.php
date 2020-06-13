@@ -132,7 +132,7 @@ input[type=number] { -moz-appearance:textfield; }
 <div class="col-md-12">
   <div class="col-md-6" style="padding-left:0px;">
     <div class="box">
-    <h4 class="modal-title" id="tipo_facturas">Facturas Pendientes</h4>
+    <h4 class="modal-title" id="tipo_facturas">Facturas</h4>
                           
                 <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla_xs">
