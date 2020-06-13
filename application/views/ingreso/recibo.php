@@ -85,7 +85,10 @@ border-top: 0px;
             </td>
             <td class="vacio"></td>
             <td class="lebo" style="width: 12cm"><b>Apellidos y Nombre(s): </b>
-            <?php echo$ingresos[0]['nombre_ing'];?>
+            <?php if ($ingresos[0]['id_asoc']>1) {
+               echo $ingresos[0]['nombres_asoc'].' '.$ingresos[0]['apellidos_asoc'];
+            }else{ echo $ingresos[0]['nombre_ing'];
+            } ?>
             </td>
         </tr>
     </table>
@@ -150,6 +153,8 @@ border-top: 0px;
 
                 <?php echo "-----------------------------------------------------"; ?><br>
                 <?php echo "ENTREGUE CONFORME"; ?><br>   
+                <?php echo $ingresos[0]['nombre_ing']; ?><br>
+                <?php echo "C.I.".$ingresos[0]['ci_ing']; ?>  
 
             </center>
         </td>

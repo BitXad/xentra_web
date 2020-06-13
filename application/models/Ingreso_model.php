@@ -27,14 +27,15 @@ class Ingreso_model extends CI_Model
     {
          $ingreso = $this->db->query("
             SELECT
-                i.*, u.*
+                i.*, u.nombre_usu, a.nombres_asoc, a.apellidos_asoc
 
             FROM
-                ingreso i, usuario u
+                ingreso i
 
+            LEFT JOIN usuario u ON i.id_usu=u.id_usu    
+            LEFT JOIN asociado a ON i.id_asoc=a.id_asoc    
             WHERE
-                i.id_usu = u.id_usu
-                and i.id_ing=".$id_ing."
+                i.id_ing=".$id_ing."
 
             ORDER BY `id_ing` DESC
 
@@ -48,13 +49,13 @@ class Ingreso_model extends CI_Model
         
         $ingreso = $this->db->query("
             SELECT
-                i.*, u.*
+                i.*, u.nombre_usu, a.nombres_asoc, a.apellidos_asoc
 
             FROM
-                ingreso i, usuario u
+                ingreso i
 
-            WHERE
-                i.id_usu = u.id_usu
+            LEFT JOIN usuario u ON i.id_usu=u.id_usu    
+            LEFT JOIN asociado a ON i.id_asoc=a.id_asoc 
 
             ORDER BY `id_ing` DESC
 
@@ -77,11 +78,16 @@ class Ingreso_model extends CI_Model
 
        $ingreso = $this->db->query("
         SELECT
-               e.*, u.*
+            
+                e.*, u.nombre_usu, a.nombres_asoc, a.apellidos_asoc
+
             FROM
-                ingreso e, usuario u
+                ingreso e
+
+            LEFT JOIN usuario u ON e.id_usu=u.id_usu    
+            LEFT JOIN asociado a ON e.id_asoc=a.id_asoc 
             WHERE
-                e.id_usu = u.id_usu
+                1=1
                 
                
                 ".$condicion." 
@@ -138,6 +144,15 @@ class Ingreso_model extends CI_Model
         {
             return "Error occuring while deleting ingreso";
         }
+    }
+
+    function buscar_asociado($buscar)
+    {
+
+        $sql = "select * from asociado where nit_asoc = '".$buscar."' or ci_asoc='".$buscar."' or codigo_asoc='".$buscar."' or nombres_asoc like '%".$buscar."%' or apellidos_asoc like '%".$buscar."%' ";        
+        $resultado = $this->db->query($sql)->result_array();
+        
+        return $resultado;
     }
 
 

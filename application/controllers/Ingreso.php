@@ -15,11 +15,12 @@ class ingreso extends CI_Controller{
         $this->load->model('Usuario_model');   
         $this->load->helper('numeros');
         $this->load->model('Parametro_model');
-        /*if ($this->session->userdata('logged_in')) {
+        $this->load->model('Factura_model');
+        if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
             redirect('', 'refresh');
-        }*/
+        }
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
@@ -76,7 +77,7 @@ class ingreso extends CI_Controller{
     {   
         if($this->acceso(60)){
             $data['page_title'] = "ingreso";
-                //$id_usu = $this->session_data['id_usu'];
+                $id_usu = $this->session_data['id_usu'];
                 
       $this->load->library('form_validation');
       $this->form_validation->set_rules(
@@ -90,7 +91,7 @@ class ingreso extends CI_Controller{
            
 
             $params = array(
-        'id_usu' => 1,
+        'id_usu' => $id_usu,
         'detalle_ing' => $this->input->post('detalle_ing'),
         'numrec_ing' => $numero,
         'nombre_ing' => $this->input->post('nombre_ing'),
@@ -98,7 +99,8 @@ class ingreso extends CI_Controller{
         'estado_ing' => 'ACTIVO',
         'tipo_ing' => 'ingreso',
         'descripcion_ing' => $this->input->post('descripcion_ing'),
-        'fechahora_ing' => $this->input->post('fechahora_ing'),
+        'ci_ing' => $this->input->post('ci_ing'),
+        'id_asoc' => $this->input->post('id_asoc'),
         
             );
 
@@ -129,7 +131,7 @@ class ingreso extends CI_Controller{
     {   
         if($this->acceso(61)){
             $data['page_title'] = "ingreso";
-            //$id_usu = $this->session_data['id_usu'];
+            $id_usu = $this->session_data['id_usu'];
         // check if the ingreso exists before tryegr to edit it
         $data['ingreso'] = $this->Ingreso_model->get_ingreso($id_ing);
         //$data['tipoid_usu'] = $this->session_data['tipoid_usu'];
@@ -139,7 +141,7 @@ class ingreso extends CI_Controller{
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
-                    'id_usu' => 1,
+                    'id_usu' => $id_usu,
         'detalle_ing' => $this->input->post('detalle_ing'),
         'numrec_ing' => $this->input->post('numrec_ing'),
         'nombre_ing' => $this->input->post('nombre_ing'),
@@ -147,7 +149,8 @@ class ingreso extends CI_Controller{
         'estado_ing' => $this->input->post('estado_ing'),
         'descripcion_ing' => $this->input->post('descripcion_ing'),
         'fechahora_ing' => $this->input->post('fechahora_ing'),
-                
+        'ci_ing' => $this->input->post('ci_ing'),
+        'id_asoc' => $this->input->post('id_asoc'),        
                 );
 
                 $this->Ingreso_model->update_ingreso($id_ing,$params);            
@@ -239,6 +242,52 @@ public function pdf($id_ing){
             );  
         echo json_encode($response);
         }
+    }
+
+
+    function buscar_asociados()
+    {
+      
+        //**************** inicio contenido ***************
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $buscar = $this->input->post('buscar');                    
+                    $datos = $this->Ingreso_model->buscar_asociado($buscar);
+                    echo json_encode($datos);                        
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+                
+        //**************** fin contenido ***************
+        
+                
+               
+    }
+    function buscar_idasociado()
+    {
+      
+        //**************** inicio contenido ***************
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $id = $this->input->post('asociado');                    
+                    $datos = $this->Factura_model->buscar_id_asociado($id);
+                    echo json_encode($datos);                        
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+                
+        //**************** fin contenido ***************
+        
+                
+               
     }
 
 

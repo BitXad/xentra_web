@@ -31,7 +31,7 @@
                         <div class="col-md-6">
                                 <label for="imagenasoc_archivo" class="control-label">Archivo</label>
                                 <div class="form-group">
-                                    <input type="file" name="imagenasoc_archivo" value="<?php echo $this->input->post('imagenasoc_archivo'); ?>" class="form-control" id="imagenasoc_archivo" accept="image/png, image/jpeg, image/jpg, image/gif" />
+                                    <input type="file" name="imagenasoc_archivo" value="<?php echo $this->input->post('imagenasoc_archivo'); ?>" class="form-control" id="imagenasoc_archivo" />
                                     <input type="hidden" name="imagenasoc_archivo1" value="<?php echo ($this->input->post('imagenasoc_archivo') ? $this->input->post('imagenasoc_archivo') : $imagen_asociado['imagenasoc_archivo']); ?>" class="form-control" id="imagenasoc_archivo1" />
                                 </div>
                         </div>

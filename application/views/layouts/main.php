@@ -350,18 +350,37 @@
                                 <i class="fa fa-money"></i> <span>Multas</span>
                             </a>
                         </li>
-						<li>
+                        <li>
                             <a href="#">
                                 <i class="fa fa-sliders"></i> <span>Parametro</span>
                             </a>
                             <ul class="treeview-menu">
-								<li class="active">
+                                <li class="active">
                                     <a href="<?php echo site_url('parametro/add');?>"><i class="fa fa-plus"></i> Add</a>
                                 </li>
-								<li>
+                                <li>
                                     <a href="<?php echo site_url('parametro/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
                                 </li>
-							</ul>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-clipboard"></i> <span>Reportes</span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="active">
+                                    <a href="<?php echo site_url('reportes');?>"><i class="fa fa-paste"></i> Reporte</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('reportes/ingresof');?>"><i class="fa fa-paste"></i> Reporte Ingresos</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('reportes/movimiento');?>"><i class="fa fa-exchange"></i> Movimiento Diario</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('reportes/mensual');?>"><i class="fa fa-calendar"></i> Mensual</a>
+                                </li>
+                            </ul>
                         </li>
 						<li>
                             <a href="#">
