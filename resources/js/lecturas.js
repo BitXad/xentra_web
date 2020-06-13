@@ -77,6 +77,7 @@ function calcular(id_asoc){
         //alert(servicios_asoc);
     
         if (Number(lectura_actual) >= Number(lectura_anterior)) {
+            
             var consumo = lectura_actual - lectura_anterior;
             $("#consumo_mt3").val(Number(consumo).toFixed(2));
 
@@ -90,10 +91,20 @@ function calcular(id_asoc){
 
 
 //                    var consumo_bs = document.getElementById("consumo_bs").value;
-                    var consumo_bs = Number(res[0].costo_agua) + ((Number(consumo)-Number(res[0].consumo_basico)) * Number(res[0].costo_mt3));
+                    var costo_agua = 0;
                     
+                    if (Number(res[0].costo_agua)>=0){
+                        costo_agua = Number(res[0].costo_agua);
+                    }else{
+                        costo_agua = 0;
+                    }
                     
-                    alert(consumo_bs);
+                    //alert(costo_agua);
+                    //alert("consumo basico: "+res[0].consumo_basico)
+                    
+                    var consumo_bs = costo_agua + ((Number(consumo)-Number(res[0].consumo_basico)) * Number(res[0].costo_mt3));                    
+                    
+                    //alert(consumo_bs);
 //                    var consumo_alcantarillado = document.getElementById("consumo_alcantarillado").value;
                     var consumo_alcantarillado = res[0].costo_alcant;
                     
