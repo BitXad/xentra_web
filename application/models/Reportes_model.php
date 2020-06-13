@@ -132,8 +132,8 @@ ORDER BY direccion";
             where
                 a.id_asoc = l.id_asoc 
                 and l.id_lec = f.id_lec 
-                and date(f.fechahora_fact) >='".$fecha1."'
-                and date(f.fechahora_fact) <='".$fecha2."' 
+                and date(f.fecha_fact) >='".$fecha1."'
+                and date(f.fecha_fact) <='".$fecha2."' 
                 ".$cadusuario."
                 ".$cadirecion."
                 ".$cadestado."
