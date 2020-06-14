@@ -114,7 +114,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden
                     for (var i = 0; i < n ; i++){
                         totalconsumomt3 += parseFloat(registros[i]['consumo_lec']);
                         totalconsumo  += parseFloat(registros[i]['totalcons_lec']);
-                        totalalcanta  += parseFloat(registros[i]['costo_alcant']);
+                        totalalcanta  += parseFloat(registros[i]['consumoalcant_lec']);
                         totalaportes  += parseFloat(registros[i]['totalaportes_fact']);
                         totalrecargo  += parseFloat(registros[i]['totalrecargos_fact']);
                         //totalegreso   += parseFloat(registros[i]['egreso']);
@@ -132,7 +132,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden
                                 estetotal = Number(registros[i]["montototal_fact"]).toFixed(2);
                             }else{
                                 html += registros[i]["estado_fact"];
-                                estetotal = Number(Number(registros[i]["totalcons_lec"])+Number(registros[i]["costo_alcant"])).toFixed(2)
+                                estetotal = Number(Number(registros[i]["totalcons_lec"])+Number(registros[i]["consumoalcant_lec"])).toFixed(2)
                             }
                             totalingreso  += Number(estetotal);
                             html += "</td>";
@@ -140,7 +140,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden
                             html += "<td class='text-center lizq' style='padding: 0px 5px !important'>"+registros[i]["actual_lec"]+"</td>";
                             html += "<td class='text-center lizq' style='padding: 0px 5px !important'>"+registros[i]["consumo_lec"]+"</td>";
                             html += "<td class='text-center lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["totalcons_lec"]).toFixed(2)+"</td>";
-                            html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["costo_alcant"]).toFixed(2)+"</td>";
+                            html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["consumoalcant_lec"]).toFixed(2)+"</td>";
                             html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["totalaportes_fact"]).toFixed(2)+"</td>";
                             html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["totalrecargos_fact"]).toFixed(2)+"</td>";
                             html += "<td class='text-right lizq' style='padding: 0px 5px !important'>";
