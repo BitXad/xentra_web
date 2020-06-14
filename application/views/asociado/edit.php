@@ -392,7 +392,7 @@
                             }
                             initMap();
                         </script>
-                        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClNsJugfWI4xOf1Or9Wdg5lD_qUqaik58&callback=initMap"></script>
+                        <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametro[0]['parametro_apikey']?>&callback=initMap"></script>
                         </div>
                         <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
                     </div>
