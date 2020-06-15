@@ -23,7 +23,7 @@
               </div>
               <div id="lista_asociados"></div>    
                         
-            <?php echo form_open('INGRESO/add/'); ?>
+            <?php echo form_open('ingreso/add/'); ?>
 
              <input type="hidden"  name="id_asoc" value="<?php echo $this->input->post('id_asoc'); ?>" class="form-control" id="id_asoc" required/>
             <div class="box-body">
