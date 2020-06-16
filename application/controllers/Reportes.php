@@ -66,6 +66,7 @@ class Reportes extends CI_Controller{
     /* reporte de movimiento */
     function movimiento()
     {
+        $data['nombre_usu'] = $this->session_data['nombre_usu'];
         $this->load->model('Usuario_model');
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $this->load->model('Estado_model');

@@ -14,7 +14,7 @@ class Configuracion_model extends CI_Model
     /*
      * Get configuracion by 
      */
-    function get_configuracion($)
+    function get_configuracion()
     {
         $configuracion = $this->db->query("
             SELECT

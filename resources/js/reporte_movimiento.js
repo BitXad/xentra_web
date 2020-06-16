@@ -76,8 +76,6 @@ function numberFormat(numero){
         }
 }
 
-
-
 function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id){
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"reportes/buscarlosmovimientos";
@@ -88,8 +86,6 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id){
            data:{fecha1:fecha_desde, fecha2:fecha_hasta, usuario_id:usuario, esteestado:estado_id},
           
            success:function(resul){
-              
-                            
                 $("#resingegr").val("- 0 -");
                var registros =  JSON.parse(resul);
            
@@ -97,20 +93,8 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id){
                     var fecha1 = fecha_desde;
                     var fecha2 = fecha_hasta;
                     var esusuario =  $('#buscarusuario_id option:selected').text();
-                    if(!(fecha_desde == null || fecha_desde =="") && !(fecha_hasta == null  || fecha_hasta =="")){
-                        fecha1 = "Desde: "+moment(fecha_desde).format("DD/MM/YYYY");
-                        fecha2 = " - Hasta: "+moment(fecha_hasta).format("DD/MM/YYYY");
-                    }else if(!(fecha_desde == null || fecha_desde =="") && (fecha_desde == null || fecha_hasta =="")){
-                        fecha1 = "De: "+moment(fecha_desde).format("DD/MM/YYYY");
-                        fecha2 = "";
-                    }else if((fecha_desde == null || fecha_desde =="") && !(fecha_hasta == null || fecha_hasta =="")){
-                        fecha1 = "";
-                        fecha2 = "De: "+moment(fecha_hasta).format("DD/MM/YYYY");
-                    }else{
-                        fecha1 = "";
-                        fecha2 = "";
-                    }
-                    
+                    fecha1 = "<span class='text-bold'>Desde: </span>"+moment(fecha_desde).format("DD/MM/YYYY");
+                    fecha2 = "<span class='text-bold'>Hasta: </span>"+moment(fecha_hasta).format("DD/MM/YYYY");
                     var totalingreso    = 0;
                     var totalegreso    = 0;
 
@@ -120,69 +104,79 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id){
                     html = "";
                     cabecerahtml= "";
                     
-                    var cont = 1;
                     for (var i = 0; i < n ; i++){
                         totalingreso += parseFloat(registros[i]['ingreso']);
                         totalegreso  += parseFloat(registros[i]['egreso']);
                         if(registros[i]['tipo'] == 1){
-                            html += "<tr>";
-                            html += "<td>"+(i+1)+"</td>";
-                            html += "<td class='text-right'>"+registros[i]["fecha"]+"</td>";
-                            html += "<td class='text-left'>"+registros[i]["detalle"]+"</td>";
-                            html += "<td class='text-right'>"+Number(registros[i]["ingreso"]).toFixed(2)+"</td>";
-                            html += "<td class='text-right'>0.00</td>";
+                            html += "<tr class='labjf'>";
+                            html += "<td class='text-center' style='padding: 0px 5px !important'>"+(i+1)+"</td>";
+                            html += "<td class='text-right' style='padding: 0px 5px !important'>"+registros[i]["fecha"]+"</td>";
+                            html += "<td class='text-left' style='padding: 0px 5px !important' colspan='2'>"+registros[i]["detalle"]+"</td>";
+                            html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["ingreso"]).toFixed(2)+"</td>";
+                            html += "<td class='text-right lizq' style='padding: 0px 5px !important'>0.00</td>";
                             html += "</tr>";
                         }
                         if(registros[i]['tipo'] == 2){
-                            html += "<tr>";
-                            html += "<td>"+(i+1)+"</td>";
-                            html += "<td class='text-right'>"+registros[i]["fecha"]+"</td>";
-                            html += "<td class='text-left'>"+registros[i]["detalle"]+"</td>";
-                            html += "<td class='text-right'>"+Number(registros[i]["ingreso"]).toFixed(2)+"</td>";
-                            html += "<td class='text-right'>0.00</td>";
+                            html += "<tr class='labjf'>";
+                            html += "<td class='text-center' style='padding: 0px 5px !important'>"+(i+1)+"</td>";
+                            html += "<td class='text-right' style='padding: 0px 5px !important'>"+registros[i]["fecha"]+"</td>";
+                            html += "<td class='text-left' style='padding: 0px 5px !important' colspan='2'>"+registros[i]["detalle"]+"</td>";
+                            html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["ingreso"]).toFixed(2)+"</td>";
+                            html += "<td class='text-right lizq' style='padding: 0px 5px !important'>0.00</td>";
                             html += "</tr>";
                         }
                         if(registros[i]['tipo'] == 8){
-                            html += "<tr>";
-                            html += "<td>"+(i+1)+"</td>";
-                            html += "<td class='text-right'>"+registros[i]["fecha"]+"</td>";
-                            html += "<td class='text-left'>"+registros[i]["detalle"]+"</td>";
-                            html += "<td class='text-right'>0.00</td>";
-                            html += "<td class='text-right'>"+Number(registros[i]["egreso"]).toFixed(2)+"</td>";
+                            html += "<tr class='labjf'>";
+                            html += "<td class='text-center' style='padding: 0px 5px !important'>"+(i+1)+"</td>";
+                            html += "<td class='text-right' style='padding: 0px 5px !important'>"+registros[i]["fecha"]+"</td>";
+                            html += "<td class='text-left' style='padding: 0px 5px !important' colspan='2'>"+registros[i]["detalle"]+"</td>";
+                            html += "<td class='text-right lizq' style='padding: 0px 5px !important'>0.00</td>";
+                            html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["egreso"]).toFixed(2)+"</td>";
                             html += "</tr>";
                         }
                     }
-
-                   htmls = "";
-                   htmls += "<tr>";
-                   htmls += "<td class='text-right text-bold' colspan='3'>TOTAL (INGRESOS/EGRESOS)Bs.</td>";
-                   htmls += "<td class='text-right'>"+numberFormat(Number(totalingreso).toFixed(2))+"</td>";
-                   htmls += "<td class='text-right'>"+numberFormat(Number(totalegreso).toFixed(2))+"</td>";
-                   htmls += "</tr>";
-                   htmls += "<tr>";
-                   htmls += "<td class='text-right text-bold' colspan='3' style='font-family: Arial; font-size: 12px'>TOTAL Bs.</td>";
-                   htmls += "<td class='text-right text-bold' class='esbold' style='font-family: Arial; font-size: 12px'>"+numberFormat(Number(totalingreso-totalegreso).toFixed(2))+"</td>";
-                   htmls += "<tr>";
-
-                   $('#elusuario').html("Usuario: "+esusuario);
-                   $('#fecha1impresion').html(fecha1);
-                   $('#fecha2impresion').html(fecha2);
-                   
-                    cabecerahtmlt = "<table class='table table-striped table-condensed' id='mitabladetimpresion' style='width: 100%'>";
-                    cabecerahtmlt += "<tr>";
-                    cabecerahtmlt += "<th class='text-center' style='width: 2%'>N°</th>";
-                    cabecerahtmlt += "<th class='text-center' style='width: 8%'>FECHA</th>";
-                    cabecerahtmlt += "<th class='text-center' style='width: 60%'>DETALLE</th>";
-                    cabecerahtmlt += "<th class='text-center' style='width: 10%'>INGRESO</th>";
-                    cabecerahtmlt += "<th class='text-center' style='width: 10%'>EGRESO</th>";
+                    cabecerahtmlt = "<table class='table1 table-striped table-condensed' id='mitabladetimpresion' style='width: 100%; font-family: Arial !important;'>";
+                    cabecerahtmlt += "<tr class='boxtabla'>";
+                    cabecerahtmlt += "<th class='text-center' style='width: 2%; padding: 1px; vertical-align: middle'>N°</th>";
+                    cabecerahtmlt += "<th class='text-center' style='width: 12%; padding: 1px; vertical-align: middle'>FECHA</th>";
+                    cabecerahtmlt += "<th class='text-center' style='width: 60%; padding: 1px; vertical-align: middle' colspan='2'>DETALLE</th>";
+                    cabecerahtmlt += "<th class='text-center lizq' style='width: 8%; padding: 1px; vertical-align: middle'>INGRESO</th>";
+                    cabecerahtmlt += "<th class='text-center lizq' style='width: 8%; padding: 1px; vertical-align: middle'>EGRESO</th>";
                     cabecerahtmlt += "</tr>";
                     cabecerahtmlt += "<tbody>";
-                    
+
+                    htmls = "";
+                    htmls += "<tr class='larrf lizq1'>";
+                    htmls += "<td></td>";
+                    htmls += "<td class='text-right text-bold' colspan='3'>TOTAL (INGRESOS/EGRESOS)Bs.</td>";
+                    htmls += "<td class='text-right'>"+numberFormat(Number(totalingreso).toFixed(2))+"</td>";
+                    htmls += "<td class='text-right'>"+numberFormat(Number(totalegreso).toFixed(2))+"</td>";
+                    htmls += "</tr>";
+                    htmls += "<tr>";
+                    htmls += "<td class='lizq1' colspan='2'></td>";
+                    htmls += "<td class='lizq1'><br><br></td>";
+                    htmls += "<td class='larrf' style='width: 30%'></td>";
+                    htmls += "<td class='larrf text-right text-bold' style='font-family: Arial; font-size: 15px; !important'>TOTAL Bs.</td>";
+                    htmls += "<td class='larrf text-right text-bold' style='font-family: Arial; font-size: 15px; !important'>"+numberFormat(Number(totalingreso-totalegreso).toFixed(2))+"</td>";
+                    htmls += "</tr>";
+                    htmls += "<tr>";
+                    htmls += "<td class='larrf' colspan='2'></td>";
+                    htmls += "<td class='text-center lizq1'>"; //<div style='font-size: 10px; width: 60%'>";
+                    htmls += "________________________<br>FIRMA RESPONSABLE";
+                    //htmls += "</div>";
+                    htmls += "</td>";
+                    htmls += "<td colspan='3'></td>";
+                    htmls += "</tr>";
+
+                    $('#elusuario').html("Usuario: "+esusuario);
+                    $('#fecha1impresion').html(fecha1);
+                    $('#fecha2impresion').html(fecha2);
+                   
                     piehtmlt = "</tbody></table></div></div>";
                    
-                   $("#tablatotalresultados").html(cabecerahtmlt+html+htmls+piehtmlt);
+                    $("#tablatotalresultados").html(cabecerahtmlt+html+htmls+piehtmlt);
                    
-                   document.getElementById('loader').style.display = 'none';
+                    document.getElementById('loader').style.display = 'none';
             }
         document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
@@ -199,103 +193,3 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id){
 
 }
 
-function porformapago(fecha_desde, fecha_hasta, usuario, formapago, nombre1, nombre2){
-    var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"reportes/reportesformapago";
-    var tipoformapago = "";
-    if(formapago == 1){
-        tipoformapago = 1;
-    }else if(formapago == 2){
-        tipoformapago = 2;
-    }else if(formapago == 3){
-        tipoformapago = 3;
-    }else if(formapago == 4){
-        tipoformapago = 4;
-    }else if(formapago == 5){
-        tipoformapago = 5;
-    }else if(formapago == 61){
-        tipoformapago = 61;
-    }
-    
-     /*var limite = 1000; */
-     
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{fecha1:fecha_desde, fecha2:fecha_hasta, usuario_id:usuario, formapago: tipoformapago},
-          
-           success:function(resul){
-              
-                            
-                //$("#resingegr").val("- 0 -");
-               var registros =  JSON.parse(resul);
-           
-               if (registros != null){
-                   
-                    var totalingreso = 0;
-                    //var totalegreso = 0;
-                    var totalutilidad = 0;
-
-                    var n = registros.length; //tamaño del arreglo de la consulta
-                    //$("#resingegr").val("- "+n+" -");
-                   
-                    html = "";
-                    html1 = "";
-                    cabecerahtml1= "";
-                    
-                    var cont = 1;
-                    for (var i = 0; i < n ; i++){
-                      totalingreso  += parseFloat(registros[i]['ingreso']);
-                      //totalegreso   += parseFloat(registros[i]['egreso']);
-                      totalutilidad += parseFloat(registros[i]['utilidad']);
-                        html += "<tr>";
-                      
-                        html += "<td>"+cont+"</td>";
-                        
-                       html += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
-                       html += "<td>"+registros[i]["detalle"]+"</td>";
-                       html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
-                    //   html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
-                       //html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["utilidad"]).toFixed(2))+"</td>";
-
-                       
-                       
-                        html += "</tr>";
-                       cont += 1;
-                   }
-
-                    /* *****************INICIO para reporte TOTAL****************** */
-                    var colorletra = "";
-                    if(formapago !=1){
-                        colorletra = "text-red";
-                    }
-                    cabecerahtml= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mosv"+formapago+"' onclick='mostrar"+formapago+"(); return false'>+</a></td><td style='width:61%;'>"+nombre1+": </td><td style='width:17%;'  id='alinearder'><span id='parasum"+formapago+"' class='"+colorletra+"'>"+numberFormat(Number(totalingreso).toFixed(2))+"</span></td><td style='width:17%;' id='alinearder'></td></tr>"+"</table>";
-            //                "<tr><td style='width:5%;'></td><td style='width:60%;'>"+nombre2+": </td><td style='width:35%;' id='alinearder'>"+numberFormat(Number(totalutilidad).toFixed(2))+"</td></tr></table>";
-                    //cabecerahtml2= "<label  class='control-label col-md-12'><div class='col-md-1'><a href='#' id='mosventa'onclick='mostrarventa(); return false'>+</a></div><div class='col-md-6'>Ingreso de Ventas: </div><div class='col-md-4'>"+numberFormat(Number(totalingreso2).toFixed(2))+"; &nbsp; &nbsp;Utilidad: "+numberFormat(Number(totalutilidad2).toFixed(2))+"</div><div class='col-md-3'></div></label>";
-                    cabecerahtml += "<div id='ocultov"+formapago+"' style='visibility:hidden; width: 0; height: 0;'>";
-                    cabecerahtml += "<div id='mapv"+formapago+"'>";
-                    
-                    cabecerahtml += "<table class='table table-striped table-condensed' id='mitabladetimpresion'>";
-                    cabecerahtml += "<tr>";
-                    cabecerahtml += "<th>N°</th>";
-                    cabecerahtml += "<th>Fecha</th>";
-                    cabecerahtml += "<th>Detalle</th>";
-                    cabecerahtml += "<th>Ingreso</th>";
-                //    cabecerahtml += "<th>Utilidad</th>";
-                    cabecerahtml += "</tr>";
-                    
-                    piehtml = "</table></div></div>";
-                    /* *****************F I N para reporte TOTAL****************** */
-                   $("#tablaformapagoresultados"+formapago).html(cabecerahtml+html+piehtml);
-                   return totalingreso;
-            }
-                
-        },
-        error:function(resul){
-          // alert("Algo salio mal...!!!");
-           html = "";
-           $("#tablaformapagoresultados"+formapago).html(html);
-        }
-        
-    });   
-
-}

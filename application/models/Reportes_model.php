@@ -16,13 +16,11 @@ class Reportes_model extends CI_Model
      */
     function get_direcciones()
     {
-
         $sql = "SELECT a.direccion_asoc AS 'direccion', SUM(l.consumo_lec) as 'consumo' FROM asociado a
-LEFT JOIN lectura l on a.`id_asoc`=l.`id_asoc`
-GROUP BY direccion
-ORDER BY direccion";
+                LEFT JOIN lectura l on a.`id_asoc`=l.`id_asoc`
+                GROUP BY direccion
+                ORDER BY direccion";
         $direcciones = $this->db->query($sql)->result_array();
-
         return $direcciones;
     }
     function reporte_mensual()
@@ -30,13 +28,10 @@ ORDER BY direccion";
         $multa = $this->db->query("
             SELECT
                 *
-
             FROM
                 `multa`
-
             WHERE
                 1 = 1
-
             ORDER BY `id_multa` DESC
         ")->result_array();
 
@@ -64,7 +59,7 @@ ORDER BY direccion";
         }elseif($orden_por == "codigo"){
             $cadorden = " order by abs(a.codigo_asoc) ";
         }elseif($orden_por == "fact"){
-            $cadorden = " order by f.id_fact ";
+            $cadorden = " order by f.num_fact ";
         }elseif ($orden_por == "monto"){
             $cadorden = " order by f.montototal_fact ";
         }else{
@@ -75,7 +70,8 @@ ORDER BY direccion";
                     a.id_asoc, a.codigo_asoc, a.nombres_asoc, a.apellidos_asoc, a.razon_asoc,
                     l.mes_lec, l.gestion_lec, f.num_fact, l.id_lec, f.estado_fact,
                     l.actual_lec, anterior_lec, l.consumo_lec, l.totalcons_lec,
-                    f.totalaportes_fact, f.totalrecargos_fact, f.montototal_fact
+                    f.totalaportes_fact, f.totalrecargos_fact, f.montototal_fact,
+                    l.consumoalcant_lec
             from 
                 asociado a,  lectura l,  factura f
             where
@@ -87,11 +83,8 @@ ORDER BY direccion";
                 ".$cadirecion."
                 ".$cadestado."
                 ".$cadorden."
-                
         ")->result_array();
-
         return $ingresos;
-
     }
     /* busca los ingresos */
     function get_ingresoreportesf($fecha1, $fecha2, $usuario_id, $estado_id, $orden_por, $nombre_dir){
@@ -115,7 +108,7 @@ ORDER BY direccion";
         }elseif($orden_por == "codigo"){
             $cadorden = " order by abs(a.codigo_asoc) ";
         }elseif($orden_por == "fact"){
-            $cadorden = " order by f.id_fact ";
+            $cadorden = " order by f.num_fact ";
         }elseif ($orden_por == "monto"){
             $cadorden = " order by f.montototal_fact ";
         }else{
@@ -126,23 +119,22 @@ ORDER BY direccion";
                     a.id_asoc, a.codigo_asoc, a.nombres_asoc, a.apellidos_asoc, a.razon_asoc,
                     l.mes_lec, l.gestion_lec, f.num_fact, l.id_lec, f.estado_fact,
                     l.actual_lec, anterior_lec, l.consumo_lec, l.totalcons_lec,
-                    f.totalaportes_fact, f.totalrecargos_fact, f.montototal_fact
+                    f.totalaportes_fact, f.totalrecargos_fact, f.montototal_fact,
+                    l.consumoalcant_lec
             from 
                 asociado a,  lectura l,  factura f
             where
                 a.id_asoc = l.id_asoc 
                 and l.id_lec = f.id_lec 
                 and date(f.fecha_fact) >='".$fecha1."'
-                and date(f.fecha_fact) <='".$fecha2."' 
+                and date(f.fecha_fact) <='".$fecha2."'
+                and f.estado_fact = 'CANCELADA'
                 ".$cadusuario."
                 ".$cadirecion."
                 ".$cadestado."
                 ".$cadorden."
-                
         ")->result_array();
-
         return $ingresos;
-
     }
     /* busca los movimientos de ingresos y egresos */
     function get_reportemovimiento($fecha1, $fecha2, $usuario_id, $estado_id){
@@ -199,11 +191,11 @@ ORDER BY direccion";
             left join lectura l on f.id_lec = l.id_lec
             left join asociado a on l.id_asoc = a.id_asoc
             where
-                date(f.fechahora_fact) >= '".$fecha1."'
-                and date(f.fechahora_fact) <= '".$fecha2."'
-                and estado_fact = 'CANCELADA'
+                date(f.fecha_fact) >= '".$fecha1."'
+                and date(f.fecha_fact) <= '".$fecha2."'
+                and f.estado_fact = 'CANCELADA'
                 ".$cadusuario2."
-      order by f.fechahora_fact desc)
+            order by f.fechahora_fact desc)
             UNION
             (select
                 e.id_egr as id, e.fechahora_egr as fecha,
@@ -220,8 +212,6 @@ ORDER BY direccion";
             order by e.fechahora_egr desc)
                 
         ")->result_array();
-
         return $ingresos;
-
     }
 }

@@ -274,11 +274,11 @@ class Lectura extends CI_Controller {
         $sql ="insert into lectura(id_usu,id_asoc,mes_lec,gestion_lec,"
             ."anterior_lec,actual_lec,fechaant_lec,consumo_lec,fecha_lec,hora_lec,"
             ."totalcons_lec,monto_lec,estado_lec,tipo_asoc,servicios_asoc,"
-            ."cantfact_lec,montofact_lec) values(".
+            ."cantfact_lec,montofact_lec, consumoalcant_lec) values(".
             $id_usu.",".$id_asoc.",".$mes_lec.",".$gestion_lec.",".$anterior_lec.",".
             $actual_lec.",".$fechaant_lec.",".$consumo_lec.",".$fechalectura_fact.",".
             $hora_lec.",".$totalcons_lec.",".$monto_lec.",".$estado_lec.",".
-            $tipo_asoc.",".$servicios_asoc.",".$cantfact_lec.",".$montofact_lec.")";
+            $tipo_asoc.",".$servicios_asoc.",".$cantfact_lec.",".$montofact_lec.",".$consumo_alcantarillado_bs.")";
         $result = $this->Lectura_model->ejecutar($sql);
 
         $sql = 'select * from lectura where id_asoc = ' . $id_asoc . ' order by fecha_lec desc';
