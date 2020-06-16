@@ -373,5 +373,16 @@ class Factura extends CI_Controller{
          redirect('factura/imprimir_recibo/'.$dato['id_fact']);
    
      }
+
+     function total_pendiente()
+    {
+        $asociado = $this->input->post('asociado');
+        $consumo = $this->Factura_model->get_consumo_total($asociado);
+        $aporte = $this->Factura_model->get_aportes_total($asociado);
+        $recargo = $this->Factura_model->get_recargos_total($asociado);
+        $suma = $consumo['total_consumo']+$aporte['total_multas']+$recargo['total_recargos'];
+        echo json_encode($suma);  
+        
+    }
     
 }

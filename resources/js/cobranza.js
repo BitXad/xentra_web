@@ -243,7 +243,7 @@ function ver_facturas(asociado)
                     $("#id_asoc").val(registros[0]["id_asoc"]);
 
                     facturas_pendientes(asociado); 
-                   // multas_pendientes(asociado); 
+                    //total_pendientes(asociado); 
                     }             
 
             },
@@ -278,16 +278,18 @@ function facturas_pendientes(asociado)
                 {
 
                     html += "<tr>";               
-                    html += "<td>"+(i+1)+"</td>";
-                    html += "<td>"+registros[i]["id_fact"]+"</td>";
-                    html += "<td>"+registros[i]["id_lec"]+"</td>";
-                    html += "<td>"+registros[i]["actual_lec"]+"</td>";
-                    html += "<td>"+registros[i]["anterior_lec"]+"</td>";
-                    html += "<td>"+registros[i]["consumo_lec"]+"</td>";
-                    html += "<td>"+registros[i]["mes_lec"]+"</td>";  
-                    html += "<td>"+registros[i]["gestion_lec"];  
+                    html += "<td align='center'>"+(i+1)+"</td>";
+                    html += "<td align='center'>"+registros[i]["id_fact"]+"</td>";
+                    html += "<td align='center'>"+registros[i]["id_lec"]+"</td>";
+                    html += "<td align='center'>"+registros[i]["actual_lec"]+"</td>";
+                    html += "<td align='center'>"+registros[i]["anterior_lec"]+"</td>";
+                    html += "<td align='center'>"+registros[i]["consumo_lec"]+"</td>";
+                    html += "<td align='center'>"+registros[i]["mes_lec"]+"</td>";  
+                    html += "<td align='center'>"+registros[i]["gestion_lec"]+"</td>";  
+                    html += "<td align='right'>"+Number(registros[i]["montofact_lec"]).toFixed(2)+"</td>";
+                    html += "<td align='center' style='padding: 0'>";
                       if (i==0 && estado == 'PENDIENTE') {
-                    html += " <button class='btn-success btn-xs' onclick='detalle_factura("+registros[i]["id_fact"]+","+registros[i]["id_lec"]+")'> COBRAR</button>";
+                    html += "<button class='btn-success btn-xs' onclick='detalle_factura("+registros[i]["id_fact"]+","+registros[i]["id_lec"]+")'> COBRAR</button>";
                     }
                        if (i==(fin-1) && estado == 'CANCELADA') {
                     html += " <button class='btn-warning btn-xs' onclick='detalle_factura("+registros[i]["id_fact"]+","+registros[i]["id_lec"]+")'> ANULAR</button>";
@@ -312,7 +314,7 @@ function facturas_pendientes(asociado)
                     document.getElementById('btn_pendiente').style.display = 'none';
                     
                 }
-
+                total_pendientes(asociado);
                 }
                 else{
                     alert('El Asociado No Tiene Facturas '+estado);
@@ -502,82 +504,7 @@ function multar(){
     
 }
 
-/*function busqueda_ot()
-{
-    var base_url    = document.getElementById('base_url').value;
-    var opcion      = document.getElementById('select_fecha').value;
- 
-    if (opcion == 1)
-    {
-        filtro = " and date(orden_fecha) = date(now())";
-        mostrar_ocultar_buscador("ocultar");
-        $("#busquedaavanzada").html('Del Dia');
-               
-    }//compras de hoy
-    
-    if (opcion == 2)
-    {
-       
-        filtro = " and date(orden_fecha) = date_add(date(now()), INTERVAL -1 DAY)";
-        mostrar_ocultar_buscador("ocultar");
-        $("#busquedaavanzada").html('De Ayer');
-    }//compras de ayer
-    
-    if (opcion == 3) 
-    {
-    
-        filtro = " and date(orden_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)";//compras de la semana
-        mostrar_ocultar_buscador("ocultar");
-        $("#busquedaavanzada").html('De la Semana');
-            }
 
-    
-    if (opcion == 4) 
-    {   filtro = " ";//todos los compras
-        mostrar_ocultar_buscador("ocultar");
-
-    }
-    
-    if (opcion == 5) {
-
-        mostrar_ocultar_buscador("mostrar");
-        //filtro = null;
-    }
-
-    fechaorden(filtro);
-}
-
-
-function mostrar_ocultar_buscador(parametro){
-       
-    if (parametro == "mostrar"){
-        document.getElementById('buscador_oculto').style.display = 'block';}
-    else{
-        document.getElementById('buscador_oculto').style.display = 'none';}
-    
-}*/
-
-
-
-
-
-function buscar_por_fecha()
-{
-    var base_url    = document.getElementById('base_url').value;
-    
-    var fecha_desde = document.getElementById('fecha_desde').value;
-    var fecha_hasta = document.getElementById('fecha_hasta').value;
-  
-
-   var fecha1 = "Desde: "+moment(fecha_desde).format('DD/MM/YYYY');
-   var fecha2 = "Hasta: "+moment(fecha_hasta).format('DD/MM/YYYY');
-   
-   
-         filtro = " and date(orden_fecha) >= '"+fecha_desde+"'  and  date(orden_fecha) <='"+fecha_hasta+"' ";
-         $("#busquedaavanzada").html(fecha1+" "+fecha2);
-    
-    fechaorden(filtro);
-}
 
 function reimprimirbusqueda()
 {
@@ -665,4 +592,23 @@ function anular()
    
 }
 
+
+function total_pendientes(asociado)
+{
+        var base_url    = document.getElementById('base_url').value;
+        var controlador = base_url+"factura/total_pendiente";
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{asociado:asociado},
+            success:function(respuesta){
+           var registros = JSON.parse(respuesta);
+           $("#total_pendientes").html('Pendientes: '+Number(registros).toFixed(2));
+             
+
+            },
+            error: function(respuesta){
+              alert('Esta Factura no se puede Anular');
+            }
+        });
+}
 
