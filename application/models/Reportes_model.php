@@ -128,6 +128,7 @@ class Reportes_model extends CI_Model
                 and l.id_lec = f.id_lec 
                 and date(f.fecha_fact) >='".$fecha1."'
                 and date(f.fecha_fact) <='".$fecha2."'
+                and f.estado_fact = 'CANCELADA'
                 ".$cadusuario."
                 ".$cadirecion."
                 ".$cadestado."
@@ -192,7 +193,7 @@ class Reportes_model extends CI_Model
             where
                 date(f.fecha_fact) >= '".$fecha1."'
                 and date(f.fecha_fact) <= '".$fecha2."'
-                and estado_fact = 'CANCELADA'
+                and f.estado_fact = 'CANCELADA'
                 ".$cadusuario2."
             order by f.fechahora_fact desc)
             UNION
