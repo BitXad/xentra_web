@@ -24,13 +24,14 @@ function finalizar(){
     var aportes = document.getElementById('aportes').value;
     var recargos = document.getElementById('recargos').value;
     var total = document.getElementById('total_factura').value;
-
+    var nit_asoc = document.getElementById('nit_asoc').value;
+    var razon_asoc = document.getElementById('razon_asoc').value;
     $.ajax({url:controlador,
 
             type:"POST",
 
             data:{factura_id:factura_id,multar:multar,generar_factura:generar_factura,lectura_id:lectura_id,
-                consumo:consumo,aportes:aportes,recargos:recargos,total:total},
+                consumo:consumo,aportes:aportes,recargos:recargos,total:total,nit_asoc:nit_asoc,razon_asoc:razon_asoc},
 
             success:function(respuesta){
 
@@ -241,6 +242,8 @@ function ver_facturas(asociado)
                     $("#apellido").val(registros[0]["apellidos_asoc"]);
                     $("#ci").val(registros[0]["ci_asoc"]);
                     $("#id_asoc").val(registros[0]["id_asoc"]);
+                    $("#nit_asoc").val(registros[0]["nit_asoc"]);
+                    $("#razon_asoc").val(registros[0]["razon_asoc"]);
 
                     facturas_pendientes(asociado); 
                     //total_pendientes(asociado); 
@@ -612,3 +615,15 @@ function total_pendientes(asociado)
         });
 }
 
+function facturan()
+{
+    
+    var facturan = document.getElementById('generar_factura').checked;
+    alert(facturan);
+    if (facturan==true) {
+            document.getElementById('facturan').style.display = 'block';
+                                         
+    }else{
+            document.getElementById('facturan').style.display = 'none';         
+    }
+}
