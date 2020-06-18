@@ -202,8 +202,59 @@ class Reportes extends CI_Controller{
         {                 
             show_404();
         }
-            
     }
-    
+    function egreso()
+    {
+        $data['nombre_usu'] = $this->session_data['nombre_usu'];
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $this->load->model('Categoria_egreso_model');
+        $data['all_categoria'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
+        $this->load->model('Empresa_model');
+        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+        $data['_view'] = 'reportes/egreso';
+        $this->load->view('layouts/main',$data);
+    }
+    /* buscar los egresos  */
+    function buscarlosegresos()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $fecha1    = $this->input->post('fecha1');   
+            $fecha2    = $this->input->post('fecha2'); 
+            $usuario   = $this->input->post('usuario_id'); 
+            $nom_categr= $this->input->post('nom_categr');
+            $orden_por = $this->input->post('orden_por');
+            $valfecha1 = "";
+            $valfecha2 = "";
+            $usuario_id = "";
+
+            if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
+                $valfecha1 = $fecha1;
+                $valfecha2 = $fecha2;
+            }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
+                $valfecha1 = $fecha1;
+                $valfecha2 = $fecha1;
+            }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
+                $valfecha1 = $fecha2;
+                $valfecha2 = $fecha2;
+            }else{
+                $fecha1 = null;
+                $fecha2 = null;
+            }
+
+            if($usuario >  0){
+                $usuario_id = $usuario;
+            }else{
+                $usuario_id = 0;
+            }
+            $datos = $this->Reportes_model->get_egresoreportes($valfecha1, $valfecha2, $usuario_id, $nom_categr, $orden_por);
+            echo json_encode($datos);
+        }   
+        else
+        {                 
+            show_404();
+        }
+    }
 }
 

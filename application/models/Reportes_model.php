@@ -214,4 +214,41 @@ class Reportes_model extends CI_Model
         ")->result_array();
         return $ingresos;
     }
+    /* busca los egresos */
+    function get_egresoreportes($fecha1, $fecha2, $usuario_id, $nom_categr, $orden_por){
+        if($usuario_id == 0){
+          $cadusuario = "";
+        }else{
+            $cadusuario = " and e.id_usu = ".$usuario_id." ";
+        }
+        if($nom_categr == "ning"){
+          $cadcategoria = "";
+        }else{
+            $cadcategoria = " and e.detalle_egr = '".$nom_categr."' ";
+        }
+        if($orden_por == "nombre"){
+            $cadorden = " order by e.nombre_egr ";
+        }elseif($orden_por == "recibo"){
+            $cadorden = " order by e.id_egr ";
+        }elseif($orden_por == "categoria"){
+            $cadorden = " order by e.detalle_egr ";
+        }elseif ($orden_por == "monto"){
+            $cadorden = " order by e.monto_egr ";
+        }else{
+            $cadorden = "";
+        }
+        $ingresos = $this->db->query("
+            select 
+                    e.*
+            from
+                egreso e
+            where
+                date(e.fechahora_egr) >='".$fecha1."'
+                and date(e.fechahora_egr) <='".$fecha2."' 
+                ".$cadusuario."
+                ".$cadcategoria."
+                ".$cadorden."
+        ")->result_array();
+        return $ingresos;
+    }
 }

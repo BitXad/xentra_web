@@ -135,7 +135,7 @@
     </div>
     <div class="col-md-4">
         <br>
-        <span class="badge btn-primary" style="height: 34px; padding-top: 5px;">Ing. Egr. encontrados: <span class="badge btn-primary"><input style="border-width: 0; width: 55px" id="resingegr" type="text" value="0" readonly="true"> </span></span>
+        <span class="badge btn-primary" style="height: 34px; padding-top: 5px;">Ing. encontrados: <span class="badge btn-primary"><input style="border-width: 0; width: 55px" id="resingegr" type="text" value="0" readonly="true"> </span></span>
     </div>
     <div class="col-md-3">
         <br>

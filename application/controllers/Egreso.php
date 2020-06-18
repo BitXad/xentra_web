@@ -5,7 +5,6 @@
  */
  
 class Egreso extends CI_Controller{
-    private $session_data = "";
     function __construct()
     {
         parent::__construct();
@@ -15,11 +14,11 @@ class Egreso extends CI_Controller{
         $this->load->model('Usuario_model');   
         $this->load->helper('numeros');
         $this->load->model('Parametro_model');
-        /*if ($this->session->userdata('logged_in')) {
+        if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
             redirect('', 'refresh');
-        }*/
+        }
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
@@ -76,7 +75,7 @@ class Egreso extends CI_Controller{
     {   
         if($this->acceso(60)){
             $data['page_title'] = "Egreso";
-                //$id_usu = $this->session_data['id_usu'];
+            $id_usu = $this->session_data['id_usu'];
                 
       $this->load->library('form_validation');
       $this->form_validation->set_rules(
@@ -90,7 +89,7 @@ class Egreso extends CI_Controller{
            
 
             $params = array(
-        'id_usu' => 1,
+        'id_usu' => $id_usu,
         'detalle_egr' => $this->input->post('detalle_egr'),
         'numrec_egr' => $numero,
         'nombre_egr' => $this->input->post('nombre_egr'),

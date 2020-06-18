@@ -1,5 +1,5 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/reporte_ingresof.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/reporte_egreso.js'); ?>" type="text/javascript"></script>
 <!--<link href="<?php //echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
@@ -83,12 +83,21 @@
 </style>
 
 <div class="box-header no-print">
-    <h3 class="box-title"><b>REPORTE DE INGRESOS</b></h3><br>
+    <h3 class="box-title"><b>REPORTE DE EGRESOS</b></h3><br>
     <div class="col-md-3">
         Desde: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
     </div>
     <div class="col-md-3">
         Hasta: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+    </div>
+    <div class="col-md-3">
+        Categor&iacute;a:
+        <select  class="btn btn-primary btn-sm form-control" id="nom_categr" name="nom_categr" required>
+            <option value="ning"> TODAS </option>
+            <?php foreach($all_categoria as $categoria){?>
+            <option value="<?php echo $categoria['nom_categr']; ?>"><?php echo $categoria['nom_categr']; ?></option>
+            <?php } ?>
+        </select>
     </div>
     <div class="col-md-3">
         Usuario:
@@ -103,27 +112,9 @@
         Ordenado por:
         <select  class="btn btn-primary btn-sm form-control" id="ordenado_por" name="ordenado_por" required>
             <option value="nombre" selected> NOMBRE </option>
-            <option value="codigo"> CODIGO </option>
-            <option value="fact"> FACTURA </option>
+            <option value="recibo"> RECIBO </option>
+            <option value="categoria"> CATEGORIA </option>
             <option value="monto"> MONTO </option>
-        </select>
-    </div>
-    <div class="col-md-3">
-        Direcci&oacute;n:
-        <select  class="btn btn-primary btn-sm form-control" id="nombre_dir" name="nombre_dir" required>
-            <option value="ning"> TODAS </option>
-            <?php foreach($all_direccion as $direccion){?>
-            <option value="<?php echo $direccion['nombre_dir']; ?>"><?php echo $direccion['nombre_dir']; ?></option>
-            <?php } ?>
-        </select>
-    </div>
-    <div class="col-md-3">
-        Estado:
-        <select  class="btn btn-primary btn-sm form-control" id="estado_id" name="estado_id" required>
-            <option value="no" selected> TODOS </option>
-            <option value="CANCELADA"> CANCELADA </option>
-            <option value="PENDIENTE"> PENDIENTE </option>
-            <option value="ANULADA"> ANULADA </option>
         </select>
     </div>
     <div class="col-md-3">
@@ -135,7 +126,7 @@
     </div>
     <div class="col-md-4">
         <br>
-        <span class="badge btn-primary" style="height: 34px; padding-top: 5px;">Ing. encontrados: <span class="badge btn-primary"><input style="border-width: 0; width: 55px" id="resingegr" type="text" value="0" readonly="true"> </span></span>
+        <span class="badge btn-primary" style="height: 34px; padding-top: 5px;">Egresos encontrados: <span class="badge btn-primary"><input style="border-width: 0; width: 55px" id="resingegr" type="text" value="0" readonly="true"> </span></span>
     </div>
     <div class="col-md-3">
         <br>
@@ -170,26 +161,26 @@
                         <td class="lizq" colspan="2" style="width: 100%; padding: 1px"></td>
                     </tr>
                     <tr>
-                        <td class="labjizqder labjf text-center" style="width: 80%; line-height: 0.9">
-                            <font size="4" face="arial"><b>REPORTE DE INGRESOS</b></font> <br>
-                            <font size="1" face="arial"><b>COBRO POR SERVICIOS DE AGUA</b></font> <br>
-                            <span id="ladireccion" style="font-size: 10px"></span><br>
+                        <td class="labjizqder labjf text-center" style="width: 75%; line-height: 0.9">
+                            <font size="4" face="arial"><b>REPORTE DE EGRESOS</b></font> <br>
+                            <font size="1" face="arial"><b>COBROS REGISTRADOS EN RECIBOS DE EGRESOS</b></font>
                         </td>
-                        <td class="pintado" rowspan="3" style="width: 20%; vertical-align: middle; line-height: 0.9">
+                        <td class="pintado" rowspan="3" style="width: 25%; vertical-align: middle; line-height: 0.9">
                             <span id="fecha1impresion" style="font-size: 10px"></span><br>
                             <span id="fecha2impresion" style="font-size: 10px"></span><br>
                             <span id="elusuario" style="font-size: 10px"></span><br>
+                            <span id="lacategoria" style="font-size: 10px"></span><br>
                             <span class="text-bold" style="font-size: 10px">Impreso por: </span>
                             <span><?php echo $nombre_usu; ?></span>
                         </td>
                     </tr>
                     <tr>
-                        <td class="lder text-center" style="width: 80%; padding: 1px; font-size: 10px">
+                        <td class="lder text-center" style="width: 75%; padding: 1px; font-size: 10px">
                             <span id="fechaimpresion"></span>
                         </td>
                     </tr>
                     <tr>
-                        <td class="lder" style="width: 80%; padding: 1px">
+                        <td class="lder" style="width: 75%; padding: 1px">
                             <span style="font-size: 10px">Expresado en moneda nacional (Bs)</span>
                         </td>
                     </tr>
