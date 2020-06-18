@@ -204,6 +204,16 @@ class Factura_model extends CI_Model
         return $resultado;
     }
 
+    function generar_factura($factura,$numfact_dosif1,$consumo,$aportes,$recargos,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact)
+    {
+
+        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), num_fact=".$numfact_dosif1.", totalconsumo_fact=".$consumo.", totalaportes_fact=".$aportes.",totalrecargos_fact=".$recargos.", montototal_fact=".$total.", id_usu=".$usuario_id.", tipo_fact=".$tipo_fact.", nit_fact = ".$nit_fact.", razon_fact = '".$razon_fact."', orden_fact= ".$orden_fact.", nitemisor_fact = ".$nitemisor_fact.", llave_fact = '".$llave_fact."', fechaemision_fact = '".$fechaemision_fact."', codcontrol_fact = '".$codcontrol_fact."'
+        WHERE id_fact=".$factura;        
+        $resultado = $this->db->query($sql);
+        
+        return $resultado;
+    }
+
     function actualizar_dosificacion($numfact_dosif1)
     {
 
@@ -267,6 +277,43 @@ class Factura_model extends CI_Model
         
         return $resultado;
     }
+
+    function get_consumo_total($asociado)
+    {
+
+        $sql = "SELECT sum(d.cant_detfact*d.punit_detfact) as total_consumo from detalle_factura d
+                LEFT JOIN factura f ON f.id_fact=d.id_fact 
+                LEFT JOIN lectura l ON l.id_lec=f.id_lec 
+                where  f.estado_fact='PENDIENTE' and d.tipo_detfact=0 and id_asoc=".$asociado;        
+        $resultado = $this->db->query($sql)->row_array();
+        
+        return $resultado;
+    }
+
+    function get_aportes_total($asociado)
+    {
+
+        $sql = "SELECT if(sum(total_detfact)>0,sum(total_detfact),0) as total_multas from detalle_factura d 
+                LEFT JOIN factura f ON f.id_fact=d.id_fact 
+                LEFT JOIN lectura l ON l.id_lec=f.id_lec 
+                where  f.estado_fact='PENDIENTE' 
+                and d.tipo_detfact=1
+                and id_asoc=".$asociado;         
+        $resultado = $this->db->query($sql)->row_array();
+        
+        return $resultado;
+    }
+
+    function get_recargos_total($asociado)
+    {
+
+        $sql = "SELECT if(sum(t1.monto_param)>0,sum(t1.monto_param),0) as total_recargos from (select p.monto_param from parametros p,(select * from lectura where id_asoc=".$asociado.") as t where p.estado='ACTIVO' and (DATEDIFF(date(now()), t.fecha_lec)) >= p.dias_param and p.monto_param >0) as t1";        
+        $resultado = $this->db->query($sql)->row_array();
+        
+        return $resultado;
+    }
+
+    
 
     
 }

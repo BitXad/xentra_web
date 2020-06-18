@@ -10,7 +10,9 @@ class Factura extends CI_Controller{
         parent::__construct();
         $this->load->model('Factura_model');
         $this->load->model('Dosificacion_model');
+        $this->load->model('Empresa_model');
         $this->load->helper('numeros');
+        $this->load->library('ControlCode'); 
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -250,10 +252,24 @@ class Factura extends CI_Controller{
     function anular()
     {
         $factura = $this->input->post('factura_id');
+        $esta_factura = $this->Factura_model->get_factura($factura);
+        if ($esta_factura['tipo_fact']==1) {
+        $sql="INSERT INTO factura(id_lec,num_fact,nit_fact,razon_fact,orden_fact,nitemisor_fact,llave_fact,fecha_fact,hora_fact,fechaemision_fact,montoparc_fact,desc_fact,montototal_fact,cadenaqr_fact,codcontrol_fact,literal_fact,fechahora_fact,tipo_fact,fechavenc_fact,estado_fact)
+        (SELECT 0,num_fact,nit_fact,razon_fact,orden_fact,nitemisor_fact,'0',fecha_fact,hora_fact,fechaemision_fact,0,0,0,cadenaqr_fact,'0',literal_fact,fechahora_fact,tipo_fact,fechavenc_fact,'ANULADA'
+        from factura 
+        where id_fact=".$factura.")";
+        $this->db->query($sql);
+        $sql2="DELETE from detalle_factura where id_fact=".$factura." and tipo_detfact=2";
+        $this->db->query($sql2);
+        $sql3="UPDATE factura set estado_fact='PENDIENTE' ,num_fact=0, tipo_fact=0, desc_fact=0 where id_fact=".$factura." ";
+        $this->db->query($sql3);
+        $datos = true;
+        }else{
         $sql="UPDATE factura set estado_fact='PENDIENTE', num_fact=0,tipo_fact=0,desc_fact=0 WHERE id_fact=".$factura;
         $this->db->query($sql);
         $datos = true;
-
+        }
+  
         echo json_encode($datos);  
         
     }
@@ -315,8 +331,9 @@ class Factura extends CI_Controller{
         $usuario_id = $session_data['id_usu'];
         $factura_id = $this->input->post('factura_id');
         $lectura_id = $this->input->post('lectura_id');
-        $generar_factura = 0;/*$this->input->post('generar_factura');*/  //aca debe venir el check generar
+        $genera_factura = $this->input->post('generar_factura');  //aca debe venir el check generar
         $multar = $this->input->post('multar');
+        $empresa = $this->Empresa_model->get_empresa(1);
         $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
         $numfact_dosif = $dosificacion['numfact_dosif'];
         $numfact_dosif1 = $numfact_dosif+1;
@@ -325,7 +342,7 @@ class Factura extends CI_Controller{
         $recargos1=$this->input->post('recargos');
         $total=$this->input->post('total');
 
-        if ($multar==true) { //agregar los recargos al detalle
+        if ($multar=="true") { //agregar los recargos al detalle
             $recargos = $this->Factura_model->get_recargo_detalle($lectura_id);
             foreach ($recargos as $rec) {
                 $this->Factura_model->recargosadetalle($rec['id_param'],$factura_id);
@@ -333,7 +350,44 @@ class Factura extends CI_Controller{
             
         }
 
-        if ($generar_factura==1) {
+        if ($genera_factura=="true") {
+            //$datfactura = $this->Dosificacion_model->get_dosificacion($factura_id);
+                    $tipo_fact=1;
+                    //$estado_fact
+                    //$id_usu
+                    //$id_lec ya viene
+                    //$num_fact 
+                    $nit_fact = $this->input->post('nit_asoc');
+                    $razon_fact = $this->input->post('razon_asoc');
+                    $orden_fact = $dosificacion['numorden_dosif'];
+                    $nitemisor_fact = $empresa['nit_emp'];
+                    $llave_fact = $dosificacion['llave_dosif'];
+                    //$fecha_fact
+                    //$hora_fact
+                    $fechaemision_fact = $dosificacion['fechalim_dosif'];
+                    $fecha = date("Y-m-d");
+                    //$montoparc_fact ya viene
+                    //$desc_fact ya viene 0 
+                    //$cadenaqr_fact = $nitemisor_fact, $numfact_dosif1, $orden_fact, date('dd/mm/yyyy'), $toal(letras), $total, $CodigodeControl  ,  $nit_asoc , $exento , $ice ,$exento , 0; 
+                    /*',cadenaqr_fact='+quotedStr(FormEmpresa.ADOPrime.fieldbyname('nit_emp').AsString+'|'+
+              inttoStr(numerofact)+'|'+formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString+'|'+
+              formatdatetime('dd/mm/yyyy',date)+'|'+ETotal_Bs.Text+'|'+totalfactura+'|'+
+              FormCodigoControl.CodigodeControl(inttoStr(numerofact),nit_asoc1.Text,formatdatetime('yyyymmdd',date),formLogin.sincoma(totalfactura),formDosificacion.ADODosif.fieldbyname('llave_dosif').AsString,formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString)+'|'+
+              nit_asoc1.Text+'|'+exento+'|'+ice+'|'+exento+'|0')+*/
+
+                    $codcontrol_fact = $this->codigo_control($llave_fact,$orden_fact,$numfact_dosif1,$nit_fact,$fecha,$total);
+                    //',codcontrol_fact='+quotedStr(FormCodigoControl.CodigodeControl(inttoStr(numerofact),Trim(nit_asoc1.Text),formatdatetime('yyyymmdd',date),FormLogin.sinComa(totalfactura),formDosificacion.ADODosif.fieldbyname('llave_dosif').AsString,formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString))+
+                    //$literal_fact no necesary
+                    //$fechahora_fact ya viene
+                    //$fechavenc_fact ya viene
+                    //$totalconsumo_fact
+                    //$totalaportes_fact
+                    //$totalrecargos_fact
+                    //$montototal_fact
+                    //$exento_fact = 0;
+                    //$ice_fact = 0;
+                    //$id_ing nada esta null ojo
+            $this->Factura_model->generar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact);
             //aqui si hay q generar la factura...
         } else {
             $this->Factura_model->cancelar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id);
@@ -345,13 +399,28 @@ class Factura extends CI_Controller{
 
     }
 
+    function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
+    {
+
+        //include 'ControlCode.php';
+
+        $code = $this->controlcode->generate($dosificacion_autorizacion,//Numero de autorizacion
+                                                   $dosificacion_numfact,//Numero de factura
+                                                   $nit,//Número de Identificación Tributaria o Carnet de Identidad
+                                                   str_replace('-','',$fecha_trans),//fecha de transaccion de la forma AAAAMMDD
+                                                   $monto,//Monto de la transacción
+                                                   $dosificacion_llave//Llave de dosificación
+                        );        
+         return $code;
+    }  
+
     function imprimir($factura_id){
       $num = $this->Factura_model->get_datos_factura($factura_id);
       $este = $num[0]['tipo_fact'];
         if ($este == 0) {
            redirect('factura/imprimir_recibo/'.$factura_id);
         }else{
-           redirect('factura/imprimir_recibo/'.$factura_id);
+           redirect('factura/imprimir_factura/'.$factura_id);
      
     }
 
@@ -362,8 +431,49 @@ class Factura extends CI_Controller{
          $this->load->model('Empresa_model');
          $data['empresa'] = $this->Empresa_model->get_empresa(1);
          $data['factura'] = $this->Factura_model->get_factura_completa($factura_id);
-         $data['detalle_factura'] = $this->Factura_model->get_pendiente_detalle($factura_id);         
+         $data['detalle_factura'] = $this->Factura_model->get_pendiente_detalle($factura_id); 
          $data['_view'] = 'factura/recibo';
+         $this->load->view('layouts/main',$data);
+     }
+
+     function imprimir_factura($factura_id){
+         $session_data = $this->session->userdata('logged_in');
+         $usuario_id = $session_data['id_usu'];
+         $this->load->model('Empresa_model');
+         $data['empresa'] = $this->Empresa_model->get_empresa(1);
+         $data['factura'] = $this->Factura_model->get_factura_completa($factura_id);
+         $data['detalle_factura'] = $this->Factura_model->get_pendiente_detalle($factura_id);
+         $factura = $this->Factura_model->get_factura($factura_id);
+
+        $nit_emisor    = $factura['nitemisor_fact'];
+        $num_fact      = $factura['num_fact'];
+        $autorizacion  = $factura['orden_fact'];
+        $fecha_factura = $factura['fecha_fact'];
+        $total         = $factura['montototal_fact'];
+        $codcontrol    = $factura['codcontrol_fact'];
+        $nit           = $factura['nit_fact'];
+         $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
+               
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+        //Generador de Codigo QR
+                //cargamos la librería  
+         $this->load->library('ciqrcode');
+                  
+         //hacemos configuraciones
+         $params['data'] = $cadenaQR;//$this->random(30);
+         $params['level'] = 'H';
+         $params['size'] = 5;
+         //decimos el directorio a guardar el codigo qr, en este 
+         //caso una carpeta en la raíz llamada qr_code
+         $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+         //generamos el código qr
+         $this->ciqrcode->generate($params); 
+         //echo '<img src="'.base_url().'resources/images/qrcode.png" />';
+        //fin generador de codigo QR
+         
+        
+        $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');         
+         $data['_view'] = 'factura/factura';
          $this->load->view('layouts/main',$data);
      }
 
@@ -373,5 +483,16 @@ class Factura extends CI_Controller{
          redirect('factura/imprimir_recibo/'.$dato['id_fact']);
    
      }
+
+     function total_pendiente()
+    {
+        $asociado = $this->input->post('asociado');
+        $consumo = $this->Factura_model->get_consumo_total($asociado);
+        $aporte = $this->Factura_model->get_aportes_total($asociado);
+        $recargo = $this->Factura_model->get_recargos_total($asociado);
+        $suma = $consumo['total_consumo']+$aporte['total_multas']+$recargo['total_recargos'];
+        echo json_encode($suma);  
+        
+    }
     
 }
