@@ -544,7 +544,7 @@ function reimprimirbusqueda()
             success:function(respuesta){
             
             var registros = JSON.parse(respuesta);
-            window.open(base_url+'factura/imprimir_recibo/'+registros['id_fact'], '_blank'); 
+            window.open(base_url+'factura/imprimir/'+registros['id_fact'], '_blank'); 
 
             },
             error: function(respuesta){
@@ -562,7 +562,7 @@ function reimprimir()
     if (factura_id=='') {
          alert('No selecciono ninguna factura.');   
     }else{
-         window.open(base_url+'factura/imprimir_recibo/'+factura_id, '_blank'); 
+         window.open(base_url+'factura/imprimir/'+factura_id, '_blank'); 
     }  
 }
 
