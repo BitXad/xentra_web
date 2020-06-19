@@ -251,4 +251,41 @@ class Reportes_model extends CI_Model
         ")->result_array();
         return $ingresos;
     }
+
+    function ingreso_reporte($fecha1, $fecha2, $usuario_id, $nom_cating, $orden_por){
+        if($usuario_id == 0){
+          $cadusuario = "";
+        }else{
+            $cadusuario = " and e.id_usu = ".$usuario_id." ";
+        }
+        if($nom_cating == "ning"){
+          $cadcategoria = "";
+        }else{
+            $cadcategoria = " and e.detalle_ing = '".$nom_cating."' ";
+        }
+        if($orden_por == "nombre"){
+            $cadorden = " order by e.nombre_ing ";
+        }elseif($orden_por == "recibo"){
+            $cadorden = " order by e.id_ing ";
+        }elseif($orden_por == "categoria"){
+            $cadorden = " order by e.detalle_ing ";
+        }elseif ($orden_por == "monto"){
+            $cadorden = " order by e.monto_ing ";
+        }else{
+            $cadorden = "";
+        }
+        $ingresos = $this->db->query("
+            select 
+                    e.*
+            from
+                ingreso e
+            where
+                date(e.fechahora_ing) >='".$fecha1."'
+                and date(e.fechahora_ing) <='".$fecha2."' 
+                ".$cadusuario."
+                ".$cadcategoria."
+                ".$cadorden."
+        ")->result_array();
+        return $ingresos;
+    }
 }

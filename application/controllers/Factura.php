@@ -480,7 +480,7 @@ class Factura extends CI_Controller{
     function ultima(){
 
          $dato = $this->Factura_model->get_factura_ultima();
-         redirect('factura/imprimir_recibo/'.$dato['id_fact']);
+         redirect('factura/imprimir/'.$dato['id_fact']);
    
      }
 
