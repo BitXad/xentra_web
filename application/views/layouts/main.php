@@ -369,22 +369,22 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li class="active">
-                                    <a href="<?php echo site_url('reportes');?>"><i class="fa fa-paste"></i> Cobros por Servicios (lec)</a>
+                                    <a href="<?php echo site_url('reportes');?>"><i class="fa fa-indent"></i> Cobros por Servicios (lec)</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('reportes/ingresof');?>"><i class="fa fa-paste"></i> Cobros por Servicios</a>
+                                    <a href="<?php echo site_url('reportes/ingresof');?>"><i class="fa fa-list-alt"></i> Cobros por Servicios</a>
                                 </li>
                                 <li>
                                     <a href="<?php echo site_url('reportes/movimiento');?>"><i class="fa fa-exchange"></i> Movimiento Diario</a>
                                 </li>
-                                <!--<li>
-                                    <a href="<?php echo site_url('reportes/mensual');?>"><i class="fa fa-calendar"></i> Mensual</a>
-                                </li>-->
                                 <li>
-                                    <a href="<?php echo site_url('reportes/ingreso');?>"><i class="fa fa-paste"></i> Reporte Ingresos</a>
+                                    <a href="<?php echo site_url('reportes/mensual');?>"><i class="fa fa-calendar"></i> Mensual</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('reportes/egreso');?>"><i class="fa fa-paste"></i> Reporte Egresos</a>
+                                    <a href="<?php echo site_url('reportes/ingreso');?>"><i class="glyphicon glyphicon-save"></i> Reporte Ingresos</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('reportes/egreso');?>"><i class="glyphicon glyphicon-open"></i> Reporte Egresos</a>
                                 </li>
                             </ul>
                         </li>
