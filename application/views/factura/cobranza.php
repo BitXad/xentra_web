@@ -244,7 +244,7 @@ input[type=number] { -moz-appearance:textfield; }
             </table>
              <hr style="margin: 0;border: 2px solid #f2f2f2">
                   <div class="col-md-4">
-                    <input type="checkbox" id="generar_factura" onclick="facturan()" name="generar_factura" size="8" value=""><label for="generar_factura"> Generar Factura </label> 
+                    <input type="hidden" id="generar_factura" onclick="facturan()" name="generar_factura" size="8" value=""><label for="generar_factura"> Generar Factura </label> 
                   </div>
                   <div class="col-md-4">
                    <input type="checkbox" checked id="imprimir_factura" name="imprimir_factura" size="8" value=""><label for="imprimir_factura"> Imprimir Factura </label> 
