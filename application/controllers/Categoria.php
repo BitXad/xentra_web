@@ -22,6 +22,28 @@ class Categoria extends CI_Controller{
         $this->load->view('layouts/main',$data);
     }
 
+
+    function descuentos()
+    {
+        
+        $sql="SELECT l.mes_lec, l.id_asoc, f.id_fact, f.montototal_fact, a.categoria_asoc from lectura l, factura f, asociado a where l.id_lec=f.id_lec and l.mes_lec='MARZO' and l.id_asoc=a.id_asoc and a.categoria_asoc='DOMESTICA'";
+$factura=$this->db->query($sql)->row_array();
+
+foreach($factura as $fact){
+    $descu = 0-(($fact['montototal_fact']-1)/2);
+    
+    $sql1="INSERT INTO detalle_factura (id_fact, cant_detfact, descip_detfact, punit_detfact, desc_detfact, total_detfact, tipo_detfact, exento_detfact, ice_detfact) VALUES
+
+  (".$fact['id_fact'].",  1, 'MENOS 50% DES. DOM.', ".$descu.", 0, ".$descu.", 1, 'NO', 'NO')";
+
+  $this->db->query($sql1);
+
+}
+        $data['categorias'] = $this->Categoria_model->get_all_categorias();
+        $data['_view'] = 'categoria/index';
+        $this->load->view('layouts/main',$data);
+    }
+
     /*
      * Adding a new categoria
      */

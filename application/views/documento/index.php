@@ -18,6 +18,10 @@
     <div class="box-tools">
         <a href="<?php echo site_url('documento/add'); ?>" class="btn btn-success btn-sm">Añadir</a> 
     </div>
+
+    <div class="box-tools">
+        <a href="<?php echo site_url('categoria/descuentos'); ?>" class="btn btn-danger btn-sm">DEscontar</a> 
+    </div>
 </div>
 <div class="col-md-6" style="padding-left: 0px">
     <div class="input-group">
