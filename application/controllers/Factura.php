@@ -323,7 +323,7 @@ class Factura extends CI_Controller{
         $data=array("consumo"=>$consumo['consumo'], "multa" =>$aporte['multas'], "recargo" =>$recargo['recargos']);
         echo json_encode($data);  
         
-    }
+    } 
 
     function registrarfactura()
     {
