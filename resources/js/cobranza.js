@@ -477,7 +477,7 @@ function tabla_totales(factura,lectura)
             success:function(respuesta){
               
                 var registros = JSON.parse(respuesta);
-                alert(registros.multa);
+                //alert(registros.multa);
                 var consumos = (Number(registros.consumo).toFixed(2));
                 var multas = (Number(registros.multa).toFixed(2));
           
