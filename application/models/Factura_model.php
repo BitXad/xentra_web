@@ -177,7 +177,7 @@ class Factura_model extends CI_Model
     function get_aportes_factura($factura)
     {
 
-        $sql = "select if(sum(total_detfact)>0,sum(total_detfact),0) as multas from detalle_factura where id_fact=".$factura." and tipo_detfact=1";        
+        $sql = "select if(sum(total_detfact)<>0,sum(total_detfact),0) as multas from detalle_factura where id_fact=".$factura." and tipo_detfact=1";        
         $resultado = $this->db->query($sql)->row_array();
         
         return $resultado;
