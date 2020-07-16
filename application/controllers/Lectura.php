@@ -383,17 +383,18 @@ class Lectura extends CI_Controller {
             // echo $sql;
             $this->Lectura_model->ejecutar($sql);
         }
-
+if ($tipo_asoc='DOMESTICA' || $tipo_asoc='DOMICILIARIA BASICA' || $tipo_asoc='DOMICILIARIA ESPECIAL') {
+    
         if ($mes_lec='ABRIL' || $mes_lec='MAYO' || $mes_lec='JUNIO') {
  
     $descu = 0-(($facturas[0]["montototal_fact"]-1)/2);
     
     $sql1="INSERT INTO detalle_factura (id_fact, cant_detfact, descip_detfact, punit_detfact, desc_detfact, total_detfact, tipo_detfact, exento_detfact, ice_detfact) VALUES
-  (".$fact['id_fact'].",  1, 'MENOS 50% DES. DOM.', ".$descu.", 0, ".$descu.", 0, 'NO', 'NO')";
+  (".$facturas[0]['id_fact'].",  1, 'MENOS 50% DES. DOM.', ".$descu.", 0, ".$descu.", 0, 'NO', 'NO')";
 
   $this->db->query($sql1);
 
-    }
+    } }
 
         echo json_encode($facturas);
     }
