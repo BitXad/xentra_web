@@ -26,7 +26,7 @@ class Categoria extends CI_Controller{
     function descuentos_abril()
     {
         
-        $sql="SELECT l.mes_lec, l.id_asoc, f.id_fact, f.montototal_fact, a.categoria_asoc from lectura l, factura f, asociado a where l.id_lec=f.id_lec and l.mes_lec='ABRIL' and l.id_asoc=a.id_asoc and a.categoria_asoc='DOMESTICA'";
+        $sql="SELECT l.mes_lec, l.id_asoc, f.id_fact, f.montototal_fact, a.categoria_asoc from lectura l, factura f, asociado a where l.id_lec=f.id_lec and l.mes_lec='ABRIL' and l.id_asoc=a.id_asoc and a.categoria_asoc='DOMICILIARIA BASICA'";
 $factura=$this->db->query($sql)->result_array();
 
 foreach($factura as $fact){
@@ -47,7 +47,7 @@ foreach($factura as $fact){
     function descuentos_mayo()
     {
         
-        $sql="SELECT l.mes_lec, l.id_asoc, f.id_fact, f.montototal_fact, a.categoria_asoc from lectura l, factura f, asociado a where l.id_lec=f.id_lec and l.mes_lec='MAYO' and l.id_asoc=a.id_asoc and a.categoria_asoc='DOMESTICA'";
+        $sql="SELECT l.mes_lec, l.id_asoc, f.id_fact, f.montototal_fact, a.categoria_asoc from lectura l, factura f, asociado a where l.id_lec=f.id_lec and l.mes_lec='MAYO' and l.id_asoc=a.id_asoc and a.categoria_asoc='DOMICILIARIA BASICA'";
 $factura=$this->db->query($sql)->result_array();
 
 foreach($factura as $fact){
@@ -68,7 +68,7 @@ foreach($factura as $fact){
     function descuentos_junio()
     {
         
-        $sql="SELECT l.mes_lec, l.id_asoc, f.id_fact, f.montototal_fact, a.categoria_asoc from lectura l, factura f, asociado a where l.id_lec=f.id_lec and l.mes_lec='JUNIO' and l.id_asoc=a.id_asoc and a.categoria_asoc='DOMESTICA'";
+        $sql="SELECT l.mes_lec, l.id_asoc, f.id_fact, f.montototal_fact, a.categoria_asoc from lectura l, factura f, asociado a where l.id_lec=f.id_lec and l.mes_lec='JUNIO' and l.id_asoc=a.id_asoc and a.categoria_asoc='DOMICILIARIA BASICA'";
 $factura=$this->db->query($sql)->result_array();
 
 foreach($factura as $fact){
