@@ -432,6 +432,7 @@ function buscar_asociados() {
     var select_orden = document.getElementById("select_orden").value;
     var select_direccion = document.getElementById("select_direccion").value;
     var select_zona = document.getElementById("select_zona").value;
+    var buscar_nombreasoc = document.getElementById("buscar_nombreasoc").value;
     var sql = "";
 
 
@@ -451,11 +452,16 @@ function buscar_asociados() {
     if (select_orden == 'NUMERO DE ORDEN')
         orden = orden + ' orden_asoc ';
 
-
+    var buscar_asoc = " ";
+    if (buscar_nombreasoc != ""){
+        buscar_asoc = " and(a.nombres_asoc like '%"+buscar_nombreasoc+"%' or a.apellidos_asoc like '%"+buscar_nombreasoc+"%'";
+        buscar_asoc += " or a.codigo_asoc = '"+buscar_nombreasoc+"' or a.medidor_asoc = '"+buscar_nombreasoc+"'";
+        buscar_asoc += " or a.ci_asoc = '"+buscar_nombreasoc+"' or a.nit_asoc like '%"+buscar_nombreasoc+"%')";
+    }
 
     if (select_afiliados == "SIN LECTURA")
     {
-        sql = "select a.* from asociado a where a.estado= 'ACTIVO'" +
+        sql = "select a.* from asociado a where a.estado= 'ACTIVO'" + buscar_asoc +
                 " and a.id_asoc not in" +
                 "(select l.id_asoc from lectura l where " +
                 "l.mes_lec='" + select_mes + "' and " +
@@ -464,7 +470,7 @@ function buscar_asociados() {
 
     if (select_afiliados == "LECTURADO")
     {
-        sql = "select a.* from asociado a where  a.estado='ACTIVO'" +
+        sql = "select a.* from asociado a where  a.estado='ACTIVO'" + buscar_asoc +
                 " and a.id_asoc in" +
                 "(select l.id_asoc from lectura l where " +
                 "l.mes_lec='" + select_mes + "' and " +
@@ -476,7 +482,7 @@ function buscar_asociados() {
 //   revisar
     if (select_afiliados == "TODOS")
     {
-        sql = "select a.* from asociado a where a.estado='ACTIVO' order by a.apellidos_asoc";
+        sql = "select a.* from asociado a where a.estado='ACTIVO'" + buscar_asoc + " order by a.apellidos_asoc";
     }
 
 
@@ -501,14 +507,14 @@ function buscar_asociados() {
             direccion = " ";
 
         sql = "SELECT a.* FROM asociado a, direccion_orden d " +
-                " WHERE  a.direccion_asoc = d.nombre_dir and a.estado = 'ACTIVO'" + zona + direccion + condicion +
+                " WHERE  a.direccion_asoc = d.nombre_dir and a.estado = 'ACTIVO'" + zona + direccion + buscar_asoc + condicion +
                 " GROUP BY a.direccion_asoc, a.orden_asoc, a.id_asoc " +
                 " ORDER BY d.orden_dir, a.direccion_asoc, a.orden_asoc ";
 
     }
 
     var foto = "";
-
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({
         url: controlador,
         type: "POST",
@@ -630,8 +636,7 @@ function buscar_asociados() {
             html2 +="<fa class='fa fa-book'> </fa> Imprimir Todo";
             html2 +="</button>";
             $("#boton_imprimir_todo").html(html2);
-            
-            
+            document.getElementById('loader').style.display = 'none';   
         }
     });
 
@@ -684,8 +689,8 @@ function registrar_lectura() {
             $("#boton_buscar").click();
             document.getElementById("boton_registrar_lectura").style.display = 'none';
 //            alert(r.length);
-//            window.location.href = base_url+"lectura/preaviso_boucher/"+r[0].id_lec;
-            //window.open(base_url+"lectura/preaviso_boucher/"+r[0].id_lec, '_blank');
+            //window.location.href = base_url+"lectura/preaviso_boucher/"+r[0].id_lec;
+            window.open(base_url+"lectura/preaviso_boucher/"+r[0].id_lec, '_blank');
                    
         }, error: function (result) {
             //$("#consumo_bs").val("0.00");

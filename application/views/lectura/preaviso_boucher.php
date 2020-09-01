@@ -4,6 +4,10 @@
     {
         window.onload = window.print();
     });
+    
+    function imprimir(){
+        window.onload = window.print();
+    }
 </script>
      
 
@@ -66,7 +70,7 @@ border-bottom : 1px solid #aaa;
       //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
 ?>
 
-
+<a class="btn btn-success no-print" onclick="imprimir()">Imprimir</a>
 <table class="table" style="width: <?php echo $ancho; ?>;" >
     <tr>
         <td style="padding:0;" colspan="2">        
@@ -92,6 +96,7 @@ border-bottom : 1px solid #aaa;
                     <b>FECHA: </b><?php echo $fecha_d_m_a; ?> <br>
                     <b>CODIGO: </b><?php echo $lectura[0]['codigo_asoc']." ".$lectura[0]['nit_asoc']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $lectura[0]['razon_asoc'].""; ?><br>
+                    <b>N° MEDIDOR: </b><?php echo $lectura[0]['medidor_asoc'].""; ?><br>
                     <b>DIRECCIÓN: </b><?php echo $lectura[0]['direccion_asoc'].""; ?><br>
                     <b>SERVICIO(S): </b><?php echo $lectura[0]['servicios_asoc'].""; ?><br>
                     <b>CATEGORIA: </b><?php echo $lectura[0]['categoria_asoc'].""; ?><br>

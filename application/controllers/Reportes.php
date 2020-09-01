@@ -309,5 +309,31 @@ class Reportes extends CI_Controller{
             show_404();
         }
     }
+    function mensuales()
+    {
+        $data['nombre_usu'] = $this->session_data['nombre_usu'];
+        /*$this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $this->load->model('Estado_model');
+        $data['all_estado'] = $this->Estado_model->get_all_estados();*/
+        $this->load->model('Empresa_model');
+        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+        /*$this->load->model('Direccion_orden_model');
+        $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_alfab();*/
+        $data['_view'] = 'reportes/mensuales';
+        $this->load->view('layouts/main',$data);
+    }
+    function buscarpormes()
+    {
+        if ($this->input->is_ajax_request()) {
+            $este_mes    = $this->input->post('este_mes');   
+            $datos = $this->Reportes_model->reporte_mes($este_mes);
+            echo json_encode($datos);
+        }   
+        else
+        {                 
+            show_404();
+        }
+    }
 }
 

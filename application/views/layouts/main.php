@@ -381,6 +381,9 @@
                                     <a href="<?php echo site_url('reportes/mensual');?>"><i class="fa fa-calendar"></i> Mensual</a>
                                 </li>
                                 <li>
+                                    <a href="<?php echo site_url('reportes/mensuales');?>"><i class="fa fa-calendar"></i> Mensuales</a>
+                                </li>
+                                <li>
                                     <a href="<?php echo site_url('reportes/ingreso');?>"><i class="glyphicon glyphicon-save"></i> Reporte Ingresos</a>
                                 </li>
                                 <li>

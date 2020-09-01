@@ -288,4 +288,20 @@ class Reportes_model extends CI_Model
         ")->result_array();
         return $ingresos;
     }
+    function reporte_mes($este_mes){
+        $estemes = $this->db->query("
+            SELECT
+		concat (a.`apellidos_asoc`, ', ', a.`nombres_asoc`) as nombre, a.codigo_asoc,
+                a.`direccion_asoc`, a.`servicios_asoc`, l.mes_lec, l.`gestion_lec`,
+                l.`anterior_lec`, l.`actual_lec`, l.id_lec, f.`id_fact`
+            from
+                lectura l, factura f, asociado a, gestion g
+            where
+                l.id_lec=f.id_lec
+                and l.mes_lec= '".$este_mes."'
+                and l.id_asoc=a.id_asoc
+                and g.gestion_lec = l.`gestion_lec`
+        ")->result_array();
+        return $estemes;
+    }
 }
