@@ -191,6 +191,8 @@ class Asociado extends CI_Controller{
                 $data['all_estado'] = $this->Estado_model->get_all_estados();
             $this->load->model('Categoria_model');
             $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
+            $this->load->model('Modelo_medidor_model');
+            $data['all_modelo_medidor'] = $this->Modelo_medidor_model->get_all_modelo_medidor();
             
             $data['_view'] = 'asociado/add';
             $this->load->view('layouts/main',$data);
@@ -357,6 +359,11 @@ class Asociado extends CI_Controller{
                 $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
                 $this->load->model('Estado_model');
                 $data['all_estado'] = $this->Estado_model->get_all_estados();
+                $this->load->model('Modelo_medidor_model');
+                $data['all_modelo_medidor'] = $this->Modelo_medidor_model->get_all_modelo_medidor();
+                /*$this->load->model('Parametro_model');
+                $data['parametro'] = $this->Parametro_model->get_all_parametros();
+                */
 
                 $data['_view'] = 'asociado/edit';
                 $this->load->view('layouts/main',$data);

@@ -27,11 +27,13 @@ class Servicio extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('servicio','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())     
+        { 
             $params = array(
+                'servicio' => $this->input->post('servicio'),
             );
-            
             $servicio_id = $this->Servicio_model->add_servicio($params);
             redirect('servicio/index');
         }
@@ -48,13 +50,17 @@ class Servicio extends CI_Controller{
     function edit($servicio)
     {   
         // check if the servicio exists before trying to edit it
+        $servicio = str_replace("%20", " ", $servicio);
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio);
         
         if(isset($data['servicio']['servicio']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('servicio','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
             {   
                 $params = array(
+                    'servicio' => $this->input->post('servicio'),
                 );
 
                 $this->Servicio_model->update_servicio($servicio,$params);            

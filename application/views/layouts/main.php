@@ -160,7 +160,7 @@
                                 <i class="fa fa-server"></i> <span>Categoria Ingreso</span>
                             </a>
                         </li>
-						<li>
+                        <li>
                             <a href="#">
                                 <i class="fa fa-cubes"></i> <span>Categoria</span>
                             </a>
@@ -172,7 +172,7 @@
                                     <a href="<?php echo site_url('diametrored');?>"><i class="fa fa-support"></i> Diametro de Red</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('direccion');?>"><i class="fa fa-address-book"></i> Dirección</a>
+                                    <a href="<?php echo site_url('direccion_orden');?>"><i class="fa fa-address-book"></i> Dirección</a>
                                 </li>
                                 <li>
                                     <a href="<?php echo site_url('documento');?>"><i class="fa fa-book"></i> Documento</a>
@@ -182,6 +182,9 @@
                                 </li>
                                 <li>
                                     <a href="<?php echo site_url('expedido');?>"><i class="fa fa-reorder"></i> Expedido C.I.</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('modelo_medidor');?>"><i class="fa fa-certificate"></i> Modelo Medidor</a>
                                 </li>
                                 <li>
                                     <a href="<?php echo site_url('servicio');?>"><i class="fa fa-tasks"></i> Servicio</a>
@@ -226,11 +229,11 @@
                                 </li>
 							</ul>
                         </li>-->
-						<li>
-                            <a href="<?php echo site_url('direccion_orden/index');?>">
+				<!--		<li>
+                            <a href="<?php //echo site_url('direccion_orden/index');?>">
                                 <i class="fa fa-map"></i> <span>Direccion Orden</span>
                             </a>
-                        </li>
+                        </li>-->
                         
 						<!--<li>
                             <a href="#">
@@ -246,22 +249,19 @@
 							</ul>
                         </li>-->
                         <li>
+                            <a href="#">
+                                <i class="fa fa-cogs"></i> <span>Parametros</span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="active">
+                                    <a href="<?php echo site_url('empresa');?>"><i class="fa fa-bank"></i> Empresa</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
                             <a href="<?php echo site_url('egreso/index');?>">
                                 <i class="fa fa-arrow-up"></i> <span>Egreso</span>
                             </a>
-                        </li>
-						<li>
-                            <a href="#">
-                                <i class="fa fa-bank"></i> <span>Empresa</span>
-                            </a>
-                            <ul class="treeview-menu">
-								<li class="active">
-                                    <a href="<?php echo site_url('empresa/add');?>"><i class="fa fa-plus"></i> Add</a>
-                                </li>
-								<li>
-                                    <a href="<?php echo site_url('empresa/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
-                                </li>
-							</ul>
                         </li>
 						<!--<li>
                             <a href="#">
@@ -430,11 +430,6 @@
 						<li>
                             <a href="<?php echo site_url('tipo_aporte/index');?>">
                                 <i class="fa fa-american-sign-language-interpreting"></i> <span>Tipo Aporte</span>
-                            </a>
-                        </li>
-						<li>
-                            <a href="<?php echo site_url('tipo_asociado/index');?>">
-                                <i class="fa fa-group"></i> <span>Tipo Asociado</span>
                             </a>
                         </li>
 						<li>

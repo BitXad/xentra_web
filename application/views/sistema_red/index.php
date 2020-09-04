@@ -14,7 +14,7 @@
     });
 </script>
 <div class="box-header" style="padding-left: 0px">
-    <h3 class="box-title">Sistema Red</h3>
+    <font class="text-bold" size='4' face='Arial'>Sistema Red</font>
     <div class="box-tools">
         <a href="<?php echo site_url('sistema_red/add'); ?>" class="btn btn-success btn-sm">Añadir</a> 
     </div>

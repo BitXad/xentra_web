@@ -115,7 +115,7 @@ function tablaresultadosasociado(limite)
                             html += registros[i]["nro_asoc"]+" ";
                         }
                         if(registros[i]["referencia_asoc"] != null && registros[i]["referencia_asoc"] != ""){
-                            html += registros[i]["referencia_asoc"]+" ";
+                            html += "<br>"+registros[i]["referencia_asoc"]+" ";
                         }
                         html += "<br>";
                         html += "MANZANO: ";

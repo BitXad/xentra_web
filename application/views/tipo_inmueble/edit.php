@@ -10,13 +10,13 @@
                     <div class="col-md-6">
                             <label for="nombre_tin" class="control-label"><span class="text-danger">*</span>Nombre</label>
                             <div class="form-group">
-                                <input type="text" name="nombre_tin" value="<?php echo $tipo_inmueble["nombre_tin"] ?>" class="form-control" id="nombre_tin" autofocus required onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                                <input type="text" name="nombre_tin" value="<?php echo $tipo_inmueble["nombre_tin"] ?>" class="form-control" id="nombre_tin" autofocus required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
                             </div>
                     </div>         
                     <div class="col-md-3">
                             <label for="codigo_tin" class="control-label"><span class="text-danger">*</span>Código</label>
                             <div class="form-group">
-                                    <input type="text" name="codigo_tin" value="<?php echo $tipo_inmueble["codigo_tin"]; ?>" class="form-control" id="codigo_tin" required onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                                    <input type="text" name="codigo_tin" value="<?php echo $tipo_inmueble["codigo_tin"]; ?>" class="form-control" id="codigo_tin" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
                             </div>
                     </div>
                 </div>
