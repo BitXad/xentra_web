@@ -14,7 +14,7 @@ class Rol_usuario_model extends CI_Model
     /*
      * Get rol_usuario by 
      */
-    function get_rol_usuario($)
+    function get_rol_usuario($sql)
     {
         $rol_usuario = $this->db->query("
             SELECT
@@ -25,7 +25,7 @@ class Rol_usuario_model extends CI_Model
 
             WHERE
                 `` = ?
-        ",array($))->row_array();
+        ",array($sql))->row_array();
 
         return $rol_usuario;
     }
@@ -63,17 +63,17 @@ class Rol_usuario_model extends CI_Model
     /*
      * function to update rol_usuario
      */
-    function update_rol_usuario($,$params)
+    function update_rol_usuario($sql,$params)
     {
-        $this->db->where('',$);
+        $this->db->where('',$sql);
         return $this->db->update('rol_usuario',$params);
     }
     
     /*
      * function to delete rol_usuario
      */
-    function delete_rol_usuario($)
+    function delete_rol_usuario($sql)
     {
-        return $this->db->delete('rol_usuario',array(''=>$));
+        return $this->db->delete('rol_usuario',array(''=>$sql));
     }
 }

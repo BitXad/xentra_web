@@ -14,7 +14,7 @@ class Configuracion_model extends CI_Model
     /*
      * Get configuracion by 
      */
-    function get_configuracion()
+    function get_configuracion($param)
     {
         $configuracion = $this->db->query("
             SELECT
@@ -25,7 +25,7 @@ class Configuracion_model extends CI_Model
 
             WHERE
                 `` = ?
-        ",array($))->row_array();
+        ",array($param))->row_array();
 
         return $configuracion;
     }
@@ -63,17 +63,17 @@ class Configuracion_model extends CI_Model
     /*
      * function to update configuracion
      */
-    function update_configuracion($,$params)
+    function update_configuracion($sql,$params)
     {
-        $this->db->where('',$);
+        $this->db->where('',$sql);
         return $this->db->update('configuracion',$params);
     }
     
     /*
      * function to delete configuracion
      */
-    function delete_configuracion($)
+    function delete_configuracion($sql)
     {
-        return $this->db->delete('configuracion',array(''=>$));
+        return $this->db->delete('configuracion',array(''=>$sql));
     }
 }
