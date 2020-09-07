@@ -482,7 +482,10 @@
                     <div class="col-md-3">
                         <label for="lecturabase_asoc" class="control-label">Lectura base(Mts3)</label>
                         <div class="form-group">
-                            <input style="background: #ccffeb" type="number" step="any" min="0" name="lecturabase_asoc" value="<?php echo ($this->input->post('lecturabase_asoc') ? $this->input->post('lecturabase_asoc') : $lectura_basesocio['actual_lec']); ?>" class="form-control" id="lecturabase_asoc" requierd />
+                            <?php
+                            if(isset($lectura_basesocio['actual_lec'])){ $actualec = $lectura_basesocio['actual_lec']; }else{ $actualec = "0";}
+                            ?>
+                            <input style="background: #ccffeb" type="number" step="any" min="0" name="lecturabase_asoc" value="<?php echo ($this->input->post('lecturabase_asoc') ? $this->input->post('lecturabase_asoc') : $actualec ); ?>" class="form-control" id="lecturabase_asoc" requierd />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -532,7 +535,10 @@
                     <div class="col-md-3">
                         <label for="fechalec_asoc" class="control-label">Fecha Lec.</label>
                         <div class="form-group">
-                            <input style="background: #ccffeb" type="date" name="fechalec_asoc" value="<?php echo ($this->input->post('fechalec_asoc') ? $this->input->post('lecturabase_asoc') : $lectura_basesocio['fecha_lec']); ?>" class="form-control" id="fechalec_asoc" requierd />
+                            <?php
+                            if(isset($lectura_basesocio['fecha_lec'])){ $fechalec = date("Y-m-d", strtotime($lectura_basesocio['fecha_lec'])); }else{ $fechalec = date("Y-m-d");}
+                            ?>
+                            <input style="background: #ccffeb" type="date" name="fechalec_asoc" value="<?php echo ($this->input->post('fechalec_asoc') ? $this->input->post('lecturabase_asoc') : $fechalec); ?>" class="form-control" id="fechalec_asoc" requierd />
                         </div>
                     </div>
                     <div class="col-md-5">

@@ -178,9 +178,6 @@
                                     <a href="<?php echo site_url('documento');?>"><i class="fa fa-book"></i> Documento</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('estado');?>"><i class="fa fa-toggle-on"></i> Estado</a>
-                                </li>
-                                <li>
                                     <a href="<?php echo site_url('expedido');?>"><i class="fa fa-reorder"></i> Expedido C.I.</a>
                                 </li>
                                 <li>
@@ -250,11 +247,24 @@
                         </li>-->
                         <li>
                             <a href="#">
+                                <i class="fa fa-sliders"></i> <span>Configuracion</span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="active">
+                                    <a href="<?php echo site_url('parametro');?>"><i class="fa fa-check-square"></i> Parametro</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">
                                 <i class="fa fa-cogs"></i> <span>Parametros</span>
                             </a>
                             <ul class="treeview-menu">
                                 <li class="active">
                                     <a href="<?php echo site_url('empresa');?>"><i class="fa fa-bank"></i> Empresa</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('estado');?>"><i class="fa fa-toggle-on"></i> Estado</a>
                                 </li>
                             </ul>
                         </li>
@@ -352,19 +362,6 @@
                         </li>
                         <li>
                             <a href="#">
-                                <i class="fa fa-sliders"></i> <span>Parametro</span>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li class="active">
-                                    <a href="<?php echo site_url('parametro/add');?>"><i class="fa fa-plus"></i> Add</a>
-                                </li>
-                                <li>
-                                    <a href="<?php echo site_url('parametro/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
                                 <i class="fa fa-clipboard"></i> <span>Reportes</span>
                             </a>
                             <ul class="treeview-menu">
@@ -392,32 +389,6 @@
                             </ul>
                         </li>
 						<li>
-                            <a href="#">
-                                <i class="fa fa-align-justify"></i> <span>Rol</span>
-                            </a>
-                            <ul class="treeview-menu">
-								<li class="active">
-                                    <a href="<?php echo site_url('rol/add');?>"><i class="fa fa-plus"></i> Add</a>
-                                </li>
-								<li>
-                                    <a href="<?php echo site_url('rol/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
-                                </li>
-							</ul>
-                        </li>
-						<li>
-                            <a href="#">
-                                <i class="fa fa-braille"></i> <span>Rol Usuario</span>
-                            </a>
-                            <ul class="treeview-menu">
-								<li class="active">
-                                    <a href="<?php echo site_url('rol_usuario/add');?>"><i class="fa fa-plus"></i> Add</a>
-                                </li>
-								<li>
-                                    <a href="<?php echo site_url('rol_usuario/index');?>"><i class="fa fa-list-ul"></i> Listing</a>
-                                </li>
-							</ul>
-                        </li>
-						<li>
                             <a href="<?php echo site_url('tarifa/index');?>">
                                 <i class="fa fa-stack-overflow"></i> <span>Tarifa</span>
                             </a>
@@ -437,15 +408,24 @@
                                 <i class="fa fa-cc-mastercard"></i> <span>Tipo Multa</span>
                             </a>
                         </li>
-						<li>
-                            <a href="<?php echo site_url('tipo_usuario/index');?>">
-                                <i class="fa fa-address-book"></i> <span>Tipo Usuario</span>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-lock"></i> <span>Seguridad</span>
                             </a>
-                        </li>
-						<li>
-                            <a href="<?php echo site_url('usuario/index');?>">
-                                <i class="fa fa-user-circle-o"></i> <span>Usuario</span>
-                            </a>
+                            <ul class="treeview-menu">
+                                <li class="active">
+                                    <a href="<?php echo site_url('rol');?>"><i class="fa fa-gg"></i> Rol</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('rol_usuario');?>"><i class="fa fa-braille"></i> Rol Usuario</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('tipo_usuario');?>"><i class="fa fa-address-book"></i> Tipo Usuario</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('usuario');?>"><i class="fa fa-users"></i> Usuario</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </section>
