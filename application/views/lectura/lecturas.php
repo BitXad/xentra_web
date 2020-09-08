@@ -109,12 +109,27 @@
 
                     </div>
                 </div>
+                <div class="col-md-10" style="padding:2px; ">
+                    <!--este es INICIO de input buscador-->
+                     <!--<div class="col-md- 6">-->
+                         <label for="buscar_nombreasoc" class="control-label">&nbsp;</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">ASOCIADO</span>           
+                            <input id="buscar_nombreasoc" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, nro. medidor, ci, nit" autocomplete="off" >
+                        </div>
+                    <!--</div>-->
+                </div>
                 <div class="col-md-1" style="padding:2px;">
-                    <label for="buscar" class="control-label">BUSCAR</label>
+                    <label for="buscar" class="control-label">&nbsp;</label>
                     <div class="form-group">                        
                         <button onclick="buscar_asociados()" class="btn btn-facebook btn-block" id="boton_buscar"><fa class="fa fa-binoculars"></fa>
                             Buscar
                         </button>                        
+                    </div>
+                </div>
+                <div class="col-md-10" style="padding:2px; ">
+                    <div class="row" id='loader'  style='display:none; text-align: center'>
+                        <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
                     </div>
                 </div>
                 <div id="boton_imprimir_todo"></div>

@@ -29,7 +29,7 @@ class Verificar extends CI_Controller
         //var_dump($result);
         
         if($result){
-            if ($result->tipo_usuario == "ADMINISTRADOR" or $result->tipo_usuario == "LECTURADOR") {
+            if ($result->tipo_usuario == "ADMINISTRADOR" or $result->tipo_usuario == "LECTURADOR" or $result->tipo_usuario == "CAJERO") {
                 /*$this->load->model('Rol_usuario_model');
                 $this->load->model('Tipo_usuario_model');*/
                 $thumb = "default_thumb.jpg";
@@ -66,6 +66,9 @@ class Verificar extends CI_Controller
                 }
                 if ($session_data['tipo_usuario'] == 'LECTURADOR') {
                     redirect('lectura/lecturas');
+                }
+                if ($session_data['tipo_usuario'] == 'CAJERO') {
+                    redirect('factura/cobranza');
                 }
                 /*
                 if ($session_data['tipousuario_id'] == 3) {

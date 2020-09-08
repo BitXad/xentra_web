@@ -14,7 +14,7 @@
     });
 </script>
 <div class="box-header" style="padding-left: 0px">
-    <h3 class="box-title">Tipo de Inmueble</h3>
+    <font class="text-bold" size='4' face='Arial'>Tipo de Inmueble</font>
     <div class="box-tools">
         <a href="<?php echo site_url('tipo_inmueble/add'); ?>" class="btn btn-success btn-sm">Añadir</a> 
     </div>

@@ -191,6 +191,8 @@ class Asociado extends CI_Controller{
                 $data['all_estado'] = $this->Estado_model->get_all_estados();
             $this->load->model('Categoria_model');
             $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
+            $this->load->model('Modelo_medidor_model');
+            $data['all_modelo_medidor'] = $this->Modelo_medidor_model->get_all_modelo_medidor();
             
             $data['_view'] = 'asociado/add';
             $this->load->view('layouts/main',$data);
@@ -320,7 +322,9 @@ class Asociado extends CI_Controller{
                 $this->Asociado_model->update_asociado($id_asoc,$params);
                 
                 $id_usu = $this->session_data['id_usu'];
-                $paramsl = array(
+                
+                if(isset($data['lectura_basesocio'])){
+                    $paramsl = array(
                     'id_usu' => $id_usu,
                     'mes_lec' => $this->input->post('meslec_asoc'),
                     'gestion_lec' => $this->input->post('gestionlec_asoc'),
@@ -328,7 +332,33 @@ class Asociado extends CI_Controller{
                     'fechaant_lec' => $this->input->post('fechalec_asoc'),
                     'fecha_lec' => $this->input->post('fechalec_asoc'),
                 );
-                $this->Lectura_model->update_lectura($data['lectura_basesocio']['id_lec'],$paramsl);
+                    $this->Lectura_model->update_lectura($data['lectura_basesocio']['id_lec'],$paramsl);
+                }else{
+                    $hora_reg = date('H:i:s');
+                    $paramsl = array(
+                        'id_usu' => $id_usu,
+                        'id_asoc' => $id_asoc,
+                        'mes_lec' => $this->input->post('meslec_asoc'),
+                        'gestion_lec' => $this->input->post('gestionlec_asoc'),
+                        'anterior_lec' => 0,
+                        'actual_lec' => $this->input->post('lecturabase_asoc'),
+                        'fechaant_lec' => $this->input->post('fechalec_asoc'),
+                        'consumo_lec' => 0,
+                        'fecha_lec' => $this->input->post('fechalec_asoc'),
+                        'hora_lec' => $hora_reg,
+                        'totalcons_lec' => 0,
+                        //'fechahora_lec' => $fecha_reg." ".$hora_reg,
+                        'monto_lec' => 0,
+                        'estado_lec' => 'LECTURADO',
+                        'tipo_asoc' => '-',
+                        'servicios_asoc' => '-',
+                        'totalmultas_' => 0,
+                        'cantfact_lec' => 0,
+                        'montofact_lec' => 0,
+                    );
+                    $this->load->model('Lectura_model');
+                    $id_lec = $this->Lectura_model->add_lectura($paramsl);
+                }
                 redirect('asociado/index');
             }
             else
@@ -357,6 +387,11 @@ class Asociado extends CI_Controller{
                 $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
                 $this->load->model('Estado_model');
                 $data['all_estado'] = $this->Estado_model->get_all_estados();
+                $this->load->model('Modelo_medidor_model');
+                $data['all_modelo_medidor'] = $this->Modelo_medidor_model->get_all_modelo_medidor();
+                /*$this->load->model('Parametro_model');
+                $data['parametro'] = $this->Parametro_model->get_all_parametros();
+                */
 
                 $data['_view'] = 'asociado/edit';
                 $this->load->view('layouts/main',$data);

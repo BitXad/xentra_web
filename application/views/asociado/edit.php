@@ -19,7 +19,7 @@
         }
     }
     
-    function generarcodigo(){
+    function generarcodigo1(){
         var all_sistema_red   = JSON.parse(document.getElementById('all_sistema_red').value);
         var all_zona          = JSON.parse(document.getElementById('all_zona').value);
         var all_direccion     = JSON.parse(document.getElementById('all_direccion').value);
@@ -81,6 +81,32 @@
         }
         
         $('#codigocatastral_asoc').val(cod_sred+cod_zona+manzano+cod_dirnum+distancia+cod_categoria+cod_tipoinmueble+cod_diametrored);
+        alert("Codigo de Catastro modiicado con exito!");
+    }
+    function generarcodigo(){
+        var all_zona      = JSON.parse(document.getElementById('all_zona').value);
+        var all_direccion = JSON.parse(document.getElementById('all_direccion').value);
+        
+        var zona       = document.getElementById('zona_asoc').value;
+        var calle      = document.getElementById('direccion_asoc').value;
+        var codigoasoc = document.getElementById('codigo_asoc').value;
+        var ordenasoc = document.getElementById('orden_asoc').value;
+        
+        var z = all_zona.length;
+        var cod_zona = "";
+        for (var i = 0; i < z; i++) {
+            if(all_zona[i]['zona_med'] == zona){
+                cod_zona = all_zona[i]['codigozona_med'];
+            }
+        }
+        var cd = all_direccion.length;
+        var cod_dirnum = "";
+        for (var j = 0; j < cd; j++) {
+            if(all_direccion[j]['nombre_dir'] == calle){
+                cod_dirnum = all_direccion[j]['id_dir'];
+            }
+        }
+        $('#codigocatastral_asoc').val(cod_zona+"-"+cod_dirnum+"-"+codigoasoc+"-"+ordenasoc);
         alert("Codigo de Catastro modiicado con exito!");
     }
 </script>
@@ -215,15 +241,24 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="distancia_asoc" class="control-label">Distancia N.O.(Mts.)</label>
+                        <label for="distancia_asoc" class="control-label">Diametro Acometida</label>
                         <div class="form-group">
-                            <input type="number" step="any" min="0" name="distancia_asoc" value="<?php echo ($this->input->post('distancia_asoc') ? $this->input->post('distancia_asoc') : $asociado['distancia_asoc']); ?>" class="form-control" id="distancia_asoc" />
+                            <input type="text" name="distancia_asoc" value="<?php echo ($this->input->post('distancia_asoc') ? $this->input->post('distancia_asoc') : $asociado['distancia_asoc']); ?>" class="form-control" id="distancia_asoc" />
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="distanciar_asoc" class="control-label">Distancia Red(Mts.)</label>
+                        <label for="distanciar_asoc" class="control-label">Modelo Medidor</label>
                         <div class="form-group">
-                            <input type="number" step="any" min="0" name="distanciar_asoc" value="<?php echo ($this->input->post('distanciar_asoc') ? $this->input->post('distanciar_asoc') : $asociado['distanciar_asoc']); ?>" class="form-control" id="distanciar_asoc" />
+                            <select name="distanciar_asoc" class="form-control" id="distanciar_asoc">
+                                <?php
+                                foreach($all_modelo_medidor as $modelo)
+                                {
+                                    $selected = ($modelo["nombre_modelo"] == $asociado['distanciar_asoc']) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$modelo["nombre_modelo"].'" '.$selected.'>'.$modelo["nombre_modelo"].'</option>';
+                                }
+                                ?>
+                            </select>
+                            <!--<input type="number" step="any" min="0" name="distanciar_asoc" value="<?php //cho ($this->input->post('distanciar_asoc') ? $this->input->post('distanciar_asoc') : $asociado['distanciar_asoc']); ?>" class="form-control" id="distanciar_asoc" />-->
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -392,7 +427,8 @@
                             }
                             initMap();
                         </script>
-                        <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametro[0]['parametro_apikey']?>&callback=initMap"></script>
+                        <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php //echo $parametro[0]['parametro_apikey']?>&callback=initMap"></script>-->
+                        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClNsJugfWI4xOf1Or9Wdg5lD_qUqaik58&callback=initMap"></script>
                         </div>
                         <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
                     </div>
@@ -446,7 +482,10 @@
                     <div class="col-md-3">
                         <label for="lecturabase_asoc" class="control-label">Lectura base(Mts3)</label>
                         <div class="form-group">
-                            <input style="background: #ccffeb" type="number" step="any" min="0" name="lecturabase_asoc" value="<?php echo ($this->input->post('lecturabase_asoc') ? $this->input->post('lecturabase_asoc') : $lectura_basesocio['actual_lec']); ?>" class="form-control" id="lecturabase_asoc" requierd />
+                            <?php
+                            if(isset($lectura_basesocio['actual_lec'])){ $actualec = $lectura_basesocio['actual_lec']; }else{ $actualec = "0";}
+                            ?>
+                            <input style="background: #ccffeb" type="number" step="any" min="0" name="lecturabase_asoc" value="<?php echo ($this->input->post('lecturabase_asoc') ? $this->input->post('lecturabase_asoc') : $actualec ); ?>" class="form-control" id="lecturabase_asoc" requierd />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -496,7 +535,10 @@
                     <div class="col-md-3">
                         <label for="fechalec_asoc" class="control-label">Fecha Lec.</label>
                         <div class="form-group">
-                            <input style="background: #ccffeb" type="date" name="fechalec_asoc" value="<?php echo ($this->input->post('fechalec_asoc') ? $this->input->post('lecturabase_asoc') : $lectura_basesocio['fecha_lec']); ?>" class="form-control" id="fechalec_asoc" requierd />
+                            <?php
+                            if(isset($lectura_basesocio['fecha_lec'])){ $fechalec = date("Y-m-d", strtotime($lectura_basesocio['fecha_lec'])); }else{ $fechalec = date("Y-m-d");}
+                            ?>
+                            <input style="background: #ccffeb" type="date" name="fechalec_asoc" value="<?php echo ($this->input->post('fechalec_asoc') ? $this->input->post('lecturabase_asoc') : $fechalec); ?>" class="form-control" id="fechalec_asoc" requierd />
                         </div>
                     </div>
                     <div class="col-md-5">

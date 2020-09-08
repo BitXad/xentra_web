@@ -14,7 +14,7 @@
     });
 </script>
 <div class="box-header" style="padding-left: 0px">
-    <h3 class="box-title">Estados</h3>
+    <font class="text-bold" size='4' face='Arial'>Estados</font>
     <div class="box-tools">
         <a href="<?php echo site_url('estado/add'); ?>" class="btn btn-success btn-sm">Añadir</a> 
     </div>

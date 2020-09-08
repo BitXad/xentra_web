@@ -2,13 +2,13 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Tipo Asociado</h3>
+              	<h3 class="box-title">Añadir Tipo Asociado</h3>
             </div>
             <?php echo form_open('tipo_asociado/add'); ?>
           	<div class="box-body">
           		<div class="row clearfix">
                 <div class="col-md-6">
-            <label for="tipo_asoc" class="control-label">Tipo</label>
+                    <label for="tipo_asoc" class="control-label"><span class="text-danger">*</span>Tipo</label>
             <div class="form-group">
               <input type="text" step="any" name="tipo_asoc" value="<?php echo $this->input->post('tipo_asoc'); ?>" class="form-control" id="tipo_asoc" autocomplete="off" autofocus  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required/>
               <span class="text-danger"><?php echo form_error('tipo_asoc');?></span>

@@ -14,7 +14,7 @@
     });
 </script>
 <div class="box-header">
-    <h3 class="box-title">Dirección</h3>
+    <font class="text-bold" size='4' face='Arial'>Dirección</font>
     <div class="box-tools">
         <a href="<?php echo site_url('direccion_orden/add'); ?>" class="btn btn-success btn-sm">Añadir</a> 
     </div>

@@ -14,10 +14,23 @@
     });
 </script>
 <div class="box-header" style="padding-left: 0px">
-    <h3 class="box-title">Documento</h3>
+    <font class="text-bold" size='4' face='Arial'>Documento</font>
     <div class="box-tools">
         <a href="<?php echo site_url('documento/add'); ?>" class="btn btn-success btn-sm">Añadir</a> 
     </div>
+
+    <!--<div class="box-tools">
+        <a href="<?php /*echo site_url('categoria/descuentos_abril'); ?>" class="btn btn-danger btn-sm">Descontar ABRIL</a> 
+    <br>
+    <br>
+    <br>
+        <a href="<?php echo site_url('categoria/descuentos_mayo'); ?>" class="btn btn-warning btn-sm">Descontar MAYO</a> 
+    <br>
+    <br>
+    <br>
+        <a href="<?php echo site_url('categoria/descuentos_junio');*/ ?>" class="btn bg-purple btn-sm">Descontar JUNIO</a> 
+        <br>
+    </div>-->
 </div>
 <div class="col-md-6" style="padding-left: 0px">
     <div class="input-group">

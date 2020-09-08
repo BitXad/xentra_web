@@ -27,9 +27,12 @@ class Expedido extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('ciudad','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())     
         {   
             $params = array(
+                'ciudad' => $this->input->post('ciudad'),
             );
             
             $expedido_id = $this->Expedido_model->add_expedido($params);
@@ -48,15 +51,18 @@ class Expedido extends CI_Controller{
     function edit($ciudad)
     {   
         // check if the expedido exists before trying to edit it
+        $ciudad = str_replace("%20", " ", $ciudad);
         $data['expedido'] = $this->Expedido_model->get_expedido($ciudad);
         
         if(isset($data['expedido']['ciudad']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('ciudad','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
+            {
                 $params = array(
+                    'ciudad' => $this->input->post('ciudad'),
                 );
-
                 $this->Expedido_model->update_expedido($ciudad,$params);            
                 redirect('expedido/index');
             }

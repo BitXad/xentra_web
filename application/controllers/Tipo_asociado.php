@@ -28,7 +28,7 @@ class Tipo_asociado extends CI_Controller{
     function add()
     {   
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('tipo_asoc','tipo_asoc','is_unique[tipo_asociado.tipo_asoc]', array('is_unique' => 'Este TIPO ya fue Registrado.'));
+        $this->form_validation->set_rules('tipo_asoc','tipo_asoc','trim|required|is_unique[tipo_asociado.tipo_asoc]', array('is_unique' => 'Este TIPO ya fue Registrado.', 'required' => 'Este campo no debe ser vacio'));
         if($this->form_validation->run())     
         {   
             $params = array(
@@ -63,7 +63,7 @@ class Tipo_asociado extends CI_Controller{
         if(isset($data['tipo_asociado']['tipo_asoc']))
         {
             $this->load->library('form_validation');
-            $this->form_validation->set_rules('tipo_asoc', 'tipo_asoc', 'required' . $is_unique, array('is_unique' => 'Este TIPO ya fue Registrado.'));
+            $this->form_validation->set_rules('tipo_asoc', 'tipo_asoc', 'trim|required' . $is_unique, array('is_unique' => 'Este TIPO ya fue Registrado.', 'required' => 'Este campo no debe ser vacio'));
             if($this->form_validation->run())    
             {   
                 $params = array(

@@ -11,13 +11,13 @@
                     <div class="col-md-6">
                         <label for="zona_med" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="zona_med" value="<?php echo $zona["zona_med"] ?>" class="form-control" id="zona_med" autofocus required onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                            <input type="text" name="zona_med" value="<?php echo $zona["zona_med"] ?>" class="form-control" id="zona_med" autofocus required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
                         </div>
                     </div>         
                     <div class="col-md-3">
                         <label for="codigozona_med" class="control-label"><span class="text-danger">*</span>Código</label>
                         <div class="form-group">
-                            <input type="text" name="codigozona_med" value="<?php echo $zona["codigozona_med"]; ?>" class="form-control" id="codigozona_med" required onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                            <input type="text" name="codigozona_med" value="<?php echo $zona["codigozona_med"]; ?>" class="form-control" id="codigozona_med" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
                         </div>
                     </div>
                 </div>

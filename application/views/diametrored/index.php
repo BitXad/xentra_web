@@ -14,7 +14,7 @@
     });
 </script>
 <div class="box-header" style="padding-left: 0px">
-    <h3 class="box-title">Diametros de Red</h3>
+    <font class="text-bold" size='4' face='Arial'>Diametros de Red</font>
     <div class="box-tools">
         <a href="<?php echo site_url('diametrored/add'); ?>" class="btn btn-success btn-sm">Añadir</a> 
     </div>

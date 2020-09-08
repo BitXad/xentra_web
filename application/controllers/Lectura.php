@@ -13,6 +13,11 @@ class Lectura extends CI_Controller {
         $this->load->model('Asociado_model');
         $this->load->model('Mes_model');
         $this->load->model('Empresa_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     }
 
     /*
@@ -244,8 +249,9 @@ class Lectura extends CI_Controller {
 
     function registrar_lectura() {
 
-        $id_usu = 1;
-
+        //$id_usu = 1;
+        $id_usu = $this->session_data['id_usu'];
+        
         $id_asoc = $this->input->post("id_asoc");
         $mes_lec = "'" . $this->input->post("mes_lec") . "'";
         $gestion_lec = $this->input->post("gestion_lec");
@@ -382,6 +388,15 @@ class Lectura extends CI_Controller {
                     $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . ",1," . $exento_detfact . $coma . $ice_detfact . ")";
             // echo $sql;
             $this->Lectura_model->ejecutar($sql);
+        }
+        if ($tipo_asoc == "'DOMESTICA'" || $tipo_asoc == "'DOMICILIARIA BASICA'" || $tipo_asoc == "'DOMICILIARIA ESPECIAL'"){
+            if ($mes_lec == "'ABRIL'" || $mes_lec == "'MAYO'" || $mes_lec == "'JUNIO'") {
+                $descu = 0 - (($facturas[0]["montototal_fact"]-1)/2);
+                $sql1="INSERT INTO detalle_factura (id_fact, cant_detfact, descip_detfact, punit_detfact, desc_detfact, total_detfact, tipo_detfact, exento_detfact, ice_detfact) VALUES
+                (".$facturas[0]['id_fact'].",  1, 'MENOS 50% DES. DOM.', ".$descu.", 0, ".$descu.", 0, 'NO', 'NO')";
+                $this->db->query($sql1);
+            }
+            
         }
 
         echo json_encode($facturas);
