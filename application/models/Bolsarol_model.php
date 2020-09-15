@@ -14,7 +14,7 @@ class Bolsarol_model extends CI_Model
     /*
      * Get bolsarol by 
      */
-    function get_bolsarol($)
+    function get_bolsarol()
     {
         $bolsarol = $this->db->query("
             SELECT
@@ -25,7 +25,7 @@ class Bolsarol_model extends CI_Model
 
             WHERE
                 `` = ?
-        ",array($))->row_array();
+        ",array())->row_array();
 
         return $bolsarol;
     }
@@ -63,17 +63,17 @@ class Bolsarol_model extends CI_Model
     /*
      * function to update bolsarol
      */
-    function update_bolsarol($,$params)
+    function update_bolsarol($sql,$params)
     {
-        $this->db->where('',$);
+        $this->db->where('',$sql);
         return $this->db->update('bolsarol',$params);
     }
     
     /*
      * function to delete bolsarol
      */
-    function delete_bolsarol($)
+    function delete_bolsarol($sql)
     {
-        return $this->db->delete('bolsarol',array(''=>$));
+        return $this->db->delete('bolsarol',array(''=>$sql));
     }
 }
