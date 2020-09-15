@@ -9,10 +9,17 @@ class Imagen_asociado extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Imagen_asociado_model');
+        $this->session_data = $this->session->userdata('logged_in');
+        if($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
     
     function catalogo($id_asoc)
     {
+        $data['tipo_usuario'] = $this->session_data['tipo_usuario'];
         $this->load->model('Asociado_model');
 	$asociado = $this->Asociado_model->get_asociado($id_asoc);
         $this->load->model('Documento_model');
@@ -227,21 +234,6 @@ class Imagen_asociado extends CI_Controller{
         $data['_view'] = 'imagen_asociado/galeriasociado';
         $this->load->view('layouts/main',$data);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     /*
      * Deleting imagen_asociado
@@ -253,8 +245,20 @@ class Imagen_asociado extends CI_Controller{
         // check if the imagen_asociado exists before trying to delete it
         if(isset($imagen_asociado['imagenasoc_id']))
         {
+            $directorio = FCPATH.'resources\images\imgasociados\\';
+            //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
+            if(isset($imagen_asociado['imagenasoc_archivo']) && !empty($imagen_asociado['imagenasoc_archivo'])){
+                if(file_exists($directorio.$imagen_asociado['imagenasoc_archivo'])){
+                    unlink($directorio.$imagen_asociado['imagenasoc_archivo']);
+                    $mimagenthumb = "thumb_".$imagen_asociado['imagenasoc_archivo'];
+                    $resultado = explode(".", $imagen_asociado['imagenasoc_archivo']);
+                    if($resultado[1] == "jpg" || $resultado[1] == "png" || $resultado[1] == "jpeg" || $resultado[1] == "gif") {
+                        unlink($directorio.$mimagenthumb);
+                  }
+                }
+            }
             $this->Imagen_asociado_model->delete_imagen_asociado($imagenasoc_id);
-            redirect('imagen_asociado/index');
+            redirect('imagen_asociado/Catalogo/'.$imagen_asociado['asociado_id']);
         }
         else
             show_error('The imagen_asociado you are trying to delete does not exist.');

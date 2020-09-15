@@ -101,9 +101,9 @@
                         <!--<td style="background-color: #<?php //echo $imagen['estado_color']; ?>"><?php //echo $imagen['estado_descripcion']; ?></td>-->
                         <td>
                             <a href="<?php echo site_url('imagen_asociado/edit/'.$id_asoc.'/'.$imagen['imagenasoc_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
-                            <?php /*if($tipousuario_id == 1){ ?>
+                            <?php if($tipo_usuario == "ADMINISTRADOR"){ ?>
                                 <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $cont; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
-                            <?php }*/ ?>
+                            <?php } ?>
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                 <div class="modal fade" id="myModal<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $cont; ?>">
                                   <div class="modal-dialog" role="document">
@@ -121,7 +121,7 @@
                                       </div>
                                       <div class="modal-footer aligncenter">
                                             <a href="<?php echo site_url('imagen_asociado/remove/'.$imagen['imagenasoc_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
-                                                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                            <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                       </div>
                                     </div>
                                   </div>
