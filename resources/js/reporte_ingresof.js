@@ -35,9 +35,10 @@ function buscar_por_fecha(){
     var usuario = document.getElementById('buscarusuario_id').value;
     var orden_por = document.getElementById('ordenado_por').value;
     var nombre_dir = document.getElementById('nombre_dir').value;
-    var estado_id = document.getElementById('estado_id').value;
+    //var estado_id = document.getElementById('estado_id').value;
+    var esteasociado = document.getElementById('esteasociado').value;
     
-    fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id,orden_por, nombre_dir);
+    fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, orden_por, nombre_dir, esteasociado);
 
 }
 function numberFormat(numero){
@@ -77,14 +78,14 @@ function numberFormat(numero){
         }
 }
 
-function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden_por, nombre_dir){
+function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, orden_por, nombre_dir, esteasociado){
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"reportes/buscarlosingresosf";
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
            type:"POST",
-           data:{fecha1:fecha_desde, fecha2:fecha_hasta, usuario_id:usuario, esteestado:estado_id,
-                 orden_por:orden_por, nombre_dir:nombre_dir},
+           data:{fecha1:fecha_desde, fecha2:fecha_hasta, usuario_id:usuario,
+                 orden_por:orden_por, nombre_dir:nombre_dir, esteasociado:esteasociado},
           
            success:function(resul){
                 $("#resingegr").val("- 0 -");

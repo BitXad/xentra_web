@@ -372,6 +372,12 @@
                                     <a href="<?php echo site_url('reportes/ingresof');?>"><i class="fa fa-list-alt"></i> Cobros por Servicios</a>
                                 </li>
                                 <li>
+                                    <a href="<?php echo site_url('reportes/deudores');?>"><i class="fa fa-money"></i> Deudores</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('reportes/encorte');?>"><i class="fa fa-dollar"></i> En Corte</a>
+                                </li>
+                                <li>
                                     <a href="<?php echo site_url('reportes/movimiento');?>"><i class="fa fa-exchange"></i> Movimiento Diario</a>
                                 </li>
                                 <li>
@@ -381,10 +387,10 @@
                                     <a href="<?php echo site_url('reportes/mensuales');?>"><i class="fa fa-calendar"></i> Mensuales</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('reportes/ingreso');?>"><i class="glyphicon glyphicon-save"></i> Reporte Ingresos</a>
+                                    <a href="<?php echo site_url('reportes/ingreso');?>"><i class="glyphicon glyphicon-save"></i> Ingresos</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('reportes/egreso');?>"><i class="glyphicon glyphicon-open"></i> Reporte Egresos</a>
+                                    <a href="<?php echo site_url('reportes/egreso');?>"><i class="glyphicon glyphicon-open"></i> Egresos</a>
                                 </li>
                             </ul>
                         </li>

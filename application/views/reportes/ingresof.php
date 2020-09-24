@@ -102,11 +102,15 @@
     <div class="col-md-3">
         Ordenado por:
         <select  class="btn btn-primary btn-sm form-control" id="ordenado_por" name="ordenado_por" required>
-            <option value="nombre" selected> NOMBRE </option>
+            <option value="fact" selected> FACTURA </option>
+            <option value="nombre"> NOMBRE </option>
             <option value="codigo"> CODIGO </option>
-            <option value="fact"> FACTURA </option>
             <option value="monto"> MONTO </option>
         </select>
+    </div>
+    <div class="col-md-3">
+        Asociado:
+        <input id="esteasociado" name="esteasociado" type="text" class="form-control" placeholder="Ingrese el código, nombre..." autofocus autocomplete="off">
     </div>
     <div class="col-md-3">
         Direcci&oacute;n:
@@ -117,7 +121,7 @@
             <?php } ?>
         </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3" hidden>
         Estado:
         <select  class="btn btn-primary btn-sm form-control" id="estado_id" name="estado_id" required>
             <option value="no" selected> TODOS </option>

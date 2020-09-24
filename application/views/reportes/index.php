@@ -109,6 +109,10 @@
         </select>
     </div>
     <div class="col-md-3">
+        Asociado:
+        <input id="esteasociado" name="esteasociado" type="text" class="form-control" placeholder="Ingrese el código, nombre..." autofocus autocomplete="off">
+    </div>
+    <div class="col-md-3">
         Direcci&oacute;n:
         <select  class="btn btn-primary btn-sm form-control" id="nombre_dir" name="nombre_dir" required>
             <option value="ning"> TODAS </option>

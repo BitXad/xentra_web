@@ -370,9 +370,9 @@ class Lectura extends CI_Controller {
                 "(mes_ap = " . $mes . " and gestion_ap = '" . $gestion . "' and tipo_ap = 'PARCIAL' and estado_ap = 'ACTIVO'))";
 
         $multas = $this->Lectura_model->consultar($sql);
-
+        $aportes_tot = 0;
         foreach ($multas as $m) {
-
+            $aportes_tot = $aportes_tot+$m["monto"];
             $descip_detfact = "'" . $m["motivo"] . "'"; //quotedStr(ADOMultas.fieldbyname('motivo').AsString);
             $punit_detfact = $m["monto"];  //ADOMultas.fieldbyname('monto').AsString;
             $desc_detfact = "0";
@@ -398,7 +398,10 @@ class Lectura extends CI_Controller {
             }
             
         }
-
+        $sql2 = "update factura set totalaportes_fact = ".$aportes_tot. "
+                 where id_fact = ".$id_fact;
+        $this->db->query($sql2);
+        
         echo json_encode($facturas);
     }
 

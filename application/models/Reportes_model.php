@@ -38,7 +38,7 @@ class Reportes_model extends CI_Model
         return $multa;
     }
     /* busca los ingresos */
-    function get_ingresoreportes($fecha1, $fecha2, $usuario_id, $estado_id, $orden_por, $nombre_dir){
+    function get_ingresoreportes($fecha1, $fecha2, $usuario_id, $estado_id, $orden_por, $nombre_dir, $esteasociado){
         if($usuario_id == 0){
           $cadusuario = "";
         }else{
@@ -53,6 +53,14 @@ class Reportes_model extends CI_Model
             $cadestado = "";
         }else{
             $cadestado = " and f.estado_fact = '".$estado_id."' ";
+        }
+        if($esteasociado == ""){
+            $cadsocio = "";
+        }else{
+            $cadsocio = " and (a.nombres_asoc like '%".$esteasociado."%' or a.apellidos_asoc like '%".$esteasociado."%'
+                      or a.codigo_asoc ='".$esteasociado."'
+                      ) ";
+            
         }
         if($orden_por == "nombre"){
             $cadorden = " order by a.nombres_asoc, a.apellidos_asoc ";
@@ -81,13 +89,14 @@ class Reportes_model extends CI_Model
                 and date(l.fecha_lec) <='".$fecha2."' 
                 ".$cadusuario."
                 ".$cadirecion."
+                ".$cadsocio."
                 ".$cadestado."
                 ".$cadorden."
         ")->result_array();
         return $ingresos;
     }
     /* busca los ingresos */
-    function get_ingresoreportesf($fecha1, $fecha2, $usuario_id, $estado_id, $orden_por, $nombre_dir){
+    function get_ingresoreportesf($fecha1, $fecha2, $usuario_id, $orden_por, $nombre_dir, $esteasociado){
         if($usuario_id == 0){
           $cadusuario = "";
         }else{
@@ -98,10 +107,14 @@ class Reportes_model extends CI_Model
         }else{
             $cadirecion = " and a.direccion_asoc = '".$nombre_dir."' ";
         }
-        if($estado_id == "no"){
-            $cadestado = "";
+        if($esteasociado == ""){
+            $cadsocio = "";
         }else{
-            $cadestado = " and f.estado_fact = '".$estado_id."' ";
+            
+            $cadsocio = " and (a.nombres_asoc like '%".$esteasociado."%' or a.apellidos_asoc like '%".$esteasociado."%'
+                      or a.codigo_asoc ='".$esteasociado."'
+                      ) ";
+            
         }
         if($orden_por == "nombre"){
             $cadorden = " order by a.nombres_asoc, a.apellidos_asoc ";
@@ -131,7 +144,7 @@ class Reportes_model extends CI_Model
                 and f.estado_fact = 'CANCELADA'
                 ".$cadusuario."
                 ".$cadirecion."
-                ".$cadestado."
+                ".$cadsocio."
                 ".$cadorden."
         ")->result_array();
         return $ingresos;
@@ -303,5 +316,38 @@ class Reportes_model extends CI_Model
                 and g.gestion_lec = l.`gestion_lec`
         ")->result_array();
         return $estemes;
+    }
+    function reporte_deudores(){
+        $deudores = $this->db->query("
+            select a.id_asoc,max(DATEDIFF(date(NOW()),l.fecha_lec)) as mora, 
+                count(*) as cantfact, a.apellidos_asoc, a.nombres_asoc, 
+                a.direccion_asoc,a.codigo_asoc, a.zona_asoc,
+                a.medidor_asoc,a.servicios_asoc 
+
+            from lectura l, factura f, asociado a 
+            where 
+                a.id_asoc = l.id_asoc and l.id_lec = f.id_lec 
+                and f.estado_fact='PENDIENTE' group by id_asoc
+        ")->result_array();
+        return $deudores;
+    }
+    function reporte_encorte(){
+        $deudores_encorte = $this->db->query("
+            select * 
+            from 
+            (select a.id_asoc,max(DATEDIFF(date(NOW()),l.fecha_lec)) as mora, 
+                count(*) as cantfact, a.apellidos_asoc, a.nombres_asoc, 
+                a.direccion_asoc,a.codigo_asoc, a.zona_asoc,
+                a.medidor_asoc,a.servicios_asoc 
+                
+                from lectura l, factura f, asociado a 
+                where 
+                a.id_asoc = l.id_asoc and l.id_lec = f.id_lec 
+                and f.estado_fact='PENDIENTE' group by id_asoc
+              ) as t1 
+            where 
+              t1.mora>=(select p.dias_param from parametros p where p.id_param=4)
+        ")->result_array();
+        return $deudores_encorte;
     }
 }

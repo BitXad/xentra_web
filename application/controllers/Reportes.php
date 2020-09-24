@@ -87,6 +87,7 @@ class Reportes extends CI_Controller{
             $estado_id = $this->input->post('esteestado');
             $orden_por = $this->input->post('orden_por');
             $nombre_dir    = $this->input->post('nombre_dir');
+            $esteasociado    = $this->input->post('esteasociado');
             $valfecha1 = "";
             $valfecha2 = "";
             $usuario_id = "";
@@ -110,7 +111,7 @@ class Reportes extends CI_Controller{
             }else{
                 $usuario_id = 0;
             }
-            $datos = $this->Reportes_model->get_ingresoreportes($valfecha1, $valfecha2, $usuario_id, $estado_id, $orden_por, $nombre_dir);
+            $datos = $this->Reportes_model->get_ingresoreportes($valfecha1, $valfecha2, $usuario_id, $estado_id, $orden_por, $nombre_dir, $esteasociado);
             echo json_encode($datos);
         }   
         else
@@ -127,9 +128,10 @@ class Reportes extends CI_Controller{
             $fecha1    = $this->input->post('fecha1');   
             $fecha2    = $this->input->post('fecha2'); 
             $usuario   = $this->input->post('usuario_id'); 
-            $estado_id = $this->input->post('esteestado');
+            //$estado_id = $this->input->post('esteestado');
             $orden_por = $this->input->post('orden_por');
             $nombre_dir    = $this->input->post('nombre_dir');
+            $esteasociado    = $this->input->post('esteasociado');
             $valfecha1 = "";
             $valfecha2 = "";
             $usuario_id = "";
@@ -153,7 +155,7 @@ class Reportes extends CI_Controller{
             }else{
                 $usuario_id = 0;
             }
-            $datos = $this->Reportes_model->get_ingresoreportesf($valfecha1, $valfecha2, $usuario_id, $estado_id, $orden_por, $nombre_dir);
+            $datos = $this->Reportes_model->get_ingresoreportesf($valfecha1, $valfecha2, $usuario_id, $orden_por, $nombre_dir, $esteasociado);
             echo json_encode($datos);
         }   
         else
@@ -334,6 +336,26 @@ class Reportes extends CI_Controller{
         {                 
             show_404();
         }
+    }
+    /* reporte de usuarios(asociados) deudores */
+    function deudores()
+    {
+        $data['nombre_usu'] = $this->session_data['nombre_usu'];
+        $this->load->model('Empresa_model');
+        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+        $data['all_deudores'] = $this->Reportes_model->reporte_deudores();
+        $data['_view'] = 'reportes/deudores';
+        $this->load->view('layouts/main',$data);
+    }
+    /* reporte de usuarios(asociados) en corte */
+    function encorte()
+    {
+        $data['nombre_usu'] = $this->session_data['nombre_usu'];
+        $this->load->model('Empresa_model');
+        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+        $data['all_encorte'] = $this->Reportes_model->reporte_encorte();
+        $data['_view'] = 'reportes/encorte';
+        $this->load->view('layouts/main',$data);
     }
 }
 

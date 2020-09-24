@@ -244,7 +244,7 @@ input[type=number] { -moz-appearance:textfield; }
             </table>
              <hr style="margin: 0;border: 2px solid #f2f2f2">
                   <div class="col-md-4">
-                    <input type="hidden" id="generar_factura" onclick="facturan()" name="generar_factura" size="8" value=""><label for="generar_factura"> Generar Factura </label> 
+                      <input type="checkbox" id="generar_factura" onclick="facturan()" name="generar_factura" size="8" value=""><label for="generar_factura"> Generar Factura </label> 
                   </div>
                   <div class="col-md-4">
                    <input type="checkbox" checked id="imprimir_factura" name="imprimir_factura" size="8" value=""><label for="imprimir_factura"> Imprimir Factura </label> 
@@ -269,10 +269,10 @@ input[type=number] { -moz-appearance:textfield; }
 
 </div>
 <div class="col-md-11" align="right" id="btn_pendiente" style="display:  block;">
-            <a onclick="finalizar()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+    <button onclick="finalizar()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" id="btnfinalizar" disabled>
                 <i class="fa fa-money fa-4x"></i><br>
                Cobrar<br>Factura<br>
-            </a>
+            </button>
             <a  href="<?php echo site_url('factura/cobranza'); ?>" class="btn btn-sq-lg btn-warning" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-ban fa-4x"></i><br><br>
                Cancelar<br>

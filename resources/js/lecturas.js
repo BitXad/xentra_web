@@ -734,3 +734,9 @@ function anular_lectura(id_lec) {
         } 
 
 }
+function buscarasociado(e) {
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13){
+        buscar_asociados();
+    }
+}

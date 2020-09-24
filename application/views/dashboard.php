@@ -25,7 +25,7 @@
                     <a href="<?php echo base_url("egreso"); ?>" style="padding: 0; background: yellow" class="btn btn-facebook">
                         <img src="<?php echo base_url("resources/images/system/")."egresos.png"; ?>" >                                              
                     </a>
-                    <a href="" style="padding: 0; background: yellow" class="btn btn-facebook">
+            <a href="<?php echo "https://www.passwordbolivia.com/coapatx/login"; ?>" style="padding: 0; background: yellow" class="btn btn-facebook"target="_blank" >
                         <img src="<?php echo base_url("resources/images/system/")."ventas.png"; ?>" >                                              
                     </a>
                     <a href="<?php echo base_url("reportes"); ?>" style="padding: 0; background: yellow" class="btn btn-facebook">

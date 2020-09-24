@@ -36,8 +36,9 @@ function buscar_por_fecha(){
     var orden_por = document.getElementById('ordenado_por').value;
     var nombre_dir = document.getElementById('nombre_dir').value;
     var estado_id = document.getElementById('estado_id').value;
+    var esteasociado = document.getElementById('esteasociado').value;
     
-    fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id,orden_por, nombre_dir);
+    fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id,orden_por, nombre_dir, esteasociado);
 
 }
 function numberFormat(numero){
@@ -77,14 +78,14 @@ function numberFormat(numero){
         }
 }
 
-function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden_por, nombre_dir){
+function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden_por, nombre_dir, esteasociado){
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"reportes/buscarlosingresos";
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
            type:"POST",
            data:{fecha1:fecha_desde, fecha2:fecha_hasta, usuario_id:usuario, esteestado:estado_id,
-                 orden_por:orden_por, nombre_dir:nombre_dir},
+                 orden_por:orden_por, nombre_dir:nombre_dir, esteasociado:esteasociado},
           
            success:function(resul){
                 $("#resingegr").val("- 0 -");
@@ -132,7 +133,8 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden
                                 estetotal = Number(registros[i]["montototal_fact"]).toFixed(2);
                             }else{
                                 html += registros[i]["estado_fact"];
-                                estetotal = Number(Number(registros[i]["totalcons_lec"])+Number(registros[i]["consumoalcant_lec"])).toFixed(2)
+                                estetotal = Number(registros[i]["montototal_fact"]).toFixed(2);
+                                //estetotal = Number(Number(registros[i]["totalcons_lec"])+Number(registros[i]["consumoalcant_lec"])).toFixed(2)
                             }
                             totalingreso  += Number(estetotal);
                             html += "</td>";

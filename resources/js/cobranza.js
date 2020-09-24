@@ -44,6 +44,7 @@ function finalizar(){
                 $("#lista_pendientes").html(nada);
                 $("#detalle_factura").html(nada);
                 $("#detalle_recargo").html(nada);
+                $("#btnfinalizar").prop('disabled',true);
                 facturas_pendientes(id_asoc);
              
 
@@ -410,6 +411,7 @@ function detalle_factura(factura,lectura)
                 $("#detalle_factura").html(html);
                 $("#factura_id").val(factura);
                 $("#lectura_id").val(lectura);
+                $("#btnfinalizar").prop('disabled',false);
                 
 
             },
@@ -620,7 +622,7 @@ function facturan()
 {
     
     var facturan = document.getElementById('generar_factura').checked;
-    alert(facturan);
+    //alert(facturan);
     if (facturan==true) {
             document.getElementById('facturan').style.display = 'block';
                                          

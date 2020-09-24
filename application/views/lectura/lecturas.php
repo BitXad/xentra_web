@@ -115,7 +115,7 @@
                          <label for="buscar_nombreasoc" class="control-label">&nbsp;</label>
                         <div class="input-group">
                             <span class="input-group-addon">ASOCIADO</span>           
-                            <input id="buscar_nombreasoc" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, nro. medidor, ci, nit" autocomplete="off" >
+                            <input id="buscar_nombreasoc" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, nro. medidor, ci, nit" autocomplete="off" onkeypress="buscarasociado(event)" >
                         </div>
                     <!--</div>-->
                 </div>
