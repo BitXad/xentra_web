@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Aporte Edit</h3>
+              	<h3 class="box-title">Modificar Aporte</h3>
             </div>
 			<?php echo form_open('aporte/edit/'.$aporte['id_ap']); ?>
 			<div class="box-body">
@@ -110,7 +110,7 @@
 					<div class="col-md-4">
 						<label for="motivo_ap" class="control-label"><span class="text-danger">*</span>Motivo</label>
 						<div class="form-group">
-							<input type="text" name="motivo_ap" value="<?php echo ($this->input->post('motivo_ap') ? $this->input->post('motivo_ap') : $aporte['motivo_ap']); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" id="motivo_ap" />
+							<input type="text" name="motivo_ap" value="<?php echo ($this->input->post('motivo_ap') ? $this->input->post('motivo_ap') : $aporte['motivo_ap']); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" id="motivo_ap" required />
 							<span class="text-danger"><?php echo form_error('motivo_ap');?></span>
 						</div>
 					</div>
@@ -123,7 +123,7 @@
 					<div class="col-md-4">
 						<label for="monto_ap" class="control-label"><span class="text-danger">*</span>Monto</label>
 						<div class="form-group">
-							<input type="number" step="any" name="monto_ap" value="<?php echo ($this->input->post('monto_ap') ? $this->input->post('monto_ap') : $aporte['monto_ap']); ?>" class="form-control" id="monto_ap" />
+							<input type="number" step="any" name="monto_ap" value="<?php echo ($this->input->post('monto_ap') ? $this->input->post('monto_ap') : $aporte['monto_ap']); ?>" class="form-control" id="monto_ap" required />
 							<span class="text-danger"><?php echo form_error('monto_ap');?></span>
 						</div>
 					</div>

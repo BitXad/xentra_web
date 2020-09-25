@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Parametro Edit</h3>
+              	<h3 class="box-title">Modificar Parametro</h3>
             </div>
 			<?php echo form_open('parametro/edit/'.$parametro['id_param']); ?>
 			<div class="box-body">

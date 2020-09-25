@@ -17,7 +17,11 @@ class Dosificacion extends CI_Controller{
     function index()
     {
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
-        
+        if(sizeof($data['dosificacion']) >0){
+            $data['newdosif'] = 1;
+        }else{
+            $data['newdosif'] = 0;
+        }
         $data['_view'] = 'dosificacion/index';
         $this->load->view('layouts/main',$data);
     }
@@ -29,20 +33,20 @@ class Dosificacion extends CI_Controller{
     {   
         $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('llave_dosif','Llave Dosif','required');
-		$this->form_validation->set_rules('numfact_dosif','Numfact Dosif','required');
-		$this->form_validation->set_rules('numorden_dosif','Numorden Dosif','required');
-		$this->form_validation->set_rules('fechalim_dosif','Fechalim Dosif','required');
-		
-		if($this->form_validation->run())     
+        $this->form_validation->set_rules('llave_dosif','Llave','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('numfact_dosif','Número de factura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('numorden_dosif','Número de ordenOrden','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('fechalim_dosif','Fecha Limite','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+
+        if($this->form_validation->run())     
         {   
             $params = array(
-				'estado_dosif' => $this->input->post('estado_dosif'),
-				'numorden_dosif' => $this->input->post('numorden_dosif'),
-				'llave_dosif' => $this->input->post('llave_dosif'),
-				'fechalim_dosif' => $this->input->post('fechalim_dosif'),
-				'fechahora_dosif' => $this->input->post('fechahora_dosif'),
-				'numfact_dosif' => $this->input->post('numfact_dosif'),
+                'estado_dosif' => "ACTIVO",
+                'numorden_dosif' => $this->input->post('numorden_dosif'),
+                'llave_dosif' => $this->input->post('llave_dosif'),
+                'fechalim_dosif' => $this->input->post('fechalim_dosif'),
+                'fechahora_dosif' => $this->input->post('fechahora_dosif'),
+                'numfact_dosif' => $this->input->post('numfact_dosif'),
             );
             
             $dosificacion_id = $this->Dosificacion_model->add_dosificacion($params);
@@ -66,21 +70,20 @@ class Dosificacion extends CI_Controller{
         if(isset($data['dosificacion']['id_dosif']))
         {
             $this->load->library('form_validation');
+            $this->form_validation->set_rules('llave_dosif','Llave','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('numfact_dosif','Número de factura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('numorden_dosif','Número de ordenOrden','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('fechalim_dosif','Fecha Limite','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 
-			$this->form_validation->set_rules('llave_dosif','Llave Dosif','required');
-			$this->form_validation->set_rules('numfact_dosif','Numfact Dosif','required');
-			$this->form_validation->set_rules('numorden_dosif','Numorden Dosif','required');
-			$this->form_validation->set_rules('fechalim_dosif','Fechalim Dosif','required');
-		
-			if($this->form_validation->run())     
+            if($this->form_validation->run())     
             {   
                 $params = array(
-					'estado_dosif' => $this->input->post('estado_dosif'),
-					'numorden_dosif' => $this->input->post('numorden_dosif'),
-					'llave_dosif' => $this->input->post('llave_dosif'),
-					'fechalim_dosif' => $this->input->post('fechalim_dosif'),
-					'fechahora_dosif' => $this->input->post('fechahora_dosif'),
-					'numfact_dosif' => $this->input->post('numfact_dosif'),
+                    'estado_dosif' => $this->input->post('estado_dosif'),
+                    'numorden_dosif' => $this->input->post('numorden_dosif'),
+                    'llave_dosif' => $this->input->post('llave_dosif'),
+                    'fechalim_dosif' => $this->input->post('fechalim_dosif'),
+                    'fechahora_dosif' => $this->input->post('fechahora_dosif'),
+                    'numfact_dosif' => $this->input->post('numfact_dosif'),
                 );
 
                 $this->Dosificacion_model->update_dosificacion($id_dosif,$params);            

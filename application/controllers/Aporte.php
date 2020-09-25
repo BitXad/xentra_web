@@ -35,26 +35,23 @@ class Aporte extends CI_Controller{
         $session_data = $this->session->userdata('logged_in');
         $usuario_id = $session_data['id_usu'];
         $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('motivo_ap','Motivo Ap','required');
-		$this->form_validation->set_rules('monto_ap','Monto Ap','required');
-		
-		if($this->form_validation->run())     
+        $this->form_validation->set_rules('motivo_ap','Motivo','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('monto_ap','Monto','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())
         {   
             $params = array(
-				'mes_ap' => $this->input->post('mes_ap'),
-				'gestion_ap' => $this->input->post('gestion_ap'),
-				'tipo_ap' => $this->input->post('tipo_ap'),
-				'estado_ap' => 'ACTIVO',
-				'id_usu' => $usuario_id,
-				'exento_ap' => $this->input->post('exento_ap'),
-				'ice_ap' => $this->input->post('ice_ap'),
-				'motivo_ap' => $this->input->post('motivo_ap'),
-				'detalle_ap' => $this->input->post('detalle_ap'),
-				'monto_ap' => $this->input->post('monto_ap'),
+                'mes_ap' => $this->input->post('mes_ap'),
+                'gestion_ap' => $this->input->post('gestion_ap'),
+                'tipo_ap' => $this->input->post('tipo_ap'),
+                'estado_ap' => 'ACTIVO',
+                'id_usu' => $usuario_id,
+                'exento_ap' => $this->input->post('exento_ap'),
+                'ice_ap' => $this->input->post('ice_ap'),
+                'motivo_ap' => $this->input->post('motivo_ap'),
+                'detalle_ap' => $this->input->post('detalle_ap'),
+                'monto_ap' => $this->input->post('monto_ap'),
 				
             );
-            
             $aporte_id = $this->Aporte_model->add_aporte($params);
             redirect('aporte/index');
         }
@@ -85,23 +82,21 @@ class Aporte extends CI_Controller{
         if(isset($data['aporte']['id_ap']))
         {
             $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('motivo_ap','Motivo Ap','required');
-			$this->form_validation->set_rules('monto_ap','Monto Ap','required');
-		
-			if($this->form_validation->run())     
+            $this->form_validation->set_rules('motivo_ap','Motivo','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('monto_ap','Monto','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())
             {   
                 $params = array(
-					'mes_ap' => $this->input->post('mes_ap'),
-					'gestion_ap' => $this->input->post('gestion_ap'),
-					'tipo_ap' => $this->input->post('tipo_ap'),
-					'estado_ap' => $this->input->post('estado_ap'),
-					'id_usu' => $usuario_id,
-					'exento_ap' => $this->input->post('exento_ap'),
-					'ice_ap' => $this->input->post('ice_ap'),
-					'motivo_ap' => $this->input->post('motivo_ap'),
-					'detalle_ap' => $this->input->post('detalle_ap'),
-					'monto_ap' => $this->input->post('monto_ap'),
+                    'mes_ap' => $this->input->post('mes_ap'),
+                    'gestion_ap' => $this->input->post('gestion_ap'),
+                    'tipo_ap' => $this->input->post('tipo_ap'),
+                    'estado_ap' => $this->input->post('estado_ap'),
+                    'id_usu' => $usuario_id,
+                    'exento_ap' => $this->input->post('exento_ap'),
+                    'ice_ap' => $this->input->post('ice_ap'),
+                    'motivo_ap' => $this->input->post('motivo_ap'),
+                    'detalle_ap' => $this->input->post('detalle_ap'),
+                    'monto_ap' => $this->input->post('monto_ap'),
 					
                 );
 
@@ -128,7 +123,7 @@ class Aporte extends CI_Controller{
     /*
      * Deleting aporte
      */
-    function remove($id_ap)
+    /*function remove($id_ap)
     {
         $aporte = $this->Aporte_model->get_aporte($id_ap);
 
@@ -140,6 +135,6 @@ class Aporte extends CI_Controller{
         }
         else
             show_error('The aporte you are trying to delete does not exist.');
-    }
+    }*/
     
 }

@@ -40,11 +40,8 @@ class Aporte_model extends CI_Model
                 a.*, u.*
 
             FROM
-                aporte a, usuario u
-
-            WHERE
-                 a.id_usu=u.id_usu
-
+                aporte a
+            left join usuario u on a.id_usu = u.id_usu
             ORDER BY `id_ap` DESC
         ")->result_array();
 

@@ -30,9 +30,8 @@ class Me extends CI_Controller{
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
-				'mes_lec' => $this->input->post('mes_lec'),
+                'mes_lec' => $this->input->post('mes_lec'),
             );
-            
             $me_id = $this->Me_model->add_me($params);
             redirect('me/index');
         }
@@ -56,7 +55,7 @@ class Me extends CI_Controller{
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
-					'mes_lec' => $this->input->post('mes_lec'),
+                    'mes_lec' => $this->input->post('mes_lec'),
                 );
 
                 $this->Me_model->update_me($id_mes,$params);            
@@ -75,7 +74,7 @@ class Me extends CI_Controller{
     /*
      * Deleting me
      */
-    function remove($id_mes)
+    /*function remove($id_mes)
     {
         $me = $this->Me_model->get_me($id_mes);
 
@@ -87,6 +86,6 @@ class Me extends CI_Controller{
         }
         else
             show_error('The me you are trying to delete does not exist.');
-    }
+    }*/
     
 }

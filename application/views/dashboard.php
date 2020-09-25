@@ -35,8 +35,9 @@
     </div>
     <div class="col-md-12" >
         <center>
-            <h1 style="font-family: Arial;">                
-                AQUI VA UN GRAFICO
+            <h1 style="font-family: Arial;">
+                &nbsp;
+                <!--AQUI VA UN GRAFICO-->
             </h1>
             
         </center>
@@ -57,7 +58,7 @@
                     <a href="<?php echo base_url("parametro"); ?>" style="padding: 0;">
                         <img src="<?php echo base_url("resources/images/system/")."parametros.png"; ?>" >                                              
                     </a>
-                    <a href="" style="padding: 0;">
+                    <a href="<?php echo base_url("dosificacion"); ?>" style="padding: 0;">
                         <img src="<?php echo base_url("resources/images/system/")."dosificaciones.png"; ?>" >                                              
                     </a>
                     <a href="<?php echo base_url("usuario"); ?>" style="padding: 0;">
