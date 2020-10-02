@@ -30,6 +30,8 @@ class Asociado extends CI_Controller{
         $data['all_categoria'] = $this->Categoria_model->get_all_categorias();
         $this->load->model('Direccion_orden_model');
         $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_orden();
+        $this->load->model('Empresa_model');
+        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
         
         $data['_view'] = 'asociado/index';
         $this->load->view('layouts/main',$data);

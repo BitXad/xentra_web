@@ -30,19 +30,58 @@
     }
 </style>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="resasociado" id="resasociado" />
+<div class="row micontenedorep" style="display: none" id="cabeceraprint" >
+    <table style="width: 100%; font-family: Arial !important;" >
+        <tr>
+            <td class="labj text-center" style="width: 15%; padding-bottom: 0px; padding-right: 0px">
+                <!--<img src="<?php //echo base_url('resources/images/empresas/').$all_empresa[0]['logo_emp']; ?>" width="100" height="60"><br>-->
+                <img src="<?php echo base_url('resources/images/empresas/logo.jpg'); ?>" width="100" height="60"><br>
+            </td>
+            <td class="labjder text-center" style="width: 85%; padding-bottom: 0px; padding-right: 0px; line-height: 0.9">
+                <span class="text-bold" style="font-size: 15px;"><?php echo $all_empresa[0]['nombre_emp']; ?></span><br>
+                <span class="text-bold" style="font-size: 15px;"><?php echo $all_empresa[0]['eslogan_emp']; ?></span><br>
+                <span style="font-size: 10px;"><?php echo $all_empresa[0]['direccion_emp']; ?></span><br>
+                <span style="font-size: 10px;"><?php echo $all_empresa[0]['telefono_emp']; ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="width: 35%; padding: 0"> 
+                <center>
+                    <br>
+                    <font size="3" face="arial"><b><span id="titasociado"></span>LISTA DE ASOCIADOS</b></font> <br>
+                    <font size="1" face="arial"><b><span id="fhimpresion"></span></b></font> <br>
+                </center>
+            </td>
+        </tr>
+    </table>      
+        
+</div>
 <div class="row no-print">
-    <div class="col-md-8">
+    <div class="col-md-7">
         <div class="box-header">
             <font class="text-bold" size='4' face='Arial'>Asociados</font>
             <br><font size='2' face='Arial' id="encontrados"></font>
             <span style="font-size: 8pt;" id="busquedacategoria"></span>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-5">
         <div class="box-tools text-center">
             <a style="width: 80px !important" href="<?php echo site_url('asociado/add'); ?>" class="btn btn-success btn-foursquarexs" target="_blank" title="Registrar a nuevo Asociado"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
             <a style="width: 80px !important" onclick="tablaresultadosasociado(3)" class="btn btn-warning btn-foursquarexs" title="Registrar todos los Asociados"><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></a>
             <a style="width: 80px !important" href="<?php echo site_url('asociado/modif'); ?>" class="btn btn-facebook btn-foursquarexs" target="_blank" title="Lista de Asociados modificados"><font size="5"><span class="fa fa-list-ol"></span></font><br><small>Lista Asoc.</small></a>
+            <a style="width: 80px !important" onclick="imprimir_socios()" class="btn btn-primary btn-foursquarexs" title="Imprimir Asociados"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <table style="display: inline">
+                <tr><td>
+                <input class="btn" type="checkbox" name="listasocios" id="listasocios" title="Lista de Asociados" onclick="lista_socios()" >
+                </td>
+                </tr>
+                <!--<tr><td>
+                <input class="btn" type="checkbox" name="listaprecios" id="listaprecios" title="Lista de Precios" onclick="listaprecios()" >
+                </td>
+                </tr>-->
+            </table>
            <!-- <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="tablaresultadosproducto(3)" title="Mostrar todos los Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
             <a href="<?php //echo site_url('producto/existenciaminima'); ?>" class="btn btn-info btn-foursquarexs" target="_blank" ><font size="5" title="Productos con Existencia minima"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
            --> <?php
@@ -130,6 +169,7 @@
         <div class="box">
             <div class="box-body table-responsive">
                 <table class="table table-condensed" id="mitabla">
+                    <thead role="rowgroup" id="cabcatalogo">
                     <tr>
                         <th>#</th>
                         <th>ASOCIADO</th>
@@ -142,6 +182,7 @@
                         <th>LEC. BASE</th>
                         <th></th>
                     </tr>
+                    </thead>
                     <tbody class="buscar" id="tablaresultados">
                     <?php /*foreach($asociado as $a){ ?>
                     <tr>

@@ -588,6 +588,7 @@ function buscar_asociados() {
                     
                     html += "<br><a href='" + base_url + "lectura/historial/" + res[i].id_asoc + "' class='btn btn-facebook btn-xs' title='Historial de lecturas' target='_BLANK'><fa class='fa fa-list'></fa></a>";
                     html += "<a href='" + base_url + "lectura/ultimo_preaviso/" + res[i].id_asoc + "' class='btn btn-info btn-xs' title='Ultimo preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
+                    html += "<a href='" + base_url + "lectura/mes_preaviso/" + res[i].id_asoc +"/"+select_mes+"/"+select_gestion+"' class='btn btn-success btn-xs' title='Reimprimir preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
                     html += "</center>";
                     html += "</td>";
                     html += "</tr>";

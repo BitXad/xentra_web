@@ -17,6 +17,7 @@ function buscarasociado(e) {
 //Tabla resultados de la busqueda en el index de producto
 function tablaresultadosasociado(limite)
 {
+    $("#listasocios").prop("checked", false);
     var controlador = "";
     var parametro = "";
     var direcciontext = "";
@@ -73,6 +74,8 @@ function tablaresultadosasociado(limite)
                 //$("#encontrados").val("- 0 -");
                var registros =  JSON.parse(respuesta);
                if (registros != null){
+                   const myString = JSON.stringify(registros);
+                   $("#resasociado").val(myString);
                    var formaimagen = ""; //document.getElementById('formaimagen').value;
                     /*var cont = 0;
                     var cant_total = 0;
@@ -326,8 +329,7 @@ function tablaresultadosasociado(limite)
                         html += "</tr>";
 
                    }
-                   
-                   
+                   cabecera_tabla();
                    $("#tablaresultados").html(html);
                    document.getElementById('loader').style.display = 'none';
             }
@@ -346,42 +348,311 @@ function tablaresultadosasociado(limite)
     });   
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function imprimir_producto(){
+function imprimir_socios(){
     var estafh = new Date();
-    $('#fhimpresion').html(formatofecha_hora_ampm(estafh));
+    $('#fhimpresion').html(moment(estafh).format("DD/MM/YYYY HH:mm:ss"));
     $("#cabeceraprint").css("display", "");
     window.print();
     $("#cabeceraprint").css("display", "none");
 }
+
+function lista_socios() {
+    //$("#escatalogo").prop("checked", false);
+    //$('#titasocoado').text("LISTA DE PRECIOS DE ");
+    var base_url = document.getElementById('base_url').value;
+    //var checkBox = document.getElementById("myCheck");
+    //var formaimagen = document.getElementById('formaimagen').value;
+    var catalogo = $('#listasocios').is(':checked');
+    var respuesta = document.getElementById('resasociado').value;
+    var registros =  JSON.parse(respuesta);
+    var n = registros.length; //tamaño del arreglo de la consulta
+    if(catalogo){
+        chtml = "";
+        chtml += "<tr role='row'  style='width: 19cm !important'>";
+        chtml += "<th role='columnheader' >#</th>";
+        chtml += "<th role='columnheader' >CODIGO</th>";
+        chtml += "<th role='columnheader' >APELLIDOS Y NOMBRES</th>";
+        chtml += "<th role='columnheader' >C.I.</th>";
+        chtml += "<th role='columnheader' >DIRECCION</th>";
+        chtml += "<th role='columnheader' >OTB</th>";
+        chtml += "<th role='columnheader' >SERVICIOS</th>";
+        chtml += "<th role='columnheader' >ESTADO</th>";
+        chtml += "</tr>";
+        html = "";
+        for (var i = 0; i < n ; i++){
+            html += "<tr>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>"+(i+1)+"</td>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
+            html += registros[i]["codigo_asoc"];
+            html += "</td>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px'>";
+            html += registros[i]["apellidos_asoc"]+" "+registros[i]["nombres_asoc"];
+            html += "</td>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
+            html += registros[i]["ci_asoc"]+" "+registros[i]["ciudad"];
+            html += "</td>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-left'>";
+            html += registros[i]["direccion_asoc"];
+            html += "</td>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-left'>";
+            html += registros[i]["zona_asoc"];
+            html += "</td>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-left'>";
+            html += registros[i]["servicios_asoc"];
+            html += "</td>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
+            html += registros[i]["estado"];
+            html += "</td>";
+            html += "</tr>";
+        }
+        $("#cabcatalogo").html(chtml);
+        $("#tablaresultados").html(html);
+    }else{
+        busqueda_inicial();
+    }
+    //cabcatalogo
+}
+function cabecera_tabla() {
+    chtml = "";
+    chtml += "<tr role='row'>";
+    chtml += "<th  role='columnheader' >#</th>";
+    chtml += "<th  role='columnheader' >ASOCIADO</th>";
+    chtml += "<th  role='columnheader' >CODIGO</th>";
+    chtml += "<th  role='columnheader' >SERVICIO</th>";
+    chtml += "<th  role='columnheader' >FECHAS</th>";
+    chtml += "<th  role='columnheader' >ORDEN</th>";
+    chtml += "<th  role='columnheader' >MAP</th>";
+    chtml += "<th  role='columnheader' >COD. CAT.</th>";
+    chtml += "<th  role='columnheader' >LEC. BASE</th>";
+    chtml += "<th  role='columnheader' ></th>";
+    chtml += "</tr>";
+    $("#cabcatalogo").html(chtml);
+}
+function busqueda_inicial()
+{
+    var base_url = document.getElementById('base_url').value;
+    
+    var respuesta = document.getElementById('resasociado').value;
+    var registros =  JSON.parse(respuesta);
+    
+
+    var formaimagen = ""; //document.getElementById('formaimagen').value;
+    var n = registros.length; //tamaño del arreglo de la consulta
+    //$("#encontrados").html("Registros Encontrados: "+n+" ");
+    html = "";
+    cabecera_tabla();
+    for(var i = 0; i < n ; i++){
+//                        html += "<td>";
+        /*var caracteristica = "";
+        if(registros[i]["producto_caracteristicas"] != null){
+            caracteristica = "<div style='word-wrap: break-word !important; max-width: 400px !important; white-space: normal'>"+registros[i]["producto_caracteristicas"]+"</div>";
+        }*/
+//                        html+= caracteristica+"</td>";
+        html += "<tr>";
+        html += "<td>"+(i+1)+"</td>";
+        html += "<td>";
+        html += "<div id='horizontal'>";
+        html += "<div id='contieneimg'>";
+        var mimagen = "";
+        if(registros[i]["foto_asoc"] != null && registros[i]["foto_asoc"] !=""){
+            mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
+            mimagen += "<img src='"+base_url+"resources/images/asociados/thumb_"+registros[i]["foto_asoc"]+"' class='img img-"+formaimagen+"' width='50' height='50' />";
+            mimagen += "</a>";
+        }else{
+            mimagen = "<img src='"+base_url+"resources/images/asociados/thumb_default.jpg' class='img img-"+formaimagen+"' width='50' height='50' />";
+        }
+        html += mimagen;
+        html += "</div>";
+        html += "<div style='padding-left: 4px'>";
+        var tamaniofont = 3;
+        var tamres = Number(registros[i]["nombres_asoc"].length)+Number(registros[i]["apellidos_asoc"].length);
+        if(tamres >27){
+            tamaniofont = 1;
+        }
+        html += "<font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["apellidos_asoc"]+" "+registros[i]["nombres_asoc"]+"</b></font><br>";
+        html += "C.I.: "+registros[i]["ci_asoc"]+" "+registros[i]["ciudad"]+"<br>";
+        html += "DIR.: "+registros[i]["direccion_asoc"]+" ";
+        if(registros[i]["nro_asoc"] != null && registros[i]["nro_asoc"] != ""){
+            html += registros[i]["nro_asoc"]+" ";
+        }
+        if(registros[i]["referencia_asoc"] != null && registros[i]["referencia_asoc"] != ""){
+            html += "<br>"+registros[i]["referencia_asoc"]+" ";
+        }
+        html += "<br>";
+        html += "MANZANO: ";
+        if(registros[i]["manzano_asoc"] != null && registros[i]["manzano_asoc"] != ""){
+            html += registros[i]["manzano_asoc"]+" ";
+        }
+        html += "<br>";
+        html += "TELF.: "+registros[i]["telefono_asoc"]+"<br>";
+        html += "TIPO: ";
+        if(registros[i]["tipo_asoc"] != null && registros[i]["tipo_asoc"] != ""){
+            html += registros[i]["tipo_asoc"];
+        }
+        html += "</div>";
+        html += "</div>";
+        html += "</td>";
+        html += "<td>";
+        html += registros[i]["codigo_asoc"]+"<br>";
+        html += registros[i]["categoria_asoc"]+"<br>";
+        html += "MED.: "+registros[i]["medidor_asoc"]+"<br>";
+        html += "NIT: "+registros[i]["nit_asoc"]+"<br>";
+        html += "RAZON: "+registros[i]["razon_asoc"];
+        html += "</td>";
+        html += "<td>";
+        html += "SERV.: "+registros[i]["servicios_asoc"]+"<br>";
+        html += "ZONA: "+registros[i]["zona_asoc"];
+        html += "<br>";
+        /*html += "SISTEMA RED: ";
+        if(registros[i]["sistemared_asoc"] != null && registros[i]["sistemared_asoc"] != ""){
+            html += registros[i]["sistemared_asoc"];
+        }
+        html += "<br>";*/
+        html += "TIPO INMUEBLE: ";
+        if(registros[i]["tipoinmueble_asoc"] != null && registros[i]["tipoinmueble_asoc"] != ""){
+            html += registros[i]["tipoinmueble_asoc"];
+        }
+        html += "</td>";
+        html += "<td>";
+        if(registros[i]["fechanac_asoc"] != null && registros[i]["fechanac_asoc"] != "0000-00-00"){
+            html += "F. NAC.: "+moment(registros[i]["fechanac_asoc"]).format("DD/MM/YYYY")+"<br>";
+        }else{
+            html += "F. NAC.:<br>"
+        }
+        if(registros[i]["fechahora_asoc"] != null && registros[i]["fechahora_asoc"] != "0000-00-00"){
+            html += "F. REG.: "+moment(registros[i]["fechahora_asoc"]).format("DD/MM/YYYY HH:mm:ss")+"<br>";
+        }else{
+            html += "F. REG.:<br>"
+        }
+        html += "</td>";
+        html += "<td class='text-center'>";
+        html += registros[i]["orden_asoc"]+"<br>";
+        html += registros[i]["estado"];
+        html += "</td>";
+        html += "<td class='no-print' style='text-align: center'>";
+        if ((registros[i]["latitud_asoc"]==0 && registros[i]["longitud_asoc"]==0) || (registros[i]["latitud_asoc"]==null && registros[i]["longitud_asoc"]==null) || (registros[i]["latitud_asoc"]== "" && registros[i]["longitud_asoc"]=="")){
+            html += "<img src='"+base_url+"resources/images/noubicacion.png' width='30' height='30'>";
+        }else{
+            html += "<a href='https://www.google.com/maps/dir/"+registros[i]["latitud_asoc"]+","+registros[i]["longitud_asoc"]+"' target='_blank' title='lat:"+registros[i]["latitud_asoc"]+", long:"+registros[i]["longitud_asoc"]+"'>";                                                                
+            html += "<img src='"+base_url+"resources/images/blue.png' width='30' height='30'>";
+            html += "</a>";
+        }
+        html += "</td>";
+        html += "<td>";
+        if(registros[i]["codigocatastral_asoc"] != null && registros[i]["codigocatastral_asoc"] != ""){
+            html += registros[i]["codigocatastral_asoc"]+" ";
+        }
+        html += "<br>";
+        html += "SIST. RED: ";
+        if(registros[i]["sistemared_asoc"] != null && registros[i]["sistemared_asoc"] != ""){
+            html += registros[i]["sistemared_asoc"]+" ";
+        }
+        html += "<br>";
+        html += "DIST. N.O.(Mts.): ";
+        if(registros[i]["distancia_asoc"] != null && registros[i]["distancia_asoc"] != ""){
+            html += registros[i]["distancia_asoc"]+" ";
+        }
+        html += "<br>";
+        html += "DIST. RED(Mts.): ";
+        if(registros[i]["distanciar_asoc"] != null && registros[i]["distanciar_asoc"] != ""){
+            html += registros[i]["distanciar_asoc"]+" ";
+        }
+        html += "<br>";
+        html += "DIAM. RED: ";
+        if(registros[i]["diametrored_asoc"] != null && registros[i]["diametrored_asoc"] != ""){
+            html += registros[i]["diametrored_asoc"]+" ";
+        }
+        html += "</td>";
+        html += "<td>";
+        html += "LEC.: ";
+        if(registros[i]["actual_lec"] != null && registros[i]["actual_lec"] != ""){
+            html += registros[i]["actual_lec"]+" ";
+        }
+        html += "<br>";
+        html += "MES: ";
+        if(registros[i]["mes_lec"] != null && registros[i]["mes_lec"] != ""){
+            html += registros[i]["mes_lec"]+" ";
+        }
+        html += "<br>";
+        html += "GEST.: ";
+        if(registros[i]["gestion_lec"] != null && registros[i]["gestion_lec"] != ""){
+            html += registros[i]["gestion_lec"]+" ";
+        }
+        html += "<br>";
+        html += "FECHA: ";
+        if(registros[i]["fecha_lec"] != null && registros[i]["fecha_lec"] != ""){
+            html += moment(registros[i]["fecha_lec"]).format("DD/MM/YYYY");
+        }
+        html += "</td>";
+        html += "<td>";
+        html += "<a href='"+base_url+"asociado/edit/"+registros[i]["id_asoc"]+"' class='btn btn-info btn-xs' target='_blank' title='Modificar información de Asociado' ><span class='fa fa-pencil'></span></a>";
+        html += "<a href='"+base_url+"imagen_asociado/catalogo/"+registros[i]["id_asoc"]+"' class='btn btn-success btn-xs' target='_blank' title='Documentos' ><span class='fa fa-folder-open'></span></a>";
+
+
+
+        html += "<!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->";
+        html += "<div class='modal fade' id='mostrarimagen"+i+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+i+"'>";
+        html += "<div class='modal-dialog' role='document'>";
+        html += "<br><br>";
+        html += "<div class='modal-content'>";
+        html += "<div class='modal-header'>";
+        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+        html += "<font size='3'><b>"+registros[i]["nombres_asoc"]+" "+registros[i]["apellidos_asoc"]+"</b></font>";
+        html += "</div>";
+        html += "<div class='modal-body'>";
+        html += "<!------------------------------------------------------------------->";
+        var imagenreal = ""
+        if(registros[i]["foto_asoc"] != null && registros[i]["foto_asoc"] != ""){
+            imagenreal = registros[i]["foto_asoc"];
+        }
+        html += "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/asociados/"+imagenreal+"' />";
+        html += "<!------------------------------------------------------------------->";
+        html += "</div>";
+
+        html += "</div>";
+        html += "</div>";
+        html += "</div>";
+        html += "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
+        html += "</td>";
+
+        html += "</tr>";
+
+    }
+    $("#tablaresultados").html(html);
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*aumenta un cero a un digito; es para las horas*/
 function aumentar_cero(num){
@@ -401,6 +672,3 @@ function formatofecha_hora_ampm(string){
    }
     return info;
 }
-
-
-

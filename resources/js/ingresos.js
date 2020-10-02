@@ -118,7 +118,7 @@ function fechadeingreso(filtro)
                         html += "<td>"+registros[i]["detalle_ing"]+"</br>"; 
                         html += "<b>"+registros[i]["descripcion_ing"]+"</b>"; 
                         if (registros[i]["id_asoc"]>0) {
-                        html += "<b> /Asociado: "+registros[i]["nombres_asoc"]+" "+registros[i]["apellidos_asoc"]+"</b>";     
+                        html += "<b> /Asociado: "+registros[i]["nombres_asoc"]+" "+registros[i]["apellidos_asoc"]+" ("+registros[i]["codigo_asoc"]+")"+"</b>";     
                         }
                         html += "</td><td align='right'>"+Number(registros[i]["monto_ing"]).toFixed(2)+"</td>"; 
                         html += "<td>"+registros[i]["estado_ing"]+"</td>"; 
@@ -127,7 +127,7 @@ function fechadeingreso(filtro)
                         //html += "<a href='"+base_url+"ingreso/boucher/"+registros[i]["id_ing"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
                         html += " <a href='"+base_url+"ingreso/edit/"+registros[i]["id_ing"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
                         html += " <a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
-                        html += "<!------------------------ INICIO modal para confirmar eliminaci«Ñn ------------------->";
+                        html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
                         html += "<br><br>";
@@ -149,7 +149,7 @@ function fechadeingreso(filtro)
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
-                        html += "<!------------------------ FIN modal para confirmar eliminaci«Ñn ------------------->";
+                        html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
                         html += "</td>";
                         
                         html += "</tr>";
@@ -282,6 +282,7 @@ function elegir_asoc(asociado)
 
                     $("#asociado").val(registros[0]["nombres_asoc"] +" "+ registros[0]["apellidos_asoc"] +" ("+registros[0]["codigo_asoc"]+")" );
                     $("#id_asoc").val(registros[0]["id_asoc"]);
+                    $("#descripcion_ing").val(registros[0]["direccion_asoc"]);
 
                     //facturas_pendientes(asociado); 
                    // multas_pendientes(asociado); 

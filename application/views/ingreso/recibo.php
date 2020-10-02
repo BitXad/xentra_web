@@ -86,7 +86,7 @@ border-top: 0px;
             <td class="vacio"></td>
             <td class="lebo" style="width: 12cm"><b>Apellidos y Nombre(s): </b>
             <?php if ($ingresos[0]['id_asoc']>1) {
-               echo $ingresos[0]['nombres_asoc'].' '.$ingresos[0]['apellidos_asoc'];
+               echo $ingresos[0]['nombres_asoc'].' '.$ingresos[0]['apellidos_asoc']." (".$ingresos[0]['codigo_asoc'].")";
             }else{ echo $ingresos[0]['nombre_ing'];
             } ?>
             </td>

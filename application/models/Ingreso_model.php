@@ -27,7 +27,7 @@ class Ingreso_model extends CI_Model
     {
          $ingreso = $this->db->query("
             SELECT
-                i.*, u.nombre_usu, a.nombres_asoc, a.apellidos_asoc
+                i.*, u.nombre_usu, a.nombres_asoc, a.apellidos_asoc, codigo_asoc
 
             FROM
                 ingreso i
@@ -49,7 +49,7 @@ class Ingreso_model extends CI_Model
         
         $ingreso = $this->db->query("
             SELECT
-                i.*, u.nombre_usu, a.nombres_asoc, a.apellidos_asoc
+                i.*, u.nombre_usu, a.nombres_asoc, a.apellidos_asoc, a.codigo_asoc
 
             FROM
                 ingreso i
@@ -79,7 +79,7 @@ class Ingreso_model extends CI_Model
        $ingreso = $this->db->query("
         SELECT
             
-                e.*, u.nombre_usu, a.nombres_asoc, a.apellidos_asoc
+                e.*, u.nombre_usu, a.nombres_asoc, a.apellidos_asoc, a.codigo_asoc
 
             FROM
                 ingreso e
