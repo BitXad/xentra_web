@@ -5,38 +5,50 @@
  */
  
 class Imagen_asociado extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Imagen_asociado_model');
-        $this->session_data = $this->session->userdata('logged_in');
         if($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
             redirect('', 'refresh');
         }
-    } 
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     
     function catalogo($id_asoc)
     {
-        $data['tipo_usuario'] = $this->session_data['tipo_usuario'];
-        $this->load->model('Asociado_model');
-	$asociado = $this->Asociado_model->get_asociado($id_asoc);
-        $this->load->model('Documento_model');
-	$data['all_documento'] = $this->Documento_model->get_all_documento();
-        $data['id_asoc'] = $id_asoc;
-        $data['nombre_asoc'] = $asociado['nombres_asoc']." ".$asociado['apellidos_asoc'];
-        $data['all_imagen_asociado'] = $this->Imagen_asociado_model->get_all_imagen_asociado($id_asoc);
-        
-        $data['_view'] = 'imagen_asociado/catalogo';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(421)){
+            $data['tipo_usuario'] = $this->session_data['tipo_usuario'];
+            $this->load->model('Asociado_model');
+            $asociado = $this->Asociado_model->get_asociado($id_asoc);
+            $this->load->model('Documento_model');
+            $data['all_documento'] = $this->Documento_model->get_all_documento();
+            $data['id_asoc'] = $id_asoc;
+            $data['nombre_asoc'] = $asociado['nombres_asoc']." ".$asociado['apellidos_asoc'];
+            $data['all_imagen_asociado'] = $this->Imagen_asociado_model->get_all_imagen_asociado($id_asoc);
+
+            $data['_view'] = 'imagen_asociado/catalogo';
+            $this->load->view('layouts/main',$data);
+        }
     }
     /*
      * Adding a new imagen_asociado
      */
      function add($asociado_id)
     {
-        //if($this->acceso(69)){
+        if($this->acceso(422)){
             //$this->load->library('form_validation');
             /* *********************INICIO imagen***************************** */
             $foto="";
@@ -105,14 +117,14 @@ class Imagen_asociado extends CI_Controller{
             $imagenprod_id = $this->Imagen_asociado_model->add_imagen_asociado($params);
             redirect('imagen_asociado/catalogo/'.$asociado_id);
             
-        //}
+        }
     }
     /*
      * Editing a imagen_asociado
      */
     function edit($id_asoc, $imagenasoc_id)
     {
-        //if($this->acceso(109)){
+        if($this->acceso(453)){
             //$data['page_title'] = "Imagen Producto";
         // check if the imagen_producto exists before trying to edit it
         $data['imagen_asociado'] = $this->Imagen_asociado_model->get_imagen_asociado($imagenasoc_id);
@@ -215,7 +227,7 @@ class Imagen_asociado extends CI_Controller{
         }
         else
             show_error('The imagen_producto you are trying to edit does not exist.');
-        //}
+        }
     }
     
     
@@ -225,14 +237,16 @@ class Imagen_asociado extends CI_Controller{
      */
     function galeriasociado($id_asoc)
     {
-        $this->load->model('Asociado_model');
-	$asociado = $this->Asociado_model->get_asociado($id_asoc);
-        $data['id_asoc'] = $id_asoc;
-        $data['nombre_asoc'] = $asociado['nombres_asoc']." ".$asociado['apellidos_asoc'];
-        $data['all_imagen_asociado'] = $this->Imagen_asociado_model->get_all_imagen_asociado($id_asoc);
-        
-        $data['_view'] = 'imagen_asociado/galeriasociado';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(421)){
+            $this->load->model('Asociado_model');
+            $asociado = $this->Asociado_model->get_asociado($id_asoc);
+            $data['id_asoc'] = $id_asoc;
+            $data['nombre_asoc'] = $asociado['nombres_asoc']." ".$asociado['apellidos_asoc'];
+            $data['all_imagen_asociado'] = $this->Imagen_asociado_model->get_all_imagen_asociado($id_asoc);
+
+            $data['_view'] = 'imagen_asociado/galeriasociado';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
@@ -240,28 +254,29 @@ class Imagen_asociado extends CI_Controller{
      */
     function remove($imagenasoc_id)
     {
-        $imagen_asociado = $this->Imagen_asociado_model->get_imagen_asociado($imagenasoc_id);
-
-        // check if the imagen_asociado exists before trying to delete it
-        if(isset($imagen_asociado['imagenasoc_id']))
-        {
-            $directorio = FCPATH.'resources\images\imgasociados\\';
-            //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
-            if(isset($imagen_asociado['imagenasoc_archivo']) && !empty($imagen_asociado['imagenasoc_archivo'])){
-                if(file_exists($directorio.$imagen_asociado['imagenasoc_archivo'])){
-                    unlink($directorio.$imagen_asociado['imagenasoc_archivo']);
-                    $mimagenthumb = "thumb_".$imagen_asociado['imagenasoc_archivo'];
-                    $resultado = explode(".", $imagen_asociado['imagenasoc_archivo']);
-                    if($resultado[1] == "jpg" || $resultado[1] == "png" || $resultado[1] == "jpeg" || $resultado[1] == "gif") {
-                        unlink($directorio.$mimagenthumb);
-                  }
+        if($this->acceso(423)){
+            $imagen_asociado = $this->Imagen_asociado_model->get_imagen_asociado($imagenasoc_id);
+            // check if the imagen_asociado exists before trying to delete it
+            if(isset($imagen_asociado['imagenasoc_id']))
+            {
+                $directorio = FCPATH.'resources\images\imgasociados\\';
+                //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
+                if(isset($imagen_asociado['imagenasoc_archivo']) && !empty($imagen_asociado['imagenasoc_archivo'])){
+                    if(file_exists($directorio.$imagen_asociado['imagenasoc_archivo'])){
+                        unlink($directorio.$imagen_asociado['imagenasoc_archivo']);
+                        $mimagenthumb = "thumb_".$imagen_asociado['imagenasoc_archivo'];
+                        $resultado = explode(".", $imagen_asociado['imagenasoc_archivo']);
+                        if($resultado[1] == "jpg" || $resultado[1] == "png" || $resultado[1] == "jpeg" || $resultado[1] == "gif") {
+                            unlink($directorio.$mimagenthumb);
+                      }
+                    }
                 }
+                $this->Imagen_asociado_model->delete_imagen_asociado($imagenasoc_id);
+                redirect('imagen_asociado/Catalogo/'.$imagen_asociado['asociado_id']);
             }
-            $this->Imagen_asociado_model->delete_imagen_asociado($imagenasoc_id);
-            redirect('imagen_asociado/Catalogo/'.$imagen_asociado['asociado_id']);
+            else
+                show_error('The imagen_asociado you are trying to delete does not exist.');
         }
-        else
-            show_error('The imagen_asociado you are trying to delete does not exist.');
     }
     
     

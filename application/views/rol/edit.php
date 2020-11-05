@@ -2,38 +2,70 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Rol Edit</h3>
+              	<h3 class="box-title">Editar Rol</h3>
             </div>
-			<?php echo form_open('rol/edit/'.$rol['id_rol']); ?>
-			<div class="box-body">
-				<div class="row clearfix">
-					<div class="col-md-6">
-						<div class="form-group">
-							<input type="checkbox" name="estado_rol" value="1" <?php echo ($rol['estado_rol']==1 ? 'checked="checked"' : ''); ?> id='estado_rol' />
-							<label for="estado_rol" class="control-label">Estado Rol</label>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="nom_rol" class="control-label"><span class="text-danger">*</span>Nom Rol</label>
-						<div class="form-group">
-							<input type="text" name="nom_rol" value="<?php echo ($this->input->post('nom_rol') ? $this->input->post('nom_rol') : $rol['nom_rol']); ?>" class="form-control" id="nom_rol" />
-							<span class="text-danger"><?php echo form_error('nom_rol');?></span>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="desc_rol" class="control-label">Desc Rol</label>
-						<div class="form-group">
-							<input type="text" name="desc_rol" value="<?php echo ($this->input->post('desc_rol') ? $this->input->post('desc_rol') : $rol['desc_rol']); ?>" class="form-control" id="desc_rol" />
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="box-footer">
-            	<button type="submit" class="btn btn-success">
-					<i class="fa fa-check"></i> Save
-				</button>
-	        </div>				
-			<?php echo form_close(); ?>
-		</div>
+            <?php echo form_open('rol/edit/'.$rol['rol_id']); ?>
+            <div class="box-body">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <label for="rol_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                        <div class="form-group">
+                            <input type="text" name="rol_nombre"  class="form-control" id="rol_nombre" value="<?php echo $rol['rol_nombre']; ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required autofocus />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="rol_idfk" class="control-label">Rol Superior</label>
+                        <div class="form-group">
+                            <select name="rol_idfk" class="form-control" id="rol_idfk" required <?php if($rol['rol_idfk'] == 0){ echo "disabled"; } ?>>
+                                <option value="0">SIN ROL SUPERIOR</option>
+                                <?php 
+                                foreach($all_rolpadre as $rolpadre)
+                                {
+                                    $selected = ($rolpadre['rol_id'] == $rol['rol_idfk']) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$rolpadre['rol_id'].'" '.$selected.'>'.$rolpadre['rol_nombre'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="rol_descripcion" class="control-label">Descripción</label>
+                        <div class="form-group">
+                            <input type="text" name="rol_descripcion"  class="form-control" id="rol_descripcion" value="<?php echo $rol['rol_descripcion']; ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="estado_id" class="control-label">Estado</label>
+                        <div class="form-group">
+                            <select name="estado_id" class="form-control" required>
+                                <!--<option value="">Seleccionar estado</option>-->
+                                <?php
+                                if($rol['estado_id'] == 1){
+                                    $este_estado = "ACTIVO";
+                                }elseif($rol['estado_id'] == 2){
+                                    $este_estado = "INACTIVO";
+                                }
+                                foreach($all_estado as $estado)
+                                {
+                                    if($estado['estado'] == "ACTIVO" || $estado['estado'] =="INACTIVO"){
+                                        $selected = ($estado['estado'] == $este_estado) ? ' selected="selected"' : "";
+                                        echo '<option value="'.$estado['estado'].'" '.$selected.'>'.$estado['estado'].'</option>';
+                                    }
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-check"></i> Guardar
+            </button>
+            <a href="<?php echo site_url('rol'); ?>" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar</a>
+            </div>				
+            <?php echo form_close(); ?>
+        </div>
     </div>
 </div>

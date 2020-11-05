@@ -19,7 +19,7 @@ class Usuario extends CI_Controller{
         }
     } 
     /* *****Funcion que verifica el acceso al sistema**** */
-    /*private function acceso($id_rol){
+    private function acceso($id_rol){
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -27,19 +27,19 @@ class Usuario extends CI_Controller{
             $data['_view'] = 'login/mensajeacceso';
             $this->load->view('layouts/main',$data);
         }
-    }*/
+    }
     /*
      * Listing of usuario
      */
     function index($a = null)
     {
-        //if($this->acceso(23)){
+        if($this->acceso(148)){
             $data['usuario'] = $this->Usuario_model->get_all_usuario();
             $data['mensaje'] = $a;
             $data['tipo_usuario'] = $this->session_data['tipo_usuario'];
             $data['_view'] = 'usuario/index';
             $this->load->view('layouts/main',$data);
-        //}
+        }
     }
 
     /*
@@ -47,7 +47,7 @@ class Usuario extends CI_Controller{
      */
     function add()
     {
-        //if($this->acceso(23)){
+        if($this->acceso(148)){
             $this->form_validation->set_rules('login_usu', 'login_usu', 'required|is_unique[usuario.login_usu]',
             array('is_unique' => 'Este login de usuario ya existe.'));
             $data['mensaje'] = "";
@@ -131,7 +131,7 @@ class Usuario extends CI_Controller{
                 $data['_view'] = 'usuario/add';
                 $this->load->view('layouts/main',$data);
             }
-        //}
+        }
     }  
 
     /*
@@ -139,7 +139,7 @@ class Usuario extends CI_Controller{
      */
     function edit($id_usu)
     {
-        //if($this->acceso(23)){
+        if($this->acceso(148)){
             $original_value = $this->db->query("SELECT login_usu FROM usuario WHERE id_usu = " . $id_usu)->row()->login_usu;
 
             if ($this->input->post('login_usu') != $original_value) {
@@ -243,11 +243,11 @@ class Usuario extends CI_Controller{
             }
             else
                 show_error('The usuario you are trying to edit does not exist.');
-        //}
+        }
     }
     function inactivar($id_usu)
     {
-        //if($this->acceso(23)){
+        if($this->acceso(148)){
             $usuario = $this->Usuario_model->get_usuario($id_usu);
 
             // check if the programa exists before trying to delete it
@@ -258,11 +258,11 @@ class Usuario extends CI_Controller{
             }
             else
                 show_error('El usuario que intentas dar de baja, no existe.');
-        //}
+        }
     }
     function activar($id_usu)
     {
-        //if($this->acceso(23)){
+        if($this->acceso(148)){
             $usuario = $this->Usuario_model->get_usuario($id_usu);
 
             // check if the programa exists before trying to delete it
@@ -273,11 +273,11 @@ class Usuario extends CI_Controller{
             }
             else
                 show_error('El usuario que intentas dar de baja, no existe.');
-        //}
+        }
     }
     function nueva_clave($id_usu)
     {
-        //if($this->acceso(148)){
+        if($this->acceso(148)){
         $data['usuario'] = $this->Usuario_model->get_usuario($id_usu);
 
         if(isset($data['usuario']['id_usu'])){
@@ -318,6 +318,6 @@ class Usuario extends CI_Controller{
             }*/
         }else
             show_error('The usuario you are trying to edit does not exist.');
-       // }
+        }
     }
 }

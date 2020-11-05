@@ -2,53 +2,51 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Rol Usuario Edit</h3>
+              	<h3 class="box-title">Editar Rol Usuario</h3>
             </div>
-			<?php echo form_open('rol_usuario/edit/'.$rol_usuario['']); ?>
+			<?php echo form_open('rol_usuario/edit/'.$rol_usuario['tipousuario_id']); ?>
 			<div class="box-body">
 				<div class="row clearfix">
-					<div class="col-md-6">
-						<div class="form-group">
-							<input type="checkbox" name="estado_rol" value="1" <?php echo ($rol_usuario['estado_rol']==1 ? 'checked="checked"' : ''); ?> id='estado_rol' />
-							<label for="estado_rol" class="control-label">Estado Rol</label>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="id_usu" class="control-label">Usuario</label>
-						<div class="form-group">
-							<select name="id_usu" class="form-control">
-								<option value="">select usuario</option>
-								<?php 
-								foreach($all_usuario as $usuario)
-								{
-									$selected = ($usuario['id_usu'] == $rol_usuario['id_usu']) ? ' selected="selected"' : "";
+				 <div class="col-md-6">
+            <label for="tipousuario_id" class="control-label">Tipo Id</label>
+            <div class="form-group">
+              <select name="tipousuario_id" class="form-control">
+                <option value="">select tipo_usuario</option>
+                <?php 
+                foreach($all_tipo_usuario as $tipo_usuario)
+                {
+                  $selected = ($tipo_usuario['tipousuario_id'] == $usuario['tipousuario_id']) ? ' selected="selected"' : "";
 
-									echo '<option value="'.$usuario['id_usu'].'" '.$selected.'>'.$usuario['nombre_usu'].'</option>';
-								} 
-								?>
-							</select>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="id_rol" class="control-label">Id Rol</label>
-						<div class="form-group">
-							<input type="text" name="id_rol" value="<?php echo ($this->input->post('id_rol') ? $this->input->post('id_rol') : $rol_usuario['id_rol']); ?>" class="form-control" id="id_rol" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="fecha" class="control-label">Fecha</label>
-						<div class="form-group">
-							<input type="text" name="fecha" value="<?php echo ($this->input->post('fecha') ? $this->input->post('fecha') : $rol_usuario['fecha']); ?>" class="has-datetimepicker form-control" id="fecha" />
-						</div>
-					</div>
+                  echo '<option value="'.$tipo_usuario['tipousuario_id'].'" '.$selected.'>'.$tipo_usuario['tipousuario_descripcion'].'</option>';
+                } 
+                ?>
+              </select>
+            </div>
+          </div>
+            <div class="col-md-6">
+            <label for="rol_id" class="control-label">Rol Id</label>
+            <div class="form-group">
+              <select name="rol_id" class="form-control">
+                <option value="">select rol id</option>
+                <?php 
+                foreach($all_rol as $rol)
+                {
+                  $selected = ($rol['rol_id'] == $this->input->post('rol_id')) ? ' selected="selected"' : "";
+
+                  echo '<option value="'.$rol['rol_id'].'" '.$selected.'>'.$rol['rol_descripcion'].'</option>';
+                } 
+                ?>
+              </select>
+            </div>
+          </div>
 				</div>
 			</div>
-			<div class="box-footer">
+          	<div class="box-footer">
             	<button type="submit" class="btn btn-success">
-					<i class="fa fa-check"></i> Save
-				</button>
-	        </div>				
-			<?php echo form_close(); ?>
-		</div>
+            		<i class="fa fa-check"></i> Guardar
+            	</button>
+          	</div>
+            <?php echo form_close(); ?>
+      	</div>
     </div>
 </div>

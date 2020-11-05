@@ -127,6 +127,9 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, orden_por, nombr
                             html += "<td class='text-left' style='padding: 0px 5px !important'>"+registros[i]["nombres_asoc"]+" "+registros[i]["apellidos_asoc"]+"</td>";
                             html += "<td class='text-right' style='padding: 0px 5px !important'>"+registros[i]["mes_lec"]+"/"+registros[i]["gestion_lec"]+"</td>";
                             html += "<td class='text-center' style='padding: 0px 5px !important'>";
+                            html += moment(registros[i]["fecha_fact"]).format("DD/MM/YYYY")+" "+registros[i]["hora_fact"];
+                            html += "</td>";
+                            html += "<td class='text-center' style='padding: 0px 5px !important'>";
                             estetotal = 0;
                             if(registros[i]["estado_fact"] != "PENDIENTE"){
                                 html += registros[i]["num_fact"]+"/"+registros[i]["id_lec"];
@@ -154,8 +157,9 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, orden_por, nombr
                     cabecerahtmlt += "<tr class='boxtabla'>";
                     cabecerahtmlt += "<th class='text-center' style='width: 2%; padding: 1px; vertical-align: middle'>N°</th>";
                     cabecerahtmlt += "<th class='text-center' style='width: 5%; padding: 1px; vertical-align: middle'>CODIGO</th>";
-                    cabecerahtmlt += "<th class='text-center' style='width: 33%; padding: 1px; vertical-align: middle'>NOMBRE COMPLETO</th>";
-                    cabecerahtmlt += "<th class='text-center' style='width: 10%; padding: 1px; vertical-align: middle'>GESTIÓN</th>";
+                    cabecerahtmlt += "<th class='text-center' style='width: 25%; padding: 1px; vertical-align: middle'>NOMBRE COMPLETO</th>";
+                    cabecerahtmlt += "<th class='text-center' style='width: 5%; padding: 1px; vertical-align: middle'>GESTIÓN</th>";
+                    cabecerahtmlt += "<th class='text-center' style='width: 13%; padding: 1px; vertical-align: middle'>FECHA COBRO</th>";
                     cabecerahtmlt += "<th class='text-center' style='width: 10%; padding: 1px; vertical-align: middle'>N°<br>FACT/LECT.</th>";
                     cabecerahtmlt += "<th class='text-center lizq' style='width: 5%; padding: 1px; vertical-align: middle'>L.<br>Ant.</th>";
                     cabecerahtmlt += "<th class='text-center lizq' style='width: 5%; padding: 1px; vertical-align: middle'>L.<br>Act.</th>";

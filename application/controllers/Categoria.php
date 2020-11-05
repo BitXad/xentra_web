@@ -5,21 +5,38 @@
  */
  
 class Categoria extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Categoria_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of categorias
      */
     function index()
     {
-        $data['categorias'] = $this->Categoria_model->get_all_categorias();
-        
-        $data['_view'] = 'categoria/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(436)){
+            $data['categorias'] = $this->Categoria_model->get_all_categorias();
+
+            $data['_view'] = 'categoria/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
 
@@ -92,37 +109,8 @@ foreach($factura as $fact){
      * Adding a new categoria
      */
     function add()
-    {   
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('categoria','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        $this->form_validation->set_rules('codigo_cat','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        if($this->form_validation->run())     
-        {
-            $params = array(
-                'categoria' => $this->input->post('categoria'),
-                'codigo_cat' => $this->input->post('codigo_cat'),
-            );
-            $categoria_id = $this->Categoria_model->add_categoria($params);
-            redirect('categoria/index');
-        }
-        else
-        {            
-            $data['_view'] = 'categoria/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
-
-    /*
-     * Editing a categoria
-     */
-    function edit($esta_categoria)
-    {   
-        // check if the categoria exists before trying to edit it
-        $categoria = str_replace("%20", " ", $esta_categoria);
-        $data['categoria'] = $this->Categoria_model->get_categoria($categoria);
-        
-        if(isset($data['categoria']['categoria']))
-        {
+    {
+        if($this->acceso(436)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('categoria','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             $this->form_validation->set_rules('codigo_cat','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -132,23 +120,56 @@ foreach($factura as $fact){
                     'categoria' => $this->input->post('categoria'),
                     'codigo_cat' => $this->input->post('codigo_cat'),
                 );
-                $this->Categoria_model->update_categoria($categoria,$params);            
+                $categoria_id = $this->Categoria_model->add_categoria($params);
                 redirect('categoria/index');
             }
             else
-            {
-                $data['_view'] = 'categoria/edit';
+            {            
+                $data['_view'] = 'categoria/add';
                 $this->load->view('layouts/main',$data);
             }
         }
-        else
-            show_error('The categoria you are trying to edit does not exist.');
+    }  
+
+    /*
+     * Editing a categoria
+     */
+    function edit($esta_categoria)
+    {
+        if($this->acceso(436)){
+            // check if the categoria exists before trying to edit it
+            $categoria = str_replace("%20", " ", $esta_categoria);
+            $data['categoria'] = $this->Categoria_model->get_categoria($categoria);
+
+            if(isset($data['categoria']['categoria']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('categoria','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                $this->form_validation->set_rules('codigo_cat','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())     
+                {
+                    $params = array(
+                        'categoria' => $this->input->post('categoria'),
+                        'codigo_cat' => $this->input->post('codigo_cat'),
+                    );
+                    $this->Categoria_model->update_categoria($categoria,$params);            
+                    redirect('categoria/index');
+                }
+                else
+                {
+                    $data['_view'] = 'categoria/edit';
+                    $this->load->view('layouts/main',$data);
+                }
+            }
+            else
+                show_error('The categoria you are trying to edit does not exist.');
+        }
     } 
 
     /*
      * Deleting categoria
      */
-    function remove($categoria)
+    /*function remove($categoria)
     {
         $categoria = $this->Categoria_model->get_categoria($categoria);
 
@@ -160,6 +181,6 @@ foreach($factura as $fact){
         }
         else
             show_error('The categoria you are trying to delete does not exist.');
-    }
+    }*/
     
 }

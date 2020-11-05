@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Tarifa Edit</h3>
+              	<h3 class="box-title">Modificar Tarifa</h3>
             </div>
 			<?php echo form_open('tarifa/edit/'.$tarifa['id_tarifa']); ?>
 			<div class="box-body">

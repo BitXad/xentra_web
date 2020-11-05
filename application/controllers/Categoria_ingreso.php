@@ -5,46 +5,62 @@
  */
  
 class Categoria_ingreso extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Categoria_ingreso_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of categoria_ingreso
      */
     function index()
     {
-        $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
-        
-        $data['_view'] = 'categoria_ingreso/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(440)){
+            $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+
+            $data['_view'] = 'categoria_ingreso/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new categoria_ingreso
      */
     function add()
-    {   
-        $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('nom_cating','Nom Cating','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'nom_cating' => $this->input->post('nom_cating'),
-				'id_ging' => $this->input->post('id_ging'),
-            );
-            
-            $categoria_ingreso_id = $this->Categoria_ingreso_model->add_categoria_ingreso($params);
-            redirect('categoria_ingreso/index');
-        }
-        else
-        {            
-            $data['_view'] = 'categoria_ingreso/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(440)){
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('nom_cating','Nom Cating','required');
+            if($this->form_validation->run())
+            {   
+                $params = array(
+                    'nom_cating' => $this->input->post('nom_cating'),
+                    'id_ging' => $this->input->post('id_ging'),
+                );
+                $categoria_ingreso_id = $this->Categoria_ingreso_model->add_categoria_ingreso($params);
+                redirect('categoria_ingreso/index');
+            }
+            else
+            {            
+                $data['_view'] = 'categoria_ingreso/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -52,40 +68,39 @@ class Categoria_ingreso extends CI_Controller{
      * Editing a categoria_ingreso
      */
     function edit($id_cating)
-    {   
-        // check if the categoria_ingreso exists before trying to edit it
-        $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_categoria_ingreso($id_cating);
-        
-        if(isset($data['categoria_ingreso']['id_cating']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(440)){
+            // check if the categoria_ingreso exists before trying to edit it
+            $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_categoria_ingreso($id_cating);
 
-			$this->form_validation->set_rules('nom_cating','Nom Cating','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'nom_cating' => $this->input->post('nom_cating'),
-					'id_ging' => $this->input->post('id_ging'),
-                );
-
-                $this->Categoria_ingreso_model->update_categoria_ingreso($id_cating,$params);            
-                redirect('categoria_ingreso/index');
+            if(isset($data['categoria_ingreso']['id_cating']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('nom_cating','Nom Cating','required');
+                if($this->form_validation->run())
+                {   
+                    $params = array(
+                        'nom_cating' => $this->input->post('nom_cating'),
+                        'id_ging' => $this->input->post('id_ging'),
+                    );
+                    $this->Categoria_ingreso_model->update_categoria_ingreso($id_cating,$params);            
+                    redirect('categoria_ingreso/index');
+                }
+                else
+                {
+                    $data['_view'] = 'categoria_ingreso/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'categoria_ingreso/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The categoria_ingreso you are trying to edit does not exist.');
         }
-        else
-            show_error('The categoria_ingreso you are trying to edit does not exist.');
     } 
 
     /*
      * Deleting categoria_ingreso
      */
-    function remove($id_cating)
+    /*function remove($id_cating)
     {
         $categoria_ingreso = $this->Categoria_ingreso_model->get_categoria_ingreso($id_cating);
 
@@ -97,6 +112,6 @@ class Categoria_ingreso extends CI_Controller{
         }
         else
             show_error('The categoria_ingreso you are trying to delete does not exist.');
-    }
+    }*/
     
 }

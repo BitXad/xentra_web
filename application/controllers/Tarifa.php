@@ -5,47 +5,66 @@
  */
  
 class Tarifa extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Tarifa_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of tarifa
      */
     function index()
     {
-        $data['tarifa'] = $this->Tarifa_model->get_all_tarifa();
-        
-        $data['_view'] = 'tarifa/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(435)){
+            $data['tarifa'] = $this->Tarifa_model->get_all_tarifa();
+
+            $data['_view'] = 'tarifa/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new tarifa
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'tipo' => $this->input->post('tipo'),
-				'desde' => $this->input->post('desde'),
-				'hasta' => $this->input->post('hasta'),
-				'costo_agua' => $this->input->post('costo_agua'),
-				'costo_alcant' => $this->input->post('costo_alcant'),
-            );
-            
-            $tarifa_id = $this->Tarifa_model->add_tarifa($params);
-            redirect('tarifa/index');
-        }
-        else
-        {   
-            $this->load->model('Tipo_asociado_model');
-            $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();      
-            $data['_view'] = 'tarifa/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(435)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                    'tipo' => $this->input->post('tipo'),
+                    'desde' => $this->input->post('desde'),
+                    'hasta' => $this->input->post('hasta'),
+                    'costo_agua' => $this->input->post('costo_agua'),
+                    'costo_alcant' => $this->input->post('costo_alcant'),
+                );
+
+                $tarifa_id = $this->Tarifa_model->add_tarifa($params);
+                redirect('tarifa/index');
+            }
+            else
+            {   
+                $this->load->model('Tipo_asociado_model');
+                $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();      
+                $data['_view'] = 'tarifa/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -53,41 +72,43 @@ class Tarifa extends CI_Controller{
      * Editing a tarifa
      */
     function edit($id_tarifa)
-    {   
-        // check if the tarifa exists before trying to edit it
-        $data['tarifa'] = $this->Tarifa_model->get_tarifa($id_tarifa);
-        
-        if(isset($data['tarifa']['id_tarifa']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'tipo' => $this->input->post('tipo'),
-					'desde' => $this->input->post('desde'),
-					'hasta' => $this->input->post('hasta'),
-					'costo_agua' => $this->input->post('costo_agua'),
-					'costo_alcant' => $this->input->post('costo_alcant'),
-                );
+    {
+        if($this->acceso(435)){
+            // check if the tarifa exists before trying to edit it
+            $data['tarifa'] = $this->Tarifa_model->get_tarifa($id_tarifa);
 
-                $this->Tarifa_model->update_tarifa($id_tarifa,$params);            
-                redirect('tarifa/index');
+            if(isset($data['tarifa']['id_tarifa']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                        'tipo' => $this->input->post('tipo'),
+                        'desde' => $this->input->post('desde'),
+                        'hasta' => $this->input->post('hasta'),
+                        'costo_agua' => $this->input->post('costo_agua'),
+                        'costo_alcant' => $this->input->post('costo_alcant'),
+                    );
+
+                    $this->Tarifa_model->update_tarifa($id_tarifa,$params);            
+                    redirect('tarifa/index');
+                }
+                else
+                {
+                    $this->load->model('Tipo_asociado_model');
+                    $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();      
+                    $data['_view'] = 'tarifa/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $this->load->model('Tipo_asociado_model');
-                $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();      
-                $data['_view'] = 'tarifa/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The tarifa you are trying to edit does not exist.');
         }
-        else
-            show_error('The tarifa you are trying to edit does not exist.');
     } 
 
     /*
      * Deleting tarifa
      */
-    function remove($id_tarifa)
+    /*function remove($id_tarifa)
     {
         $tarifa = $this->Tarifa_model->get_tarifa($id_tarifa);
 
@@ -99,6 +120,6 @@ class Tarifa extends CI_Controller{
         }
         else
             show_error('The tarifa you are trying to delete does not exist.');
-    }
+    }*/
     
 }

@@ -5,58 +5,46 @@
  */
  
 class Diametrored extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Diametrored_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of diametrored
      */
     function index()
     {
-        $data['all_diametrored'] = $this->Diametrored_model->get_all_diametrored();
-        
-        $data['_view'] = 'diametrored/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(437)){
+            $data['all_diametrored'] = $this->Diametrored_model->get_all_diametrored();
+
+            $data['_view'] = 'diametrored/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new diametrored
      */
     function add()
-    {   
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('nombre_diam','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        $this->form_validation->set_rules('codigo_diam','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        if($this->form_validation->run())     
-        {
-            $params = array(
-                'nombre_diam' => $this->input->post('nombre_diam'),
-                'codigo_diam' => $this->input->post('codigo_diam'),
-            );
-            
-            $id_diam = $this->Diametrored_model->add_diametrored($params);
-            redirect('diametrored/index');
-        }
-        else
-        {            
-            $data['_view'] = 'diametrored/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
-
-    /*
-     * Editing a diametrored
-     */
-    function edit($id_diam)
-    {   
-        // check if the Diametrored exists before trying to edit it
-        $data['diametrored'] = $this->Diametrored_model->get_diametrored($id_diam);
-        
-        if(isset($data['diametrored']['id_diam']))
-        {
+    {
+        if($this->acceso(437)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('nombre_diam','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             $this->form_validation->set_rules('codigo_diam','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -67,17 +55,49 @@ class Diametrored extends CI_Controller{
                     'codigo_diam' => $this->input->post('codigo_diam'),
                 );
 
-                $this->Diametrored_model->update_diametrored($id_diam,$params);            
+                $id_diam = $this->Diametrored_model->add_diametrored($params);
                 redirect('diametrored/index');
             }
             else
-            {
-                $data['_view'] = 'diametrored/edit';
+            {            
+                $data['_view'] = 'diametrored/add';
                 $this->load->view('layouts/main',$data);
             }
         }
-        else
-            show_error('The diametrored you are trying to edit does not exist.');
+    }  
+
+    /*
+     * Editing a diametrored
+     */
+    function edit($id_diam)
+    {
+        if($this->acceso(437)){
+            // check if the Diametrored exists before trying to edit it
+            $data['diametrored'] = $this->Diametrored_model->get_diametrored($id_diam);
+            if(isset($data['diametrored']['id_diam']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('nombre_diam','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                $this->form_validation->set_rules('codigo_diam','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())     
+                {
+                    $params = array(
+                        'nombre_diam' => $this->input->post('nombre_diam'),
+                        'codigo_diam' => $this->input->post('codigo_diam'),
+                    );
+
+                    $this->Diametrored_model->update_diametrored($id_diam,$params);            
+                    redirect('diametrored/index');
+                }
+                else
+                {
+                    $data['_view'] = 'diametrored/edit';
+                    $this->load->view('layouts/main',$data);
+                }
+            }
+            else
+                show_error('The diametrored you are trying to edit does not exist.');
+        }
     } 
 
     /*

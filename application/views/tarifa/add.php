@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Tarifa Add</h3>
+              	<h3 class="box-title">Añadir Tarifa</h3>
             </div>
             <?php echo form_open('tarifa/add'); ?>
           	<div class="box-body">

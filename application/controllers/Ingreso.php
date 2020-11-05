@@ -24,8 +24,8 @@ class ingreso extends CI_Controller{
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
-        //$rolusuario = $this->session_data['rol'];
-        if($id_rol >= 1){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
         }else{
             $data['_view'] = 'login/mensajeacceso';
@@ -38,7 +38,7 @@ class ingreso extends CI_Controller{
      */
     function index()
     {
-        if($this->acceso(59)){
+        if($this->acceso(53)){
             $data['page_title'] = "Ingreso";
             //$data['rol'] = $this->session_data['rol'];
             $data['ingreso'] = $this->Ingreso_model->get_all_ingreso();
@@ -51,7 +51,7 @@ class ingreso extends CI_Controller{
 
     function buscarfecha()
     {
-        if($this->acceso(59)){
+        if($this->acceso(53)){
         if ($this->input->is_ajax_request()) {
             
             $filtro = $this->input->post('filtro');
@@ -75,7 +75,7 @@ class ingreso extends CI_Controller{
     
     function add()
     {   
-        if($this->acceso(60)){
+        if($this->acceso(54)){
             $data['page_title'] = "ingreso";
                 $id_usu = $this->session_data['id_usu'];
                 
@@ -129,7 +129,7 @@ class ingreso extends CI_Controller{
      */
     function edit($id_ing)
     {   
-        if($this->acceso(61)){
+        if($this->acceso(55)){
             $data['page_title'] = "ingreso";
             $id_usu = $this->session_data['id_usu'];
         // check if the ingreso exists before tryegr to edit it
@@ -175,7 +175,7 @@ class ingreso extends CI_Controller{
      */
 
 public function pdf($id_ing){
-    if($this->acceso(64)){
+    if($this->acceso(58)){
         $data['page_title'] = "ingreso";
       $data['ingresos'] = $this->Ingreso_model->get_ingresos($id_ing);
       $data['empresa'] = $this->Empresa_model->get_empresa(1);    
@@ -187,7 +187,7 @@ public function pdf($id_ing){
 
 
     public function boucher($id_ing){
-        if($this->acceso(64)){
+        if($this->acceso(58)){
             $data['page_title'] = "ingreso";
       $data['ingreso'] = $this->Ingreso_model->get_ingresos($id_ing);
       $data['empresa'] = $this->Empresa_model->get_empresa(1);    
@@ -198,7 +198,7 @@ public function pdf($id_ing){
 
     function remove($id_ing)
     {
-        if($this->acceso(62)){
+        if($this->acceso(56)){
             $ingreso = $this->Ingreso_model->get_ingreso($id_ing);
 
             // check if the ingreso exists before tryegr to delete it
@@ -215,7 +215,7 @@ public function pdf($id_ing){
 
     public function convertir()
     {
-        if($this->acceso(59)){
+        //if($this->acceso(53)){
         $monto_ing = trim($this->input->post('monto_ing'));
 
         if (empty($monto_ing)) {
@@ -241,7 +241,7 @@ public function pdf($id_ing){
             , 'monto_ing' => $monto_ing
             );  
         echo json_encode($response);
-        }
+        //}
     }
 
 

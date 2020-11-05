@@ -5,130 +5,57 @@
  */
  
 class Empresa extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Empresa_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of empresa
      */
     function index()
     {
-        $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        
-        $data['_view'] = 'empresa/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(121)){
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+
+            $data['_view'] = 'empresa/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new empresa
      */
     function add()
-    {   
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('nombre_emp','Nombre Emp','required');
-        if($this->form_validation->run())
-        {
-            /* *********************INICIO imagen***************************** */
-            $foto="";
-            if (!empty($_FILES['logo_emp']['name'])){
-                        $this->load->library('image_lib');
-                        $config['upload_path'] = './resources/images/empresas/';
-                        $img_full_path = $config['upload_path'];
-
-                        $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                        $config['max_size'] = 0;
-                        $config['max_width'] = 0;
-                        $config['max_height'] = 0;
-                        
-                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
-                        $config['file_name'] = $new_name; //.$extencion;
-                        $config['file_ext_tolower'] = TRUE;
-
-                        $this->load->library('upload', $config);
-                        $this->upload->do_upload('logo_emp');
-
-                        $img_data = $this->upload->data();
-                        $extension = $img_data['file_ext'];
-                        /* ********************INICIO para resize***************************** */
-                        if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
-                            $conf['image_library'] = 'gd2';
-                            $conf['source_image'] = $img_data['full_path'];
-                            $conf['new_image'] = './resources/images/empresas/';
-                            $conf['maintain_ratio'] = TRUE;
-                            $conf['create_thumb'] = FALSE;
-                            $conf['width'] = 800;
-                            $conf['height'] = 600;
-                            $this->image_lib->clear();
-                            $this->image_lib->initialize($conf);
-                            if(!$this->image_lib->resize()){
-                                echo $this->image_lib->display_errors('','');
-                            }
-                        }
-                        /* ********************F I N  para resize***************************** */
-                        $confi['image_library'] = 'gd2';
-                        $confi['source_image'] = './resources/images/empresas/'.$new_name.$extension;
-                        $confi['new_image'] = './resources/images/empresas/'."thumb_".$new_name.$extension;
-                        $confi['create_thumb'] = FALSE;
-                        $confi['maintain_ratio'] = TRUE;
-                        $confi['width'] = 150;
-                        $confi['height'] = 150;
-
-                        $this->image_lib->clear();
-                        $this->image_lib->initialize($confi);
-                        $this->image_lib->resize();
-
-                        $foto = $new_name.$extension;
-                    }
-            /* *********************FIN imagen***************************** */
-            $params = array(
-				'nombre_emp' => $this->input->post('nombre_emp'),
-				'eslogan_emp' => $this->input->post('eslogan_emp'),
-				'direccion_emp' => $this->input->post('direccion_emp'),
-				'telefono_emp' => $this->input->post('telefono_emp'),
-				'sucursal_emp' => $this->input->post('sucursal_emp'),
-				'ubicacion_emp' => $this->input->post('ubicacion_emp'),
-				'actividad_emp' => $this->input->post('actividad_emp'),
-				'nit_emp' => $this->input->post('nit_emp'),
-				'logo_emp' => $foto,
-				'zona_emp' => $this->input->post('zona_emp'),
-				'sis_emp' => $this->input->post('sis_emp'),
-				'anuncio_emp' => $this->input->post('anuncio_emp'),
-            );
-            
-            $empresa_id = $this->Empresa_model->add_empresa($params);
-            redirect('empresa/index');
-        }
-        else
-        {            
-            $data['_view'] = 'empresa/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
-
-    /*
-     * Editing a empresa
-     */
-    function edit($id_emp)
-    {   
-        // check if the empresa exists before trying to edit it
-        $data['empresa'] = $this->Empresa_model->get_empresa($id_emp);
-        
-        if(isset($data['empresa']['id_emp']))
-        {
+    {
+        if($this->acceso(121)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('nombre_emp','Nombre Emp','required');
             if($this->form_validation->run())
             {
                 /* *********************INICIO imagen***************************** */
                 $foto="";
-                    $foto1= $this->input->post('logo_emp1');
-                if (!empty($_FILES['logo_emp']['name']))
-                {
+                if (!empty($_FILES['logo_emp']['name'])){
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/empresas/';
+                    $img_full_path = $config['upload_path'];
+
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
                     $config['max_size'] = 0;
                     $config['max_width'] = 0;
@@ -144,7 +71,7 @@ class Empresa extends CI_Controller{
                     $img_data = $this->upload->data();
                     $extension = $img_data['file_ext'];
                     /* ********************INICIO para resize***************************** */
-                    if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                    if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
                         $conf['image_library'] = 'gd2';
                         $conf['source_image'] = $img_data['full_path'];
                         $conf['new_image'] = './resources/images/empresas/';
@@ -159,19 +86,6 @@ class Empresa extends CI_Controller{
                         }
                     }
                     /* ********************F I N  para resize***************************** */
-                    $base_url = explode('/', base_url());
-                    //$directorio = base_url().'resources/imagenes/';
-                    //$directorio = FCPATH.'resources\images\empresas\\';
-                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/empresas/';
-                    //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/empresas/';
-                    if(isset($foto1) && !empty($foto1)){
-                      if(file_exists($directorio.$foto1)){
-                          unlink($directorio.$foto1);
-                          //$mimagenthumb = str_replace(".", "_thumb.", $foto1);
-                          $mimagenthumb = "thumb_".$foto1;
-                          unlink($directorio.$mimagenthumb);
-                      }
-                  }
                     $confi['image_library'] = 'gd2';
                     $confi['source_image'] = './resources/images/empresas/'.$new_name.$extension;
                     $confi['new_image'] = './resources/images/empresas/'."thumb_".$new_name.$extension;
@@ -185,10 +99,8 @@ class Empresa extends CI_Controller{
                     $this->image_lib->resize();
 
                     $foto = $new_name.$extension;
-                }else{
-                    $foto = $foto1;
                 }
-            /* *********************FIN imagen***************************** */
+                /* *********************FIN imagen***************************** */
                 $params = array(
                     'nombre_emp' => $this->input->post('nombre_emp'),
                     'eslogan_emp' => $this->input->post('eslogan_emp'),
@@ -204,23 +116,132 @@ class Empresa extends CI_Controller{
                     'anuncio_emp' => $this->input->post('anuncio_emp'),
                 );
 
-                $this->Empresa_model->update_empresa($id_emp,$params);            
+                $empresa_id = $this->Empresa_model->add_empresa($params);
                 redirect('empresa/index');
             }
             else
-            {
-                $data['_view'] = 'empresa/edit';
+            {            
+                $data['_view'] = 'empresa/add';
                 $this->load->view('layouts/main',$data);
             }
         }
-        else
-            show_error('The empresa you are trying to edit does not exist.');
+    }  
+
+    /*
+     * Editing a empresa
+     */
+    function edit($id_emp)
+    {
+        if($this->acceso(121)){
+            // check if the empresa exists before trying to edit it
+            $data['empresa'] = $this->Empresa_model->get_empresa($id_emp);
+
+            if(isset($data['empresa']['id_emp']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('nombre_emp','Nombre Emp','required');
+                if($this->form_validation->run())
+                {
+                    /* *********************INICIO imagen***************************** */
+                    $foto="";
+                        $foto1= $this->input->post('logo_emp1');
+                    if (!empty($_FILES['logo_emp']['name']))
+                    {
+                        $this->load->library('image_lib');
+                        $config['upload_path'] = './resources/images/empresas/';
+                        $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 0;
+                        $config['max_height'] = 0;
+
+                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                        $config['file_name'] = $new_name; //.$extencion;
+                        $config['file_ext_tolower'] = TRUE;
+
+                        $this->load->library('upload', $config);
+                        $this->upload->do_upload('logo_emp');
+
+                        $img_data = $this->upload->data();
+                        $extension = $img_data['file_ext'];
+                        /* ********************INICIO para resize***************************** */
+                        if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                            $conf['image_library'] = 'gd2';
+                            $conf['source_image'] = $img_data['full_path'];
+                            $conf['new_image'] = './resources/images/empresas/';
+                            $conf['maintain_ratio'] = TRUE;
+                            $conf['create_thumb'] = FALSE;
+                            $conf['width'] = 800;
+                            $conf['height'] = 600;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+                        }
+                        /* ********************F I N  para resize***************************** */
+                        $base_url = explode('/', base_url());
+                        //$directorio = base_url().'resources/imagenes/';
+                        //$directorio = FCPATH.'resources\images\empresas\\';
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/empresas/';
+                        //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/empresas/';
+                        if(isset($foto1) && !empty($foto1)){
+                          if(file_exists($directorio.$foto1)){
+                              unlink($directorio.$foto1);
+                              //$mimagenthumb = str_replace(".", "_thumb.", $foto1);
+                              $mimagenthumb = "thumb_".$foto1;
+                              unlink($directorio.$mimagenthumb);
+                          }
+                      }
+                        $confi['image_library'] = 'gd2';
+                        $confi['source_image'] = './resources/images/empresas/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/empresas/'."thumb_".$new_name.$extension;
+                        $confi['create_thumb'] = FALSE;
+                        $confi['maintain_ratio'] = TRUE;
+                        $confi['width'] = 150;
+                        $confi['height'] = 150;
+
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($confi);
+                        $this->image_lib->resize();
+
+                        $foto = $new_name.$extension;
+                    }else{
+                        $foto = $foto1;
+                    }
+                /* *********************FIN imagen***************************** */
+                    $params = array(
+                        'nombre_emp' => $this->input->post('nombre_emp'),
+                        'eslogan_emp' => $this->input->post('eslogan_emp'),
+                        'direccion_emp' => $this->input->post('direccion_emp'),
+                        'telefono_emp' => $this->input->post('telefono_emp'),
+                        'sucursal_emp' => $this->input->post('sucursal_emp'),
+                        'ubicacion_emp' => $this->input->post('ubicacion_emp'),
+                        'actividad_emp' => $this->input->post('actividad_emp'),
+                        'nit_emp' => $this->input->post('nit_emp'),
+                        'logo_emp' => $foto,
+                        'zona_emp' => $this->input->post('zona_emp'),
+                        'sis_emp' => $this->input->post('sis_emp'),
+                        'anuncio_emp' => $this->input->post('anuncio_emp'),
+                    );
+
+                    $this->Empresa_model->update_empresa($id_emp,$params);            
+                    redirect('empresa/index');
+                }
+                else
+                {
+                    $data['_view'] = 'empresa/edit';
+                    $this->load->view('layouts/main',$data);
+                }
+            }
+            else
+                show_error('The empresa you are trying to edit does not exist.');
+        }
     } 
 
     /*
      * Deleting empresa
      */
-    function remove($id_emp)
+    /*function remove($id_emp)
     {
         $empresa = $this->Empresa_model->get_empresa($id_emp);
 
@@ -232,6 +253,6 @@ class Empresa extends CI_Controller{
         }
         else
             show_error('The empresa you are trying to delete does not exist.');
-    }
+    }*/
     
 }

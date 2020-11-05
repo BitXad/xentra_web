@@ -3,6 +3,7 @@
 <!--<link href="<?php //echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="resreporte" id="resreporte" />
 
 <script type="text/javascript">
     function imprimirdetalle(){
@@ -101,6 +102,19 @@
             <option value="DICIEMBRE"> DICIEMBRE </option>
         </select>
     </div>
+    <div class="col-md-3">
+        Gestión:
+        <select  class="btn btn-primary btn-sm form-control" id="esta_gestion" name="esta_gestion" required>
+            <?php
+            $migestion= ["gestion_lec"=>"2020"];
+            foreach($all_gestion as $gestion)
+            {
+                $selected = ($gestion['gestion_lec'] == $migestion['gestion_lec']) ? ' selected="selected"' : "";
+                echo '<option value="'.$gestion['gestion_lec'].'" '.$selected.'>'.$gestion['gestion_lec'].'</option>';
+            } 
+            ?>
+        </select>
+    </div>
     <!--<div class="col-md-3">
         Ordenado por:
         <select  class="btn btn-primary btn-sm form-control" id="ordenado_por" name="ordenado_por" required>
@@ -124,6 +138,12 @@
         <br>
         <button class="btn btn-sm btn-warning btn-sm btn-block" onclick="buscar_por_mes()" style="height: 34px;">
             <span class="fa fa-search"></span> Buscar
+      </button>
+    </div>
+    <div class="col-md-3">
+        <br>
+        <button class="btn btn-sm btn-facebook btn-sm btn-block" onclick="generarexcel()" style="height: 34px;">
+            <span class="fa fa-file-excel-o"></span> Exportar a Excel
       </button>
         <br>
     </div>

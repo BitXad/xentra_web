@@ -44,6 +44,10 @@ function finalizar(){
                 $("#lista_pendientes").html(nada);
                 $("#detalle_factura").html(nada);
                 $("#detalle_recargo").html(nada);
+                $("#consumo").val("0.00");
+                $("#aportes").val("0.00");
+                $("#recargos").val("0.00");
+                $("#total_factura").val("0.00");
                 $("#btnfinalizar").prop('disabled',true);
                 facturas_pendientes(id_asoc);
              

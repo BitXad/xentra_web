@@ -5,40 +5,59 @@
  */
  
 class Tipo_multa extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Tipo_multa_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of tipo_multa
      */
     function index()
     {
-        $data['tipo_multa'] = $this->Tipo_multa_model->get_all_tipo_multa();
-        
-        $data['_view'] = 'tipo_multa/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(449)){
+            $data['tipo_multa'] = $this->Tipo_multa_model->get_all_tipo_multa();
+
+            $data['_view'] = 'tipo_multa/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new tipo_multa
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-            );
-            
-            $tipo_multa_id = $this->Tipo_multa_model->add_tipo_multa($params);
-            redirect('tipo_multa/index');
-        }
-        else
-        {            
-            $data['_view'] = 'tipo_multa/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(449)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                );
+
+                $tipo_multa_id = $this->Tipo_multa_model->add_tipo_multa($params);
+                redirect('tipo_multa/index');
+            }
+            else
+            {            
+                $data['_view'] = 'tipo_multa/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -46,34 +65,36 @@ class Tipo_multa extends CI_Controller{
      * Editing a tipo_multa
      */
     function edit($tipo)
-    {   
-        // check if the tipo_multa exists before trying to edit it
-        $data['tipo_multa'] = $this->Tipo_multa_model->get_tipo_multa($tipo);
-        
-        if(isset($data['tipo_multa']['tipo']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-                );
+    {
+        if($this->acceso(449)){
+            // check if the tipo_multa exists before trying to edit it
+            $data['tipo_multa'] = $this->Tipo_multa_model->get_tipo_multa($tipo);
 
-                $this->Tipo_multa_model->update_tipo_multa($tipo,$params);            
-                redirect('tipo_multa/index');
+            if(isset($data['tipo_multa']['tipo']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                    );
+
+                    $this->Tipo_multa_model->update_tipo_multa($tipo,$params);            
+                    redirect('tipo_multa/index');
+                }
+                else
+                {
+                    $data['_view'] = 'tipo_multa/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'tipo_multa/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The tipo_multa you are trying to edit does not exist.');
         }
-        else
-            show_error('The tipo_multa you are trying to edit does not exist.');
     } 
 
     /*
      * Deleting tipo_multa
      */
-    function remove($tipo)
+    /*function remove($tipo)
     {
         $tipo_multa = $this->Tipo_multa_model->get_tipo_multa($tipo);
 
@@ -85,6 +106,6 @@ class Tipo_multa extends CI_Controller{
         }
         else
             show_error('The tipo_multa you are trying to delete does not exist.');
-    }
+    }*/
     
 }

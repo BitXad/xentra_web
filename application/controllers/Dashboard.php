@@ -8,12 +8,17 @@ class Dashboard extends CI_Controller{
     function __construct()
     {
         parent::__construct();
+        $this->session_data = $this->session->userdata('logged_in');
         
     }
 
     function index()
     {
-        $data['_view'] = 'dashboard';
-        $this->load->view('layouts/main',$data);
+        if ($this->session->userdata('logged_in')) {
+            $data['_view'] = 'dashboard';
+            $this->load->view('layouts/main',$data);
+        }else {
+            redirect('', 'refresh');
+        }
     }
 }

@@ -6,7 +6,7 @@
  */
 
 class Lectura extends CI_Controller {
-
+    private $session_data = "";
     function __construct() {
         parent::__construct();
         $this->load->model('Lectura_model');
@@ -19,16 +19,28 @@ class Lectura extends CI_Controller {
             redirect('', 'refresh');
         }
     }
-
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of lectura
      */
 
-    function index() {
-        $data['lectura'] = $this->Lectura_model->get_all_lectura();
+    function index()
+    {
+        if($this->acceso(400)){
+            $data['lectura'] = $this->Lectura_model->get_all_lectura();
 
-        $data['_view'] = 'lectura/index';
-        $this->load->view('layouts/main', $data);
+            $data['_view'] = 'lectura/index';
+            $this->load->view('layouts/main', $data);
+        }
     }
 
     /*
@@ -36,14 +48,16 @@ class Lectura extends CI_Controller {
      */
 
     function lecturas() {
-//        $data['asociados'] = $this->Asociado_model->get_all_asociado();
-        $data['lectura'] = $this->Lectura_model->get_all_lectura();
-        $data['meses'] = $this->Mes_model->get_all_mes();
-        $data['zonas'] = $this->Lectura_model->get_all_zonas();
-        $data['direcciones'] = $this->Lectura_model->get_all_direcciones();
+        if($this->acceso(400)){
+            //$data['asociados'] = $this->Asociado_model->get_all_asociado();
+            $data['lectura'] = $this->Lectura_model->get_all_lectura();
+            $data['meses'] = $this->Mes_model->get_all_mes();
+            $data['zonas'] = $this->Lectura_model->get_all_zonas();
+            $data['direcciones'] = $this->Lectura_model->get_all_direcciones();
 
-        $data['_view'] = 'lectura/lecturas';
-        $this->load->view('layouts/main', $data);
+            $data['_view'] = 'lectura/lecturas';
+            $this->load->view('layouts/main', $data);
+        }
     }
 
     /*
@@ -51,40 +65,42 @@ class Lectura extends CI_Controller {
      */
 
     function add() {
-        if (isset($_POST) && count($_POST) > 0) {
-            $params = array(
-                'id_usu' => $this->input->post('id_usu'),
-                'id_asoc' => $this->input->post('id_asoc'),
-                'mes_lec' => $this->input->post('mes_lec'),
-                'gestion_lec' => $this->input->post('gestion_lec'),
-                'anterior_lec' => $this->input->post('anterior_lec'),
-                'actual_lec' => $this->input->post('actual_lec'),
-                'fechaant_lec' => $this->input->post('fechaant_lec'),
-                'consumo_lec' => $this->input->post('consumo_lec'),
-                'fecha_lec' => $this->input->post('fecha_lec'),
-                'hora_lec' => $this->input->post('hora_lec'),
-                'totalcons_lec' => $this->input->post('totalcons_lec'),
-                'fechahora_lec' => $this->input->post('fechahora_lec'),
-                'monto_lec' => $this->input->post('monto_lec'),
-                'estado_lec' => $this->input->post('estado_lec'),
-                'tipo_asoc' => $this->input->post('tipo_asoc'),
-                'servicios_asoc' => $this->input->post('servicios_asoc'),
-                'totalmultas_' => $this->input->post('totalmultas_'),
-                'cantfact_lec' => $this->input->post('cantfact_lec'),
-                'montofact_lec' => $this->input->post('montofact_lec'),
-            );
+        if($this->acceso(401)){
+            if (isset($_POST) && count($_POST) > 0) {
+                $params = array(
+                    'id_usu' => $this->input->post('id_usu'),
+                    'id_asoc' => $this->input->post('id_asoc'),
+                    'mes_lec' => $this->input->post('mes_lec'),
+                    'gestion_lec' => $this->input->post('gestion_lec'),
+                    'anterior_lec' => $this->input->post('anterior_lec'),
+                    'actual_lec' => $this->input->post('actual_lec'),
+                    'fechaant_lec' => $this->input->post('fechaant_lec'),
+                    'consumo_lec' => $this->input->post('consumo_lec'),
+                    'fecha_lec' => $this->input->post('fecha_lec'),
+                    'hora_lec' => $this->input->post('hora_lec'),
+                    'totalcons_lec' => $this->input->post('totalcons_lec'),
+                    'fechahora_lec' => $this->input->post('fechahora_lec'),
+                    'monto_lec' => $this->input->post('monto_lec'),
+                    'estado_lec' => $this->input->post('estado_lec'),
+                    'tipo_asoc' => $this->input->post('tipo_asoc'),
+                    'servicios_asoc' => $this->input->post('servicios_asoc'),
+                    'totalmultas_' => $this->input->post('totalmultas_'),
+                    'cantfact_lec' => $this->input->post('cantfact_lec'),
+                    'montofact_lec' => $this->input->post('montofact_lec'),
+                );
 
-            $lectura_id = $this->Lectura_model->add_lectura($params);
-            redirect('lectura/index');
-        } else {
-            $this->load->model('Usuario_model');
-            $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+                $lectura_id = $this->Lectura_model->add_lectura($params);
+                redirect('lectura/index');
+            } else {
+                $this->load->model('Usuario_model');
+                $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
 
-            $this->load->model('Asociado_model');
-            $data['all_asociado'] = $this->Asociado_model->get_all_asociado();
+                $this->load->model('Asociado_model');
+                $data['all_asociado'] = $this->Asociado_model->get_all_asociado();
 
-            $data['_view'] = 'lectura/add';
-            $this->load->view('layouts/main', $data);
+                $data['_view'] = 'lectura/add';
+                $this->load->view('layouts/main', $data);
+            }
         }
     }
 
@@ -93,6 +109,7 @@ class Lectura extends CI_Controller {
      */
 
     function edit($id_lec) {
+        if($this->acceso(401)){
         // check if the lectura exists before trying to edit it
         $data['lectura'] = $this->Lectura_model->get_lectura($id_lec);
 
@@ -134,6 +151,7 @@ class Lectura extends CI_Controller {
             }
         } else
             show_error('The lectura you are trying to edit does not exist.');
+        }
     }
 
     /*
@@ -160,24 +178,25 @@ class Lectura extends CI_Controller {
     }
 
     function historial($id_asoc) {
+        if($this->acceso(454)){
+            //historial de lecturas
+            $sql = "select * from lectura l, factura f " .
+                    "where l.id_lec = f.id_lec and f.estado_fact='PENDIENTE'  and " .
+                    "l.id_asoc=" . $id_asoc;
 
-        //historial de lecturas
-        $sql = "select * from lectura l, factura f " .
-                "where l.id_lec = f.id_lec and f.estado_fact='PENDIENTE'  and " .
-                "l.id_asoc=" . $id_asoc;
+            $data['facturas_pendientes'] = $this->Lectura_model->consultar($sql);
 
-        $data['facturas_pendientes'] = $this->Lectura_model->consultar($sql);
+            //historial de facturas
+            $sql = "select * from lectura where id_asoc= " . $id_asoc . " order by fecha_lec desc";
+            $data['lecturas_anteriores'] = $this->Lectura_model->consultar($sql);
 
-        //historial de facturas
-        $sql = "select * from lectura where id_asoc= " . $id_asoc . " order by fecha_lec desc";
-        $data['lecturas_anteriores'] = $this->Lectura_model->consultar($sql);
+            //historial de facturas
+            $sql = "select * from asociado where id_asoc=" . $id_asoc;
+            $data['asociado'] = $this->Lectura_model->consultar($sql);
 
-        //historial de facturas
-        $sql = "select * from asociado where id_asoc=" . $id_asoc;
-        $data['asociado'] = $this->Lectura_model->consultar($sql);
-
-        $data['_view'] = 'lectura/historial';
-        $this->load->view('layouts/main', $data);
+            $data['_view'] = 'lectura/historial';
+            $this->load->view('layouts/main', $data);
+        }
     }
 
     function mostrar_multas() {
@@ -185,19 +204,34 @@ class Lectura extends CI_Controller {
         $mes = $this->input->post("mes");
         $gestion = $this->input->post("gestion");
         $asociado = $this->input->post("asociado"); //id_asoc
+        $estemes = 0;
+        if($mes == "ENERO"){ $estemes = 1;}elseif($mes == "FEBRERO"){ $estemes = 2;}elseif($mes == "MARZO"){ $estemes = 3;}
+        elseif($mes == "ABRIL"){ $estemes = 4;}elseif($mes == "MAYO"){ $estemes = 5;}elseif($mes == "JUNIO"){ $estemes = 6;}
+        elseif($mes == "JULIO"){ $estemes = 7;}elseif($mes == "AGOSTO"){ $estemes = 8;}elseif($mes == "SEPTIEMBRE"){ $estemes = 9;}
+        elseif($mes == "OCTUBRE"){ $estemes = 10;}elseif($mes == "NOVIEMBRE"){ $estemes = 11;}elseif($mes == "DICIEMBRE"){ $estemes = 12;}
         //MOSTRAR MULTAS/APORTES
-        $sql = "(select 'multa',motivo_multa as motivo,detalle_multa as detalle,monto_multa as monto,mes_multa as mes,gestion_multa as gestion,tipo_multa as tipo,exento_multa as exento, ice_multa as ice " .
+        $sql = "(select 'MULTA' as multa,motivo_multa as motivo,detalle_multa as detalle,monto_multa as monto,mes_multa as mes,gestion_multa as gestion,tipo_multa as tipo,exento_multa as exento, ice_multa as ice " .
                 "from multa " .
                 "where estado_multa = 'ACTIVO' and " .
                 "(mes_multa = '" . $mes . "' and gestion_multa = '" . $gestion . "' and tipo_multa= 'GENERAL') or " .
                 "(mes_multa='" . $mes . "' and gestion_multa = '" . $gestion . "' and id_asoc=" . $asociado . ")) union " .
-                "(select 'APORTE',motivo_ap as motivo,detalle_ap as detalle,monto_ap as monto,mes_ap as mes,gestion_ap as gestion,tipo_ap as tipo, exento_ap as exento, ice_ap as ice from aporte " .
+                "(select 'APORTE' as multa, motivo_ap as motivo,detalle_ap as detalle,monto_ap as monto,mes_ap as mes,gestion_ap as gestion,tipo_ap as tipo, exento_ap as exento, ice_ap as ice from aporte " .
                 "where " .
                 "tipo_ap = 'PERMANENTE' and estado_ap = 'ACTIVO' or " .
-                "(mes_ap = '" . $mes . "' and gestion_ap = '" . $gestion . "' and tipo_ap = 'PARCIAL' and estado_ap = 'ACTIVO'))";
+                "(mes_ap = '" . $mes . "' and gestion_ap = '" . $gestion . "' and tipo_ap = 'PARCIAL' and estado_ap = 'ACTIVO'))" .
+                " union
+                (select
+                      'DESCUENTO' as multa, nom_desc as motivo, ' ' as detalle,
+                      monto_desc as monto, '".$mes."' as mes, '".$gestion."' as gestion,
+                      ' ' as tipo, ' ' as exento, ' ' as ice
+                from  descuento d
+                where
+                      d.id_asoc = $asociado
+                      and d.estado_desc = 'ACTIVO'
+                      and ((CONCAT('".$gestion."-".$estemes."-', day(d.vigencia_desc))) BETWEEN d.inicio_desc and d.vigencia_desc) )";
 
         $result = $this->Lectura_model->consultar($sql);
-
+        
         echo json_encode($result);
     }
 
@@ -248,7 +282,7 @@ class Lectura extends CI_Controller {
     }
 
     function registrar_lectura() {
-
+        if($this->acceso(401)){
         //$id_usu = 1;
         $id_usu = $this->session_data['id_usu'];
         
@@ -357,27 +391,52 @@ class Lectura extends CI_Controller {
         $mes = $mes_lec;
         $gestion = $gestion_lec;
         $asociado = $id_asoc;
-        //
+        $estemes = 0;
+        if($mes == "'ENERO'"){ $estemes = 1;}elseif($mes == "'FEBRERO'"){ $estemes = 2;}elseif($mes == "'MARZO'"){ $estemes = 3;}
+        elseif($mes == "'ABRIL'"){ $estemes = 4;}elseif($mes == "'MAYO'"){ $estemes = 5;}elseif($mes == "'JUNIO'"){ $estemes = 6;}
+        elseif($mes == "'JULIO'"){ $estemes = 7;}elseif($mes == "'AGOSTO'"){ $estemes = 8;}elseif($mes == "'SEPTIEMBRE'"){ $estemes = 9;}
+        elseif($mes == "'OCTUBRE'"){ $estemes = 10;}elseif($mes == "'NOVIEMBRE'"){ $estemes = 11;}elseif($mes == "'DICIEMBRE'"){ $estemes = 12;}
         //MOSTRAR MULTAS/APORTES
-        $sql = "(select 'multa',motivo_multa as motivo,detalle_multa as detalle,monto_multa as monto,mes_multa as mes,gestion_multa as gestion,tipo_multa as tipo,exento_multa as exento, ice_multa as ice " .
+        $sql = "(select 'MULTA' as multa,motivo_multa as motivo,detalle_multa as detalle,monto_multa as monto,mes_multa as mes,gestion_multa as gestion,tipo_multa as tipo,exento_multa as exento, ice_multa as ice " .
                 "from multa " .
                 "where estado_multa = 'ACTIVO' and " .
                 "(mes_multa = " . $mes . " and gestion_multa = '" . $gestion . "' and tipo_multa= 'GENERAL') or " .
                 "(mes_multa= " . $mes . " and gestion_multa = '" . $gestion . "' and id_asoc=" . $asociado . ")) union " .
-                "(select 'APORTE',motivo_ap as motivo,detalle_ap as detalle,monto_ap as monto,mes_ap as mes,gestion_ap as gestion,tipo_ap as tipo, exento_ap as exento, ice_ap as ice from aporte " .
+                "(select 'APORTE' as multa,motivo_ap as motivo,detalle_ap as detalle,monto_ap as monto,mes_ap as mes,gestion_ap as gestion,tipo_ap as tipo, exento_ap as exento, ice_ap as ice from aporte " .
                 "where " .
                 "tipo_ap = 'PERMANENTE' and estado_ap = 'ACTIVO' or " .
-                "(mes_ap = " . $mes . " and gestion_ap = '" . $gestion . "' and tipo_ap = 'PARCIAL' and estado_ap = 'ACTIVO'))";
+                "(mes_ap = " . $mes . " and gestion_ap = '" . $gestion . "' and tipo_ap = 'PARCIAL' and estado_ap = 'ACTIVO'))" .
+                " union
+                (select
+                      'DESCUENTO' as multa, nom_desc as motivo, ' ' as detalle,
+                      monto_desc as monto, ".$mes." as mes, '".$gestion."' as gestion,
+                      ' ' as tipo, ' ' as exento, ' ' as ice
+                from  descuento d
+                where
+                      d.id_asoc = $asociado
+                      and d.estado_desc = 'ACTIVO'
+                      and ((CONCAT('".$gestion."-".$estemes."-',day(d.vigencia_desc))) BETWEEN d.inicio_desc and d.vigencia_desc) )";
 
         $multas = $this->Lectura_model->consultar($sql);
-        $aportes_tot = 0;
+        $aportes_tot   = 0;
+        $descuento_tot = 0;
         foreach ($multas as $m) {
-            $aportes_tot = $aportes_tot+$m["monto"];
+            if($m["multa"] == "DESCUENTO"){
+                $descuento_tot = $descuento_tot+$m["monto"];
+                $punit_detfact = "-".$m["monto"];  //ADOMultas.fieldbyname('monto').AsString;
+                $total_detfact = "-".$m["monto"]; //ADOMultas.fieldbyname('monto').AsString;
+                $tipo_detfact = 0;
+            }else{
+                $aportes_tot = $aportes_tot+$m["monto"];
+                $punit_detfact = $m["monto"];  //ADOMultas.fieldbyname('monto').AsString;
+                $total_detfact = $m["monto"]; //ADOMultas.fieldbyname('monto').AsString;
+                $tipo_detfact = 1;
+            }
             $descip_detfact = "'" . $m["motivo"] . "'"; //quotedStr(ADOMultas.fieldbyname('motivo').AsString);
-            $punit_detfact = $m["monto"];  //ADOMultas.fieldbyname('monto').AsString;
+            //$punit_detfact = $m["monto"];  //ADOMultas.fieldbyname('monto').AsString;
             $desc_detfact = "0";
 
-            $total_detfact = $m["monto"]; //ADOMultas.fieldbyname('monto').AsString;
+            //$total_detfact = $m["monto"]; //ADOMultas.fieldbyname('monto').AsString;
             $exento_detfact = "'" . $m["exento"] . "'"; //quotedStr(ADOMultas.fieldbyname('exento').AsString);
             $ice_detfact = "'" . $m["ice"] . "'"; //quotedStr(ADOMultas.fieldbyname('ice').AsString);
             //exento_detfact:=quotedStr('SI');
@@ -385,58 +444,68 @@ class Lectura extends CI_Controller {
 
 
             $sql = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact,tipo_detfact,exento_detfact,ice_detfact) values(" .
-                    $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . ",1," . $exento_detfact . $coma . $ice_detfact . ")";
+                    $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . $coma . $tipo_detfact . $coma . $exento_detfact . $coma . $ice_detfact . ")";
             // echo $sql;
             $this->Lectura_model->ejecutar($sql);
         }
         if ($tipo_asoc == "'DOMESTICA'" || $tipo_asoc == "'DOMICILIARIA BASICA'" || $tipo_asoc == "'DOMICILIARIA ESPECIAL'"){
-            if ($mes_lec == "'ABRIL'" || $mes_lec == "'MAYO'" || $mes_lec == "'JUNIO'") {
-                $descu = 0 - (($facturas[0]["montototal_fact"]-1)/2);
-                $sql1="INSERT INTO detalle_factura (id_fact, cant_detfact, descip_detfact, punit_detfact, desc_detfact, total_detfact, tipo_detfact, exento_detfact, ice_detfact) VALUES
-                (".$facturas[0]['id_fact'].",  1, 'MENOS 50% DES. DOM.', ".$descu.", 0, ".$descu.", 0, 'NO', 'NO')";
-                $this->db->query($sql1);
+            if($gestion == "2020"){
+                if ($mes_lec == "'ABRIL'" || $mes_lec == "'MAYO'" || $mes_lec == "'JUNIO'") {
+                    $descu = 0 - (($facturas[0]["montototal_fact"]-1)/2);
+                    $sql1="INSERT INTO detalle_factura (id_fact, cant_detfact, descip_detfact, punit_detfact, desc_detfact, total_detfact, tipo_detfact, exento_detfact, ice_detfact) VALUES
+                    (".$facturas[0]['id_fact'].",  1, 'MENOS 50% DES. DOM.', ".$descu.", 0, ".$descu.", 0, 'NO', 'NO')";
+                    $this->db->query($sql1);
+                }
             }
             
         }
-        $sql2 = "update factura set totalaportes_fact = ".$aportes_tot. "
+        $sql2 = "update factura set totalaportes_fact = ".$aportes_tot. ",
+                        desc_fact = ".$descuento_tot."
                  where id_fact = ".$id_fact;
         $this->db->query($sql2);
         
         echo json_encode($facturas);
+        }
     }
 
     function preaviso_boucher($lectura_id) {
-        $this->load->model('Empresa_model');
+        if($this->acceso(400)){
+            $this->load->model('Empresa_model');
 
-        $data['lectura'] = $this->Lectura_model->get_lecturasocio($lectura_id);
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['lectura'] = $this->Lectura_model->get_lecturasocio($lectura_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
 
-        $data['_view'] = 'lectura/preaviso_boucher';
-        $this->load->view('layouts/main', $data);
+            $data['_view'] = 'lectura/preaviso_boucher';
+            $this->load->view('layouts/main', $data);
+        }
     }
 
     function ultimo_preaviso($id_asoc) {
-        $this->load->model('Empresa_model');
+        if($this->acceso(400)){
+            $this->load->model('Empresa_model');
 
-        $data['lectura'] = $this->Lectura_model->get_lecturasocio_asoc($id_asoc);
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['lectura'] = $this->Lectura_model->get_lecturasocio_asoc($id_asoc);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
 
-        $data['_view'] = 'lectura/preaviso_boucher';
-        $this->load->view('layouts/main', $data);
+            $data['_view'] = 'lectura/preaviso_boucher';
+            $this->load->view('layouts/main', $data);
+        }
     }
 
     function mes_preaviso($id_asoc, $mes_lec, $gestion_lec) {
-        $this->load->model('Empresa_model');
+        if($this->acceso(400)){
+            $this->load->model('Empresa_model');
 
-        $data['lectura'] = $this->Lectura_model->get_lecturasocio_mes($id_asoc, $mes_lec, $gestion_lec);
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['lectura'] = $this->Lectura_model->get_lecturasocio_mes($id_asoc, $mes_lec, $gestion_lec);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
 
-        $data['_view'] = 'lectura/preaviso_boucher';
-        $this->load->view('layouts/main', $data);
+            $data['_view'] = 'lectura/preaviso_boucher';
+            $this->load->view('layouts/main', $data);
+        }
     }
 
     function anular_lectura() {
-
+        if($this->acceso(402)){
         $id_usu = 1;
 
         $id_lec = $this->input->post("id_lec");
@@ -462,6 +531,7 @@ class Lectura extends CI_Controller {
         
         }
         else echo json_encode("Falla al eliminar la lectura");
+        }
     }
 
 

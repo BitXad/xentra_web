@@ -5,6 +5,7 @@
  */
  
 class Reportes extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
@@ -18,36 +19,50 @@ class Reportes extends CI_Controller{
         }
         
     }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /* reporte de ingresos */
     function index()
     {
-        $data['nombre_usu'] = $this->session_data['nombre_usu'];
-        $this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $this->load->model('Estado_model');
-        $data['all_estado'] = $this->Estado_model->get_all_estados();
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-        $this->load->model('Direccion_orden_model');
-        $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_alfab();
-        $data['_view'] = 'reportes/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(409)){
+            $data['nombre_usu'] = $this->session_data['nombre_usu'];
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estados();
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $this->load->model('Direccion_orden_model');
+            $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_alfab();
+            $data['_view'] = 'reportes/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
     
     /* reporte de ingresos por cobros por facturacion */
     function ingresof()
     {
-        $data['nombre_usu'] = $this->session_data['nombre_usu'];
-        $this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $this->load->model('Estado_model');
-        $data['all_estado'] = $this->Estado_model->get_all_estados();
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-        $this->load->model('Direccion_orden_model');
-        $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_alfab();
-        $data['_view'] = 'reportes/ingresof';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(410)){
+            $data['nombre_usu'] = $this->session_data['nombre_usu'];
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estados();
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $this->load->model('Direccion_orden_model');
+            $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_alfab();
+            $data['_view'] = 'reportes/ingresof';
+            $this->load->view('layouts/main',$data);
+        }
     }
     
     /*
@@ -55,26 +70,32 @@ class Reportes extends CI_Controller{
      */
     function mensual()
     {
-    	$data['direcciones'] = $this->Reportes_model->get_direcciones();
-    	$data['meses'] = $this->Me_model->get_all_mes();
-        //$data['totales'] = $this->Reportes_model->reporte_mensual();
-        
-        $data['_view'] = 'reportes/mensual';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(414)){
+            $data['losmeses'] = $this->Me_model->get_all_mes();
+            $data['gestion'] = "2020";
+            /*$data['direcciones'] = $this->Reportes_model->get_dirasociados();
+            $data['gestion'] = "2020";*/
+            //$data['totales'] = $this->Reportes_model->reporte_mensual();
+
+            $data['_view'] = 'reportes/mensual';
+            $this->load->view('layouts/main',$data);
+        }
     }
     
     /* reporte de movimiento */
     function movimiento()
     {
-        $data['nombre_usu'] = $this->session_data['nombre_usu'];
-        $this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $this->load->model('Estado_model');
-        $data['all_estado'] = $this->Estado_model->get_all_estados();
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-        $data['_view'] = 'reportes/movimiento';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(413)){
+            $data['nombre_usu'] = $this->session_data['nombre_usu'];
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estados();
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $data['_view'] = 'reportes/movimiento';
+            $this->load->view('layouts/main',$data);
+        }
     }
     /* busca reportes de ingreso */
     function buscarlosingresos()
@@ -207,15 +228,17 @@ class Reportes extends CI_Controller{
     }
     function egreso()
     {
-        $data['nombre_usu'] = $this->session_data['nombre_usu'];
-        $this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $this->load->model('Categoria_egreso_model');
-        $data['all_categoria'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-        $data['_view'] = 'reportes/egreso';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(417)){
+            $data['nombre_usu'] = $this->session_data['nombre_usu'];
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $this->load->model('Categoria_egreso_model');
+            $data['all_categoria'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $data['_view'] = 'reportes/egreso';
+            $this->load->view('layouts/main',$data);
+        }
     }
     /* buscar los egresos  */
     function buscarlosegresos()
@@ -260,15 +283,17 @@ class Reportes extends CI_Controller{
     }
     function ingreso()
     {
-        $data['nombre_usu'] = $this->session_data['nombre_usu'];
-        $this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $this->load->model('Categoria_ingreso_model');
-        $data['all_categoria'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-        $data['_view'] = 'reportes/ingreso';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(416)){
+            $data['nombre_usu'] = $this->session_data['nombre_usu'];
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $this->load->model('Categoria_ingreso_model');
+            $data['all_categoria'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $data['_view'] = 'reportes/ingreso';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     function buscaringresos()
@@ -313,23 +338,26 @@ class Reportes extends CI_Controller{
     }
     function mensuales()
     {
-        $data['nombre_usu'] = $this->session_data['nombre_usu'];
-        /*$this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $this->load->model('Estado_model');
-        $data['all_estado'] = $this->Estado_model->get_all_estados();*/
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-        /*$this->load->model('Direccion_orden_model');
-        $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_alfab();*/
-        $data['_view'] = 'reportes/mensuales';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(415)){
+            $data['nombre_usu'] = $this->session_data['nombre_usu'];
+            /*$this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();*/
+            $this->load->model('Gestion_model');
+            $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            /*$this->load->model('Direccion_orden_model');
+            $data['all_direccion'] = $this->Direccion_orden_model->get_all_direccion_alfab();*/
+            $data['_view'] = 'reportes/mensuales';
+            $this->load->view('layouts/main',$data);
+        }
     }
     function buscarpormes()
     {
         if ($this->input->is_ajax_request()) {
-            $este_mes    = $this->input->post('este_mes');   
-            $datos = $this->Reportes_model->reporte_mes($este_mes);
+            $este_mes     = $this->input->post('este_mes');
+            $esta_gestion = $this->input->post('esta_gestion');
+            $datos = $this->Reportes_model->reporte_mes($este_mes, $esta_gestion);
             echo json_encode($datos);
         }   
         else
@@ -340,22 +368,49 @@ class Reportes extends CI_Controller{
     /* reporte de usuarios(asociados) deudores */
     function deudores()
     {
-        $data['nombre_usu'] = $this->session_data['nombre_usu'];
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-        $data['all_deudores'] = $this->Reportes_model->reporte_deudores();
-        $data['_view'] = 'reportes/deudores';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(411)){
+            $data['nombre_usu'] = $this->session_data['nombre_usu'];
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $data['all_deudores'] = $this->Reportes_model->reporte_deudores();
+            $data['_view'] = 'reportes/deudores';
+            $this->load->view('layouts/main',$data);
+        }
     }
     /* reporte de usuarios(asociados) en corte */
     function encorte()
     {
-        $data['nombre_usu'] = $this->session_data['nombre_usu'];
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-        $data['all_encorte'] = $this->Reportes_model->reporte_encorte();
-        $data['_view'] = 'reportes/encorte';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(412)){
+            $data['nombre_usu'] = $this->session_data['nombre_usu'];
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $data['all_encorte'] = $this->Reportes_model->reporte_encorte();
+            $data['_view'] = 'reportes/encorte';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    /* busca todas las direcciones con sus totale de asociados en cada direccion */
+    function buscar_direccionestotalasociado()
+    {
+        if ($this->input->is_ajax_request()) {
+            $datos = $this->Reportes_model->get_dirasociados();
+            echo json_encode($datos);
+        }else{                 
+            show_404();
+        }
+    }
+    /* busca consumo total de una direccion, mes y gestion */
+    function consumototal_mesdireccion()
+    {
+        if ($this->input->is_ajax_request()) {
+            $mes       = $this->input->post('mes');
+            $gestion   = $this->input->post('gestion');
+            $direccion = $this->input->post('direccion');
+            $datos = $this->Reportes_model->get_consumototal($mes, $gestion, $direccion);
+            echo json_encode($datos);
+        }else{                 
+            show_404();
+        }
     }
 }
 

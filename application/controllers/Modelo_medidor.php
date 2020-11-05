@@ -5,53 +5,46 @@
  */
  
 class Modelo_medidor extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Modelo_medidor_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of modelo_medidor
      */
     function index()
     {
+        if($this->acceso(443)){
         $data['all_modelo_medidor'] = $this->Modelo_medidor_model->get_all_modelo_medidor();
         
         $data['_view'] = 'modelo_medidor/index';
         $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new modelo_medidor
      */
     function add()
-    {   
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('nombre_modelo','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        if($this->form_validation->run())     
-        {
-            $params = array(
-                'nombre_modelo' => $this->input->post('nombre_modelo'),
-            );
-            $id_modelo = $this->Modelo_medidor_model->add_modelo_medidor($params);
-            redirect('modelo_medidor/index');
-        }else{            
-            $data['_view'] = 'modelo_medidor/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
-
-    /*
-     * Editing a modelo_medidor
-     */
-    function edit($id_modelo)
-    {   
-        // check if the Diametrored exists before trying to edit it
-        $data['modelo_medidor'] = $this->Modelo_medidor_model->get_modelo_medidor($id_modelo);
-        
-        if(isset($data['modelo_medidor']['id_modelo']))
-        {
+    {
+        if($this->acceso(443)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('nombre_modelo','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             if($this->form_validation->run())     
@@ -59,16 +52,44 @@ class Modelo_medidor extends CI_Controller{
                 $params = array(
                     'nombre_modelo' => $this->input->post('nombre_modelo'),
                 );
-                
-                $this->Modelo_medidor_model->update_modelo_medidor($id_modelo,$params);            
+                $id_modelo = $this->Modelo_medidor_model->add_modelo_medidor($params);
                 redirect('modelo_medidor/index');
-            }else{
-                $data['_view'] = 'modelo_medidor/edit';
+            }else{            
+                $data['_view'] = 'modelo_medidor/add';
                 $this->load->view('layouts/main',$data);
             }
         }
-        else
-            show_error('The modelo_medidor you are trying to edit does not exist.');
+    }  
+
+    /*
+     * Editing a modelo_medidor
+     */
+    function edit($id_modelo)
+    {
+        if($this->acceso(443)){
+            // check if the Diametrored exists before trying to edit it
+            $data['modelo_medidor'] = $this->Modelo_medidor_model->get_modelo_medidor($id_modelo);
+
+            if(isset($data['modelo_medidor']['id_modelo']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('nombre_modelo','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())     
+                {
+                    $params = array(
+                        'nombre_modelo' => $this->input->post('nombre_modelo'),
+                    );
+
+                    $this->Modelo_medidor_model->update_modelo_medidor($id_modelo,$params);            
+                    redirect('modelo_medidor/index');
+                }else{
+                    $data['_view'] = 'modelo_medidor/edit';
+                    $this->load->view('layouts/main',$data);
+                }
+            }
+            else
+                show_error('The modelo_medidor you are trying to edit does not exist.');
+        }
     }
     
     /* * añadir modelo_medidor */

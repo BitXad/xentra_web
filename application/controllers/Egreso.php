@@ -5,6 +5,7 @@
  */
  
 class Egreso extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
@@ -22,8 +23,8 @@ class Egreso extends CI_Controller{
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
-        //$rolusuario = $this->session_data['rol'];
-        if($id_rol >= 1){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
         }else{
             $data['_view'] = 'login/mensajeacceso';
@@ -50,23 +51,17 @@ class Egreso extends CI_Controller{
     function buscarfecha()
     {
         if($this->acceso(59)){
-        if ($this->input->is_ajax_request()) {
-            
-            $filtro = $this->input->post('filtro');
-            
-           if ($filtro == null){
-            $result = $this->Egreso_model->get_all_egreso($params);
-            }
-            else{
-            $result = $this->Egreso_model->fechaegreso($filtro);            
-            }
-           echo json_encode($result);
-            
-        }
-        else
-        {                 
-                    show_404();
-        }          
+            if ($this->input->is_ajax_request()) {
+                $filtro = $this->input->post('filtro');
+                if ($filtro == null){
+                    $result = $this->Egreso_model->get_all_egreso($params);
+                }else{
+                    $result = $this->Egreso_model->fechaegreso($filtro);            
+                }
+            echo json_encode($result);
+            }else{                 
+                        show_404();
+            }          
         }
     }
 
@@ -76,49 +71,40 @@ class Egreso extends CI_Controller{
         if($this->acceso(60)){
             $data['page_title'] = "Egreso";
             $id_usu = $this->session_data['id_usu'];
-                
-      $this->load->library('form_validation');
-      $this->form_validation->set_rules(
-        'nombre_egr', 'nombre_egr',
-        'required');
-       
-       if($this->form_validation->run())      
-        {   
-          //$numrec = $this->Egreso_model->numero();
-           $numero = 0;
-           
-
-            $params = array(
-        'id_usu' => $id_usu,
-        'detalle_egr' => $this->input->post('detalle_egr'),
-        'numrec_egr' => $numero,
-        'nombre_egr' => $this->input->post('nombre_egr'),
-        'monto_egr' => $this->input->post('monto_egr'),
-        'estado_egr' => 'ACTIVO',
-        'tipo_egr' => 'EGRESO',
-        'descripcion_egr' => $this->input->post('descripcion_egr'),
-        'fechahora_egr' => $this->input->post('fechahora_egr'),
-        
-            );
-
-            
-            
-            $id_egr = $this->Egreso_model->add_egreso($params);
-            /*$sql = "UPDATE parametros SET parametro_numrecegr=parametro_numrecegr+1 WHERE parametro_id = '1'"; 
-            $this->db->query($sql);*/
-            redirect('egreso/index');
-           
-        }
-        else
-        {
-         $this->load->model('Categoria_egreso_model');
-           $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
-           //$this->load->model('Parametro_model');
-           //$data['parametro'] = $this->Parametro_model->get_all_parametro();
-            $data['_view'] = 'egreso/add';
-            $this->load->view('layouts/main',$data);
-        }
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules(
+                'nombre_egr', 'nombre_egr',
+                'required');
+            if($this->form_validation->run())      
+            {   
+              //$numrec = $this->Egreso_model->numero();
+               $numero = 0;
+                $params = array(
+                    'id_usu' => $id_usu,
+                    'detalle_egr' => $this->input->post('detalle_egr'),
+                    'numrec_egr' => $numero,
+                    'nombre_egr' => $this->input->post('nombre_egr'),
+                    'monto_egr' => $this->input->post('monto_egr'),
+                    'estado_egr' => 'ACTIVO',
+                    'tipo_egr' => 'EGRESO',
+                    'descripcion_egr' => $this->input->post('descripcion_egr'),
+                    'fechahora_egr' => $this->input->post('fechahora_egr'),
+                );
+                $id_egr = $this->Egreso_model->add_egreso($params);
+                /*$sql = "UPDATE parametros SET parametro_numrecegr=parametro_numrecegr+1 WHERE parametro_id = '1'"; 
+                $this->db->query($sql);*/
+                redirect('egreso/index');
             }
+            else
+            {
+             $this->load->model('Categoria_egreso_model');
+               $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
+               //$this->load->model('Parametro_model');
+               //$data['parametro'] = $this->Parametro_model->get_all_parametro();
+                $data['_view'] = 'egreso/add';
+                $this->load->view('layouts/main',$data);
+            }
+        }
     } 
 
     /*
@@ -129,55 +115,48 @@ class Egreso extends CI_Controller{
         if($this->acceso(61)){
             $data['page_title'] = "Egreso";
             //$id_usu = $this->session_data['id_usu'];
-        // check if the egreso exists before tryegr to edit it
-        $data['egreso'] = $this->Egreso_model->get_egreso($id_egr);
-        //$data['tipoid_usu'] = $this->session_data['tipoid_usu'];
-        
-        if(isset($data['egreso']['id_egr']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'id_usu' => 1,
-        'detalle_egr' => $this->input->post('detalle_egr'),
-        'numrec_egr' => $this->input->post('numrec_egr'),
-        'nombre_egr' => $this->input->post('nombre_egr'),
-        'monto_egr' => $this->input->post('monto_egr'),
-        'estado_egr' => $this->input->post('estado_egr'),
-        'descripcion_egr' => $this->input->post('descripcion_egr'),
-        'fechahora_egr' => $this->input->post('fechahora_egr'),
-				
-                );
+            // check if the egreso exists before tryegr to edit it
+            $data['egreso'] = $this->Egreso_model->get_egreso($id_egr);
+            //$data['tipoid_usu'] = $this->session_data['tipoid_usu'];
 
-                $this->Egreso_model->update_egreso($id_egr,$params);            
-                redirect('egreso/index');
-            }
-            else
+            if(isset($data['egreso']['id_egr']))
             {
-	
-                $this->load->model('Categoria_egreso_model');
-           $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
-                $data['_view'] = 'egreso/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                if(isset($_POST) && count($_POST) > 0)
+                {
+                    $params = array(
+                        'id_usu' => 1,
+                        'detalle_egr' => $this->input->post('detalle_egr'),
+                        'numrec_egr' => $this->input->post('numrec_egr'),
+                        'nombre_egr' => $this->input->post('nombre_egr'),
+                        'monto_egr' => $this->input->post('monto_egr'),
+                        'estado_egr' => $this->input->post('estado_egr'),
+                        'descripcion_egr' => $this->input->post('descripcion_egr'),
+                        'fechahora_egr' => $this->input->post('fechahora_egr'),
+                    );
+                    $this->Egreso_model->update_egreso($id_egr,$params);            
+                    redirect('egreso/index');
+                }else{
+                    $this->load->model('Categoria_egreso_model');
+                    $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
+                    $data['_view'] = 'egreso/edit';
+                    $this->load->view('layouts/main',$data);
+                }
+            }else
+                show_error('The egreso you are tryegr to edit does not exist.');
         }
-        else
-            show_error('The egreso you are tryegr to edit does not exist.');
-            }
     }
 
     /*
      * Deletegr egreso
      */
 
-public function pdf($id_egr){
-    if($this->acceso(64)){
-        $data['page_title'] = "Egreso";
-      $data['egresos'] = $this->Egreso_model->get_egresos($id_egr);
-      $data['empresa'] = $this->Empresa_model->get_empresa(1);    
-             $data['_view'] = 'egreso/recibo';
+    public function pdf($id_egr){
+        if($this->acceso(64)){
+            $data['page_title'] = "Egreso";
+            $data['egresos'] = $this->Egreso_model->get_egresos($id_egr);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);    
+            $data['_view'] = 'egreso/recibo';
             $this->load->view('layouts/main',$data);
-       
         }
     }
 
@@ -185,11 +164,11 @@ public function pdf($id_egr){
     public function boucher($id_egr){
         if($this->acceso(64)){
             $data['page_title'] = "Egreso";
-      $data['egreso'] = $this->Egreso_model->get_egresos($id_egr);
-      $data['empresa'] = $this->Empresa_model->get_empresa(1);    
-             $data['_view'] = 'egreso/reciboboucher';
+            $data['egreso'] = $this->Egreso_model->get_egresos($id_egr);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);    
+            $data['_view'] = 'egreso/reciboboucher';
             $this->load->view('layouts/main',$data);
-            }
+        }
     }
 
     function remove($id_egr)

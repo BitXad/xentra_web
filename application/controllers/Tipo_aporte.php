@@ -5,40 +5,59 @@
  */
  
 class Tipo_aporte extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Tipo_aporte_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of tipo_aporte
      */
     function index()
     {
-        $data['tipo_aporte'] = $this->Tipo_aporte_model->get_all_tipo_aporte();
-        
-        $data['_view'] = 'tipo_aporte/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(446)){
+            $data['tipo_aporte'] = $this->Tipo_aporte_model->get_all_tipo_aporte();
+
+            $data['_view'] = 'tipo_aporte/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new tipo_aporte
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-            );
-            
-            $tipo_aporte_id = $this->Tipo_aporte_model->add_tipo_aporte($params);
-            redirect('tipo_aporte/index');
-        }
-        else
-        {            
-            $data['_view'] = 'tipo_aporte/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(446)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                );
+
+                $tipo_aporte_id = $this->Tipo_aporte_model->add_tipo_aporte($params);
+                redirect('tipo_aporte/index');
+            }
+            else
+            {            
+                $data['_view'] = 'tipo_aporte/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -46,34 +65,36 @@ class Tipo_aporte extends CI_Controller{
      * Editing a tipo_aporte
      */
     function edit($tipo)
-    {   
-        // check if the tipo_aporte exists before trying to edit it
-        $data['tipo_aporte'] = $this->Tipo_aporte_model->get_tipo_aporte($tipo);
-        
-        if(isset($data['tipo_aporte']['tipo']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-                );
+    {
+        if($this->acceso(446)){
+            // check if the tipo_aporte exists before trying to edit it
+            $data['tipo_aporte'] = $this->Tipo_aporte_model->get_tipo_aporte($tipo);
 
-                $this->Tipo_aporte_model->update_tipo_aporte($tipo,$params);            
-                redirect('tipo_aporte/index');
+            if(isset($data['tipo_aporte']['tipo']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                    );
+
+                    $this->Tipo_aporte_model->update_tipo_aporte($tipo,$params);            
+                    redirect('tipo_aporte/index');
+                }
+                else
+                {
+                    $data['_view'] = 'tipo_aporte/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'tipo_aporte/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The tipo_aporte you are trying to edit does not exist.');
         }
-        else
-            show_error('The tipo_aporte you are trying to edit does not exist.');
     } 
 
     /*
      * Deleting tipo_aporte
      */
-    function remove($tipo)
+    /*function remove($tipo)
     {
         $tipo_aporte = $this->Tipo_aporte_model->get_tipo_aporte($tipo);
 
@@ -85,6 +106,6 @@ class Tipo_aporte extends CI_Controller{
         }
         else
             show_error('The tipo_aporte you are trying to delete does not exist.');
-    }
+    }*/
     
 }

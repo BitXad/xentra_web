@@ -30,17 +30,23 @@ class Verificar extends CI_Controller
         
         if($result){
             if ($result->tipo_usuario == "ADMINISTRADOR" or $result->tipo_usuario == "LECTURADOR" or $result->tipo_usuario == "CAJERO") {
-                /*$this->load->model('Rol_usuario_model');
-                $this->load->model('Tipo_usuario_model');*/
+                $this->load->model('Rol_usuario_model');
+                //$this->load->model('Tipo_usuario_model');
                 $thumb = "default_thumb.jpg";
                 if ($result->imagen_usu <> null) {
                     $thumb = "thumb_".$result->imagen_usu;
                     //$thumb = $this->foto_thumb($result->usuario_imagen);
                 }
-
-                /*$gestion = $this->Gestion_model->get_gestion2($gestion_id);
-                $rolusuario = $this->Rol_usuario_model->getall_rolusuario($result->tipousuario_id);
-                $tipousuario_nombre = $this->Tipo_usuario_model->get_tipousuario_nombre($result->tipousuario_id);*/
+                if($result->tipo_usuario == "ADMINISTRADOR"){
+                    $tipousuario = 1;
+                }elseif($result->tipo_usuario == "CAJERO"){
+                    $tipousuario = 2;
+                }elseif($result->tipo_usuario == "LECTURADOR"){
+                    $tipousuario = 3;
+                }
+                //$gestion = $this->Gestion_model->get_gestion2($gestion_id);
+                $rolusuario = $this->Rol_usuario_model->getall_rolusuario($tipousuario);
+                //$tipousuario_nombre = $this->Tipo_usuario_model->get_tipousuario_nombre($result->tipousuario_id);
                 $sess_array = array(
                     'login_usu' => $result->login_usu,
                     'id_usu' => $result->id_usu,
@@ -51,8 +57,8 @@ class Verificar extends CI_Controller
                     'imagen_usu' => $result->imagen_usu,
                     //'usuario_email' => $result->usuario_email,
                     'clave_usu' => $result->clave_usu,
-                    'thumb' => $thumb
-                    //'rol' => $rolusuario,
+                    'thumb' => $thumb,
+                    'rol' => $rolusuario
                     /*'gestion_nombre' => $gestion->gestion_nombre,
                     'gestion_descripcion' => $gestion->gestion_descripcion,
                     'gestion_id' => $gestion->gestion_id*/

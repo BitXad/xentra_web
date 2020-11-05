@@ -5,42 +5,61 @@
  */
  
 class Servicio extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Servicio_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of servicios
      */
     function index()
     {
-        $data['servicios'] = $this->Servicio_model->get_all_servicios();
-        
-        $data['_view'] = 'servicio/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(444)){
+            $data['servicios'] = $this->Servicio_model->get_all_servicios();
+
+            $data['_view'] = 'servicio/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new servicio
      */
     function add()
-    {   
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('servicio','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        if($this->form_validation->run())     
-        { 
-            $params = array(
-                'servicio' => $this->input->post('servicio'),
-            );
-            $servicio_id = $this->Servicio_model->add_servicio($params);
-            redirect('servicio/index');
-        }
-        else
-        {            
-            $data['_view'] = 'servicio/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(444)){
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('servicio','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
+            { 
+                $params = array(
+                    'servicio' => $this->input->post('servicio'),
+                );
+                $servicio_id = $this->Servicio_model->add_servicio($params);
+                redirect('servicio/index');
+            }
+            else
+            {            
+                $data['_view'] = 'servicio/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -48,38 +67,40 @@ class Servicio extends CI_Controller{
      * Editing a servicio
      */
     function edit($servicio)
-    {   
-        // check if the servicio exists before trying to edit it
-        $servicio = str_replace("%20", " ", $servicio);
-        $data['servicio'] = $this->Servicio_model->get_servicio($servicio);
-        
-        if(isset($data['servicio']['servicio']))
-        {
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules('servicio','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-            if($this->form_validation->run())     
-            {   
-                $params = array(
-                    'servicio' => $this->input->post('servicio'),
-                );
+    {
+        if($this->acceso(444)){
+            // check if the servicio exists before trying to edit it
+            $servicio = str_replace("%20", " ", $servicio);
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio);
 
-                $this->Servicio_model->update_servicio($servicio,$params);            
-                redirect('servicio/index');
+            if(isset($data['servicio']['servicio']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('servicio','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())     
+                {   
+                    $params = array(
+                        'servicio' => $this->input->post('servicio'),
+                    );
+
+                    $this->Servicio_model->update_servicio($servicio,$params);            
+                    redirect('servicio/index');
+                }
+                else
+                {
+                    $data['_view'] = 'servicio/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'servicio/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The servicio you are trying to edit does not exist.');
         }
-        else
-            show_error('The servicio you are trying to edit does not exist.');
     } 
 
     /*
      * Deleting servicio
      */
-    function remove($servicio)
+    /*function remove($servicio)
     {
         $servicio = $this->Servicio_model->get_servicio($servicio);
 
@@ -91,6 +112,6 @@ class Servicio extends CI_Controller{
         }
         else
             show_error('The servicio you are trying to delete does not exist.');
-    }
+    }*/
     
 }

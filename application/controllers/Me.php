@@ -5,40 +5,59 @@
  */
  
 class Me extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Me_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of mes
      */
     function index()
     {
-        $data['mes'] = $this->Me_model->get_all_mes();
-        
-        $data['_view'] = 'me/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(434)){
+            $data['mes'] = $this->Me_model->get_all_mes();
+
+            $data['_view'] = 'me/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new me
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-                'mes_lec' => $this->input->post('mes_lec'),
-            );
-            $me_id = $this->Me_model->add_me($params);
-            redirect('me/index');
-        }
-        else
-        {            
-            $data['_view'] = 'me/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(434)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                    'mes_lec' => $this->input->post('mes_lec'),
+                );
+                $me_id = $this->Me_model->add_me($params);
+                redirect('me/index');
+            }
+            else
+            {            
+                $data['_view'] = 'me/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -46,29 +65,31 @@ class Me extends CI_Controller{
      * Editing a me
      */
     function edit($id_mes)
-    {   
-        // check if the me exists before trying to edit it
-        $data['me'] = $this->Me_model->get_me($id_mes);
-        
-        if(isset($data['me']['id_mes']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-                    'mes_lec' => $this->input->post('mes_lec'),
-                );
+    {
+        if($this->acceso(434)){
+            // check if the me exists before trying to edit it
+            $data['me'] = $this->Me_model->get_me($id_mes);
 
-                $this->Me_model->update_me($id_mes,$params);            
-                redirect('me/index');
+            if(isset($data['me']['id_mes']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                        'mes_lec' => $this->input->post('mes_lec'),
+                    );
+
+                    $this->Me_model->update_me($id_mes,$params);            
+                    redirect('me/index');
+                }
+                else
+                {
+                    $data['_view'] = 'me/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'me/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The me you are trying to edit does not exist.');
         }
-        else
-            show_error('The me you are trying to edit does not exist.');
     } 
 
     /*

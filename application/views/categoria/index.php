@@ -22,7 +22,7 @@
 <div class="col-md-6" style="padding-left: 0px">
     <div class="input-group">
         <span class="input-group-addon"> Buscar </span>           
-        <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre de la categoria, código" onkeypress="buscarasociado(event)" autocomplete="off">
+        <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre de la categoria, código" autocomplete="off" autofocus>
     </div>
 </div>
 <div class="row">

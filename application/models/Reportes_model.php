@@ -133,7 +133,7 @@ class Reportes_model extends CI_Model
                     l.mes_lec, l.gestion_lec, f.num_fact, l.id_lec, f.estado_fact,
                     l.actual_lec, anterior_lec, l.consumo_lec, l.totalcons_lec,
                     f.totalaportes_fact, f.totalrecargos_fact, f.montototal_fact,
-                    l.consumoalcant_lec
+                    l.consumoalcant_lec, f.fecha_fact, f.hora_fact
             from 
                 asociado a,  lectura l,  factura f
             where
@@ -301,19 +301,34 @@ class Reportes_model extends CI_Model
         ")->result_array();
         return $ingresos;
     }
-    function reporte_mes($este_mes){
+    /* reporte que saca el devengado de cada mes (reportes mensuales) */
+    function reporte_mes($este_mes, $esta_gestion){
         $estemes = $this->db->query("
-            SELECT
-		concat (a.`apellidos_asoc`, ', ', a.`nombres_asoc`) as nombre, a.codigo_asoc,
-                a.`direccion_asoc`, a.`servicios_asoc`, l.mes_lec, l.`gestion_lec`,
-                l.`anterior_lec`, l.`actual_lec`, l.id_lec, f.`id_fact`
-            from
-                lectura l, factura f, asociado a, gestion g
-            where
-                l.id_lec=f.id_lec
-                and l.mes_lec= '".$este_mes."'
-                and l.id_asoc=a.id_asoc
-                and g.gestion_lec = l.`gestion_lec`
+            select 
+                l.`mes_lec`,l.`gestion_lec`,
+                a.`nombres_asoc`, a.`apellidos_asoc`, a.`codigo_asoc`, a.`direccion_asoc`, 
+                a.`ci_asoc`, a.`ciudad`, a.`categoria_asoc`,a.`servicios_asoc`, 
+                a.`tipo_asoc`,
+                f.`totalconsumo_fact`*2,
+                f.`totalaportes_fact`,
+                f.`totalrecargos_fact`, 
+                f.`estado_fact`,
+                l.`anterior_lec`,
+                l.`actual_lec`,
+                l.`consumo_lec`,
+                if(a.`servicios_asoc` = 'AGUA', if( l.`consumo_lec` <= t.`consumo_basico`, t.costo_agua, t.costo_agua + ((l.consumo_lec - t.consumo_basico) * costo_mt3)), if(a.`servicios_asoc` = 'AGUA Y ALCANTARILLADO', if( l.`consumo_lec` <= t.`consumo_basico`, t.costo_agua, t.costo_agua + ((l.consumo_lec - t.consumo_basico) * costo_mt3)), 0)) as agua,
+                if(a.`servicios_asoc` = 'AGUA Y ALCANTARILLADO', t.`costo_alcant`, if(a.`servicios_asoc` = 'ALCANTARILLADO', t.`costo_alcant`, 0)) as alcantarillado,
+                1 AS repformulario, 
+                (if( l.`consumo_lec` <= t.`consumo_basico`, t.costo_agua, if(a.`servicios_asoc` = 'AGUA Y ALCANTARILLADO', t.`costo_alcant`, if(a.`servicios_asoc` = 'ALCANTARILLADO', t.`costo_alcant`, 0))+t.costo_agua + ((l.consumo_lec - t.consumo_basico) * costo_mt3)))/2 as descuento,
+                f.`id_fact`
+            from asociado a, lectura l, factura f, tarifa t
+            where 
+                a.id_asoc = l.id_asoc and
+                l.id_lec = f.id_lec and
+                l.`mes_lec`= '".$este_mes."' and
+                l.`gestion_lec` = '".$esta_gestion."' and
+                l.consumo_lec >= t.`desde` and l.`consumo_lec`<= t.`hasta` and
+                t.tipo = a.`tipo_asoc`
         ")->result_array();
         return $estemes;
     }
@@ -349,5 +364,35 @@ class Reportes_model extends CI_Model
               t1.mora>=(select p.dias_param from parametros p where p.id_param=4)
         ")->result_array();
         return $deudores_encorte;
+    }
+    /* obtiene direcciones y numero de asocaidos de esa dirección*/
+    function get_dirasociados(){
+        $dirasocoado = $this->db->query("
+            select d.id_dir, d.nombre_dir, count(a.id_asoc) as numero_asoc
+            from direccion_orden d
+            left join asociado a on d.nombre_dir = a.direccion_asoc
+            group by d.nombre_dir
+            order by d.id_dir
+        ")->result_array();
+        return $dirasocoado;
+    }
+    /* Obtiene consumo total de servicios, dado mes, gestion y direccion*/
+    function get_consumototal($mes, $gestion, $direccion){
+        $dirasociado = $this->db->query("
+            select  /*count(a.id_asoc) as numero_asoc,*/
+                    sum(l.`consumo_lec`) as consumo,
+                    sum(if(a.`servicios_asoc` = 'AGUA', if( l.`consumo_lec` <= t.`consumo_basico`, t.costo_agua, t.costo_agua + ((l.consumo_lec - t.consumo_basico) * costo_mt3)), if(a.`servicios_asoc` = 'AGUA Y ALCANTARILLADO', if( l.`consumo_lec` <= t.`consumo_basico`, t.costo_agua, t.costo_agua + ((l.consumo_lec - t.consumo_basico) * costo_mt3)), 0))) as agua,
+                    sum(if(a.`servicios_asoc` = 'AGUA Y ALCANTARILLADO', t.`costo_alcant`, if(a.`servicios_asoc` = 'ALCANTARILLADO', t.`costo_alcant`, 0))) as alcantarillado
+            from asociado a, lectura l, factura f, tarifa t
+            where 
+                a.id_asoc = l.id_asoc and
+                a.direccion_asoc = '".$direccion."' and
+                l.id_lec = f.id_lec and
+                l.`mes_lec`= '".$mes."' and
+                l.`gestion_lec` = '".$gestion."' and
+                l.consumo_lec >= t.`desde` and l.`consumo_lec`<= t.`hasta` and
+                t.tipo = a.`tipo_asoc`
+        ")->result_array();
+        return $dirasociado;
     }
 }

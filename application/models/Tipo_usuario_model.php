@@ -12,9 +12,9 @@ class Tipo_usuario_model extends CI_Model
     }
     
     /*
-     * Get tipo_usuario by tipo_usuario
+     * Get tipo_usuario by tipousuario_id
      */
-    function get_tipo_usuario($tipo_usuario)
+    function get_tipo_usuario($tipousuario_id)
     {
         $tipo_usuario = $this->db->query("
             SELECT
@@ -24,8 +24,8 @@ class Tipo_usuario_model extends CI_Model
                 `tipo_usuario`
 
             WHERE
-                `tipo_usuario` = ?
-        ",array($tipo_usuario))->row_array();
+                `tipousuario_id` = ?
+        ",array($tipousuario_id))->row_array();
 
         return $tipo_usuario;
     }
@@ -45,7 +45,7 @@ class Tipo_usuario_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `tipo_usuario`
+            ORDER BY `tipousuario_id` 
         ")->result_array();
 
         return $tipo_usuario;
@@ -63,17 +63,42 @@ class Tipo_usuario_model extends CI_Model
     /*
      * function to update tipo_usuario
      */
-    function update_tipo_usuario($tipo_usuario,$params)
+    function update_tipo_usuario($tipousuario_id,$params)
     {
-        $this->db->where('tipo_usuario',$tipo_usuario);
+        $this->db->where('tipousuario_id',$tipousuario_id);
         return $this->db->update('tipo_usuario',$params);
     }
     
     /*
      * function to delete tipo_usuario
      */
-    function delete_tipo_usuario($tipo_usuario)
+    function delete_tipo_usuario($tipousuario_id)
     {
-        return $this->db->delete('tipo_usuario',array('tipo_usuario'=>$tipo_usuario));
+        return $this->db->delete('tipo_usuario',array('tipousuario_id'=>$tipousuario_id));
+    }
+
+    function inactivar_tipo_usuario($tipousuario_id)
+    {
+        $sql = "update tipo_usuario set estado_id = 2 where tipousuario_id = ".$tipousuario_id;
+        
+        return $this->db->query($sql);
+    }
+    /*
+     * Get nombre detipo_usuario by tipousuario_id
+     */
+    function get_tipousuario_nombre($tipousuario_id)
+    {
+        $tipo_usuario = $this->db->query("
+            SELECT
+                t.tipousuario_descripcion
+
+            FROM
+                tipo_usuario t
+
+            WHERE
+                t.tipousuario_id = ?
+        ",array($tipousuario_id))->row_array();
+
+        return $tipo_usuario['tipousuario_descripcion'];
     }
 }

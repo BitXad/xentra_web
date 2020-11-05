@@ -5,55 +5,46 @@
  */
  
 class Tipo_inmueble extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Tipo_inmueble_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of tipo_inmueble
      */
     function index()
     {
-        $data['all_tipo_inmueble'] = $this->Tipo_inmueble_model->get_all_tipo_inmueble();
-        
-        $data['_view'] = 'tipo_inmueble/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(448)){
+            $data['all_tipo_inmueble'] = $this->Tipo_inmueble_model->get_all_tipo_inmueble();
+
+            $data['_view'] = 'tipo_inmueble/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new tipo_inmueble
      */
     function add()
-    {   
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('nombre_tin','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        $this->form_validation->set_rules('codigo_tin','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        if($this->form_validation->run())     
-        {
-            $params = array(
-                'nombre_tin' => $this->input->post('nombre_tin'),
-                'codigo_tin' => $this->input->post('codigo_tin'),
-            );
-            $id_tin = $this->Tipo_inmueble_model->add_tipo_inmueble($params);
-            redirect('tipo_inmueble/index');
-        }else{            
-            $data['_view'] = 'tipo_inmueble/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
-
-    /*
-     * Editing a tipo_inmueble
-     */
-    function edit($id_tin)
-    {   
-        // check if the Diametrored exists before trying to edit it
-        $data['tipo_inmueble'] = $this->Tipo_inmueble_model->get_tipo_inmueble($id_tin);
-        
-        if(isset($data['tipo_inmueble']['id_tin']))
-        {
+    {
+        if($this->acceso(448)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('nombre_tin','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             $this->form_validation->set_rules('codigo_tin','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -63,16 +54,46 @@ class Tipo_inmueble extends CI_Controller{
                     'nombre_tin' => $this->input->post('nombre_tin'),
                     'codigo_tin' => $this->input->post('codigo_tin'),
                 );
-                
-                $this->Tipo_inmueble_model->update_tipo_inmueble($id_tin,$params);            
+                $id_tin = $this->Tipo_inmueble_model->add_tipo_inmueble($params);
                 redirect('tipo_inmueble/index');
-            }else{
-                $data['_view'] = 'tipo_inmueble/edit';
+            }else{            
+                $data['_view'] = 'tipo_inmueble/add';
                 $this->load->view('layouts/main',$data);
             }
         }
-        else
-            show_error('The tipo_inmueble you are trying to edit does not exist.');
+    }  
+
+    /*
+     * Editing a tipo_inmueble
+     */
+    function edit($id_tin)
+    {
+        if($this->acceso(448)){
+            // check if the Diametrored exists before trying to edit it
+            $data['tipo_inmueble'] = $this->Tipo_inmueble_model->get_tipo_inmueble($id_tin);
+
+            if(isset($data['tipo_inmueble']['id_tin']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('nombre_tin','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                $this->form_validation->set_rules('codigo_tin','Código','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())     
+                {
+                    $params = array(
+                        'nombre_tin' => $this->input->post('nombre_tin'),
+                        'codigo_tin' => $this->input->post('codigo_tin'),
+                    );
+
+                    $this->Tipo_inmueble_model->update_tipo_inmueble($id_tin,$params);            
+                    redirect('tipo_inmueble/index');
+                }else{
+                    $data['_view'] = 'tipo_inmueble/edit';
+                    $this->load->view('layouts/main',$data);
+                }
+            }
+            else
+                show_error('The tipo_inmueble you are trying to edit does not exist.');
+        }
     }
     
     /* * añadir tipo_inmueble */

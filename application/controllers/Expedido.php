@@ -5,43 +5,62 @@
  */
  
 class Expedido extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Expedido_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of expedido
      */
     function index()
     {
-        $data['expedido'] = $this->Expedido_model->get_all_expedido();
-        
-        $data['_view'] = 'expedido/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(442)){
+            $data['expedido'] = $this->Expedido_model->get_all_expedido();
+
+            $data['_view'] = 'expedido/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new expedido
      */
     function add()
-    {   
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('ciudad','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        if($this->form_validation->run())     
-        {   
-            $params = array(
-                'ciudad' => $this->input->post('ciudad'),
-            );
-            
-            $expedido_id = $this->Expedido_model->add_expedido($params);
-            redirect('expedido/index');
-        }
-        else
-        {            
-            $data['_view'] = 'expedido/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(442)){
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('ciudad','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
+            {   
+                $params = array(
+                    'ciudad' => $this->input->post('ciudad'),
+                );
+
+                $expedido_id = $this->Expedido_model->add_expedido($params);
+                redirect('expedido/index');
+            }
+            else
+            {            
+                $data['_view'] = 'expedido/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -49,37 +68,39 @@ class Expedido extends CI_Controller{
      * Editing a expedido
      */
     function edit($ciudad)
-    {   
-        // check if the expedido exists before trying to edit it
-        $ciudad = str_replace("%20", " ", $ciudad);
-        $data['expedido'] = $this->Expedido_model->get_expedido($ciudad);
-        
-        if(isset($data['expedido']['ciudad']))
-        {
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules('ciudad','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-            if($this->form_validation->run())     
+    {
+        if($this->acceso(442)){
+            // check if the expedido exists before trying to edit it
+            $ciudad = str_replace("%20", " ", $ciudad);
+            $data['expedido'] = $this->Expedido_model->get_expedido($ciudad);
+
+            if(isset($data['expedido']['ciudad']))
             {
-                $params = array(
-                    'ciudad' => $this->input->post('ciudad'),
-                );
-                $this->Expedido_model->update_expedido($ciudad,$params);            
-                redirect('expedido/index');
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('ciudad','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())     
+                {
+                    $params = array(
+                        'ciudad' => $this->input->post('ciudad'),
+                    );
+                    $this->Expedido_model->update_expedido($ciudad,$params);            
+                    redirect('expedido/index');
+                }
+                else
+                {
+                    $data['_view'] = 'expedido/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'expedido/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The expedido you are trying to edit does not exist.');
         }
-        else
-            show_error('The expedido you are trying to edit does not exist.');
     } 
 
     /*
      * Deleting expedido
      */
-    function remove($ciudad)
+    /*function remove($ciudad)
     {
         $expedido = $this->Expedido_model->get_expedido($ciudad);
 
@@ -91,6 +112,6 @@ class Expedido extends CI_Controller{
         }
         else
             show_error('The expedido you are trying to delete does not exist.');
-    }
+    }*/
     
 }

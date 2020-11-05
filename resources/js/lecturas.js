@@ -110,6 +110,7 @@ function calcular(id_asoc){
                     
                     
                     var aportes_multas = document.getElementById("aportes_multas").value;
+                    var descuentos = document.getElementById("descuentos").value;
                     var total_bs = "0.00";
 
                     //alert(consumo_bs+" - "+consumo_alcantarillado);
@@ -126,7 +127,7 @@ function calcular(id_asoc){
                     $("#consumo_alcantarillado").val(Number(consumo_alcantarillado));
                     
                     
-                    total_bs = Number(consumo_bs) + Number(consumo_alcantarillado) + Number(aportes_multas);
+                    total_bs = Number(consumo_bs) + Number(consumo_alcantarillado) + Number(aportes_multas)- Number(descuentos);
 
                     $("#total_bs").val(total_bs.toFixed(2));
 
@@ -245,11 +246,16 @@ function cargar_lectura(lectura) {
                 var tam = res.length;
                 var html = "";
                 var total_multa = 0;
+                var total_desc  = 0;
                 var ancho = "size=5;";
 
 //            alert(tam);
                 for (var i = 0; i < tam; i++) {
-                    total_multa += Number(res[i].monto);
+                    if(res[i].multa == "DESCUENTO"){
+                        total_desc += Number(res[i].monto);
+                    }else{
+                        total_multa += Number(res[i].monto);
+                    }
 
                     if (esMobil()) {
 
@@ -316,6 +322,11 @@ function cargar_lectura(lectura) {
                 html += "<tr style='padding:0; background-color: " + color_fondo + ";'>";
                 html += "<td style='padding:0;' " + columnas + "><b>MULTAS Y APORTES (Bs): </b></td>";
                 html += "<td style='padding:0;'><input type='text' value='" + total_multa.toFixed(2) + "' id='aportes_multas' style='background: silver;' readonly='true' " + ancho + "/></td>";
+                html += "</tr>";
+                
+                html += "<tr style='padding:0; background-color: " + color_fondo + ";'>";
+                html += "<td style='padding:0;' " + columnas + "><b>DESCUENTOS (Bs): </b></td>";
+                html += "<td style='padding:0;'><input type='text' value='" + total_desc.toFixed(2) + "' id='descuentos' style='background: silver;' readonly='true' " + ancho + "/></td>";
                 html += "</tr>";
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + ";'>";
