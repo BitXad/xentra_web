@@ -1,10 +1,27 @@
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/descuento.js'); ?>" type="text/javascript"></script>
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<script type="text/javascript">
+    $(document).ready(function () {
+        (function ($) {
+            $('#buscarasociado').keyup(function () {
+                var rex = new RegExp($(this).val(), 'i');
+                $('.buscar tr').hide();
+                $('.buscar tr').filter(function () {
+                    return rex.test($(this).text());
+                }).show();
+            })
+        }(jQuery));
+    });
+</script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
               	<h3 class="box-title">Nuevo Descuento</h3>
+                <a data-toggle="modal" data-target="#modalbuscarasociado" class="btn btn-info" title="Buscar nuevo asociado">
+                    <i class="fa fa-plus-circle"></i>Buscar Asociado</a>
             </div>
             <?php echo form_open('descuento/add'); ?>
             <div class="box-body">
@@ -55,3 +72,44 @@
       	</div>
     </div>
 </div>
+<!------------------------ INICIO modal para Seleccioanr nuevo asociado ------------------->
+<div class="modal fade" id="modalbuscarasociado" tabindex="-1" role="dialog" aria-labelledby="modalbuscarasociadolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">Buscar Asociado</span>
+                <div class="col-md-12" style="padding-left: 0px">
+                    <div class="input-group">
+                        <span class="input-group-addon"> Buscar </span>           
+                        <input type="text" id="buscarasociado" name="buscarasociado" class="form-control" placeholder="Ingrese el nombre, código.." onkeypress="iniciar_busqueda(event)" autofocus autocomplete="off">
+                        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tabla_asociados()"><span class="fa fa-search"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <!------------------------------------------------------------------->
+                <div class="box-body table-responsive">
+                    <table class="table table-striped" id="mitabla">
+                        <tr>
+                            <th>#</th>
+                            <th></th>
+                            <th> Nombres
+                                <span style="float: right;" class="right badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
+                            </th>
+                            <th></th>
+                        </tr>
+                        <tbody class="buscar" id="tablaresultados" >
+                        </tbody>
+                    </table>
+                </div>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Seleccionar nuevo asociado ------------------->

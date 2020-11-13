@@ -40,12 +40,12 @@ class Descuento_model extends CI_Model
     function get_buscar_asociado($parametro){
         $cliente = $this->db->query("
             SELECT
-                a.id_asoc, a.nombres_asoc, a.apellidos_asoc
+                a.id_asoc, a.nombres_asoc, a.apellidos_asoc, foto_asoc
             FROM
                 asociado a
             WHERE
                 a.estado = 'ACTIVO'
-                and (a.nombres_asoc like '%".$parametro."%' or a.apellidos_asoc like '%".$parametro."%')
+                and (a.nombres_asoc like '%".$parametro."%' or a.apellidos_asoc like '%".$parametro."%' or codigo_asoc = '".$parametro."')
             ORDER BY a.apellidos_asoc, a.nombres_asoc
         ")->result_array();
 

@@ -174,7 +174,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, orden_por, nombr
                     
                     htmls = "";
                     htmls += "<tr class='larrf lizq1'>";
-                    htmls += "<td colspan='7'></td>";
+                    htmls += "<td colspan='8'></td>";
                     htmls += "<td class='text-right'>"+totalconsumomt3+"</td>";
                     htmls += "<td class='text-right'>"+numberFormat(Number(totalconsumo).toFixed(2))+"</td>";
                     htmls += "<td class='text-right'>"+numberFormat(Number(totalalcanta).toFixed(2))+"</td>";
@@ -185,7 +185,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, orden_por, nombr
                     htmls += "<td class='lizq1' colspan='2'></td>";
                     htmls += "<td class='lizq1'><br><br></td>";
                     htmls += "<td class='larrf' colspan='6'></td>";
-                    htmls += "<td class='larrf text-right text-bold' colspan='3' style='font-family: Arial; font-size: 15px; !important'>TOTAL Bs.</td>";
+                    htmls += "<td class='larrf text-right text-bold' colspan='4' style='font-family: Arial; font-size: 15px; !important'>TOTAL Bs.</td>";
                     htmls += "<td class='larrf text-right text-bold' style='font-family: Arial; font-size: 15px; !important'>"+numberFormat(Number(totalingreso).toFixed(2))+"</td>";
                     htmls += "</tr>";
                     htmls += "<tr>";

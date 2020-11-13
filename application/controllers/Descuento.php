@@ -106,7 +106,7 @@ class Descuento extends CI_Controller{
                 show_error('El descuento que intentas modificar no existe!.');
         }
     }
-    /* Busca y selecciona asociados en nuevo descuento */
+    /* Busca y selecciona asociados en nuevo descuento tambien en el modal. */
     function buscar_asociado()
     {
         if ($this->input->is_ajax_request()){
