@@ -287,44 +287,56 @@ class Lectura extends CI_Controller {
         $id_usu = $this->session_data['id_usu'];
         
         $id_asoc = $this->input->post("id_asoc");
-        $mes_lec = "'" . $this->input->post("mes_lec") . "'";
+        $mes_lec = $this->input->post("mes_lec");
         $gestion_lec = $this->input->post("gestion_lec");
         $anterior_lec = $this->input->post("anterior_lec");
         $actual_lec = $this->input->post("actual_lec");
-        $fechaant_lec = "'" . $this->input->post("fechaant_lec") . "'";
+        $fechaant_lec = $this->input->post("fechaant_lec");
         $consumo_lec = $this->input->post("consumo_lec");
-        $fecha_lec = "'" . $this->input->post("fecha_lec") . "'";
-        $hora_lec = "'" . $this->input->post("hora_lec") . "'";
+        $fecha_lec = $this->input->post("fecha_lec");
+        $hora_lec = $this->input->post("hora_lec");
         $totalcons_lec = $this->input->post("totalcons_lec");
         $monto_lec = $this->input->post("monto_lec");
-        $estado_lec = "'" . $this->input->post("estado_lec") . "'";
-        $tipo_asoc = "'" . $this->input->post("tipo_asoc") . "'";
-        $servicios_asoc = "'" . $this->input->post("servicios_asoc") . "'";
+        $estado_lec = $this->input->post("estado_lec");
+        $tipo_asoc = $this->input->post("tipo_asoc");
+        $servicios_asoc = $this->input->post("servicios_asoc");
         $cantfact_lec = $this->input->post("cantfact_lec");
         $montofact_lec = $this->input->post("montofact_lec");
 
         $nit_fact = "'" . $this->input->post("nit_fact") . "'";
         $razon_fact = "'" . $this->input->post("razon_fact") . "'";
         $fechavenc_fact = "'" . $this->input->post("fecha_vencimiento") . "'";
-        $fechalectura_fact = "'" . $this->input->post("fecha_lectura") . "'";
+        $fechalectura_fact = $this->input->post("fecha_lectura");
 
         $consumo_agua_bs = $this->input->post("consumo_agua_bs");
         $consumo_alcantarillado_bs = $this->input->post("consumo_alcantarillado_bs");
+        
+        $params = array(
+            'id_usu' => $id_usu,
+            'id_asoc' => $id_asoc,
+            'mes_lec' => $mes_lec,
+            'gestion_lec' => $gestion_lec,
+            'anterior_lec' => $anterior_lec,
+            'actual_lec' => $actual_lec,
+            'fechaant_lec' => $fechaant_lec,
+            'consumo_lec' => $consumo_lec,
+            'fecha_lec' => $fechalectura_fact,
+            'hora_lec' => $hora_lec,
+            'totalcons_lec' => $totalcons_lec,
+            'monto_lec' => $monto_lec,
+            'estado_lec' => $estado_lec,
+            'tipo_asoc' => $tipo_asoc,
+            'servicios_asoc' => $servicios_asoc,
+            'cantfact_lec' => $cantfact_lec,
+            'montofact_lec' => $montofact_lec,
+            'consumoalcant_lec' => $consumo_alcantarillado_bs,
+                );
+        $id_lec = $this->Lectura_model->add_lectura($params);
 
-        $sql ="insert into lectura(id_usu,id_asoc,mes_lec,gestion_lec,"
-            ."anterior_lec,actual_lec,fechaant_lec,consumo_lec,fecha_lec,hora_lec,"
-            ."totalcons_lec,monto_lec,estado_lec,tipo_asoc,servicios_asoc,"
-            ."cantfact_lec,montofact_lec, consumoalcant_lec) values(".
-            $id_usu.",".$id_asoc.",".$mes_lec.",".$gestion_lec.",".$anterior_lec.",".
-            $actual_lec.",".$fechaant_lec.",".$consumo_lec.",".$fechalectura_fact.",".
-            $hora_lec.",".$totalcons_lec.",".$monto_lec.",".$estado_lec.",".
-            $tipo_asoc.",".$servicios_asoc.",".$cantfact_lec.",".$montofact_lec.",".$consumo_alcantarillado_bs.")";
-        $result = $this->Lectura_model->ejecutar($sql);
-
-        $sql = 'select * from lectura where id_asoc = ' . $id_asoc . ' order by fecha_lec desc';
+        /*$sql = 'select * from lectura where id_asoc = ' . $id_asoc . ' order by fecha_lec desc';
         $result = $this->Lectura_model->consultar($sql);
 
-        $id_lec = $result[0]["id_lec"];
+        $id_lec = $result[0]["id_lec"];*/
 
 //        $nit_fact = quotedStr(FormLecturas.ADOPrime.fieldbyname('nit_asoc').AsString);
 //        razon_fact:=quotedStr(FormLecturas.ADOPrime.fieldbyname('razon_asoc').AsString);
@@ -388,7 +400,7 @@ class Lectura extends CI_Controller {
             $this->Lectura_model->ejecutar($sql);
         }
 
-        $mes = $mes_lec;
+        $mes = "'".$mes_lec."'";
         $gestion = $gestion_lec;
         $asociado = $id_asoc;
         $estemes = 0;
@@ -448,9 +460,9 @@ class Lectura extends CI_Controller {
             // echo $sql;
             $this->Lectura_model->ejecutar($sql);
         }
-        if ($tipo_asoc == "'DOMESTICA'" || $tipo_asoc == "'DOMICILIARIA BASICA'" || $tipo_asoc == "'DOMICILIARIA ESPECIAL'"){
+        if ($tipo_asoc == "DOMESTICA" || $tipo_asoc == "DOMICILIARIA BASICA" || $tipo_asoc == "DOMICILIARIA ESPECIAL"){
             if($gestion == "2020"){
-                if ($mes_lec == "'ABRIL'" || $mes_lec == "'MAYO'" || $mes_lec == "'JUNIO'") {
+                if ($mes_lec == "ABRIL" || $mes_lec == "MAYO" || $mes_lec == "JUNIO") {
                     $descu = 0 - (($facturas[0]["montototal_fact"]-1)/2);
                     $sql1="INSERT INTO detalle_factura (id_fact, cant_detfact, descip_detfact, punit_detfact, desc_detfact, total_detfact, tipo_detfact, exento_detfact, ice_detfact) VALUES
                     (".$facturas[0]['id_fact'].",  1, 'MENOS 50% DES. DOM.', ".$descu.", 0, ".$descu.", 0, 'NO', 'NO')";
