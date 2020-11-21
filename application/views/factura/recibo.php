@@ -16,7 +16,7 @@
                 
             <center>
                                
-                    <img src="<?php echo base_url('resources/images/empresas/logo.jpg') ?>" width="80px" height="60px"><br>
+                    <img src="<?php echo base_url('resources/images/empresas/'.$empresa['logo_emp']) ?>" width="80px" height="60px"><br>
                     <font size="2" face="Arial"><b><?php echo $empresa['nombre_emp']; ?></b></font><br>
                     <font size="2" face="Arial"><b><?php echo $empresa['eslogan_emp']; ?></b></font><br>
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa['empresa_propietario']; ?></b></font><br>-->
