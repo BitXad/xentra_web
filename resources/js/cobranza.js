@@ -36,6 +36,7 @@ function finalizar(){
             success:function(respuesta){
 
                 var registros = JSON.parse(respuesta);
+                if(registros != null){
                 alert('COBRO REALIZADO CON EXITO');
                 if (imprimir_factura==true) {
                     window.open(base_url+"factura/imprimir/"+factura_id, '_blank');
@@ -50,8 +51,10 @@ function finalizar(){
                 $("#total_factura").val("0.00");
                 $("#btnfinalizar").prop('disabled',true);
                 facturas_pendientes(id_asoc);
-             
-
+            }else{
+                alert("Informacion Incorrecta, revise sus datos, consumo y total no pueden ser 0");
+            }
+            
             },
 
             error:function(respuesta){          
