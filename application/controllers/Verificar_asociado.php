@@ -127,68 +127,7 @@ class Verificar extends CI_Controller
             return '----';
         }
     } */
-    
-    function sesionasociado(){
-        $login = $this->input->post('username');
-        $clave = $this->input->post('password');
-        /*$login = "martha";
-        $clave = "123";*/
-        //$ipe = $this->input->post('ipe');
-        $this->load->model('Asociado_model');
-        $result = $this->Asociado_model->get_esteasociado($login, $clave);
-        /*$resultado = "SELECT * from asociado WHERE login_asoc = '".$login."'".
-                    " and clave_asoc = '".$clave."' ".
-                    " and estado = 'ACTIVO'";
-        $result=$this->db->query($resultado)->row_array();
-        */
-        
-        //var_dump($result);
-        if($result){
-            $thumb = "thumb_default.jpg";
-            if ($result->foto_asoc <> null && $result->foto_asoc <> "") {
-                $thumb = "thumb_".$result->foto_asoc;
-            }
-            $sess_array = array(
-                'el_asociado' => "el_asociado",
-                'login_usu' => $result->login_asoc,
-                'id_asoc' => $result->id_asoc,
-                'nombre_usu' => $result->nombres_asoc." ".$result->apellidos_asoc,
-                //'apellidos_asoc' => $result->apellidos_asoc,
-                'estado' => $result->estado,
-                //'tipo_usuario' => $result->tipo_usuario,
-                'foto_asoc' => $result->foto_asoc,
-                //'usuario_email' => $result->usuario_email,
-                'clave_asoc' => $result->clave_asoc,
-                'thumb' => $thumb,
-                'rol' => array('rolusuario_asignado' => '0')
-                /*'gestion_nombre' => $gestion->gestion_nombre,
-                'gestion_descripcion' => $gestion->gestion_descripcion,
-                'gestion_id' => $gestion->gestion_id*/
-            );
-            
-            $this->session->set_userdata('logged_in', $sess_array);
-            $session_data = $this->session->userdata('logged_in');
 
-        /*$clienteid = $result['cliente_id'];
-        $clientenombre = $result['cliente_nombre'];
-        $update="UPDATE carrito
-                  SET cliente_id = '".$clienteid."' 
-                  WHERE cliente_id = '".$ipe."' ";
-        $this->db->query($update);
-        */
-        /*setcookie("cliente_id", $clienteid, time() + (3600 * 24), "/");
-        setcookie("cliente_nombre", $clientenombre, time() + (3600 * 24), "/");
-        return true;*/
-             redirect("asociado/dashboard");
-            //$data['_view'] = 'asociado/dashboard/16';
-            //$this->load->view('layouts/main',$data);
-        
-        }else{
-            //$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USUARIO o CLAVE invalidos' . $result . '</div>');
-            redirect("login/logina");
-            //$this->alerta();
-        }
-    }
 
 }
 

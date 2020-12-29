@@ -19,14 +19,11 @@ class Asociado_model extends CI_Model
         $asociado = $this->db->query("
             SELECT
                 *
-
             FROM
                 `asociado`
-
             WHERE
                 `id_asoc` = ?
         ",array($id_asoc))->row_array();
-
         return $asociado;
     }
 
@@ -34,7 +31,7 @@ class Asociado_model extends CI_Model
     {
         $pendientes = $this->db->query("
              SELECT
-                f.* , l.id_asoc
+                f.* , l.id_asoc, l.mes_lec, l.gestion_lec
             FROM
                 factura f, lectura l 
             
@@ -51,7 +48,7 @@ class Asociado_model extends CI_Model
     {
         $cancelados = $this->db->query("
             SELECT
-                f.* , l.id_asoc
+                f.* , l.id_asoc, l.mes_lec, l.gestion_lec
             FROM
                 factura f, lectura l 
             
@@ -162,6 +159,31 @@ class Asociado_model extends CI_Model
                 date(a.fechahora_asoc) >= '".$fecha1."'
                 and date(a.fechahora_asoc) <= '".$fecha2."'
             /*ORDER By a.apellidos_asoc, a.nombres_asoc*/
+        ")->result_array();
+
+        return $asociado;
+    }
+    /* devuelve al asociado segun usuario y contraseña */
+    function get_esteasociado($login, $clave)
+    {
+        $asociado = $this->db->query("
+            SELECT *
+            from asociado WHERE login_asoc = '".$login."'".
+                    " and clave_asoc = '".md5($clave)."' ".
+                    " and estado = 'ACTIVO'
+        ")->row();
+        return $asociado;
+    }
+    /* retorna lecturas de una gestion, esto para que lo vea el asociado */
+    function getall_lecturasasociado($asociado_id, $gestion_lec)
+    {
+        $asociado = $this->db->query("
+            SELECT l.*, a.nombres_asoc, a.apellidos_asoc, a.tipo_asoc, a.categoria_asoc 
+            from lectura l, asociado a
+            where a.id_asoc=l.id_asoc and
+                  l.gestion_lec = '".$gestion_lec."' and
+                  l.id_asoc=".$asociado_id."
+            order by l.fecha_lec DESC
         ")->result_array();
 
         return $asociado;

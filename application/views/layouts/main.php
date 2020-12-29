@@ -50,19 +50,31 @@
                         <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="<?php echo site_url('resources/images/usuarios/'.$session_data['thumb']);?>" class="user-image" alt="Imagen usuario">
-                                    <span class="hidden-xs"><?php echo $session_data['nombre_usu']?></span>
+                                    <?php
+                                    if(isset($session_data['el_asociado'])){
+                                        $imagen_thumb = "asociados/".$session_data['thumb'];
+                                        $imagen_asocus = "asociados/".$session_data['foto_asoc'];
+                                        $alt = "Imagen Asociado";
+                                        $tipo_uusario = "";
+                                    }else{
+                                        $imagen_thumb = "usuarios/".$session_data['thumb'];
+                                        $imagen_asocus = "usuarios/".$session_data['imagen_usu'];
+                                        $alt = "Imagen Usuario";
+                                        $tipo_uusario = "- ".$session_data['tipo_usuario'];
+                                    } ?>
+                                    <img src="<?php echo site_url('resources/images/'.$imagen_thumb);?>" class="user-image" alt="<?php echo $alt; ?>">
+                                    <span class="hidden-xs"><?php echo $session_data['login_usu']?></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
-                                        <?php if($session_data['imagen_usu']!= ""){ ?>
-                                        <img src="<?php echo site_url('resources/images/usuarios/'.$session_data['imagen_usu']);?>" class="img-circle" alt="Imagen usuario">
+                                        <?php if(isset($session_data['thumb'])){ ?>
+                                        <img src="<?php echo site_url('resources/images/'.$imagen_asocus);?>" class="img-circle" alt="<?php echo $alt; ?>">
                                         <?php }else{ ?>
-                                        <img src="<?php echo site_url('resources/images/usuarios/default.jpg');?>" class="img-circle" alt="Imagen usuario">
+                                        <img src="<?php echo site_url('resources/images/usuarios/default.jpg');?>" class="img-circle" alt="<?php echo $alt; ?>">
                                         <?php } ?>
                                     <p>
-                                        <?php echo $session_data['nombre_usu']?> - <?php echo $session_data['tipo_usuario']?>
+                                        <?php echo $session_data['nombre_usu']?> <?php echo $tipo_uusario; ?>
                                         <!--<small><?php //echo "Gestión ".$session_data['gestion_nombre']?></small>-->
                                     </p>
                                     </li>
@@ -88,7 +100,7 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="<?php echo site_url('resources/images/usuarios/'.$session_data['thumb']);?>" class="img-circle" alt="Imagen usuario">
+                            <img src="<?php echo site_url('resources/images/'.$imagen_thumb);?>" class="img-circle" alt="<?php echo $alt; ?>">
                         </div>
                         <div class="pull-left info">
                             <div  style=" white-space: normal; word-wrap: break-word;"><?php echo $session_data['nombre_usu']?></div>
@@ -98,6 +110,18 @@
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                         <li class="header">MENU PRINCIPAL</li>
+                        <?php if(isset($session_data['el_asociado'])){ ?>
+                            <li>
+                                <a href="<?php echo site_url('asociado/dashboard');?>">
+                                    <i class="fa fa-tint"></i> <span>Consumo</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo site_url('asociado/cambiarinf');?>">
+                                    <i class="fa fa-id-card"></i> <span>Asociado</span>
+                                </a>
+                            </li>
+                        <?php }else{ ?>
                         <li>
                             <a href="<?php echo site_url('dashboard');?>">
                                 <i class="fa fa-dashboard"></i> <span>Panel de Control</span>
@@ -426,6 +450,7 @@
                                 <?php } ?>
                             </ul>
                         </li>
+                        <?php } ?>
                     </ul>
                 </section>
                 <!-- /.sidebar -->

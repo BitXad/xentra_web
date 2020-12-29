@@ -112,6 +112,7 @@ function tablaresultadosasociado(limite)
                             tamaniofont = 1;
                         }
                         html += "<font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["apellidos_asoc"]+" "+registros[i]["nombres_asoc"]+"</b></font><br>";
+                        html += "<b>Login: "+registros[i]["login_asoc"]+"</b><br>";
                         html += "C.I.: "+registros[i]["ci_asoc"]+" "+registros[i]["ciudad"]+"<br>";
                         html += "DIR.: "+registros[i]["direccion_asoc"]+" ";
                         if(registros[i]["nro_asoc"] != null && registros[i]["nro_asoc"] != ""){
@@ -229,6 +230,7 @@ function tablaresultadosasociado(limite)
                         html += "<td>";
                         html += "<a href='"+base_url+"asociado/edit/"+registros[i]["id_asoc"]+"' class='btn btn-info btn-xs' target='_blank' title='Modificar información de Asociado' ><span class='fa fa-pencil'></span></a>";
                         html += "<a href='"+base_url+"imagen_asociado/catalogo/"+registros[i]["id_asoc"]+"' class='btn btn-success btn-xs' target='_blank' title='Documentos' ><span class='fa fa-folder-open'></span></a>";
+                        html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalcambiar'  title='Cambiar contraseña' onclick='mostrar_modalcambiar("+registros[i]['id_asoc']+", "+JSON.stringify(registros[i]['apellidos_asoc']+" "+registros[i]['nombres_asoc'])+")'><span class='fa fa-gear'></span></a>";
                         
                         
                         
@@ -622,53 +624,58 @@ function busqueda_inicial()
     
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*aumenta un cero a un digito; es para las horas*/
-function aumentar_cero(num){
-    if (num < 10) {
-        num = "0" + num;
-    }
-    return num;
+function mostrar_modalcambiar(id_asoc, nombre_asoc){
+    $("#esteid_asoc").val(id_asoc);
+    $("#estenombre").html(nombre_asoc);
+    $("#nuevo_pass").val('');
+    $("#repita_pass").val('');
 }
-/* recibe Date y devuelve en formato dd/mm/YYYY hh:mm:ss ampm */
-function formatofecha_hora_ampm(string){
-    var mifh = new Date(string);
-    var info = "";
-    var am_pm = mifh.getHours() >= 12 ? "p.m." : "a.m.";
-    var hours = mifh.getHours() > 12 ? mifh.getHours() - 12 : mifh.getHours();
-    if(string != null){
-       info = aumentar_cero(mifh.getDate())+"/"+aumentar_cero((mifh.getMonth()+1))+"/"+mifh.getFullYear()+" "+aumentar_cero(hours)+":"+aumentar_cero(mifh.getMinutes())+":"+aumentar_cero(mifh.getSeconds())+" "+am_pm;
-   }
-    return info;
+/* cambiar contraseña de asocaido por administracion..... */
+function cambiarestacon()
+{
+    var base_url = document.getElementById('base_url').value;
+    var id_asoc = document.getElementById('esteid_asoc').value;
+    var nuevo_pass = document.getElementById('nuevo_pass').value;
+    var repita_pass = document.getElementById('repita_pass').value;
+    var controlador = base_url+'asociado/cambiarcontra_desdeadmin';
+    //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    if(nuevo_pass === repita_pass){
+        if(nuevo_pass.length >2){
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{id_asoc:id_asoc, password:nuevo_pass},
+                success:function(respuesta){
+                    var registros =  JSON.parse(respuesta);
+                    if (registros != null){
+                        if(registros == "ok"){
+                            alert("Contraseña modificada con exito!");
+                        }else if(registros == "no"){
+                            alert("Por favor vuelva a iniciar sesion!.");
+                        }
+                        $('#modalcambiar').modal('hide');
+                        $('#modalcambiar').on('hidden.bs.modal', function () {
+                        $('#nuevo_pass').val('');
+                        $('#repita_pass').val('');
+                        });
+                       //document.getElementById('loader').style.display = 'none';
+                }
+                //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            },
+            error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+               html = "";
+               $("#tablaresultados").html(html);
+            },
+            complete: function (jqXHR, textStatus) {
+                //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+                //tabla_inventario();
+            }
+
+        });
+    }else{
+        alert("Tres caracteres como minimo por favor!.");
+    }
+    }else{
+        alert("las contraseñas no coinciden");
+    }
 }

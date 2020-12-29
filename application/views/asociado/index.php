@@ -220,3 +220,41 @@
         </div>
     </div>
 </div>
+
+<!------------------------ INICIO modal para cambiar PASSWORD ------------------->
+<div class="modal fade" id="modalcambiar" tabindex="-1" role="dialog" aria-labelledby="modalcambiarlabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <span>CAMBIAR CONTRASEÑA DE:</span><br>
+                <label class="text-bold" style="font-size: 12pt" id="estenombre"></label>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body" style="font-size: 10pt">
+                <!------------------------------------------------------------------->
+                <div class="col-md-6">
+                    <label for="nuevo_pass" class="control-label">Nueva Contraseña</label>
+                    <div class="form-group">
+                        <input type="password" name="nuevo_pass" class="form-control" id="nuevo_pass" placeholder="Mínimo tres caracteres" />
+                        <span class="text-danger"><?php echo form_error('nuevo_pass');?></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="repita_pass" class="control-label">Repita Contraseña</label>
+                    <div class="form-group">
+                        <input type="password" name="repita_pass" class="form-control" id="repita_pass" placeholder="Mínimo tres caracteres" />
+                        <span class="text-danger"><?php echo form_error('repita_pass');?></span>
+                    </div>
+                </div>
+                <input type="hidden" name="esteid_asoc" class="form-control" id="esteid_asoc" />
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a class="btn btn-success" onclick="cambiarestacon()"><i class="fa fa-check"></i> Cambiar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal" onclick="borrar_campos"><span class="fa fa-times"></span> Cancelar </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para cambiar PASSWORD ------------------->

@@ -26,5 +26,15 @@ Class Login extends CI_Controller
     public function mensajeacceso(){
         redirect('login/mensajeacceso');
     }
+    public function logina() {
+        $data = array(
+            'msg' => $this->session->flashdata('msg')
+        );
+
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+
+        $this->load->view('public/logina',$data);
+    }
 }
 

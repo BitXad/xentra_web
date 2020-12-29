@@ -150,6 +150,14 @@ class Asociado extends CI_Controller{
                     'distanciar_asoc' => $this->input->post('distanciar_asoc'),
                 );
                 $asociado_id = $this->Asociado_model->add_asociado($params);
+                $resnombre = explode(" ", $this->input->post('nombres_asoc'));
+                $usuario  = $resnombre[0].$asociado_id;
+                $password = $resnombre[0].$asociado_id;
+                $paramsc = array(
+                    'login_asoc' => $usuario,
+                    'clave_asoc' => md5($password),
+                );
+                $this->Asociado_model->update_asociado($asociado_id,$paramsc);
 
                 //$fecha_reg = date('Y-m-d');
                 $hora_reg = date('H:i:s');
@@ -458,30 +466,30 @@ class Asociado extends CI_Controller{
         }
     }
 
-    function dashboard($asociado_id)
+    function dashboard()
     {
-        $data['asociado'] = $this->Asociado_model->get_asociado($asociado_id);
-        $data['pendientes'] = $this->Asociado_model->get_pendientes($asociado_id);
-        $data['canceladas'] = $this->Asociado_model->get_canceladas($asociado_id);
+        $id_asoc = $this->session_data['id_asoc'];
+        $this->load->model('Gestion_model');
+        $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+        $data['asociado'] = $this->Asociado_model->get_asociado($id_asoc);
+        $pendientes = $this->Asociado_model->get_pendientes($id_asoc);
+        $data['pendientes'] = $pendientes;
+        $canceladas = $this->Asociado_model->get_canceladas($id_asoc);
+         $data['canceladas'] = $canceladas;
+        if(count($pendientes)>0){
+            $data['estagestion'] = $pendientes[0]['gestion_lec'];
+        }else if(count($canceladas) >0){
+            $data['estagestion'] = $canceladas[0]['gestion_lec'];
+        }
         $data['_view'] = 'asociado/dashboard';
         $this->load->view('layouts/main',$data);
     }
     function ultimas_lecturas()
     {
         $asociado_id = $this->input->post('asociado_id');
-        $ultimas = "SELECT l.*, a.nombres_asoc, a.apellidos_asoc, a.tipo_asoc, a.categoria_asoc  from lectura l, asociado a where a.id_asoc=l.id_asoc and l.id_asoc=".$asociado_id." order by l.fecha_lec DESC limit 5";
-        $result= $this->db->query($ultimas)->result_array();
-        //foreach($result as $res){
-        //$mes=intval(date("m",strtotime($res['fecha_lec']) ) );
-        
-        //$suma=$res['consumo_lec'];
-        
-        //$registros[$mes]+=$suma;    
-        //}
+        $gestion_lec = $this->input->post('gestion_lec');
+        $result = $this->Asociado_model->getall_lecturasasociado($asociado_id, $gestion_lec);
         echo json_encode($result);
-         return true;
-        //$data=array("registrosdia" =>$registros,);
-        //echo   json_encode($data);
     }
     /* Listing of asociado modifcados */
     function modif()
@@ -516,6 +524,72 @@ class Asociado extends CI_Controller{
         else
         {
             show_404();
-        }   
+        }
+    }
+    function cambiarinf()
+    {
+        $id_asoc = $this->session_data['id_asoc'];
+        $data['asociado'] = $this->Asociado_model->get_asociado($id_asoc);
+        
+        $data['_view'] = 'asociado/cambiarinf';
+        $this->load->view('layouts/main',$data);
+    }
+    /* cambiar contraseña */
+    function cambiarcontrasenia()
+    {
+        if ($this->input->is_ajax_request()) {
+            $id_asoc = $this->session_data['id_asoc'];
+            if(isset($id_asoc)){
+                $password = $this->input->post('password');
+                $params = array(
+                    'clave_asoc' => md5($password),
+                );
+                
+                $this->Asociado_model->update_asociado($id_asoc,$params);
+                echo json_encode("ok");
+            
+            }else{
+                echo json_encode("no");
+            }
+        }else{
+            show_404();
+        }
+    }
+    /* cambiar contraseña desde administracion */
+    function cambiarcontra_desdeadmin()
+    {
+        if ($this->input->is_ajax_request()) {
+            $id_asoc = $this->input->post('id_asoc');
+            if(isset($id_asoc)){
+                $password = $this->input->post('password');
+                $params = array(
+                    'clave_asoc' => md5($password),
+                );
+                
+                $this->Asociado_model->update_asociado($id_asoc,$params);
+                echo json_encode("ok");
+            
+            }else{
+                echo json_encode("no");
+            }
+        }else{
+            show_404();
+        }
+    }
+    function generar_usuariocontras()
+    {
+        $all_asociado = $this->Asociado_model->get_all_asociado();
+        foreach($all_asociado as $asociado){
+            $resnombre = explode(" ", $asociado['nombres_asoc']);
+            $usuario  = $resnombre[0].$asociado['id_asoc'];
+            $password = $resnombre[0].$asociado['id_asoc'];
+            $params = array(
+                'login_asoc' => $usuario,
+                'clave_asoc' => md5($password),
+            );
+            $this->Asociado_model->update_asociado($asociado['id_asoc'],$params);
+        }
+        $data['_view'] = 'asociado/index';
+        $this->load->view('layouts/main',$data);
     }
 }
