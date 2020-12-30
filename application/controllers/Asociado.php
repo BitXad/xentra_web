@@ -234,11 +234,20 @@ class Asociado extends CI_Controller{
 
             if(isset($data['asociado']['id_asoc']))
             {
+                //$original_value = $this->db->query("SELECT login_usu FROM usuario WHERE id_usu = " . $id_usu)->row()->login_usu;
+                if ($this->input->post('login_asoc') != $data['asociado']['login_asoc']) {
+                    $is_unique = '|is_unique[asociado.login_asoc]';
+                } else {
+                    $is_unique = '';
+                }
                 $this->load->model('Lectura_model');
                 $data['lectura_basesocio'] = $this->Lectura_model->get_lectura_basesocio($id_asoc);
 
                 $this->form_validation->set_rules('nombres_asoc','Nombres','trim|required', array('required' => 'Este Campo no debe ser vacio'));
                 $this->form_validation->set_rules('apellidos_asoc','Apellidos','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                $this->form_validation->set_rules('login_asoc','Login','trim|required|min_length[3]|max_length[50]'.$is_unique, array('required' => 'Este Campo no debe ser vacio', 'min_length' => 'Se requiere al menos 3 caracteres como minimo', 'max_length' => 'Se permite como maximo 50 caracteres', 'is_unique' => 'Este login de asociado ya existe.'));
+                //$this->form_validation->set_rules('login_asoc', 'login_asoc', 'required|trim|xss_clean' . $is_unique, array('is_unique' => 'Este login de usuario ya existe.'));
+                
                 if($this->form_validation->run())     
                 {
                     /* *********************INICIO imagen***************************** */
@@ -576,7 +585,8 @@ class Asociado extends CI_Controller{
             show_404();
         }
     }
-    function generar_usuariocontras()
+    /* habilitar esta funcion solo para generar usuario y contraseña de todos los asociados */
+    /*function generar_usuariocontras()
     {
         $all_asociado = $this->Asociado_model->get_all_asociado();
         foreach($all_asociado as $asociado){
@@ -591,5 +601,5 @@ class Asociado extends CI_Controller{
         }
         $data['_view'] = 'asociado/index';
         $this->load->view('layouts/main',$data);
-    }
+    }*/
 }

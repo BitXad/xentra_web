@@ -556,6 +556,13 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <label for="login_asoc" class="control-label">Login</label>
+                        <div class="form-group">
+                            <input type="text" minlength="3" maxlength="50" name="login_asoc" value="<?php echo ($this->input->post('login_asoc') ? $this->input->post('login_asoc') : $asociado["login_asoc"]); ?>" class="form-control" id="login_asoc" requierd autocomplete="off" />
+                            <span class="text-danger"><?php echo form_error('login_asoc');?></span>
+                        </div>
+                    </div>
                     <div class="col-md-2">
                         <label for="estado" class="control-label">Estado</label>
                         <div class="form-group">
