@@ -69,7 +69,7 @@ function graficar(){
           };
           for(i=meses-1;i>=0;i--){
 
-            options.series[0].data.push( Math.round(registros[i]["totalcons_lec"]*100)/100 );
+            options.series[0].data.push( Math.round(registros[i]["consumo_lec"]*100)/100 );
             //options.series[0].name.push( registros[i]["id_asoc"] );
 
             options.xAxis.categories.push(registros[i]["mes_lec"]+'/'+registros[i]["gestion_lec"]);

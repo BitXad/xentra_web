@@ -585,6 +585,16 @@ class Asociado extends CI_Controller{
             show_404();
         }
     }
+    function preaviso($id_lec) {
+            $this->load->model('Empresa_model');
+            $this->load->model('Lectura_model');
+
+            $data['lectura'] = $this->Lectura_model->get_lecturasocio($id_lec);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+
+            $data['_view'] = 'lectura/preaviso_boucher';
+            $this->load->view('layouts/main', $data);
+    }
     /* habilitar esta funcion solo para generar usuario y contraseña de todos los asociados */
     /*function generar_usuariocontras()
     {

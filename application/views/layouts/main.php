@@ -118,7 +118,7 @@
                             </li>
                             <li>
                                 <a href="<?php echo site_url('asociado/cambiarinf');?>">
-                                    <i class="fa fa-id-card"></i> <span>Asociado</span>
+                                    <i class="fa fa-id-card"></i> <span>Cambiar Contraseña</span>
                                 </a>
                             </li>
                         <?php }else{ ?>

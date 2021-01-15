@@ -28,32 +28,39 @@
 <div class="col-md-6 table-responsive">
     <table class="table table-striped" id="mitabla">
 	<tr>
-            <th colspan="5">FACTURAS PENDIENTES</th>
+            <th colspan="6">FACTURAS PENDIENTES</th>
 	</tr>
 	<tr>
             <th>N°</th>
             <th>Vencimiento</th>
             <th>Mes Consumo</th>
-            <th>Consumo</th>
+            <th>Consumo m<sup>3</sup></th>
             <th>Total</th>
+            <th></th>
         </tr>
-        <?php $cont=0; $tp=0; foreach($pendientes as $f){ 
+        <?php $cont=0; $tp=0;
+        foreach($pendientes as $f){ 
             $cont=$cont+1; 
             $tp+=$f['montototal_fact']; ?>
         <tr>
             <td align="center"><?php echo $cont; ?></td>
             <td align="center"><?php echo date('d/m/Y', strtotime($f['fechavenc_fact'])) ?></td>
             <td align="center"><?php echo $f['mes_lec']; ?></td>
-            <td align="right"><?php echo $f['totalconsumo_fact']; ?></td>
+            <td align="right"><?php echo $f['consumo_lec']; ?></td>
             <td align="right"><?php echo $f['montototal_fact']; ?></td>
+            <td align="center">
+                <a href="<?php echo site_url('asociado/preaviso/'.$f['id_lec']); ?>" class="btn btn-info btn-xs" target="_blank">
+                    <i class="fa fa-book"></i></a>
+            </td>
         </tr>
         <?php } ?>
         <tr>
+            <th></th>
             <th>TOTAL BS.</th>
             <th></th>
             <th></th>
-            <th></th>
             <th><?php echo $tp; ?></th>
+            <th></th>
         </tr>
     </table>
 </div>
@@ -64,27 +71,31 @@
 	</tr>
 	<tr>
             <th>N°</th>
-            <th>Fecha</th>
+            <th>Fecha Cancel.</th>
             <th>Mes Consumo</th>
-            <th>Consumo</th>
+            <th>Consumo m<sup>3</sup></th>
             <th>Total</th>
         </tr>
-        <?php $contc=0; $tc=0; foreach($canceladas as $f){ 
+        <?php $contc=0; $tc=0; $totalcons_m3 = 0;
+        foreach($canceladas as $f){ 
             $contc=$contc+1; 
+            $totalcons_m3 += $f['consumo_lec'];
             $tc+=$f['montototal_fact']; ?>
         <tr>
             <td align="center"><?php echo $contc; ?></td>
             <td align="center"><?php echo date('d/m/Y', strtotime($f['fecha_fact'])) ?></td>
             <td align="center"><?php echo $f['mes_lec']; ?></td>
-            <td align="right"><?php echo $f['totalconsumo_fact']; ?></td>
+            <td align="right"><?php echo $f['consumo_lec']; ?></td>
             <td align="right"><?php echo $f['montototal_fact']; ?></td>
         </tr>
         <?php } ?>
         <tr>
-            <th>TOTAL BS.</th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th colspan="3">Promedio Consumo m<sup>3</sup>/TOTAL BS.</th>
+            <th style="text-align: right"><?php
+                if($contc>0){
+                    echo $totalcons_m3/$contc;
+                } ?>
+            </th>
             <th><?php echo $tc; ?></th>
         </tr>
     </table>

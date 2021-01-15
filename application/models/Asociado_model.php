@@ -31,7 +31,7 @@ class Asociado_model extends CI_Model
     {
         $pendientes = $this->db->query("
              SELECT
-                f.* , l.id_asoc, l.mes_lec, l.gestion_lec
+                f.* , l.id_asoc, l.mes_lec, l.gestion_lec, l.id_lec, l.consumo_lec
             FROM
                 factura f, lectura l 
             
@@ -48,15 +48,13 @@ class Asociado_model extends CI_Model
     {
         $cancelados = $this->db->query("
             SELECT
-                f.* , l.id_asoc, l.mes_lec, l.gestion_lec
+                f.* , l.id_asoc, l.mes_lec, l.gestion_lec, l.consumo_lec
             FROM
-                factura f, lectura l 
-            
-            
+                factura f, lectura l
             WHERE f.id_lec=l.id_lec
             and f.estado_fact='CANCELADA'
             and l.id_asoc=".$id_asoc."
-            ORDER BY f.fecha_fact DESC
+            ORDER BY f.id_lec ASC
 
         ")->result_array();
 

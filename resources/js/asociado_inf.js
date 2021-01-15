@@ -1,6 +1,6 @@
 $(document).on("ready",inicio);
 function inicio(){
-    //tablaresultadosasociado(3);
+    $('#modalcambiar').modal('show');
 }
 
 //Tabla resultados de la busqueda en el index de producto
