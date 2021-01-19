@@ -204,10 +204,16 @@ class Factura_model extends CI_Model
         return $resultado;
     }
 
-    function generar_factura($factura,$numfact_dosif1,$consumo,$aportes,$recargos,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact)
+    function generar_factura($factura,$numfact_dosif1,$consumo,$aportes,$recargos,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact, $factura_leyenda1, $factura_leyenda2)
     {
 
-        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), num_fact=".$numfact_dosif1.", totalconsumo_fact=".$consumo.", totalaportes_fact=".$aportes.",totalrecargos_fact=".$recargos.", montototal_fact=".$total.", id_usu=".$usuario_id.", tipo_fact=".$tipo_fact.", nit_fact = ".$nit_fact.", razon_fact = '".$razon_fact."', orden_fact= ".$orden_fact.", nitemisor_fact = ".$nitemisor_fact.", llave_fact = '".$llave_fact."', fechaemision_fact = '".$fechaemision_fact."', codcontrol_fact = '".$codcontrol_fact."'
+        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), 
+                num_fact=".$numfact_dosif1.", totalconsumo_fact=".$consumo.", totalaportes_fact=".$aportes.", 
+                totalrecargos_fact=".$recargos.", montototal_fact=".$total.", id_usu=".$usuario_id.", 
+                tipo_fact=".$tipo_fact.", nit_fact = ".$nit_fact.", razon_fact = '".$razon_fact."', 
+                orden_fact= ".$orden_fact.", nitemisor_fact = ".$nitemisor_fact.", llave_fact = '".$llave_fact."',
+                fechaemision_fact = '".$fechaemision_fact."', codcontrol_fact = '".$codcontrol_fact."',
+                factura_leyenda1 = '".$factura_leyenda1."', factura_leyenda2 = '".$factura_leyenda2."'
         WHERE id_fact=".$factura;        
         $resultado = $this->db->query($sql);
         

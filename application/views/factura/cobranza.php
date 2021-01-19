@@ -70,6 +70,7 @@ input[type=number] { -moz-appearance:textfield; }
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+ <input type="hidden" name="esexento" id="esexento" value="0">
  <!--<input type="hidden" name="usuario_id" id="usuario_id" value="<?php echo $usuario_id; ?>">
  <input type="hidden" name="tipo_orden" id="tipo_orden" value='<?php echo json_encode($tipo_orden); ?>' />-->
  <div class="row" style="padding-left: 10px;margin-top: -20px;margin-bottom: -7px;">

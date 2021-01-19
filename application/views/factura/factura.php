@@ -45,12 +45,12 @@
             
             <div style="width: 100%;border: 1px solid black;padding: 10px">
             <div>
-                <font size="1" face="arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NIT:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $factura[0]['nit_fact']; ?></font><br>
+                <font size="1" face="arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NIT:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $factura[0]['nitemisor_fact']; ?></font><br>
                 <font size="1" face="arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FACTURA Nº: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00<?php echo $factura[0]['num_fact']; ?></font><br>
                 <font size="1" face="arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AUTORIZACION: &nbsp;&nbsp;<?php echo $factura[0]['orden_fact']; ?></font>
             </div></div>
             <center>
-                <font size="2" face="Arial">SERVICIOS</font>
+                <font size="2" face="Arial">CAPTACIÓN Y DEPURACIÓN Y DISTRIBUCIÓN DE AGUA</font>
             </center>
                 
             
@@ -116,9 +116,13 @@
                       <?php
                       
                       $total=0;
+                      $totalexento = 0;
                       foreach($detalle_factura as $d) {
                    
-                      $total += $d['total_detfact']; ?>
+                      $total += $d['total_detfact'];
+                      if($d['exento_detfact'] == "SI"){
+                          $totalexento += $d['total_detfact'];
+                      } ?>
                       <tr>
                       <td style="border: 1px solid black" align="center"><?php echo $d['cant_detfact']; ?></td>
                       <td style="border: 1px solid black;padding-left: 3px"><?php echo $d['descip_detfact']; ?></td>
@@ -143,7 +147,7 @@
                         Bs<br>    
                         TOTAL A PAGAR Bs </th>
                         <th style="text-align: right;" width="15%">
-                            <?php echo number_format(($total*0.87), 2, ".", ","); ?><br>
+                            <?php echo number_format(($total-$totalexento), 2, ".", ","); ?><br>
                             <?php echo number_format($total, 2, ".", ","); ?></th>
                         
                       </tr>
@@ -163,8 +167,8 @@
             TRANS.: <?php echo $factura[0]['id_fact']; ?> <br>
             CAJERO: <?php echo $factura[0]['nombre_usu'];  ?>
             <center>
-                "AQUI VIENE LEYENDA 1"<br>
-                "AQUI VIENE LEYENDA 2"
+                <?php echo $factura[0]['factura_leyenda1'];  ?><br>
+                <?php echo $factura[0]['factura_leyenda2'];  ?>
                
             </center>
         </td>

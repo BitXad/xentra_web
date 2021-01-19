@@ -26,12 +26,14 @@ function finalizar(){
     var total = document.getElementById('total_factura').value;
     var nit_asoc = document.getElementById('nit_asoc').value;
     var razon_asoc = document.getElementById('razon_asoc').value;
+    var esexento = document.getElementById('esexento').value;
     $.ajax({url:controlador,
 
             type:"POST",
 
             data:{factura_id:factura_id,multar:multar,generar_factura:generar_factura,lectura_id:lectura_id,
-                consumo:consumo,aportes:aportes,recargos:recargos,total:total,nit_asoc:nit_asoc,razon_asoc:razon_asoc},
+                consumo:consumo,aportes:aportes,recargos:recargos,total:total,nit_asoc:nit_asoc,razon_asoc:razon_asoc,
+                esexento:esexento},
 
             success:function(respuesta){
 
@@ -394,11 +396,14 @@ function detalle_factura(factura,lectura)
                 var fin = registros.length;
                 html = "";
                 var total =  Number(0);
+                var totalexento =  Number(0);
                 
                 for(var i = 0; i<fin; i++)
                 {
                     total +=  Number(registros[i]["total_detfact"]);
-
+                    if(registros[i]["exento_detfact"] =="SI"){
+                        totalexento +=  Number(registros[i]["total_detfact"]);
+                    }
                     html += "<tr>";               
                     html += "<td align='center'>"+(i+1)+"</td>";
                     html += "<td align='center'>"+registros[i]["id_fact"]+"</td>";
@@ -418,6 +423,7 @@ function detalle_factura(factura,lectura)
                 $("#detalle_factura").html(html);
                 $("#factura_id").val(factura);
                 $("#lectura_id").val(lectura);
+                $("#esexento").val(totalexento);
                 $("#btnfinalizar").prop('disabled',false);
                 
 

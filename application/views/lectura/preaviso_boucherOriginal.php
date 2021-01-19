@@ -38,7 +38,7 @@ padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
 font-family: Arial narrow;
-font-size: 8pt;  
+font-size: 7pt;  
 
 td {
 border:hidden;
@@ -66,7 +66,7 @@ border-bottom : 1px solid #aaa;
 <!-------------------------------------------------------->
 <?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       //$ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      $ancho = "7.5"."cm";
+      $ancho = "5.0"."cm";
       //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
 ?>
 
@@ -76,13 +76,13 @@ border-bottom : 1px solid #aaa;
         <td style="padding:0;" colspan="2">        
             <center>
                                
-                    <img src="<?php echo base_url('resources/images/empresas/').$empresa['logo_emp']; ?>" width="100%" height="100%"><br>
-                    <!--<font size="2" face="Arial"><b><?php echo $empresa['nombre_emp']; ?></b></font><br>-->
+                    <!--<img src="<?php //echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
+                    <font size="2" face="Arial"><b><?php echo $empresa['nombre_emp']; ?></b></font><br>
                     <!--<font size="2" face="Arial"><b><?php /*echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
                     <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];*/ ?><br>-->
-                    <!--<font size="1" face="Arial"><?php echo $empresa['direccion_emp']; ?><br>
-                    <font size="1" face="Arial"><?php echo $empresa['telefono_emp']; ?></font><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa['direccion_emp']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa['telefono_emp']; ?></font><br>
                     <!--<font size="1" face="Arial"><?php echo $empresa['ubicacion_emp']; ?></font>-->
                 
 
@@ -94,9 +94,9 @@ border-bottom : 1px solid #aaa;
                   ?>    
             </center>                      
                     <b>FECHA: </b><?php echo $fecha_d_m_a; ?> <br>
-                    <b>CODIGO: </b><?php echo $lectura[0]['codigo_asoc']; ?> <br>
+                    <b>CODIGO: </b><?php echo $lectura[0]['codigo_asoc']." ".$lectura[0]['nit_asoc']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $lectura[0]['razon_asoc'].""; ?><br>
-                    <!--<b>N° MEDIDOR: </b><?php //echo $lectura[0]['medidor_asoc'].""; ?><br>-->
+                    <b>N° MEDIDOR: </b><?php echo $lectura[0]['medidor_asoc'].""; ?><br>
                     <b>DIRECCIÓN: </b><?php echo $lectura[0]['direccion_asoc'].""; ?><br>
                     <b>SERVICIO(S): </b><?php echo $lectura[0]['servicios_asoc'].""; ?><br>
                     <b>CATEGORIA: </b><?php echo $lectura[0]['categoria_asoc'].""; ?><br>

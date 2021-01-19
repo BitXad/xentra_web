@@ -370,7 +370,7 @@ class Factura extends CI_Controller{
                 }
 
             }
-
+            $total_credfiscal = 0;
             if ($genera_factura=="true") {
                 //$datfactura = $this->Dosificacion_model->get_dosificacion($factura_id);
                         $tipo_fact=1;
@@ -383,6 +383,10 @@ class Factura extends CI_Controller{
                         $orden_fact = $dosificacion['numorden_dosif'];
                         $nitemisor_fact = $empresa['nit_emp'];
                         $llave_fact = $dosificacion['llave_dosif'];
+                        $factura_leyenda1 = $dosificacion['dosificacion_leyenda1'];
+                        $factura_leyenda2 = $dosificacion['dosificacion_leyenda2'];
+                        $esexento = $this->input->post('esexento');
+                        $total_credfiscal = ($total-$esexento);
                         //$fecha_fact
                         //$hora_fact
                         $fechaemision_fact = $dosificacion['fechalim_dosif'];
@@ -396,7 +400,7 @@ class Factura extends CI_Controller{
                   FormCodigoControl.CodigodeControl(inttoStr(numerofact),nit_asoc1.Text,formatdatetime('yyyymmdd',date),formLogin.sincoma(totalfactura),formDosificacion.ADODosif.fieldbyname('llave_dosif').AsString,formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString)+'|'+
                   nit_asoc1.Text+'|'+exento+'|'+ice+'|'+exento+'|0')+*/
 
-                        $codcontrol_fact = $this->codigo_control($llave_fact,$orden_fact,$numfact_dosif1,$nit_fact,$fecha,$total);
+                        $codcontrol_fact = $this->codigo_control($llave_fact,$orden_fact,$numfact_dosif1,$nit_fact,$fecha,$total_credfiscal);
                         //',codcontrol_fact='+quotedStr(FormCodigoControl.CodigodeControl(inttoStr(numerofact),Trim(nit_asoc1.Text),formatdatetime('yyyymmdd',date),FormLogin.sinComa(totalfactura),formDosificacion.ADODosif.fieldbyname('llave_dosif').AsString,formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString))+
                         //$literal_fact no necesary
                         //$fechahora_fact ya viene
@@ -408,7 +412,7 @@ class Factura extends CI_Controller{
                         //$exento_fact = 0;
                         //$ice_fact = 0;
                         //$id_ing nada esta null ojo
-                $this->Factura_model->generar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact);
+                $this->Factura_model->generar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact, $factura_leyenda1, $factura_leyenda2);
                 //aqui si hay q generar la factura...
             } else {
                 $this->Factura_model->cancelar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id);
