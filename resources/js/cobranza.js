@@ -42,6 +42,7 @@ function finalizar(){
                 alert('COBRO REALIZADO CON EXITO');
                 if (imprimir_factura==true) {
                     window.open(base_url+"factura/imprimir/"+factura_id, '_blank');
+                    window.open(base_url+"factura/copia/"+factura_id, '_blank');
                 }
                 var nada = "";
                 $("#lista_pendientes").html(nada);
