@@ -111,19 +111,10 @@ class Factura_model extends CI_Model
         return $resultado;
     }
 
-    function busqueda_asociados($nombre,$apellido,$ci)
+    function busqueda_asociados($nombre,$apellido)
     {
 
-        if ($ci=="")   
-        {
-            $sql = "select * from asociado where (nombres_asoc like '%".$nombre."%' and apellidos_asoc like '%".$apellido."%') ";
-            
-        }
-        else{            
-            $sql = "select * from asociado where (codigo_asoc like '%".$ci."%')";
-        }
-        
-        //echo $sql;
+        $sql = "select * from asociado where nombres_asoc like '%".$nombre."%' and apellidos_asoc like '%".$apellido."%' ";        
         $resultado = $this->db->query($sql)->result_array();
         
         return $resultado;

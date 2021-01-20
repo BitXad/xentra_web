@@ -54,12 +54,12 @@
                                     if(isset($session_data['el_asociado'])){
                                         $imagen_thumb = "asociados/".$session_data['thumb'];
                                         $imagen_asocus = "asociados/".$session_data['foto_asoc'];
-                                        $alt = ""; //Imagen Asociado
+                                        $alt = "Imagen Asociado";
                                         $tipo_uusario = "";
                                     }else{
                                         $imagen_thumb = "usuarios/".$session_data['thumb'];
                                         $imagen_asocus = "usuarios/".$session_data['imagen_usu'];
-                                        $alt = ""; //Imagen Usuario
+                                        $alt = "Imagen Usuario";
                                         $tipo_uusario = "- ".$session_data['tipo_usuario'];
                                     } ?>
                                     <img src="<?php echo site_url('resources/images/'.$imagen_thumb);?>" class="user-image" alt="<?php echo $alt; ?>">

@@ -92,8 +92,7 @@ function buscarasoc(e,opcion) {
     
         if (opcion==1){             
 
-            //buscarasociado();
-            buscar_asociados();
+            buscarasociado();            
 
         }
 
@@ -186,12 +185,10 @@ function buscar_asociados()
     var controlador = base_url+"factura/buscar_asociados";
     var apellido = document.getElementById('apellido').value;
     var nombre = document.getElementById('nombre').value;
-    var ci = document.getElementById('ci').value;
     
-        //alert(ci);
         $.ajax({url: controlador,
             type:"POST",
-            data:{apellido:apellido,nombre:nombre, ci:ci},
+            data:{apellido:apellido,nombre:nombre},
             success:function(respuesta){
                 
                 var registros = JSON.parse(respuesta);
@@ -298,7 +295,6 @@ function facturas_pendientes(asociado)
                 
                 var registros = JSON.parse(respuesta);
                 var fin = registros.length;
-                var total_deudas = 0;
                 html = "";
                 html2 = "";
                 
@@ -315,23 +311,17 @@ function facturas_pendientes(asociado)
                     html += "<td align='center'>"+registros[i]["consumo_lec"]+"</td>";
                     html += "<td align='center'>"+registros[i]["mes_lec"]+"</td>";  
                     html += "<td align='center'>"+registros[i]["gestion_lec"]+"</td>";  
-                    html += "<td align='right'><b>"+Number(registros[i]["montototal_fact"]).toFixed(2)+"</b></td>";
+                    html += "<td align='right'>"+Number(registros[i]["montofact_lec"]).toFixed(2)+"</td>";
                     html += "<td align='center' style='padding: 0'>";
-                    
-                    if (i==0 && estado == 'PENDIENTE') {
-                        html += "<button class='btn-success btn-xs' onclick='detalle_factura("+registros[i]["id_fact"]+","+registros[i]["id_lec"]+")'> COBRAR</button>";
+                      if (i==0 && estado == 'PENDIENTE') {
+                    html += "<button class='btn-success btn-xs' onclick='detalle_factura("+registros[i]["id_fact"]+","+registros[i]["id_lec"]+")'> COBRAR</button>";
                     }
-                    if (i==(fin-1) && estado == 'CANCELADA') {
-                        html += " <button class='btn-warning btn-xs' onclick='detalle_factura("+registros[i]["id_fact"]+","+registros[i]["id_lec"]+")'> ANULAR</button>";
+                       if (i==(fin-1) && estado == 'CANCELADA') {
+                    html += " <button class='btn-warning btn-xs' onclick='detalle_factura("+registros[i]["id_fact"]+","+registros[i]["id_lec"]+")'> ANULAR</button>";
                     }
                     html += "</td>";
                     html += "</tr>";
-                    
-                    total_deudas += Number(registros[i]["montototal_fact"]);
-                }
-                html += "<th style='padding:0;' colspan='8'> TOTAL FACTURAS PENDIENTES Bs.</th>";
-                html += "<th style='padding:0;'><b><font size='3'>"+total_deudas.toFixed(2)+"</font></b></th>";
-                html += "<th style='padding:0;'></th>";
+                } 
                    
                 $("#lista_pendientes").html(html);
                 $("#detalle_factura").html(html2);
@@ -642,10 +632,8 @@ function total_pendientes(asociado)
             type:"POST",
             data:{asociado:asociado},
             success:function(respuesta){
-                
            var registros = JSON.parse(respuesta);
-           
-                $("#total_pendientes").html('Pendientes: '+Number(registros).toFixed(2));
+           $("#total_pendientes").html('Pendientes: '+Number(registros).toFixed(2));
              
 
             },

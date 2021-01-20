@@ -93,8 +93,6 @@ function calcular(id_asoc){
                 data: {consumo: consumo, asociado: asociado, tipo_lectura:tipo_lectura},
                 success: function (result) {
                     
-                     
-                    //alert(tipo_lectura);
                     if (tipo_lectura=='0'){ //tarifas normales
                         
                     
@@ -201,11 +199,8 @@ function calcular(id_asoc){
                                     //alcantarillado = consumobs * res[0].porc_alcant').asfloat * porc_factura;
 
                                     tarifa = ((Number(consumobs) + Number(costofijo)) * Number(porc_factura));
-                                    
-                                    alcantarillado = Number(consumobs) * Number(res[0].porc_alcant);
-                                    
+                                    alcantarillado = Number(tarifa) * Number(res[0].porc_alcant);
                                     consumo_bs = Number(tarifa);
-                                    
                                     consumo_alcantarillado = Number(alcantarillado);
 
                                 }
