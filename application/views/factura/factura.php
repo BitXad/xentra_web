@@ -1,9 +1,9 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
-//    $(document).ready(function()
-//    {
-//        window.onload = window.print();
-//    });
+    $(document).ready(function()
+    {
+        window.onload = window.print();
+    });
 </script>
 <?php $padding = "style='padding:0; '"; 
     $ancho = "18cm";
@@ -34,7 +34,12 @@
             
                 <br>
                 <font size="5" face="arial"><b>FACTURA</b></font> <br>
-                <font size="1" face="arial">ORIGINAL</font><br>
+                <?php if ($tipo == 0){ ?>
+                        <font size="1" face="arial"><b>ORIGINAL</b></font><br>
+                <?php }else{ ?>
+                        <font size="1" face="arial"><b>COPIA</b></font><br>                          
+                <?php } ?>   
+                
                 <font size="1" face="arial"><?php echo date("d/m/Y   H:i:s  ") ; ?></font>
                  <br>
                 
@@ -49,8 +54,8 @@
                 <font size="1" face="arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FACTURA Nº: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00<?php echo $factura[0]['num_fact']; ?></font><br>
                 <font size="1" face="arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AUTORIZACION: &nbsp;&nbsp;<?php echo $factura[0]['orden_fact']; ?></font>
             </div></div>
-            <center>
-                <font size="2" face="Arial">CAPTACIÓN Y DEPURACIÓN Y DISTRIBUCIÓN DE AGUA</font>
+            <center style="font-size: 12px;">
+                CAPTACIÓN Y DEPURACIÓN Y DISTRIBUCIÓN DE AGUA
             </center>
                 
             
@@ -141,8 +146,7 @@
     
     <tr>
         <td rowspan="4" style="width: 20%; padding: 0;">
-        <center>
-        
+        <center>        
             <img src="<?php echo $codigoqr; ?>"  width="100" height="100">
         </center>
         </td>
@@ -154,8 +158,8 @@
     </tr>
     
     <tr>
-        <td colspan="2"></td>
-        <td colspan="1" style="text-align: right;"><b>IMPORTE VALIDO PARA CREDITO Bs</b></td>
+        <td colspan="1"></td>
+        <td colspan="2" style="text-align: right;"><b>IMPORTE VALIDO PARA CREDITO Bs</b></td>
         <td>&nbsp; &nbsp;</td>
         <td><b><?php echo number_format($total-$totalexento, 2, ".", ","); ?></b></td>
     </tr>
@@ -168,7 +172,7 @@
     </tr>
     
     <tr>
-        <td colspan="5" >
+        <td colspan="5" style="line-height: 12px; font-size: 12px;">
             <hr style="width: 100%;border: 2px solid black;margin-top: 1px;margin-bottom: 0px" align="right">            
             CÓDIGO DE CONTROL: <?php echo $factura[0]['codcontrol_fact']; ?> <br>
             FECHA LÍMITE DE EMISIÓN: <?php echo date('d/m/Y',strtotime($factura[0]['fechaemision_fact']))?><br>

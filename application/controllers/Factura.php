@@ -447,7 +447,7 @@ class Factura extends CI_Controller{
         if ($este == 0) {
            redirect('factura/imprimir_recibo/'.$factura_id);
         }else{
-           redirect('factura/imprimir_factura/'.$factura_id);
+           redirect('factura/imprimir_factura/0/'.$factura_id);
      
     }
 
@@ -463,12 +463,14 @@ class Factura extends CI_Controller{
          $this->load->view('layouts/main',$data);
      }
 
-     function imprimir_factura($factura_id){
+     function imprimir_factura($tipo, $factura_id){
+         
          $session_data = $this->session->userdata('logged_in');
          $usuario_id = $session_data['id_usu'];
          $this->load->model('Empresa_model');
          $data['empresa'] = $this->Empresa_model->get_empresa(1);
          $data['factura'] = $this->Factura_model->get_factura_completa($factura_id);
+         $data['tipo'] = $tipo;
          $detalle_factura = $this->Factura_model->get_pendiente_detalle($factura_id);
          $totalexento = 0;
          foreach ($detalle_factura as $detalle) {
