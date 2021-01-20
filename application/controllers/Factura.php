@@ -236,7 +236,8 @@ class Factura extends CI_Controller{
                     
                     $nombre = $this->input->post('nombre');                    
                     $apellido = $this->input->post('apellido');                    
-                    $datos = $this->Factura_model->busqueda_asociados($nombre,$apellido);
+                    $ci = $this->input->post('ci');                    
+                    $datos = $this->Factura_model->busqueda_asociados($nombre,$apellido,$ci);
                     echo json_encode($datos);                        
 
                 }
@@ -526,7 +527,9 @@ class Factura extends CI_Controller{
         $consumo = $this->Factura_model->get_consumo_total($asociado);
         $aporte = $this->Factura_model->get_aportes_total($asociado);
         $recargo = $this->Factura_model->get_recargos_total($asociado);
+        
         $suma = $consumo['total_consumo']+$aporte['total_multas']+$recargo['total_recargos'];
+        
         echo json_encode($suma);  
         
     }
