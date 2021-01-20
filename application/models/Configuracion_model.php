@@ -38,14 +38,9 @@ class Configuracion_model extends CI_Model
         $configuracion = $this->db->query("
             SELECT
                 *
-
             FROM
                 `configuracion`
-
-            WHERE
-                1 = 1
-
-            ORDER BY `` DESC
+            ORDER BY num DESC
         ")->result_array();
 
         return $configuracion;

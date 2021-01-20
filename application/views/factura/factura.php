@@ -1,9 +1,9 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
-    $(document).ready(function()
-    {
-        window.onload = window.print();
-    });
+//    $(document).ready(function()
+//    {
+//        window.onload = window.print();
+//    });
 </script>
 <?php $padding = "style='padding:0; '"; 
     $ancho = "18cm";
@@ -136,10 +136,68 @@
    
     </table>
 <br>
-    <table style="width: 100%; padding: 0; font-family: Arial; font-size:12px;"> 
+    
+<table style="width: 100%; padding: 0; font-family: Arial; font-size:12px;" >
+    
+    <tr>
+        <td rowspan="4" style="width: 20%; padding: 0;">
+        <center>
+        
+            <img src="<?php echo $codigoqr; ?>"  width="100" height="100">
+        </center>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>        
+        <td></td>        
+    </tr>
+    
+    <tr>
+        <td colspan="2"></td>
+        <td colspan="1" style="text-align: right;"><b>IMPORTE VALIDO PARA CREDITO Bs</b></td>
+        <td>&nbsp; &nbsp;</td>
+        <td><b><?php echo number_format($total-$totalexento, 2, ".", ","); ?></b></td>
+    </tr>
+    
+    <tr>
+        <td colspan="2">SON: <?php echo num_to_letras($total); ?></td>
+        <td colspan="1" style="text-align: right; font-size: 14px;"><b>TOTAL A PAGAR Bs</b></td>
+        <td>&nbsp; &nbsp;</td>
+        <td style="font-size: 14px;"><b><?php echo number_format($total, 2, ".", ","); ?></b></td>
+    </tr>
+    
+    <tr>
+        <td colspan="5" >
+            <hr style="width: 100%;border: 2px solid black;margin-top: 1px;margin-bottom: 0px" align="right">            
+            CÓDIGO DE CONTROL: <?php echo $factura[0]['codcontrol_fact']; ?> <br>
+            FECHA LÍMITE DE EMISIÓN: <?php echo date('d/m/Y',strtotime($factura[0]['fechaemision_fact']))?><br>
+            TRANS.: <?php echo $factura[0]['id_fact']; ?> <br>
+            CAJERO: <?php echo $factura[0]['nombre_usu'];  ?>
+            <center style="font-size: 8px;">
+                 <?php echo $factura[0]['factura_leyenda1'];  ?><br>
+            </center>
+            <center style="font-size: 10px;">
+                 <?php echo $factura[0]['factura_leyenda2'];  ?><br>
+            </center>
+        
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        
+    </tr>
+    
+</table>
+
+
+<!--    <table style="width: 100%; padding: 0; font-family: Arial; font-size:12px;"> 
    
                       <tr>
+                          
                         <th width="20%">&nbsp;<img src="<?php echo $codigoqr; ?>" style="position: absolute;" width="100" height="100"></th>
+       
                         <th style="text-align: left;" width="45%" align="center">
                             IMPORTE PARA CREDITO FISCAL <br>
                             SON: <?php echo num_to_letras($total); ?></th>
@@ -153,40 +211,32 @@
                       </tr>
 
    
-    </table>
-    <hr style="width: 80%;border: 2px solid black;margin-top: 1px;margin-bottom: 0px" align="right">
+    </table>-->
 
-<table  class="table table-striped table-condensed" style="width: 100%; font-family: Arial; font-size:10px;">
+    
+    <!--<hr style="width: 80%;border: 2px solid black;margin-top: 1px;margin-bottom: 0px" align="right">-->
+
+<!--    <table  class="table table-striped table-condensed" style="width: 100%; font-family: Arial; font-size:10px;">
     
     
     <tr>
         <td style="width: 20%;"></td>
-        <td style="width: 66%;"> 
+        <td style="width: 80%; line-height: 12px;" colspan="3"> 
+            
             CÓDIGO DE CONTROL: <?php echo $factura[0]['codcontrol_fact']; ?> <br>
             FECHA LÍMITE DE EMISIÓN: <?php echo date('d/m/Y',strtotime($factura[0]['fechaemision_fact']))?><br>
             TRANS.: <?php echo $factura[0]['id_fact']; ?> <br>
             CAJERO: <?php echo $factura[0]['nombre_usu'];  ?>
-            <center>
-                <?php echo $factura[0]['factura_leyenda1'];  ?><br>
-                <?php echo $factura[0]['factura_leyenda2'];  ?>
-               
+            <center style="font-size: 8px;">
+                 <?php echo $factura[0]['factura_leyenda1'];  ?><br>
             </center>
-        </td>
-        <td style="width: 7%;"> 
-            <center>
-
-               
+            <center style="font-size: 10px;">
+                 <?php echo $factura[0]['factura_leyenda2'];  ?><br>
             </center>
-        </td>
-        
-        <td style="width: 7%;">
-            <center>
-
-             
-            </center>
-        </td>
+        </td>        
     </tr>   
-</table>
+</table>-->
+    
 </div>
 
 
