@@ -67,14 +67,20 @@ function formato_numerico(numer) {
 
 
 function calcular(id_asoc){
+        
         var lectura_anterior = document.getElementById("lectura_anterior").value;
         var lectura_actual = document.getElementById("lectura_actual").value;
         var servicios_asoc = document.getElementById("servicios_asoc").value;
         var base_url = document.getElementById("base_url").value;
         var controlador = base_url + "lectura/calcular_consumo";
         var asociado = id_asoc;
+        var tipo_lectura = document.getElementById("tipo_lectura").value;
     
         //alert(servicios_asoc);
+        
+        //if (tipo_lectura=='0') alert('Tarifa normal');
+        //else alert('tarifa por parametros');
+        
     
         if (Number(lectura_actual) >= Number(lectura_anterior)) {
             
@@ -84,66 +90,152 @@ function calcular(id_asoc){
             $.ajax({
                 url: controlador,
                 type: "POST",
-                data: {consumo: consumo, asociado: asociado},
+                data: {consumo: consumo, asociado: asociado, tipo_lectura:tipo_lectura},
                 success: function (result) {
+                    
+                    if (tipo_lectura=='0'){ //tarifas normales
+                        
+                    
+                        var res = JSON.parse(result);
 
-                    var res = JSON.parse(result);
+
+    //                    var consumo_bs = document.getElementById("consumo_bs").value;
+                        var costo_agua = 0;
+
+                        if (Number(res[0].costo_agua)>=0){
+                            costo_agua = Number(res[0].costo_agua);
+                        }else{
+                            costo_agua = 0;
+                        }
+
+                        //alert(costo_agua);
+                        //alert("consumo basico: "+res[0].consumo_basico)
+
+                        var consumo_bs = costo_agua + ((Number(consumo)-Number(res[0].consumo_basico)) * Number(res[0].costo_mt3));
+
+                        //alert(consumo_bs);
+    //                    var consumo_alcantarillado = document.getElementById("consumo_alcantarillado").value;
+                        var consumo_alcantarillado = res[0].costo_alcant;
 
 
-//                    var consumo_bs = document.getElementById("consumo_bs").value;
-                    var costo_agua = 0;
-                    
-                    if (Number(res[0].costo_agua)>=0){
-                        costo_agua = Number(res[0].costo_agua);
-                    }else{
-                        costo_agua = 0;
-                    }
-                    
-                    //alert(costo_agua);
-                    //alert("consumo basico: "+res[0].consumo_basico)
-                    
-                    var consumo_bs = costo_agua + ((Number(consumo)-Number(res[0].consumo_basico)) * Number(res[0].costo_mt3));                    
-                    
-                    //alert(consumo_bs);
-//                    var consumo_alcantarillado = document.getElementById("consumo_alcantarillado").value;
-                    var consumo_alcantarillado = res[0].costo_alcant;
-                    
-                    
-                    var aportes_multas = document.getElementById("aportes_multas").value;
-                    var descuentos = document.getElementById("descuentos").value;
-                    var total_bs = "0.00";
+                        var aportes_multas = document.getElementById("aportes_multas").value;
+                        var descuentos = document.getElementById("descuentos").value;
+                        var total_bs = "0.00";
 
-                    //alert(consumo_bs+" - "+consumo_alcantarillado);
-                    
-                    if (servicios_asoc == "AGUA"){ 
-                        consumo_alcantarillado = 0; 
-                    }
-                    
-                    if (servicios_asoc == "ALCANTARILLADO"){ 
-                        consumo_bs = 0;
-                    }
+                        //alert(consumo_bs+" - "+consumo_alcantarillado);
 
-                    $("#consumo_bs").val(Number(consumo_bs));
-                    $("#consumo_alcantarillado").val(Number(consumo_alcantarillado));
-                    
-                    
-                    total_bs = Number(consumo_bs) + Number(consumo_alcantarillado) + Number(aportes_multas)- Number(descuentos);
+                        if (servicios_asoc == "AGUA"){ 
+                            consumo_alcantarillado = 0; 
+                        }
 
-                    $("#total_bs").val(total_bs.toFixed(2));
+                        if (servicios_asoc == "ALCANTARILLADO"){ 
+                            consumo_bs = 0;
+                        }
 
-                    //cargar inputs
-                    $("#actual_lec").val(lectura_actual);
-                    $("#anterior_lec").val(lectura_anterior);
-                    $("#consumo_lec").val(consumo);
-                    $("#totalcons_lec").val(consumo_bs);
-                    $("#monto_lec").val(consumo_bs);
-                    $("#estado_lec").val("LECTURADO");
-                    $("#canfact_lec").val(1);
-                    $("#montofact_lec").val(total_bs);
+                        $("#consumo_bs").val(Number(consumo_bs).toFixed(2));
+                        $("#consumo_alcantarillado").val(Number(consumo_alcantarillado));
+
+
+                        total_bs = Number(consumo_bs) + Number(consumo_alcantarillado) + Number(aportes_multas)- Number(descuentos);
+
+                        $("#total_bs").val(total_bs.toFixed(2));
+
+                        //cargar inputs
+                        $("#actual_lec").val(lectura_actual);
+                        $("#anterior_lec").val(lectura_anterior);
+                        $("#consumo_lec").val(consumo);
+                        $("#totalcons_lec").val(consumo_bs);
+                        $("#monto_lec").val(consumo_bs);
+                        $("#estado_lec").val("LECTURADO");
+                        $("#canfact_lec").val(1);
+                        $("#montofact_lec").val(total_bs);
+
+                        document.getElementById("boton_registrar_lectura").style.display = 'inline';
+
+                        $("#boton_registrar_lectura").focus();
+
+                    } // fin de if (tipo_lectura=='0'){ //tarifas normales
+                    else{
                     
-                    document.getElementById("boton_registrar_lectura").style.display = 'inline';
-                                       
-                    $("#boton_registrar_lectura").focus();
+                        var res = JSON.parse(result);
+                        var consumo_bs = 0;
+                        var consumo_bs = 0;
+                        var porc_factura = 0;
+                        var costofijo = 0;
+                        var consumobs = 0;
+                        var alcantarillado = 0;
+                        var tarifa = 0;
+                        var aportes_multas = document.getElementById("aportes_multas").value;
+                        var descuentos = document.getElementById("descuentos").value;
+                        var total_bs = "0.00";
+                        
+                        
+
+                        if (res.length>0){
+                            
+                                
+                                porc_factura = res[0].porc_factura;
+                                costofijo = res[0].costo_fijo;
+
+
+                                if (servicios_asoc == 'AGUA' || servicios_asoc == 'AGUA POTABLE')
+                                {
+                                    consumo_bs = (( Number(res[0].costo_m3) * Number(consumo)) + Number(res[0].montofijo_extra) + Number(costofijo)) * Number(res[0].porc_factura);
+                                    consumo_alcantarillado = 0;
+                                }
+
+                                
+                                if  (servicios_asoc == 'ALCANTARILLADO')
+                                {
+                                    consumo_bs = 0;
+                                    consumo_alcantarillado =  Number(res[0].porc_alcant) * Number(res[0].porc_factura);
+                                }
+
+                                if (servicios_asoc == 'AGUA Y ALCANTARILLADO')
+                                {
+                                
+                                    consumobs = (Number(res[0].costo_m3) * Number(consumo)) + Number(res[0].montofijo_extra);
+                                    //se cambio por orden de la sra nitza, para calcular en funcion al consumo de agua
+                                    //alcantarillado = consumobs * res[0].porc_alcant').asfloat * porc_factura;
+
+                                    tarifa = ((Number(consumobs) + Number(costofijo)) * Number(porc_factura));
+                                    alcantarillado = Number(tarifa) * Number(res[0].porc_alcant);
+                                    consumo_bs = Number(tarifa);
+                                    consumo_alcantarillado = Number(alcantarillado);
+
+                                }
+                            
+                                consumo_alcantarillado = consumo_alcantarillado.toFixed(2);
+                                consumo_bs = consumo_bs.toFixed(2);
+                            
+                         
+                                $("#consumo_bs").val(Number(consumo_bs));
+                                $("#consumo_alcantarillado").val(Number(consumo_alcantarillado));
+
+                                total_bs = Number(consumo_bs) + Number(consumo_alcantarillado) + Number(aportes_multas)- Number(descuentos);
+
+                                $("#total_bs").val(total_bs.toFixed(2));
+
+                                //cargar inputs
+                                $("#actual_lec").val(lectura_actual);
+                                $("#anterior_lec").val(lectura_anterior);
+                                $("#consumo_lec").val(consumo);
+                                $("#totalcons_lec").val(consumo_bs);
+                                $("#monto_lec").val(consumo_bs);
+                                $("#estado_lec").val("LECTURADO");
+                                $("#canfact_lec").val(1);
+                                $("#montofact_lec").val(total_bs);
+
+                                document.getElementById("boton_registrar_lectura").style.display = 'inline';
+
+                                $("#boton_registrar_lectura").focus();
+
+
+                        
+                        
+                        }//fin if(res.length>0)
+                    }//fin else
+                        
 
                 }, error: function (result) {
                     $("#consumo_bs").val("0.00");
@@ -196,7 +288,7 @@ function cargar_lectura(lectura) {
         html += "<b>CÓDIGO:</b> " + lectura.codigo_asoc;
         html += "<br><b>ASOCIADO:</b> " + lectura.apellidos_asoc + ", " + lectura.nombres_asoc;
         html += "<br><b>SERVICIO:</b> " + lectura.servicios_asoc;
-        html += "<br><b>TIPO:</b> " + lectura.categoria_asoc;
+        html += "<br><b>TIPO:</b> " + lectura.categoria_asoc +" | "+lectura.tipo_asoc;
         html += "<br><b>DIRECCIÓN:</b> " + lectura.direccion_asoc;
         html += "<br><b>ZONA:</b> " + lectura.zona_asoc;
         html += "</td>";
@@ -673,8 +765,10 @@ function registrar_lectura() {
     var estado_lec = document.getElementById("estado_lec").value;
     var tipo_asoc = document.getElementById("tipo_asoc").value;
     var servicios_asoc = document.getElementById("servicios_asoc").value;
-    var cantfact_lec = document.getElementById("cantfact_lec").value;
-    var montofact_lec = document.getElementById("montofact_lec").value;
+    
+    var cantfact_lec = document.getElementById("cantidad_adeudadas").value; //cantidad facturas deuda
+    var montofact_lec = document.getElementById("facturas_adeudadas").value; //monto adeudado
+    
     var nit_fact = document.getElementById("nit_fact").value;
     var razon_fact = document.getElementById("razon_fact").value;
     var fecha_lectura = document.getElementById("fecha_lectura").value;
@@ -682,6 +776,7 @@ function registrar_lectura() {
     
     var consumo_agua_bs = document.getElementById("consumo_bs").value;
     var consumo_alcantarillado_bs = document.getElementById("consumo_alcantarillado").value;
+    var total_bs = document.getElementById("total_bs").value;
 
 
     //Registrar factura
@@ -693,7 +788,7 @@ function registrar_lectura() {
             hora_lec: hora_lec, totalcons_lec: totalcons_lec, monto_lec: monto_lec, estado_lec: estado_lec,
             tipo_asoc: tipo_asoc, servicios_asoc: servicios_asoc, cantfact_lec: cantfact_lec, montofact_lec: montofact_lec,
             nit_fact: nit_fact, razon_fact: razon_fact, fecha_lectura:fecha_lectura, fecha_vencimiento:fecha_vencimiento,
-            consumo_agua_bs:consumo_agua_bs, consumo_alcantarillado_bs:consumo_alcantarillado_bs},
+            consumo_agua_bs:consumo_agua_bs, consumo_alcantarillado_bs:consumo_alcantarillado_bs, total_bs:total_bs},
         success: function (result) {
              
              var r = JSON.parse(result);

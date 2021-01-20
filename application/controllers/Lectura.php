@@ -13,6 +13,7 @@ class Lectura extends CI_Controller {
         $this->load->model('Asociado_model');
         $this->load->model('Mes_model');
         $this->load->model('Empresa_model');
+        $this->load->model('Configuracion_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -50,6 +51,7 @@ class Lectura extends CI_Controller {
     function lecturas() {
         if($this->acceso(400)){
             //$data['asociados'] = $this->Asociado_model->get_all_asociado();
+            $data['configuracion'] = $this->Configuracion_model->get_all_configuracion();
             $data['lectura'] = $this->Lectura_model->get_all_lectura();
             $data['meses'] = $this->Mes_model->get_all_mes();
             $data['zonas'] = $this->Lectura_model->get_all_zonas();
@@ -268,15 +270,26 @@ class Lectura extends CI_Controller {
 //        $gestion = $this->input->post("gestion");
         $consumo = $this->input->post("consumo"); //id_asoc
         $asociado = $this->input->post("asociado"); //id_asoc
+        $tipo_lectura = $this->input->post("tipo_lectura"); //id_asoc
         // Tarifa parametrizable       
 //        $sql = "select * from  tarifa t where t.desde >= ".$consumo." and ".$consumo." <= t.hasta and ".
 //                "t.tipo= (select a.tipo_asoc from asociado a where a.id_asoc=".$asociado+')';
 
+        if ($tipo_lectura==0){ // 0 -> tarifa por rango
 
-        $sql = "select * from  tarifa t where ".$consumo." >= t.desde and " . $consumo . "<= t.hasta and " .
-                "t.tipo = (select a.tipo_asoc from asociado a where a.id_asoc=" . $asociado . ")";
+            $sql = "select * from  tarifa t where ".$consumo." >= t.desde and " . $consumo . "<= t.hasta and " .
+                    "t.tipo = (select a.tipo_asoc from asociado a where a.id_asoc=" . $asociado . ")";            
 
+        }else{ // sino tarifa parametrizable
+
+            $sql = "select * from tarifa_parametrizable t where ".$consumo.">=t.desde and ".$consumo."<=t.hasta and ".
+                    "t.tipo= (select a.tipo_asoc from asociado a where a.id_asoc=".$asociado.")";
+            
+        }
+            
+        
         $result = $this->Lectura_model->consultar($sql);
+        
 
         echo json_encode($result);
     }
@@ -300,8 +313,9 @@ class Lectura extends CI_Controller {
         $estado_lec = $this->input->post("estado_lec");
         $tipo_asoc = $this->input->post("tipo_asoc");
         $servicios_asoc = $this->input->post("servicios_asoc");
-        $cantfact_lec = $this->input->post("cantfact_lec");
-        $montofact_lec = $this->input->post("montofact_lec");
+        
+        $cantfact_lec = $this->input->post("cantfact_lec"); //Cantidad facturas adeudadas
+        $montofact_lec = $this->input->post("montofact_lec"); //Monto adeudado
 
         $nit_fact = "'" . $this->input->post("nit_fact") . "'";
         $razon_fact = "'" . $this->input->post("razon_fact") . "'";
@@ -310,6 +324,9 @@ class Lectura extends CI_Controller {
 
         $consumo_agua_bs = $this->input->post("consumo_agua_bs");
         $consumo_alcantarillado_bs = $this->input->post("consumo_alcantarillado_bs");
+        $total_bs = $this->input->post("total_bs");
+        
+        
         
         $params = array(
             'id_usu' => $id_usu,
@@ -327,8 +344,8 @@ class Lectura extends CI_Controller {
             'estado_lec' => $estado_lec,
             'tipo_asoc' => $tipo_asoc,
             'servicios_asoc' => $servicios_asoc,
-            'cantfact_lec' => $cantfact_lec,
-            'montofact_lec' => $montofact_lec,
+            'cantfact_lec' => $cantfact_lec, //cantidad facturas adeudadas 
+            'montofact_lec' => $montofact_lec, //Monto facturas adeudas
             'consumoalcant_lec' => $consumo_alcantarillado_bs,
                 );
         $id_lec = $this->Lectura_model->add_lectura($params);
@@ -343,7 +360,7 @@ class Lectura extends CI_Controller {
 
         $montoparc_fact = $totalcons_lec; //Consumo_Bs1.Text;
         $desc_fact = '0';
-        $montototal_fact = $montofact_lec; //Total_Bs1.Text;
+        $montototal_fact = $total_bs; //Total_Bs1.Text;
         $literal_fact = "'-'";
         $estado_fact = "'PENDIENTE'";
 

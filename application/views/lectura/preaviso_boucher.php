@@ -140,9 +140,19 @@ border-bottom : 1px solid #aaa;
         <td align="right" style="padding: 0;"><b style="font-size: 12pt;"><?php echo number_format($l["montototal_fact"],2,".",","); ?></b></td>
     
     </tr>
+    <?php
+    if ($l["cantfact_lec"]>0) { ?>
+    <tr>
+        <td align="right" style="padding: 0;" colspan="2"><b style="font-size: 10pt;"><?php echo $l["cantfact_lec"]." FACTURA(S) ADEUDADA(S) Bs. ".number_format($l["montofact_lec"],2,".",","); ?></b></td>
+    </tr>
+    <?php } ?>
     <tr>
         
-        <td align="center" style="padding: 0;" colspan="2"><b style="font-size: 10pt;"><?php echo $empresa['anuncio_emp']; ?></b></td>
+        <td align="center" style="padding: 0;" colspan="2"><b style="font-size: 10pt;">
+            <?php echo $empresa['anuncio_emp']; ?>
+                <br><br>
+                ...
+        </b></td>
     
     </tr>
 </table>

@@ -41,8 +41,9 @@ function finalizar(){
                 if(registros != null){
                 alert('COBRO REALIZADO CON EXITO');
                 if (imprimir_factura==true) {
-                    window.open(base_url+"factura/imprimir/"+factura_id, '_blank');
-                    window.open(base_url+"factura/copia/"+factura_id, '_blank');
+                    window.open(base_url+"factura/imprimir_factura/0/"+factura_id, '_blank'); //factura original
+                    window.open(base_url+"factura/imprimir_factura/1/"+factura_id, '_blank'); //factura copia
+//                    window.open(base_url+"factura/copia/"+factura_id, '_blank');
                 }
                 var nada = "";
                 $("#lista_pendientes").html(nada);
@@ -173,6 +174,11 @@ function buscarasociado(){
 
 }
 
+function ocultar_tabla(){
+    
+    var html = "";
+    $("#mitabla_xs").html(html);
+}
 function buscar_asociados()
 {
     var base_url = document.getElementById('base_url').value;
@@ -200,7 +206,10 @@ function buscar_asociados()
                 html += "<th>Telefono</th>";
                 html += "<th>Nit</th>";
                 html += "<th>Razon</th>";
+                html += "<th></th>";
                // html += "<th></th>";
+               
+                html += "<tbody id='tabla_resultados'>";
                 html += "</tr>";
                 
                 for(var i = 0; i<fin; i++)
@@ -218,8 +227,10 @@ function buscar_asociados()
                     html += "<td>"+registros[i]["razon_asoc"]+"</td>";  
                     //html += "<td><button onclick='ver_facturas("+registros[i]["id_asoc"]+")' class='btn btn-success btn-xs' title='Ver Facturas Pendientes' ><span class='fa fa-money'></span></button></td>";
  
+                    html += "<td><button onclick='ocultar_tabla()' class='btn btn-warning btn-xs'><fa class='fa fa-eraser'></fa></button></td>";
                     html += "</tr>";
                 } 
+                html += "</tbody>";   
                 html += "</table>";   
                 html += "</div>";   
                 $("#lista_asociados").html(html);

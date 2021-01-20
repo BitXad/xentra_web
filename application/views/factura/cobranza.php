@@ -244,16 +244,19 @@ input[type=number] { -moz-appearance:textfield; }
                               
             </table>
              <hr style="margin: 0;border: 2px solid #f2f2f2">
-                  <div class="col-md-4">
-                      <input type="checkbox" id="generar_factura" onclick="facturan()" name="generar_factura" size="8" value=""><label for="generar_factura"> Generar Factura </label> 
+                  
+                   <div class="col-md-4">
+                      <input type="checkbox" checked id="generar_factura" onclick="facturan()" name="generar_factura" size="8" value="1"><label for="generar_factura"> Generar Factura </label> 
                   </div>
+             
                   <div class="col-md-4">
                    <input type="checkbox" checked id="imprimir_factura" name="imprimir_factura" size="8" value=""><label for="imprimir_factura"> Imprimir Factura </label> 
                   </div>
                   <div class="col-md-4">
-                   <input type="hidden" id="imprimir_copia" name="imprimir_copia" size="8" value=""><label for="imprimir_copia"> Imprimir Copia </label> 
+                   <input type="checkbox" checked id="imprimir_copia" name="imprimir_copia" size="8" value=""><label for="imprimir_copia"> Imprimir Copia </label> 
                   </div>
-                  <div id="facturan" style="display: none">
+             
+                  <div id="facturan" style="display: block">
                   <div class="col-md-6">
                     <label for="nit_asoc"> NIT </label> 
                    <input type="tex" class="form-control btn-warning" id="nit_asoc" name="nit_asoc" value="">
