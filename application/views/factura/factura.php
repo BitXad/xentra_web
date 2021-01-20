@@ -8,7 +8,7 @@
 <?php $padding = "style='padding:0; '"; 
     $ancho = "18cm";
     $ancho2 = "17cm"; ?>
-<div class="box" style="border-top: 0px; width: <?php echo $ancho ?>">
+<div class="box" style="width: <?php echo $ancho ?>">
 <!-------------------------------------------------------->
 <table class="table" style="width: 100%; padding: 0;" >
     <tr>
@@ -136,7 +136,6 @@
    
     </table>
 <br>
-<<<<<<< HEAD
     
 <table style="width: 100%; padding: 0; font-family: Arial; font-size:12px;" >
     
@@ -210,22 +209,6 @@
                             <?php echo number_format($total, 2, ".", ","); ?></th>
                         
                       </tr>
-=======
-    <table style="width: 100%; padding: 0; font-family: Arial; font-size:12px;">
-        <tr>
-            <th width="20%">&nbsp;<img src="<?php echo $codigoqr; ?>" style="position: absolute;" width="100" height="100"></th>
-            <th style="text-align: right;" width="45%" align="center">
-                IMPORTE PARA CREDITO FISCAL <br>
-                SON: <?php echo num_to_letras($total); ?></th>
-            <th width="20%">
-            Bs<br>    
-            TOTAL A PAGAR Bs </th>
-            <th style="text-align: right;" width="15%">
-                <?php echo number_format(($total-$totalexento), 2, ".", ","); ?><br>
-                <?php echo number_format($total, 2, ".", ","); ?></th>
-
-        </tr>
->>>>>>> master
 
    
     </table>-->
@@ -237,19 +220,13 @@
     
     
     <tr>
-<<<<<<< HEAD
         <td style="width: 20%;"></td>
         <td style="width: 80%; line-height: 12px;" colspan="3"> 
             
-=======
-        <td style="width: 16%;"></td>
-        <td style="padding-top: 0px; padding-bottom: 0px; width: 66%;"> 
->>>>>>> master
             CÓDIGO DE CONTROL: <?php echo $factura[0]['codcontrol_fact']; ?> <br>
             FECHA LÍMITE DE EMISIÓN: <?php echo date('d/m/Y',strtotime($factura[0]['fechaemision_fact']))?><br>
             TRANS.: <?php echo $factura[0]['id_fact']; ?> <br>
             CAJERO: <?php echo $factura[0]['nombre_usu'];  ?>
-<<<<<<< HEAD
             <center style="font-size: 8px;">
                  <?php echo $factura[0]['factura_leyenda1'];  ?><br>
             </center>
@@ -260,35 +237,6 @@
     </tr>   
 </table>-->
     
-=======
-            
-        </td>
-        <td style="width: 14%;"> 
-            <center>
-
-               
-            </center>
-        </td>
-        
-        <!--<td style="width: 7%;">
-            <center>
-
-             
-            </center>
-        </td>-->
-    </tr>
-    <tr>
-        <td style="width: 20%;"></td>
-        <td colspan="2" style="padding-top: 0px; padding-bottom: 0px; width: 80%;">
-            <center>
-                <span style="font-size: 8.5px" ><?php echo $factura[0]['factura_leyenda1'];  ?></span><br>
-                <span style="font-size: 8px" ><?php echo $factura[0]['factura_leyenda2'];  ?></span>
-               
-            </center>
-        </td>
-    </tr>
-</table>
->>>>>>> master
 </div>
 
 
