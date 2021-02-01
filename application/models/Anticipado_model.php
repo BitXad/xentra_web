@@ -43,7 +43,7 @@ class Anticipado_model extends CI_Model
     function get_ultima_lectura($id_asoc)
     {
         $sql = "select 
-                   MAX(l.`id_lec`), a.*, l.*
+                   MAX(l.`id_lec`), a.*, l.`actual_lec`, l.`mes_lec`, l.`gestion_lec`
                 from 
                     asociado a,  lectura l
                 where

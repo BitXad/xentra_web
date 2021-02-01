@@ -71,6 +71,8 @@ input[type=number] { -moz-appearance:textfield; }
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="esexento" id="esexento" value="0">
+ <input type="hidden" id="tipo_lectura" name="tipo_lectura" value="<?php echo $configuracion[8]["valor"]; ?>">
+ <input type="hidden" id="total_aporte" name="total_aporte" value="<?php echo $all_aporte["total_aporte"]; ?>">
  <!--<input type="hidden" name="usuario_id" id="usuario_id" value="<?php //echo $usuario_id; ?>">
  <input type="hidden" name="tipo_orden" id="tipo_orden" value='<?php //echo json_encode($tipo_orden); ?>' />-->
  <div class="row" style="padding-left: 10px;margin-top: -20px;margin-bottom: -7px;">
@@ -128,6 +130,15 @@ input[type=number] { -moz-appearance:textfield; }
             <div class="col-md-12" style="display: none; padding: 0px" id="lecturaanterior"></div>
             <div class="col-md-12 box" style="display: none; padding: 0px" id="mespara_cobro"></div>
             <div class="col-md-12 box" style="padding-left:0px;">
+                <!--<h4 class="modal-title">Multas y Recargos</h4>-->
+                <table class="table table-striped table-condensed" id="mitabla">
+                    <tr>
+                        <td style="width: 15%"><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='rep_formulario' id='rep_formulario' readonly /></td>
+                        <td style="width: 85%">REPOSICION DE FORMULARIO</td>
+                    </tr>
+                </table>
+            </div>
+            <!--<div class="col-md-12 box" style="padding-left:0px;">
                 <h4 class="modal-title">Multas y Recargos  <button class="btn btn-info btn-xs" type="button">
                 <input type="checkbox" name="multar" id="multar" checked  onclick="multar()"  />
                 <label for="multar"> Cobrar Multas</label></button> </h4>
@@ -144,7 +155,7 @@ input[type=number] { -moz-appearance:textfield; }
                         <tbody class="buscar3" id="detalle_recargo"></tbody>
                     </table>
                 </div>
-            </div>
+            </div>-->
                 <!--<div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla_xs">
                     <tr>
@@ -201,6 +212,10 @@ input[type=number] { -moz-appearance:textfield; }
             <div class="col-md-12" style="padding-left:0px;">
                 <div class="box-body table-responsive table-condensed">
                     <table class="table table-striped table-condensed" id="miotratabla" >
+                        <tr>
+                            <td>Consumo Mts<sup>3</sup></td>
+                            <td><input class="btn btn-default" type="text" size="8" readonly id="consumo_m3" name="consumo_m3" value="0.00"></td>
+                        </tr>
                         <tr>
                             <td>Consumo Bs.</td>
                             <td><input class="btn btn-default" type="text" size="8" readonly id="consumo" name="consumo" value="0.00"></td>

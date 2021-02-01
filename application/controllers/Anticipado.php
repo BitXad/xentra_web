@@ -34,8 +34,12 @@ class Anticipado extends CI_Controller{
     function cobranza()
     {
         if($this->acceso(404)){
+            $this->load->model('Configuracion_model');
+            $data['configuracion'] = $this->Configuracion_model->get_all_configuracion();
             $this->load->model('Gestion_model');
             $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+            $this->load->model('Aporte_model');
+            $data['all_aporte'] = $this->Aporte_model->get_aporte_total();
             $data['_view'] = 'anticipado/cobranza';
             $this->load->view('layouts/main',$data);
         }

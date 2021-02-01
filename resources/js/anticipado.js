@@ -150,9 +150,17 @@ function ultima_lectura(id_asoc)
                     html1 += "<tr>";
                     html1 += "<td align='center' style='background-color: #f0f0f5'>Lectura Promedio Mes (mts<sup>3</sup>)</td>";
                     html1 += "<td align='center' style='background-color: #558cf2'>";
-                    html1 += "<input type='number' step='any' min='0' val='0' name='elpromedio' id='elpromedio' />";
+                    html1 += "<input type='number' step='any' min='0' val='0' name='elpromedio' id='elpromedio' onkeypress='calcular_consumo(event,"+JSON.stringify(registros[0])+")' />";
                     html1 += "</td>";
-                    html1 += "<td align='center' style='background-color: #36396e; color: white'><span id='promediobs'>0</span></td>";
+                    html1 += "<td align='center' style='background-color: #36396e; color: white'><span id='consumo_bs'>0</span></td>";
+                    html1 += "<td class='text-left' style='background-color: #36396e; color: white' >Bs</td>";
+                    html1 += "</tr>";
+                    html1 += "<tr>";
+                    html1 += "<td align='center' style='background-color: #f0f0f5'>Alcantarillado</td>";
+                    html1 += "<td align='center' style='background-color: #36396e'>";
+                    html1 += "<span id='consumo_alcantarillado' style='color: white'>0</span>";
+                    html1 += "</td>";
+                    html1 += "<td class='text-left' style='background-color: #36396e; color: white' >Bs</td>";
                     html1 += "<td></td>";
                     html1 += "</tr>";
                     html1 += "</table>";
@@ -165,34 +173,34 @@ function ultima_lectura(id_asoc)
                     html2 += "<th style='padding: 0px' class='text-center'>Monto Bs.</th>";
                     html2 += "</tr>";
                     html2 += "<tr>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes1' name='mes[]' value='1' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes1' name='mes[]' value='1' onchange='cobrar_mes(1)' /></td>";
                     html2 += "<td style='padding-top: 0px; padding-bottom: 0px'>Enero</td>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m1' id='m1' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m1' id='m1' readonly /></td>";
                     html2 += "</tr>";
                     html2 += "<tr>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes2' name='mes[]' value='2' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes2' name='mes[]' value='2' onchange='cobrar_mes(2)' /></td>";
                     html2 += "<td style='padding-top: 0px; padding-bottom: 0px'>Febrero</td>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m2' id='m2' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m2' id='m2' readonly /></td>";
                     html2 += "</tr>";
                     html2 += "<tr>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes3' name='mes[]' value='3' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes3' name='mes[]' value='3' onchange='cobrar_mes(3)' /></td>";
                     html2 += "<td style='padding-top: 0px; padding-bottom: 0px'>Marzo</td>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m3' id='m3' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m3' id='m3' readonly /></td>";
                     html2 += "</tr>";
                     html2 += "<tr>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes4' name='mes[]' value='4' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes4' name='mes[]' value='4' onchange='cobrar_mes(4)' /></td>";
                     html2 += "<td style='padding-top: 0px; padding-bottom: 0px'>Abril</td>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m4' id='m4' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m4' id='m4' readonly /></td>";
                     html2 += "</tr>";
                     html2 += "<tr>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes5' name='mes[]' value='5' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes5' name='mes[]' value='5' onchange='cobrar_mes(5)' /></td>";
                     html2 += "<td style='padding-top: 0px; padding-bottom: 0px'>Mayo</td>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m5' id='m5' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m5' id='m5' readonly /></td>";
                     html2 += "</tr>";
                     html2 += "<tr>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes6' name='mes[]' value='6' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes6' name='mes[]' value='6' onchange='cobrar_mes(6)' /></td>";
                     html2 += "<td style='padding-top: 0px; padding-bottom: 0px'>Junio</td>";
-                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m6' id='m6' /></td>";
+                    html2 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m6' id='m6' readonly /></td>";
                     html2 += "</tr>";
                     html2 += "</table>";
                     html2 += "</div>";
@@ -204,34 +212,34 @@ function ultima_lectura(id_asoc)
                     html3 += "<th style='padding: 0px' class='text-center'>Monto Bs.</th>";
                     html3 += "</tr>";
                     html3 += "<tr>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes7' name='mes[]' value='7' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes7' name='mes[]' value='7' onchange='cobrar_mes(7)' /></td>";
                     html3 += "<td style='padding-top: 0px; padding-bottom: 0px'>Julio</td>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m7' id='m7' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m7' id='m7' readonly /></td>";
                     html3 += "</tr>";
                     html3 += "<tr>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes8' name='mes[]' value='8' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes8' name='mes[]' value='8' onchange='cobrar_mes(8)' /></td>";
                     html3 += "<td style='padding-top: 0px; padding-bottom: 0px'>Agosto</td>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m8' id='m8' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m8' id='m8' readonly /></td>";
                     html3 += "</tr>";
                     html3 += "<tr>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes9' name='mes[]' value='9' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes9' name='mes[]' value='9' onchange='cobrar_mes(9)' /></td>";
                     html3 += "<td style='padding-top: 0px; padding-bottom: 0px'>Septiembre</td>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m9' id='m9' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m9' id='m9' readonly /></td>";
                     html3 += "</tr>";
                     html3 += "<tr>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes10' name='mes[]' value='10' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes10' name='mes[]' value='10' onchange='cobrar_mes(10)' /></td>";
                     html3 += "<td style='padding-top: 0px; padding-bottom: 0px'>Octubre</td>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m10' id='m10' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m10' id='m10' readonly /></td>";
                     html3 += "</tr>";
                     html3 += "<tr>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes11' name='mes[]' value='11' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes11' name='mes[]' value='11' onchange='cobrar_mes(11)' /></td>";
                     html3 += "<td style='padding-top: 0px; padding-bottom: 0px'>Noviembre</td>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m11' id='m11' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m11' id='m11' readonly /></td>";
                     html3 += "</tr>";
                     html3 += "<tr>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes12' name='mes[]' value='12' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='checkbox' id='mes12' name='mes[]' value='12' onchange='cobrar_mes(12)' /></td>";
                     html3 += "<td style='padding-top: 0px; padding-bottom: 0px'>Diciembre</td>";
-                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input type='number' step='any' min='0' val='0.00' name='m12' id='m12' /></td>";
+                    html3 += "<td style='padding-top: 0px; padding-bottom: 0px'><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='m12' id='m12' readonly /></td>";
                     html3 += "</tr>";
                     html3 += "</table>";
                     html3 += "</div>";
@@ -258,6 +266,207 @@ function ultima_lectura(id_asoc)
             }
         });
 }
+
+function calcular_consumo(e, asociado) {
+    tecla = (document.all) ? e.keyCode : e.which;
+    if(tecla == 13){
+        calcular(asociado);
+    }
+}
+
+function calcular(asociado){
+        var lectura_anterior = asociado["actual_lec"];
+        var tipo_lectura = document.getElementById("tipo_lectura").value;
+        var lectura_promedio = document.getElementById("elpromedio").value;
+        var servicios_asoc = asociado["servicios_asoc"];
+        var base_url = document.getElementById("base_url").value;
+        var controlador = base_url + "lectura/calcular_consumo";
+        //var asociado = asociado["id_asoc"];
+        var tipo_lectura = document.getElementById("tipo_lectura").value;
+        if (Number(lectura_promedio) >= 0) {
+            var consumo = lectura_promedio;
+            var id_asoc = asociado["id_asoc"];
+            $.ajax({
+                url: controlador,
+                type: "POST",
+                data: {consumo: consumo, asociado: id_asoc, tipo_lectura:tipo_lectura},
+                success: function (result) {
+                    //alert(tipo_lectura);
+                    if (tipo_lectura=='0'){ //tarifas normales
+                        var res = JSON.parse(result);
+                        var costo_agua = 0;
+                        if (Number(res[0].costo_agua)>=0){
+                            costo_agua = Number(res[0].costo_agua);
+                        }else{
+                            costo_agua = 0;
+                        }
+                        
+                        var consumo_bs = costo_agua + ((Number(consumo)-Number(res[0].consumo_basico)) * Number(res[0].costo_mt3));
+
+                        //alert(consumo_bs);
+    //                    var consumo_alcantarillado = document.getElementById("consumo_alcantarillado").value;
+                        var consumo_alcantarillado = res[0].costo_alcant;
+
+                        //var aportes_multas = document.getElementById("aportes_multas").value;
+                        //var descuentos = document.getElementById("descuentos").value;
+                        //var total_bs = "0.00";
+
+                        //alert(consumo_bs+" - "+consumo_alcantarillado);
+
+                        if (servicios_asoc == "AGUA"){ 
+                            consumo_alcantarillado = 0; 
+                        }
+
+                        if (servicios_asoc == "ALCANTARILLADO"){ 
+                            consumo_bs = 0;
+                        }
+                        
+                        $("#consumo_bs").html(Number(consumo_bs).toFixed(2));
+                        $("#consumo_alcantarillado").html(Number(consumo_alcantarillado));
+                        /*
+                        total_bs = Number(consumo_bs) + Number(consumo_alcantarillado) + Number(aportes_multas)- Number(descuentos);
+
+                        $("#total_bs").val(total_bs.toFixed(2));
+                        */
+                        //cargar inputs
+                        /*$("#actual_lec").val(lectura_actual);
+                        $("#anterior_lec").val(lectura_anterior);
+                        $("#consumo_lec").val(consumo);
+                        $("#totalcons_lec").val(consumo_bs);
+                        $("#monto_lec").val(consumo_bs);
+                        $("#estado_lec").val("LECTURADO");
+                        $("#canfact_lec").val(1);
+                        $("#montofact_lec").val(total_bs);
+                        
+                        document.getElementById("boton_registrar_lectura").style.display = 'inline';
+
+                        $("#boton_registrar_lectura").focus();
+                        */
+                    } // fin de if (tipo_lectura=='0'){ //tarifas normales
+                    else{
+                    
+                        var res = JSON.parse(result);
+                        var consumo_bs = 0;
+                        var consumo_bs = 0;
+                        var porc_factura = 0;
+                        var costofijo = 0;
+                        var consumobs = 0;
+                        var alcantarillado = 0;
+                        var tarifa = 0;
+                        //var aportes_multas = document.getElementById("aportes_multas").value;
+                        //var descuentos = document.getElementById("descuentos").value;
+                        var total_bs = "0.00";
+                        
+                        if (res.length>0){
+                                porc_factura = res[0].porc_factura;
+                                costofijo = res[0].costo_fijo;
+                                
+                                if (servicios_asoc == 'AGUA' || servicios_asoc == 'AGUA POTABLE')
+                                {
+                                    consumo_bs = (( Number(res[0].costo_m3) * Number(consumo)) + Number(res[0].montofijo_extra) + Number(costofijo)) * Number(res[0].porc_factura);
+                                    consumo_alcantarillado = 0;
+                                }
+
+                                
+                                if  (servicios_asoc == 'ALCANTARILLADO')
+                                {
+                                    consumo_bs = 0;
+                                    consumo_alcantarillado =  Number(res[0].porc_alcant) * Number(res[0].porc_factura);
+                                }
+
+                                if (servicios_asoc == 'AGUA Y ALCANTARILLADO')
+                                {
+                                
+                                    consumobs = (Number(res[0].costo_m3) * Number(consumo)) + Number(res[0].montofijo_extra);
+                                    //se cambio por orden de la sra nitza, para calcular en funcion al consumo de agua
+                                    //alcantarillado = consumobs * res[0].porc_alcant').asfloat * porc_factura;
+
+                                    tarifa = ((Number(consumobs) + Number(costofijo)) * Number(porc_factura));
+                                    
+                                    alcantarillado = Number(consumobs) * Number(res[0].porc_alcant);
+                                    
+                                    consumo_bs = Number(tarifa);
+                                    
+                                    consumo_alcantarillado = Number(alcantarillado);
+
+                                }
+                            
+                                consumo_alcantarillado = consumo_alcantarillado.toFixed(2);
+                                consumo_bs = consumo_bs.toFixed(2);
+                            
+                         
+                                $("#consumo_bs").html(Number(consumo_bs));
+                                $("#consumo_alcantarillado").html(Number(consumo_alcantarillado));
+
+                                /*total_bs = Number(consumo_bs) + Number(consumo_alcantarillado) + Number(aportes_multas)- Number(descuentos);
+
+                                $("#total_bs").val(total_bs.toFixed(2));
+
+                                //cargar inputs
+                                $("#actual_lec").val(lectura_actual);
+                                $("#anterior_lec").val(lectura_anterior);
+                                $("#consumo_lec").val(consumo);
+                                $("#totalcons_lec").val(consumo_bs);
+                                $("#monto_lec").val(consumo_bs);
+                                $("#estado_lec").val("LECTURADO");
+                                $("#canfact_lec").val(1);
+                                $("#montofact_lec").val(total_bs);
+
+                                document.getElementById("boton_registrar_lectura").style.display = 'inline';
+
+                                $("#boton_registrar_lectura").focus();
+                                */
+
+                        
+                        
+                        }//fin if(res.length>0)
+                    }//fin else
+                        
+
+                }, error: function (result) {
+                    $("#consumo_bs").val("0.00");
+                }
+            });
+
+        } else {
+            alert("ADVERTENCIA: La lectura promedio debe ser mayor a cero");
+            $("#elpromedio").focus();
+        }
+}
+
+function cobrar_mes(mes) {
+    var total_aporte = document.getElementById("total_aporte").value;
+    var el_promedio = document.getElementById("elpromedio").value;
+    if ($('#mes'+mes).is(':checked') ) {
+        $("#m"+mes).css('background-color','#edf3f5');
+        var consumo_bs = $("#consumo_bs").html();
+        var consumo_alcant = $("#consumo_alcantarillado").html();
+        $("#m"+mes).val(Number(consumo_bs)+Number(consumo_alcant));
+        var total_consumo = Number($("#consumo").val());
+        $("#consumo").val(Number(total_consumo+Number(consumo_bs)+Number(consumo_alcant)).toFixed(2));
+        var rep_form = $("#rep_formulario").val();
+        $("#rep_formulario").val(Number(Number(rep_form)+Number(total_aporte)).toFixed(2));
+        $("#aportes").val($("#rep_formulario").val());
+        var consumo_m3 = $("#consumo_m3").val();
+        $("#consumo_m3").val(Number(consumo_m3)+Number(el_promedio));
+    }else{
+        $("#m"+mes).css('background-color','#b1b2bd');
+        var consumo_bs = $("#consumo_bs").html();
+        var consumo_alcant = $("#consumo_alcantarillado").html();
+        $("#m"+mes).val("0.00");
+        var total_consumo = Number($("#consumo").val());
+        $("#consumo").val(Number(total_consumo-(Number(consumo_bs)+Number(consumo_alcant))).toFixed(2));
+        var rep_form = $("#rep_formulario").val();
+        $("#rep_formulario").val(Number(Number(rep_form)-Number(total_aporte)).toFixed(2));
+        $("#aportes").val($("#rep_formulario").val());
+        var consumo_m3 = $("#consumo_m3").val();
+        $("#consumo_m3").val(Number(consumo_m3)-Number(el_promedio));
+    }
+}
+
+
+
+
 
 
 
