@@ -73,6 +73,9 @@ input[type=number] { -moz-appearance:textfield; }
  <input type="hidden" name="esexento" id="esexento" value="0">
  <input type="hidden" id="tipo_lectura" name="tipo_lectura" value="<?php echo $configuracion[8]["valor"]; ?>">
  <input type="hidden" id="total_aporte" name="total_aporte" value="<?php echo $all_aporte["total_aporte"]; ?>">
+ <input type="hidden" id="fechaant_lec" name="fechaant_lec" value="0">
+ <input type="hidden" id="tipo_asoc" name="tipo_asoc"> <!-- es para lacategoria de asocoados -->
+ <!--<input type="hidden" id="servicios_asoc" name="servicios_asoc">-->
  <!--<input type="hidden" name="usuario_id" id="usuario_id" value="<?php //echo $usuario_id; ?>">
  <input type="hidden" name="tipo_orden" id="tipo_orden" value='<?php //echo json_encode($tipo_orden); ?>' />-->
  <div class="row" style="padding-left: 10px;margin-top: -20px;margin-bottom: -7px;">
@@ -138,6 +141,12 @@ input[type=number] { -moz-appearance:textfield; }
                     </tr>
                 </table>
             </div>
+            <!--<h5 class="modal-title">Multas y Recargos 
+                <button class="btn btn-info btn-xs" type="button">
+                    <input type="checkbox" name="multar" id="multar" checked  onclick="multar()"  />
+                    <label for="multar"> Cobrar Multas</label>
+                </button>
+            </h5>-->
             <!--<div class="col-md-12 box" style="padding-left:0px;">
                 <h4 class="modal-title">Multas y Recargos  <button class="btn btn-info btn-xs" type="button">
                 <input type="checkbox" name="multar" id="multar" checked  onclick="multar()"  />
@@ -186,7 +195,7 @@ input[type=number] { -moz-appearance:textfield; }
                         <th class="text-center" colspan="3" style="color: white">Formato de Facturación</th>
                     </tr>
                     <tr>
-                        <td style="color: #f74205"><label><input type="radio" name="tipofactura" id="resumido" value="1" />Factura resumida</label></td>
+                        <td style="color: #f74205"><label><input type="radio" name="tipofactura" id="resumido" value="1" checked />Factura resumida</label></td>
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td style="color: #f74205"><label><input type="radio" name="tipofactura" id="detallado" value="2" />Factura detallada</label></td>
                     </tr>
@@ -270,7 +279,7 @@ input[type=number] { -moz-appearance:textfield; }
         <i class="fa fa-money fa-4x"></i><br>
        Cobrar<br>Factura<br>
     </button>
-    <a  href="<?php echo site_url('factura/cobranza'); ?>" class="btn btn-sq-lg btn-warning" style="width: 120px !important; height: 120px !important;">
+    <a  href="<?php echo site_url('anticipado/cobranza'); ?>" class="btn btn-sq-lg btn-warning" style="width: 120px !important; height: 120px !important;">
         <i class="fa fa-ban fa-4x"></i><br><br>
         Cancelar<br>
     </a>

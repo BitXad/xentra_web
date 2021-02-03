@@ -64,6 +64,14 @@ function buscar_asociados(){
                 html += "</table>";   
                 html += "</div>";   
                 $("#lista_asociados").html(html);
+                $("#servicios_asoc").html("");
+                $("#elservicio").css("display", "none");
+                $("#lagestion").css("display", "none");
+                $("#lecturaanterior").html("");
+                $("#lecturaanterior").css("display", "none");
+                $("#mespara_cobro").html("");
+                $("#mespara_cobro").css("display", "none");
+                $("#rep_formulario").val("0.00");
 
             },
             error: function(respuesta){
@@ -115,6 +123,8 @@ function facturas_pendientes(larespuesta){
                     $("#lagestion").css("display", "none");
                     $("#lecturaanterior").html("");
                     $("#lecturaanterior").css("display", "none");
+                    $("#mespara_cobro").html("");
+                    $("#mespara_cobro").css("display", "none");
                     alert('El Asociado Tiene Facturas '+estado+', no puede realizar pagos anticipados!');
                 }
 
@@ -143,7 +153,7 @@ function ultima_lectura(id_asoc)
                     html1 += "<table class='table table-striped table-condensed'>";
                     html1 += "<tr>";
                     html1 += "<td align='center'>Lectura Anterior (mts<sup>3</sup>)</td>";
-                    html1 += "<td align='center' style='background-color: #558cf2'>"+registros[0]["actual_lec"]+"</td>";
+                    html1 += "<td align='center' style='background-color: #558cf2'><span id='lec_anterior'>"+registros[0]["actual_lec"]+"</span></td>";
                     html1 += "<td align='center' style='background-color: #36396e; color: white'>"+registros[0]["mes_lec"]+"</td>";
                     html1 += "<td align='center' style='background-color: #36396e; color: white'>"+registros[0]["gestion_lec"]+"</td>";
                     html1 += "</tr>";
@@ -250,13 +260,21 @@ function ultima_lectura(id_asoc)
                     html4 += "<td style='padding-top: 0px; padding-bottom: 0px'>Aportes/Multas</td>";
                     html4 += "</tr>";
                     html4 += "</table>";*/
+                    $("#fechaant_lec").val(registros[0]["fecha_lec"]);
+                    $("#tipo_asoc").val(registros[0]["categoria_asoc"]);
+                    $("#servicios_asoc").val(registros[0]["servicios_asoc"]);
                     $("#lecturaanterior").html(html1);
                     $("#lecturaanterior").css("display", "block");
                     $("#mespara_cobro").html(html2+html3);
                     $("#mespara_cobro").css("display", "block");
                 }else{
+                    $("#fechaant_lec").val("");
+                    $("#tipo_asoc").val("");
+                    $("#servicios_asoc").val("");
                     $("#lecturaanterior").html("");
                     $("#lecturaanterior").css("display", "none");
+                    $("#mespara_cobro").html("");
+                    $("#mespara_cobro").css("display", "none");
                     alert('El Asociado no tiene lectura anterior!.');
                 }
 
@@ -421,7 +439,7 @@ function calcular(asociado){
                         
                         }//fin if(res.length>0)
                     }//fin else
-                        
+                    $("#btnfinalizar").prop('disabled',false);
 
                 }, error: function (result) {
                     $("#consumo_bs").val("0.00");
@@ -449,6 +467,9 @@ function cobrar_mes(mes) {
         $("#aportes").val($("#rep_formulario").val());
         var consumo_m3 = $("#consumo_m3").val();
         $("#consumo_m3").val(Number(consumo_m3)+Number(el_promedio));
+        
+        //var total_factura = $("#total_factura").val();
+        $("#total_factura").val(Number($("#consumo").val())+Number($("#aportes").val())+Number($("#recargos").val()));
     }else{
         $("#m"+mes).css('background-color','#b1b2bd');
         var consumo_bs = $("#consumo_bs").html();
@@ -461,7 +482,127 @@ function cobrar_mes(mes) {
         $("#aportes").val($("#rep_formulario").val());
         var consumo_m3 = $("#consumo_m3").val();
         $("#consumo_m3").val(Number(consumo_m3)-Number(el_promedio));
+        
+        //var total_factura = $("#total_factura").val();
+        $("#total_factura").val(Number($("#consumo").val())+Number($("#aportes").val())+Number($("#recargos").val()));
     }
+}
+/* Cobrar(Finalizar) pagos por anticipado */
+function finalizar(){
+    $("#btnfinalizar").prop('disabled',true);
+    var tam = $('[name="mes[]"]:checked').length;
+    //alert(tam);
+    if (tam >0){
+        var band = true;
+        var res_sec = true;
+        var primero = 0;
+        $('[name="mes[]"]:checked').each(function(){
+            if(band == true){
+                primero = $(this).val();
+                band = false;
+            }else{
+                if(primero != $(this).val()){
+                    res_sec = false;
+                }
+            }
+            primero = Number(Number(primero)+1);
+        });
+        
+        if(res_sec == true){
+            registrar_lecfact();
+        }else{
+            alert("Los meses deben ser consecutivos");
+        }
+    }else{
+        alert("Debe elegir el o los meses a pagar!");
+    }
+}
+/* registra lectura y factura a detalle por mes.. */
+function registrar_lecfact(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'anticipadoa/registrarfacturaa';
+    var id_asoc = document.getElementById('id_asoc').value;
+    var factura_id = document.getElementById('factura_id').value;
+    var lectura_id = document.getElementById('lectura_id').value;
+    //var multar = document.getElementById('multar').checked;
+    var generar_factura = document.getElementById('generar_factura').checked;
+    var imprimir_factura = document.getElementById('imprimir_factura').checked;
+    var imprimir_copia = document.getElementById('imprimir_copia').checked;
+    var consumo = document.getElementById('consumo').value;
+    var aportes = document.getElementById('aportes').value;
+    var recargos = document.getElementById('recargos').value;
+    var total = document.getElementById('total_factura').value;
+    var nit_asoc = document.getElementById('nit_asoc').value;
+    var razon_asoc = document.getElementById('razon_asoc').value;
+    var esexento = document.getElementById('esexento').value;
+    var tipo_factura = $('input:radio[name=tipofactura]:checked').val();
+    var gestionlec_asoc = document.getElementById('gestionlec_asoc').value;
+    var fechaant_lec = document.getElementById('fechaant_lec').value;
+    var total_aporte = document.getElementById('total_aporte').value;
+    var lec_anterior = $("#lec_anterior").html();
+    var elpromedio = $("#elpromedio").val();
+    var consumo_bs = $("#consumo_bs").html();
+    //var lec_anterior = document.getElementById('lec_anterior').;
+    var tipo_asoc = document.getElementById('tipo_asoc').value;
+    var servicios_asoc = document.getElementById('servicios_asoc').value;
+    var consumo_alcantarillado = $("#consumo_alcantarillado").html();
+    var estemes = 0;
+    var miband = true;
+    $('[name="mes[]"]:checked').each(function(){
+        estemes = $(this).val();
+        if(miband == true){
+            miband = false;
+        }else{
+            lec_anterior = Number(lec_anterior)+Number(elpromedio)
+        }
+        $.ajax({url:controlador,
+
+                type:"POST",
+
+                data:{factura_id:factura_id,generar_factura:generar_factura,lectura_id:lectura_id,
+                      consumo:consumo,aportes:aportes,recargos:recargos,total:total,nit_asoc:nit_asoc,razon_asoc:razon_asoc,
+                      esexento:esexento, este_mes:estemes, tipo_factura:tipo_factura, id_asoc:id_asoc,
+                      gestionlec_asoc:gestionlec_asoc, lec_anterior:lec_anterior, elpromedio:elpromedio,
+                      fechaant_lec:fechaant_lec, consumo_bs:consumo_bs, tipo_asoc:tipo_asoc, servicios_asoc:servicios_asoc,
+                      consumo_alcantarillado:consumo_alcantarillado, total_aporte:total_aporte},
+
+                success:function(respuesta){
+
+                    var registros = JSON.parse(respuesta);
+                    if(registros != null){
+                    alert('COBRO REALIZADO CON EXITO');
+                    if (imprimir_factura==true) {
+                        window.open(base_url+"factura/imprimir_factura/0/"+factura_id, '_blank'); //factura original
+                    }
+                    if (imprimir_copia==true) {
+                        window.open(base_url+"factura/imprimir_factura/1/"+factura_id, '_blank'); //factura copia
+                    }
+                    var nada = "";
+                    $("#lista_pendientes").html(nada);
+                    $("#detalle_factura").html(nada);
+                    $("#detalle_recargo").html(nada);
+                    $("#consumo").val("0.00");
+                    $("#aportes").val("0.00");
+                    $("#recargos").val("0.00");
+                    $("#total_factura").val("0.00");
+                    $("#btnfinalizar").prop('disabled',true);
+                    facturas_pendientes(id_asoc);
+                }else{
+                    alert("Informacion Incorrecta, revise sus datos, consumo y total no pueden ser 0");
+                }
+
+                },
+
+                error:function(respuesta){          
+
+                   alert('No tiene una factura seleccionada');
+
+                }
+        });
+    });
+
+
+
 }
 
 
@@ -491,70 +632,11 @@ function cobrar_mes(mes) {
 
 
 
-function finalizar(){
-
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'factura/registrarfactura';
-    var id_asoc = document.getElementById('id_asoc').value;
-    var factura_id = document.getElementById('factura_id').value;
-    var lectura_id = document.getElementById('lectura_id').value;
-    var multar = document.getElementById('multar').checked;
-    var generar_factura = document.getElementById('generar_factura').checked;
-    var imprimir_factura = document.getElementById('imprimir_factura').checked;
-    var consumo = document.getElementById('consumo').value;
-    var aportes = document.getElementById('aportes').value;
-    var recargos = document.getElementById('recargos').value;
-    var total = document.getElementById('total_factura').value;
-    var nit_asoc = document.getElementById('nit_asoc').value;
-    var razon_asoc = document.getElementById('razon_asoc').value;
-    var esexento = document.getElementById('esexento').value;
-    $.ajax({url:controlador,
-
-            type:"POST",
-
-            data:{factura_id:factura_id,multar:multar,generar_factura:generar_factura,lectura_id:lectura_id,
-                consumo:consumo,aportes:aportes,recargos:recargos,total:total,nit_asoc:nit_asoc,razon_asoc:razon_asoc,
-                esexento:esexento},
-
-            success:function(respuesta){
-
-                var registros = JSON.parse(respuesta);
-                if(registros != null){
-                alert('COBRO REALIZADO CON EXITO');
-                if (imprimir_factura==true) {
-                    window.open(base_url+"factura/imprimir_factura/0/"+factura_id, '_blank'); //factura original
-                    window.open(base_url+"factura/imprimir_factura/1/"+factura_id, '_blank'); //factura copia
-//                    window.open(base_url+"factura/copia/"+factura_id, '_blank');
-                }
-                var nada = "";
-                $("#lista_pendientes").html(nada);
-                $("#detalle_factura").html(nada);
-                $("#detalle_recargo").html(nada);
-                $("#consumo").val("0.00");
-                $("#aportes").val("0.00");
-                $("#recargos").val("0.00");
-                $("#total_factura").val("0.00");
-                $("#btnfinalizar").prop('disabled',true);
-                facturas_pendientes(id_asoc);
-            }else{
-                alert("Informacion Incorrecta, revise sus datos, consumo y total no pueden ser 0");
-            }
-            
-            },
-
-            error:function(respuesta){          
-
-               alert('No tiene una factura seleccionada');
-        
-            }                
-
-    }); 
 
 
 
 
-
-}   
+   
 
 
 
