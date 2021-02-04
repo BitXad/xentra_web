@@ -98,7 +98,7 @@ class Anticipado extends CI_Controller{
             $aportes=$this->input->post('aportes');
             $recargos1=$this->input->post('recargos');
             //$total=$this->input->post('total');
-            $este_mes=$this->input->post('este_mes');
+            //$este_mes=$this->input->post('este_mes');
             $tipo_factura=$this->input->post('tipo_factura');
             $id_asoc = $this->input->post('id_asoc');
             $gestion_lec = $this->input->post('gestionlec_asoc');
@@ -112,65 +112,78 @@ class Anticipado extends CI_Controller{
             $servicios_asoc = $this->input->post('servicios_asoc');
             $consumo_alcantarillado = $this->input->post('consumo_alcantarillado');
             $total_aporte = $this->input->post('total_aporte');
-                    
-            if($este_mes == 1){ $mes_lec = "ENERO";}
-            elseif($este_mes == 2){ $mes_lec = "FEBRERO";}
-            elseif($este_mes == 3){ $mes_lec = "MARZO";}
-            elseif($este_mes == 4){ $mes_lec = "ABRIL";}
-            elseif($este_mes == 5){ $mes_lec = "MAYO";}
-            elseif($este_mes == 6){ $mes_lec = "JUNIO";}
-            elseif($este_mes == 7){ $mes_lec = "JULIO";}
-            elseif($este_mes == 8){ $mes_lec = "AGOSTO";}
-            elseif($este_mes == 9){ $mes_lec = "SEPTIEMBRE";}
-            elseif($este_mes == 10){ $mes_lec = "OCTUBRE";}
-            elseif($este_mes == 11){ $mes_lec = "NOVIEMBRE";}
-            elseif($este_mes == 12){ $mes_lec = "DICIEMBRE";}
-            
-            /*if ($multar=="true") { //agregar los recargos al detalle
-                $recargos = $this->Anticipado_model->get_recargo_detalle($lectura_id);
-                foreach ($recargos as $rec) {
-                    $this->Anticipado_model->recargosadetalle($rec['id_param'],$factura_id);
-                }
+            $losmeses = $this->input->post('losmeses');
+            $elexento = $this->input->post('elexento');
+            $rep_concepto = $this->input->post('rep_concepto');
+            $mes_lec = "";
+            $esta_lecactual = $anterior_lec;
+            $id_lec = 0;
+            //$id_fact = 0;
+            $contmeses = 0;
+            foreach ($losmeses as $este_mes) {
+                if($este_mes == 1){ $mes_lec = "ENERO";}
+                elseif($este_mes == 2){ $mes_lec = "FEBRERO";}
+                elseif($este_mes == 3){ $mes_lec = "MARZO";}
+                elseif($este_mes == 4){ $mes_lec = "ABRIL";}
+                elseif($este_mes == 5){ $mes_lec = "MAYO";}
+                elseif($este_mes == 6){ $mes_lec = "JUNIO";}
+                elseif($este_mes == 7){ $mes_lec = "JULIO";}
+                elseif($este_mes == 8){ $mes_lec = "AGOSTO";}
+                elseif($este_mes == 9){ $mes_lec = "SEPTIEMBRE";}
+                elseif($este_mes == 10){ $mes_lec = "OCTUBRE";}
+                elseif($este_mes == 11){ $mes_lec = "NOVIEMBRE";}
+                elseif($este_mes == 12){ $mes_lec = "DICIEMBRE";}
+                
+                $esta_lecactual = $esta_lecactual+$elpromedio;
+                /*if ($multar=="true") { //agregar los recargos al detalle
+                    $recargos = $this->Anticipado_model->get_recargo_detalle($lectura_id);
+                    foreach ($recargos as $rec) {
+                        $this->Anticipado_model->recargosadetalle($rec['id_param'],$factura_id);
+                    }
 
-            }*/
-            /* ****************************************************************************************** */
-            $params = array(
-                'id_usu' => $usuario_id,
-                'id_asoc' => $id_asoc,
-                'mes_lec' => $mes_lec,
-                'gestion_lec' => $gestion_lec,
-                'anterior_lec' => $anterior_lec,
-                'actual_lec' => $anterior_lec+$elpromedio,
-                'fechaant_lec' => $fechaant_lec,
-                'consumo_lec' => $elpromedio,
-                'fecha_lec' => $fechalectura_fact,
-                'hora_lec' => $horalectura_fact,
-                'totalcons_lec' => $totalcons_lec,
-                'monto_lec' => $totalcons_lec,
-                'estado_lec' => "LECTURADO",
-                'tipo_asoc' => $tipo_asoc,
-                'servicios_asoc' => $servicios_asoc,
-                'cantfact_lec' => 0, //cantidad facturas adeudadas 
-                'montofact_lec' => 0, //Monto facturas adeudas
-                'consumoalcant_lec' => $consumo_alcantarillado,
-            );
-            $this->load->model('Lectura_model');
-            $id_lec = $this->Lectura_model->add_lectura($params);
+                }*/
+                /* ****************************************************************************************** */
+                $params = array(
+                    'id_usu' => $usuario_id,
+                    'id_asoc' => $id_asoc,
+                    'mes_lec' => $mes_lec,
+                    'gestion_lec' => $gestion_lec,
+                    'anterior_lec' => $anterior_lec,
+                    'actual_lec' => $esta_lecactual,
+                    'fechaant_lec' => $fechaant_lec,
+                    'consumo_lec' => $elpromedio,
+                    'fecha_lec' => $fechalectura_fact,
+                    'hora_lec' => $horalectura_fact,
+                    'totalcons_lec' => $totalcons_lec,
+                    'monto_lec' => $totalcons_lec,
+                    'estado_lec' => "LECTURADO",
+                    'tipo_asoc' => $tipo_asoc,
+                    'servicios_asoc' => $servicios_asoc,
+                    'cantfact_lec' => 0, //cantidad facturas adeudadas 
+                    'montofact_lec' => 0, //Monto facturas adeudas
+                    'consumoalcant_lec' => $consumo_alcantarillado,
+                );
+                $this->load->model('Lectura_model');
+                $id_lec = $this->Lectura_model->add_lectura($params);
+                $contmeses++;
+            }
             
-            $montoparc_fact = $totalcons_lec; //Consumo_Bs1.Text;
+            
+            $montoparc_fact = $consumo; //Consumo_Bs1.Text;
             $desc_fact = '0';
-            $montototal_fact = $totalcons_lec+$total_aporte+$consumo_alcantarillado; //Total_Bs1.Text;
-            $literal_fact = "'-'";
-            $estado_fact = "'PENDIENTE'";
+            $montototal_fact = $consumo; //$totalcons_lec+$total_aporte+$consumo_alcantarillado; //Total_Bs1.Text;
+            $literal_fact = "-";
+            $estado_fact = "PENDIENTE";
             
-            $nit_fact = $this->input->post("nit_fact");
-            $razon_fact = $this->input->post("razon_fact");
-            $fechavenc_fact = $this->input->post("fecha_vencimiento");
-            $fechalectura_fact = $this->input->post("fecha_lectura");
+            $nit_fact = $this->input->post("nit_asoc");
+            $razon_fact = $this->input->post("razon_asoc");
+            
+            $fechavenc_fact = $fechalectura_fact; //$this->input->post("fecha_vencimiento");
+            //$fechalectura_fact = $this->input->post("fecha_lectura");
 
-            $consumo_agua_bs = $this->input->post("consumo_agua_bs");
-            $consumo_alcantarillado_bs = $this->input->post("consumo_alcantarillado_bs");
-            $total_bs = $this->input->post("total_bs");
+            $consumo_agua_bs = $totalcons_lec; //$this->input->post("consumo_agua_bs");
+            $consumo_alcantarillado_bs = $consumo_alcantarillado; //$this->input->post("consumo_alcantarillado_bs");
+            $total_bs = $total; //$this->input->post("total_bs");
             
             $paramsf = array(
                 'id_lec' => $id_lec,
@@ -184,42 +197,239 @@ class Anticipado extends CI_Controller{
                 'fechavenc_fact' => $fechavenc_fact,
             );
             $this->load->model('Factura_model');
-            $id_lec = $this->Factura_model->add_factura($paramsf);
+            $id_fact = $this->Factura_model->add_factura($paramsf);
+            $aportes_tot   = 0;
+            $descuento_tot = 0;
+            $esexento = 0;
+            // Factura detallada
+            if($tipo_factura == 2){
+                foreach ($losmeses as $este_mes) {
+                    $estemes = 0;
+                    if($este_mes == 1){ $mes_lec = "ENERO"; $estemes = 1; }
+                    elseif($este_mes == 2){ $mes_lec = "FEBRERO"; $estemes = 2; }
+                    elseif($este_mes == 3){ $mes_lec = "MARZO"; $estemes = 3; }
+                    elseif($este_mes == 4){ $mes_lec = "ABRIL"; $estemes = 4; }
+                    elseif($este_mes == 5){ $mes_lec = "MAYO"; $estemes = 5; }
+                    elseif($este_mes == 6){ $mes_lec = "JUNIO"; $estemes = 6; }
+                    elseif($este_mes == 7){ $mes_lec = "JULIO"; $estemes = 7; }
+                    elseif($este_mes == 8){ $mes_lec = "AGOSTO"; $estemes = 8; }
+                    elseif($este_mes == 9){ $mes_lec = "SEPTIEMBRE"; $estemes = 9; }
+                    elseif($este_mes == 10){ $mes_lec = "OCTUBRE"; $estemes = 10; }
+                    elseif($este_mes == 11){ $mes_lec = "NOVIEMBRE"; $estemes = 11; }
+                    elseif($este_mes == 12){ $mes_lec = "DICIEMBRE"; $estemes = 12; }
+                    $coma = ",";
+                    //$totalcons_lec = $consumo_agua_bs;
+                    if ($totalcons_lec > 0) { //Significa que tiene consumo de agua
+                        //Se eliminara el registro del tipo de servicio
+                        ///descip_detfact:=servicios_asoc;
+                        $cant_detfact = "1";
+                        $descip_detfact = "'CONSUMO DE AGUA POTABLE: ".$mes_lec.". GESTIÓN: ".$gestion_lec."'";
+                        $punit_detfact = $totalcons_lec;
+                        $desc_detfact = "0";
+                        $total_detfact = $totalcons_lec;
+                        $sql = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact) values(" .
+                                $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . ")";
+                        //FormLogin.Ejecutarx(SQL);
+                        //echo $sql;
+                        $this->Anticipado_model->ejecutar($sql);
+                    }
+                    
+                    $alcantarillado = $consumo_alcantarillado_bs;
+                    // echo "total agua: ".$consumo_agua_bs." alcantarillado: ".$consumo_alcantarillado_bs;
+                    if ($alcantarillado > 0) { //Significa que tiene consumo de alcantarillado
+                        //Se eliminara el registro del tipo de servicio
+                        ///descip_detfact:=servicios_asoc;
+                        $cant_detfact = "1";
+                        $descip_detfact = "'SERVICIO DE ALCANTARILLADO'";
+                        $punit_detfact = $alcantarillado;
+                        $desc_detfact = "0";
+                        $total_detfact = $alcantarillado;
+                        $sql = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact) values(" .
+                                $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . ")";
+                        //echo $sql;
+                        $this->Anticipado_model->ejecutar($sql);
+                    }
+
+                    $mes = "'".$mes_lec."'";
+                    $gestion = $gestion_lec;
+                    $asociado = $id_asoc;
+                    //MOSTRAR MULTAS/APORTES
+                    $sql = "(select 'MULTA' as multa,motivo_multa as motivo,detalle_multa as detalle,monto_multa as monto,mes_multa as mes,gestion_multa as gestion,tipo_multa as tipo,exento_multa as exento, ice_multa as ice " .
+                            "from multa " .
+                            "where estado_multa = 'ACTIVO' and " .
+                            "(mes_multa = " . $mes . " and gestion_multa = '" . $gestion . "' and tipo_multa= 'GENERAL') or " .
+                            "(mes_multa= " . $mes . " and gestion_multa = '" . $gestion . "' and id_asoc=" . $asociado . ")) union " .
+                            "(select 'APORTE' as multa,motivo_ap as motivo,detalle_ap as detalle,monto_ap as monto,mes_ap as mes,gestion_ap as gestion,tipo_ap as tipo, exento_ap as exento, ice_ap as ice from aporte " .
+                            "where " .
+                            "tipo_ap = 'PERMANENTE' and estado_ap = 'ACTIVO' or " .
+                            "(mes_ap = " . $mes . " and gestion_ap = '" . $gestion . "' and tipo_ap = 'PARCIAL' and estado_ap = 'ACTIVO'))" .
+                            " union
+                            (select
+                                  'DESCUENTO' as multa, nom_desc as motivo, ' ' as detalle,
+                                  monto_desc as monto, ".$mes." as mes, '".$gestion."' as gestion,
+                                  ' ' as tipo, ' ' as exento, ' ' as ice
+                            from  descuento d
+                            where
+                                  d.id_asoc = $asociado
+                                  and d.estado_desc = 'ACTIVO'
+                                  and ((CONCAT('".$gestion."-".$estemes."-',day(d.vigencia_desc))) BETWEEN d.inicio_desc and d.vigencia_desc)
+                            )";
+
+                    $multas = $this->Anticipado_model->consultar($sql);
+                    
+                    foreach ($multas as $m) {
+                        if($m["multa"] == "DESCUENTO"){
+                            $descuento_tot = $descuento_tot+$m["monto"];
+                            $punit_detfact = "-".$m["monto"];  //ADOMultas.fieldbyname('monto').AsString;
+                            $total_detfact = "-".$m["monto"]; //ADOMultas.fieldbyname('monto').AsString;
+                            $tipo_detfact = 0;
+                        }else{
+                            $aportes_tot = $aportes_tot+$m["monto"];
+                            $punit_detfact = $m["monto"];  //ADOMultas.fieldbyname('monto').AsString;
+                            $total_detfact = $m["monto"]; //ADOMultas.fieldbyname('monto').AsString;
+                            $tipo_detfact = 1;
+                        }
+                        $descip_detfact = "'" . $m["motivo"] . "'"; //quotedStr(ADOMultas.fieldbyname('motivo').AsString);
+                        //$punit_detfact = $m["monto"];  //ADOMultas.fieldbyname('monto').AsString;
+                        $desc_detfact = "0";
+
+                        //$total_detfact = $m["monto"]; //ADOMultas.fieldbyname('monto').AsString;
+                        $exento_detfact = "'" . $m["exento"] . "'"; //quotedStr(ADOMultas.fieldbyname('exento').AsString);
+                        $ice_detfact = "'" . $m["ice"] . "'"; //quotedStr(ADOMultas.fieldbyname('ice').AsString);
+                        //exento_detfact:=quotedStr('SI');
+                        //ice_detfact:=quotedStr('N');
+                        if($m["exento"] == "SI"){
+                            $esexento = $esexento+$total_detfact;
+                        }
+
+                        $sql = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact,tipo_detfact,exento_detfact,ice_detfact) values(" .
+                                $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . $coma . $tipo_detfact . $coma . $exento_detfact . $coma . $ice_detfact . ")";
+                        // echo $sql;
+                        $this->Anticipado_model->ejecutar($sql);
+                    }
+                } //finforeach
+                $sql2 = "update factura set totalaportes_fact = ".$aportes_tot. ",
+                         desc_fact = ".$descuento_tot."
+                         where id_fact = ".$id_fact;
+                $this->db->query($sql2);
+            }else{ // factura resumida
+                $primermes = "";
+                $ultimomes = "";
+                $bandmes = true;
+                foreach ($losmeses as $este_mes) {
+                    $estemes = 0;
+                    if($este_mes == 1){ $mes_lec = "ENERO"; $estemes = 1; }
+                    elseif($este_mes == 2){ $mes_lec = "FEBRERO"; $estemes = 2; }
+                    elseif($este_mes == 3){ $mes_lec = "MARZO"; $estemes = 3; }
+                    elseif($este_mes == 4){ $mes_lec = "ABRIL"; $estemes = 4; }
+                    elseif($este_mes == 5){ $mes_lec = "MAYO"; $estemes = 5; }
+                    elseif($este_mes == 6){ $mes_lec = "JUNIO"; $estemes = 6; }
+                    elseif($este_mes == 7){ $mes_lec = "JULIO"; $estemes = 7; }
+                    elseif($este_mes == 8){ $mes_lec = "AGOSTO"; $estemes = 8; }
+                    elseif($este_mes == 9){ $mes_lec = "SEPTIEMBRE"; $estemes = 9; }
+                    elseif($este_mes == 10){ $mes_lec = "OCTUBRE"; $estemes = 10; }
+                    elseif($este_mes == 11){ $mes_lec = "NOVIEMBRE"; $estemes = 11; }
+                    elseif($este_mes == 12){ $mes_lec = "DICIEMBRE"; $estemes = 12; }
+                    if($bandmes == true){
+                        $primermes = $mes_lec;
+                        $bandmes = false;
+                    }
+                    
+                } //finforeach
+                $ultimomes = $mes_lec;
+                $coma = ",";
+                $mes = "'".$mes_lec."'";
+                $gestion = $gestion_lec;
+                $asociado = $id_asoc;
+                if ($totalcons_lec > 0) { //Significa que tiene consumo de agua
+                    $cant_detfact = "1";
+                    $descip_detfact = "'CONSUMO DE AGUA POTABLE: ".$primermes." A ".$ultimomes.". GESTIÓN: ".$gestion_lec."'";
+                    $punit_detfact = $totalcons_lec*$contmeses;
+                    $desc_detfact = "0";
+                    $total_detfact = $totalcons_lec*$contmeses;
+                    $sql = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact) values(" .
+                            $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . ")";
+                    //FormLogin.Ejecutarx(SQL);
+                    //echo $sql;
+                    $this->Anticipado_model->ejecutar($sql);
+                }
+                
+                $alcantarillado = $consumo_alcantarillado_bs;
+                // echo "total agua: ".$consumo_agua_bs." alcantarillado: ".$consumo_alcantarillado_bs;
+                if ($alcantarillado > 0) { //Significa que tiene consumo de alcantarillado
+                    //Se eliminara el registro del tipo de servicio
+                    ///descip_detfact:=servicios_asoc;
+                    $cant_detfact = "1";
+                    $descip_detfact = "'SERVICIO DE ALCANTARILLADO: ".$primermes." A ".$ultimomes.". GESTIÓN: ".$gestion_lec."'";
+                    $punit_detfact = $alcantarillado*$contmeses;
+                    $desc_detfact = "0";
+                    $total_detfact = $alcantarillado*$contmeses;
+                    $sql = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact) values(" .
+                            $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . ")";
+                    //echo $sql;
+                    $this->Anticipado_model->ejecutar($sql);
+                }
+                if ($aportes > 0) { //Significa que tiene aportes
+                    $cant_detfact = "1";
+                    $descip_detfact = "'".$rep_concepto."'";
+                    $punit_detfact = $aportes;
+                    $desc_detfact = "0";
+                    $total_detfact = $aportes;
+                    if($elexento == true){
+                        $exento_detfact = "'SI'";
+                    }else{
+                        $exento_detfact = "'NO'";
+                    }
+                    $sql = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact, exento_detfact) values(" .
+                            $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . $coma. $exento_detfact.")";
+                    //echo $sql;
+                    $this->Anticipado_model->ejecutar($sql);
+                }
+                
+                /*$sql2 = "update factura set totalaportes_fact = ".$aportes_tot. ",
+                         desc_fact = ".$descuento_tot."
+                         where id_fact = ".$id_fact;
+                $this->db->query($sql2);*/
+            }
             
-            
+            /*
             $coma = ",";
-            
             $sql = "insert into factura(id_lec,nit_fact,razon_fact,montoparc_fact,desc_fact,montototal_fact,literal_fact,estado_fact,fechavenc_fact) values(" .
                     $id_lec . $coma . $nit_fact . $coma . $razon_fact . $coma . $montoparc_fact . $coma . $desc_fact . $coma . $montototal_fact . $coma . $literal_fact . $coma . $estado_fact . $coma . $fechavenc_fact . ")";
             $this->Lectura_model->ejecutar($sql);
+            */
             /* ****************************************************************************************** */
-            
             
             $total_credfiscal = 0;
             if ($genera_factura=="true") {
                 //$datfactura = $this->Dosificacion_model->get_dosificacion($factura_id);
-                        $tipo_fact=1;
-                        //$estado_fact
-                        //$id_usu
-                        //$id_lec ya viene
-                        //$num_fact 
-                        $nit_fact = $this->input->post('nit_asoc');
-                        $razon_fact = $this->input->post('razon_asoc');
-                        $orden_fact = $dosificacion['numorden_dosif'];
-                        $nitemisor_fact = $empresa['nit_emp'];
-                        $llave_fact = $dosificacion['llave_dosif'];
-                        $factura_leyenda1 = $dosificacion['dosificacion_leyenda1'];
-                        $factura_leyenda2 = $dosificacion['dosificacion_leyenda2'];
-                        $esexento = $this->input->post('esexento');
-                        $total_credfiscal = ($total-$esexento);
-                        //$fecha_fact
-                        //$hora_fact
-                        $fechaemision_fact = $dosificacion['fechalim_dosif'];
-                        $fecha = date("Y-m-d");
-                        //$montoparc_fact ya viene
-                        //$desc_fact ya viene 0 
-                        //$cadenaqr_fact = $nitemisor_fact, $numfact_dosif1, $orden_fact, date('dd/mm/yyyy'), $toal(letras), $total, $CodigodeControl  ,  $nit_asoc , $exento , $ice ,$exento , 0; 
-                        /*',cadenaqr_fact='+quotedStr(FormEmpresa.ADOPrime.fieldbyname('nit_emp').AsString+'|'+
+                $tipo_fact=1;
+                //$estado_fact
+                //$id_usu
+                //$id_lec ya viene
+                //$num_fact 
+                //$nit_fact = $this->input->post('nit_asoc');
+                //$razon_fact = $this->input->post('razon_asoc');
+                $orden_fact = $dosificacion['numorden_dosif'];
+                $nitemisor_fact = $empresa['nit_emp'];
+                $llave_fact = $dosificacion['llave_dosif'];
+                $factura_leyenda1 = $dosificacion['dosificacion_leyenda1'];
+                $factura_leyenda2 = $dosificacion['dosificacion_leyenda2'];
+                //$esexento = $this->input->post('esexento');
+                if($elexento == true){
+                    $total_credfiscal = ($total-$aportes);
+                }else{
+                    $total_credfiscal = $total;
+                }
+                //$total_credfiscal = ($total-$esexento);
+                //$fecha_fact
+                //$hora_fact
+                $fechaemision_fact = $dosificacion['fechalim_dosif'];
+                $fecha = date("Y-m-d");
+                //$montoparc_fact ya viene
+                //$desc_fact ya viene 0 
+                //$cadenaqr_fact = $nitemisor_fact, $numfact_dosif1, $orden_fact, date('dd/mm/yyyy'), $toal(letras), $total, $CodigodeControl  ,  $nit_asoc , $exento , $ice ,$exento , 0; 
+                /*',cadenaqr_fact='+quotedStr(FormEmpresa.ADOPrime.fieldbyname('nit_emp').AsString+'|'+
                   inttoStr(numerofact)+'|'+formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString+'|'+
                   formatdatetime('dd/mm/yyyy',date)+'|'+ETotal_Bs.Text+'|'+totalfactura+'|'+
                   FormCodigoControl.CodigodeControl(inttoStr(numerofact),nit_asoc1.Text,formatdatetime('yyyymmdd',date),formLogin.sincoma(totalfactura),formDosificacion.ADODosif.fieldbyname('llave_dosif').AsString,formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString)+'|'+
@@ -237,15 +447,15 @@ class Anticipado extends CI_Controller{
                         //$exento_fact = 0;
                         //$ice_fact = 0;
                         //$id_ing nada esta null ojo
-                $this->Anticipado_model->generar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact, $factura_leyenda1, $factura_leyenda2);
+                $this->Anticipado_model->generar_factura($id_fact,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact, $factura_leyenda1, $factura_leyenda2);
                 //aqui si hay q generar la factura...
             } else {
-                $this->Anticipado_model->cancelar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id);
+                $this->Anticipado_model->cancelar_factura($id_fact,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id);
 
             }
-                $this->Anticipado_model->actualizar_dosificacion($numfact_dosif1);
-                $datos = $this->Anticipado_model->get_datos_factura($factura_id);
-                echo json_encode($datos);
+            $this->Anticipado_model->actualizar_dosificacion($numfact_dosif1);
+            $datos = $this->Anticipado_model->get_datos_factura($id_fact);
+            echo json_encode($datos);
         }else{
             echo json_encode(null);
         }
@@ -276,6 +486,10 @@ class Anticipado extends CI_Controller{
     
     
   
+    
+    
+    
+    
     
     
     

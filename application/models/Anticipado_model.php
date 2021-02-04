@@ -43,12 +43,14 @@ class Anticipado_model extends CI_Model
     function get_ultima_lectura($id_asoc)
     {
         $sql = "select 
-                   MAX(l.`id_lec`), a.*, l.`actual_lec`, l.`mes_lec`, l.`gestion_lec`, l.`fecha_lec`
+                   l.id_lec, l.`actual_lec`, l.`mes_lec`, l.`gestion_lec`, l.`fecha_lec`,
+                   a.`id_asoc`, a.`categoria_asoc`, a.`servicios_asoc`
                 from 
-                    asociado a,  lectura l
+                    lectura l, asociado a
                 where
-                    a.id_asoc = l.id_asoc
-                    and l.id_asoc = $id_asoc ";     
+                    l.`id_asoc` = a.`id_asoc`
+                    and l.id_asoc = $id_asoc
+                order by l.`id_lec` desc limit 1";     
         $resultado = $this->db->query($sql)->result_array();
         return $resultado;
     }
@@ -61,6 +63,71 @@ class Anticipado_model extends CI_Model
         
         return $resultado;
     }
+    /*
+     * function para realizar uns insercion
+     */
+    function ejecutar($sql)
+    {
+        $this->db->query($sql);
+        return true;
+    }
+    
+    function cancelar_factura($factura,$numfact_dosif1,$consumo,$aportes,$recargos,$total,$usuario_id)
+    {
+
+        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), num_fact=".$numfact_dosif1.", totalconsumo_fact=".$consumo.", totalaportes_fact=".$aportes.",totalrecargos_fact=".$recargos.", montototal_fact=".$total.", id_usu=".$usuario_id."
+        WHERE id_fact=".$factura;        
+        $resultado = $this->db->query($sql);
+        
+        return $resultado;
+    }
+
+    function generar_factura($factura,$numfact_dosif1,$consumo,$aportes,$recargos,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact, $factura_leyenda1, $factura_leyenda2)
+    {
+
+        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), 
+                num_fact=".$numfact_dosif1.", totalconsumo_fact=".$consumo.", totalaportes_fact=".$aportes.", 
+                totalrecargos_fact=".$recargos.", montototal_fact=".$total.", id_usu=".$usuario_id.", 
+                tipo_fact=".$tipo_fact.", nit_fact = ".$nit_fact.", razon_fact = '".$razon_fact."', 
+                orden_fact= ".$orden_fact.", nitemisor_fact = ".$nitemisor_fact.", llave_fact = '".$llave_fact."',
+                fechaemision_fact = '".$fechaemision_fact."', codcontrol_fact = '".$codcontrol_fact."',
+                factura_leyenda1 = '".$factura_leyenda1."', factura_leyenda2 = '".$factura_leyenda2."'
+        WHERE id_fact=".$factura;        
+        $resultado = $this->db->query($sql);
+        
+        return $resultado;
+    }
+
+    function actualizar_dosificacion($numfact_dosif1)
+    {
+
+        $sql = "UPDATE dosificacion SET  numfact_dosif=".$numfact_dosif1." 
+        WHERE id_dosif=1 ";        
+        $resultado = $this->db->query($sql);
+        
+        return $resultado;
+    }
+    
+    function get_datos_factura($factura)
+    {
+
+        $sql = "SELECT *
+        FROM factura 
+        WHERE id_fact=".$factura;        
+        $resultado = $this->db->query($sql)->result_array();
+        
+        return $resultado;
+    }
+    /*
+     * function para ejecutrar una consulta
+     */
+    function consultar($sql)
+    {
+        return $this->db->query($sql)->result_array();
+    }
+    
+    
+    
     
     
     
@@ -210,16 +277,7 @@ class Anticipado_model extends CI_Model
         return $resultado;
     }
 
-    function get_datos_factura($factura)
-    {
-
-        $sql = "SELECT *
-        FROM factura 
-        WHERE id_fact=".$factura;        
-        $resultado = $this->db->query($sql)->result_array();
-        
-        return $resultado;
-    }
+    
 
     function get_consumo_factura($factura)
     {
@@ -250,41 +308,7 @@ class Anticipado_model extends CI_Model
 
     
 
-    function cancelar_factura($factura,$numfact_dosif1,$consumo,$aportes,$recargos,$total,$usuario_id)
-    {
-
-        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), num_fact=".$numfact_dosif1.", totalconsumo_fact=".$consumo.", totalaportes_fact=".$aportes.",totalrecargos_fact=".$recargos.", montototal_fact=".$total.", id_usu=".$usuario_id."
-        WHERE id_fact=".$factura;        
-        $resultado = $this->db->query($sql);
-        
-        return $resultado;
-    }
-
-    function generar_factura($factura,$numfact_dosif1,$consumo,$aportes,$recargos,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact, $factura_leyenda1, $factura_leyenda2)
-    {
-
-        $sql = "UPDATE factura SET estado_fact='CANCELADA', fecha_fact=CURDATE(), hora_fact=curTime(), 
-                num_fact=".$numfact_dosif1.", totalconsumo_fact=".$consumo.", totalaportes_fact=".$aportes.", 
-                totalrecargos_fact=".$recargos.", montototal_fact=".$total.", id_usu=".$usuario_id.", 
-                tipo_fact=".$tipo_fact.", nit_fact = ".$nit_fact.", razon_fact = '".$razon_fact."', 
-                orden_fact= ".$orden_fact.", nitemisor_fact = ".$nitemisor_fact.", llave_fact = '".$llave_fact."',
-                fechaemision_fact = '".$fechaemision_fact."', codcontrol_fact = '".$codcontrol_fact."',
-                factura_leyenda1 = '".$factura_leyenda1."', factura_leyenda2 = '".$factura_leyenda2."'
-        WHERE id_fact=".$factura;        
-        $resultado = $this->db->query($sql);
-        
-        return $resultado;
-    }
-
-    function actualizar_dosificacion($numfact_dosif1)
-    {
-
-        $sql = "UPDATE dosificacion SET  numfact_dosif=".$numfact_dosif1." 
-        WHERE id_dosif=1 ";        
-        $resultado = $this->db->query($sql);
-        
-        return $resultado;
-    }
+    
 
     function recargosadetalle($id_param,$factura_id)
     {

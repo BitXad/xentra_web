@@ -496,6 +496,7 @@ function finalizar(){
         var band = true;
         var res_sec = true;
         var primero = 0;
+        var losmeses = [];
         $('[name="mes[]"]:checked').each(function(){
             if(band == true){
                 primero = $(this).val();
@@ -505,11 +506,12 @@ function finalizar(){
                     res_sec = false;
                 }
             }
+            losmeses.push(($(this).attr("value")));
             primero = Number(Number(primero)+1);
         });
         
         if(res_sec == true){
-            registrar_lecfact();
+            registrar_lecfact(losmeses);
         }else{
             alert("Los meses deben ser consecutivos");
         }
@@ -518,9 +520,9 @@ function finalizar(){
     }
 }
 /* registra lectura y factura a detalle por mes.. */
-function registrar_lecfact(){
+function registrar_lecfact(losmeses){
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'anticipadoa/registrarfacturaa';
+    var controlador = base_url+'anticipado/registrarfactura';
     var id_asoc = document.getElementById('id_asoc').value;
     var factura_id = document.getElementById('factura_id').value;
     var lectura_id = document.getElementById('lectura_id').value;
@@ -535,6 +537,7 @@ function registrar_lecfact(){
     var nit_asoc = document.getElementById('nit_asoc').value;
     var razon_asoc = document.getElementById('razon_asoc').value;
     var esexento = document.getElementById('esexento').value;
+    var elexento = document.getElementById('elexento').checked;
     var tipo_factura = $('input:radio[name=tipofactura]:checked').val();
     var gestionlec_asoc = document.getElementById('gestionlec_asoc').value;
     var fechaant_lec = document.getElementById('fechaant_lec').value;
@@ -542,29 +545,30 @@ function registrar_lecfact(){
     var lec_anterior = $("#lec_anterior").html();
     var elpromedio = $("#elpromedio").val();
     var consumo_bs = $("#consumo_bs").html();
-    //var lec_anterior = document.getElementById('lec_anterior').;
     var tipo_asoc = document.getElementById('tipo_asoc').value;
     var servicios_asoc = document.getElementById('servicios_asoc').value;
     var consumo_alcantarillado = $("#consumo_alcantarillado").html();
-    var estemes = 0;
-    var miband = true;
+    var rep_concepto = document.getElementById('rep_concepto').value;
+    //var estemes = 0;
+    /*var miband = true;
     $('[name="mes[]"]:checked').each(function(){
         estemes = $(this).val();
         if(miband == true){
             miband = false;
         }else{
             lec_anterior = Number(lec_anterior)+Number(elpromedio)
-        }
+        }*/
         $.ajax({url:controlador,
 
                 type:"POST",
 
                 data:{factura_id:factura_id,generar_factura:generar_factura,lectura_id:lectura_id,
-                      consumo:consumo,aportes:aportes,recargos:recargos,total:total,nit_asoc:nit_asoc,razon_asoc:razon_asoc,
-                      esexento:esexento, este_mes:estemes, tipo_factura:tipo_factura, id_asoc:id_asoc,
-                      gestionlec_asoc:gestionlec_asoc, lec_anterior:lec_anterior, elpromedio:elpromedio,
-                      fechaant_lec:fechaant_lec, consumo_bs:consumo_bs, tipo_asoc:tipo_asoc, servicios_asoc:servicios_asoc,
-                      consumo_alcantarillado:consumo_alcantarillado, total_aporte:total_aporte},
+                      consumo:consumo,aportes:aportes,recargos:recargos,total:total,nit_asoc:nit_asoc,
+                      razon_asoc:razon_asoc, esexento:esexento, tipo_factura:tipo_factura,
+                      id_asoc:id_asoc, gestionlec_asoc:gestionlec_asoc, lec_anterior:lec_anterior,
+                      elpromedio:elpromedio, fechaant_lec:fechaant_lec, consumo_bs:consumo_bs, tipo_asoc:tipo_asoc,
+                      servicios_asoc:servicios_asoc, consumo_alcantarillado:consumo_alcantarillado,
+                      total_aporte:total_aporte, losmeses:losmeses, elexento:elexento, rep_concepto:rep_concepto},
 
                 success:function(respuesta){
 
@@ -572,12 +576,13 @@ function registrar_lecfact(){
                     if(registros != null){
                     alert('COBRO REALIZADO CON EXITO');
                     if (imprimir_factura==true) {
-                        window.open(base_url+"factura/imprimir_factura/0/"+factura_id, '_blank'); //factura original
+                        window.open(base_url+"factura/imprimir_factura/0/"+registros[0]["id_fact"], '_blank'); //factura original
                     }
                     if (imprimir_copia==true) {
-                        window.open(base_url+"factura/imprimir_factura/1/"+factura_id, '_blank'); //factura copia
+                        window.open(base_url+"factura/imprimir_factura/1/"+registros[0]["id_fact"], '_blank'); //factura copia
                     }
-                    var nada = "";
+                    location.reload();
+                    /*var nada = "";
                     $("#lista_pendientes").html(nada);
                     $("#detalle_factura").html(nada);
                     $("#detalle_recargo").html(nada);
@@ -586,7 +591,7 @@ function registrar_lecfact(){
                     $("#recargos").val("0.00");
                     $("#total_factura").val("0.00");
                     $("#btnfinalizar").prop('disabled',true);
-                    facturas_pendientes(id_asoc);
+                    facturas_pendientes(id_asoc);*/
                 }else{
                     alert("Informacion Incorrecta, revise sus datos, consumo y total no pueden ser 0");
                 }
@@ -599,13 +604,25 @@ function registrar_lecfact(){
 
                 }
         });
-    });
+   // });
 
 
 
 }
 
+function actualizarvalores(){
+    var elpromedio = $("#rep_formulario").val();
+}
 
+function actualizarvalores(e) {
+    tecla = (document.all) ? e.keyCode : e.which;
+    if(tecla == 13){
+        var elpromedio = $("#rep_formulario").val();
+        $("#aportes").val(elpromedio);
+        var eltotal = Number($("#consumo").val())+Number($("#aportes").val())+Number($("#recargos").val())
+        $("#total_factura").val(eltotal);
+    }
+}
 
 
 

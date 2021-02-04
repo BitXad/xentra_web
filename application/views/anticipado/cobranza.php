@@ -134,10 +134,11 @@ input[type=number] { -moz-appearance:textfield; }
             <div class="col-md-12 box" style="display: none; padding: 0px" id="mespara_cobro"></div>
             <div class="col-md-12 box" style="padding-left:0px;">
                 <!--<h4 class="modal-title">Multas y Recargos</h4>-->
-                <table class="table table-striped table-condensed" id="mitabla">
+                <table class="table table-striped table-condensed" id="mitabla_xs" style="width: 100%">
                     <tr>
-                        <td style="width: 15%"><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='rep_formulario' id='rep_formulario' readonly /></td>
-                        <td style="width: 85%">REPOSICION DE FORMULARIO</td>
+                        <td style="width: 15%"><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='rep_formulario' id='rep_formulario' onkeypress="actualizarvalores(event)" /></td>
+                        <td style="width: 70%"><input style="width: 100%" type='text' value='REPOSICION DE FORMULARIO' name='rep_concepto' id='rep_concepto' onkeypress="actualizarvalores(event)" /></td>
+                        <td style="width: 15%"><label><input type="checkbox" name="elexento" id="elexento" checked /> Exento</label></td>
                     </tr>
                 </table>
             </div>
