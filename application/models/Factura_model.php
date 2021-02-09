@@ -328,7 +328,20 @@ class Factura_model extends CI_Model
         return $resultado;
     }
 
-    
+     function get_factura_ventas($inicio, $fin)
+    {
+        $sql = "
+            SELECT
+                *
+            FROM
+                `factura`
+            WHERE
+                fecha_fact >= '".$inicio."'
+                and fecha_fact <= '".$fin."'
+            ORDER BY `id_fact` ASC";
+        $factura = $this->db->query($sql)->result_array();
+        return $factura;
+    }
 
     
 }

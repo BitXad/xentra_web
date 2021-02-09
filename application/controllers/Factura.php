@@ -36,7 +36,9 @@ class Factura extends CI_Controller{
     function index()
     {
         if($this->acceso(404)){
-            $data['factura'] = $this->Factura_model->get_all_facturacancelada();
+            $rolusuario = $this->session_data['rol'];
+            $data['rolusuario_asignado'] = $rolusuario[404-1]['rolusuario_asignado'];
+            //$data['factura'] = $this->Factura_model->get_all_facturacancelada();
 
             $data['_view'] = 'factura/index';
             $this->load->view('layouts/main',$data);
@@ -582,5 +584,26 @@ class Factura extends CI_Controller{
          $data['_view'] = 'factura/copia';
          $this->load->view('layouts/main',$data);
     }
-    
+    /* mostrar facturas */
+    function mostrar_facturas()
+    {
+        if ($this->input->is_ajax_request()) {
+            
+            $desde = $this->input->post("desde");
+            $hasta = $this->input->post("hasta");            
+            $opcion = $this->input->post('opcion');   
+            
+            if ($opcion==1){
+                $datos = $this->Factura_model->get_factura_ventas($desde,$hasta);
+            }
+            else{
+                $datos = $this->Factura_model->get_factura_compras($desde,$hasta);
+            }
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+    }    
 }

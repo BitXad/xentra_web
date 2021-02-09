@@ -1,17 +1,63 @@
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/factura.js'); ?>" type="text/javascript"></script>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
+<input type="hidden" id="base_url" value="<?php echo base_url();?>">
+<input type="hidden" id="rolusuario_asignado" name="rolusuario_asignado" value="<?php echo $rolusuario_asignado;?>">
 <div class="row">
     <div class="col-md-12">
+        <h3 class="box-title">LIBRO DE VENTAS</h3>
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Facturas</h3>
-            	<div class="box-tools">
-                    <a href="<?php echo site_url('factura/cobranza'); ?>" class="btn btn-success btn-sm"> Facturacion</a> 
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <label for="desde" class="control-label">Desde:</label>
+                        <div class="form-group">
+                             <input type="date"class="btn btn-warning btn-xs form-control"  id="fecha_desde" name="fecha_desde" value="<?php echo date("Y-m-d");?>">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="hasta" class="control-label">Hasta:</label>
+                        <div class="form-group">
+                            <input type="date" class="btn btn-warning btn-xs form-control"  id="fecha_hasta" name="fecha_hasta" value="<?php echo date("Y-m-d");?>">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-2" hidden>
+                        <label for="tipo" class="control-label">Tipo:</label>
+                        <div class="form-group">
+                            <select name="opcion" id="opcion" class="btn btn-warning btn-xs form-control">
+                                    <option value="1">VENTAS</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2" hidden="">
+                       <label for="desde" class="control-label"> Exportar: </label>
+                       <div class="form-group">
+                            <button onclick="generarexcel()" type="button" class="btn btn-facebook btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
+                        </div>
+                    </div>
+
+
+                <!--</form>-->
+                    <div class="col-md-2">
+                       <label for="desde" class="control-label"> Buscar: </label>
+                       <div class="form-group">
+
+                           <button  type="submit" class="btn btn-danger btn-xs form-control" onclick="mostrar_facturas()"><span class="fa fa-binoculars"> </span> Ver</button>
+
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-body">
-                <table class="table table-striped" id="mitabla">
+                <div class="box-body table-responsive" id="tabla_factura" >
+            <!--    <table class="table table-striped" id="mitabla">
                     <tr>
 						<th>Id</th>
 						
@@ -49,13 +95,12 @@
 						
 						<td>
 							<a href="<?php echo site_url('factura/imprimir_recibo/'.$f['id_fact']); ?>" target="_blank" class="btn btn-info btn-xs"><span class="fa fa-print"></span></a>
-                            <!--<a href="<?php echo site_url('factura/edit/'.$f['id_fact']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
-                            <a href="<?php echo site_url('factura/remove/'.$f['id_fact']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>-->
                         </td>
                     </tr>
                     <?php } ?>
                 </table>
-                                
+                  -->              
+                </div>
             </div>
         </div>
     </div>
