@@ -1,8 +1,8 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<!--<script src="<?php //echo base_url('resources/js/reporte_ingresof.js'); ?>" type="text/javascript"></script>-->
+<script src="<?php echo base_url('resources/js/reporte_encorte.js'); ?>" type="text/javascript"></script>
 <!--<link href="<?php //echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
-<!--<input type="hidden" name="base_url" id="base_url" value="<?php //echo base_url(); ?>" />-->
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -94,19 +94,33 @@
 </style>
 
 <div class="box-header no-print">
-    <h3 class="box-title"><b>REPORTE DE USUARIOS ENCORTE</b></h3><br>
-    <div class="col-md-5" style="padding-left: 0px">
+    <h3 class="box-title"><b>REPORTE DE USUARIOS ENCORTE</b></h3><br><br>
+    <div class="col-md-3" style="padding-left: 0px">
+        <b>buscar por:</b>
+        <select name="fechafiltro" class="btn btn-primary btn-sm form-control" id="fechafiltro" >
+            <!--<option value="" disabled selected >-- BUSCAR POR SERVICIOS --</option>-->
+            <option value="1"> Fecha de Lectura </option>
+            <option value="2"> Fecha de Vencimiento </option>
+        </select>
+    </div>
+    <div class="col-md-3" style="padding-left: 0px">
         &nbsp;
         <div class="input-group">
-            <span class="input-group-addon"> Buscar </span>           
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, dirección, código..." autofocus autocomplete="off">
+            <span class="input-group-addon"> Dias mora </span>           
+            <input type="number" name="diasmora" id="diasmora" class="form-control" value="<?php if($dias["dias_param"]>0){ echo $dias["dias_param"]; }else{ echo "0"; } ?>" placeholder="Ingrese días mora.." onkeypress="buscarencorte(event)" autocomplete="off">
         </div>
     </div>
-    <div class="col-md-4" hidden>
+    <div class="col-md-2" style="padding-left: 0px">
         <br>
-        <span class="badge btn-primary" style="height: 34px; padding-top: 5px;">Encontrados: <span class="badge btn-primary"><input style="border-width: 0; width: 55px" id="resdeudores" type="text" value="0" readonly="true"> </span></span>
+        <button class="btn btn-sm btn-warning btn-sm btn-block"  type="submit" onclick="tablaresultadoencorte()" style="height: 34px;">
+            <span class="fa fa-search"></span> Buscar
+      </button>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2" style="padding-left: 0px">
+        <br>
+        <span class="badge btn-primary" style="height: 34px; padding-top: 5px;">Encontrados: <span class="badge btn-primary"><input style="border-width: 0; width: 55px" id="resdeudores" type="text" value="- 0 -" readonly="true"> </span></span>
+    </div>
+    <div class="col-md-2" style="padding-left: 0px">
         <br>
         <a id="imprimirestedetalle" class="btn btn-sq-lg btn-success" onclick="imprimirdetalle()" ><span class="fa fa-print"></span>&nbsp;Imprimir</a>
     </div>
@@ -181,9 +195,9 @@
                             <th class='text-center lizq' style='width: 5%; padding: 1px; vertical-align: middle'>MESES<br><span style="font-size: 10px">ADEUDAD</span></th>
                             <th class='text-center lizq' style='width: 15%; padding: 1px; vertical-align: middle'>SERVICIOS</th>
                         </tr>
-                        <tbody class="buscar">
+                        <tbody class="buscar" id="tablatotalresultados">
                         <?php
-                        $i = 0;
+                        /*$i = 0;
                         foreach($all_encorte as $d){ ?>
                         <tr class='labjf'>
                             <td class='text-center' style='padding: 0px 5px !important'><?php echo $i+1; ?></td>
@@ -195,7 +209,7 @@
                             <td class='text-center lizq' style='padding: 0px 5px !important'><?php echo $d["cantfact"];?></td>
                             <td class='text-center lizq' style='padding: 0px 5px !important'><?php echo $d["servicios_asoc"];?></td>
                         </tr>
-                        <?php $i++; } ?>
+                        <?php $i++; }*/ ?>
                         </tbody>
                         <tr class='larrf lizq1'>
                             <td colspan='8'></td>

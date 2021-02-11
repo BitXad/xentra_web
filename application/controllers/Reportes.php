@@ -384,6 +384,8 @@ class Reportes extends CI_Controller{
             $data['nombre_usu'] = $this->session_data['nombre_usu'];
             $this->load->model('Empresa_model');
             $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $this->load->model('Parametro_model');
+            $data['dias'] = $this->Parametro_model->get_parametros_usuarioscorte();
             $data['all_encorte'] = $this->Reportes_model->reporte_encorte();
             $data['_view'] = 'reportes/encorte';
             $this->load->view('layouts/main',$data);
@@ -411,6 +413,25 @@ class Reportes extends CI_Controller{
         }else{                 
             show_404();
         }
+    }
+    /* busca reportes de ingreso */
+    function buscarlosencorte()
+    {
+        if ($this->input->is_ajax_request()) {
+            $filtro   = $this->input->post('filtro');
+            $diasmora = $this->input->post('diasmora');
+            if($filtro == 1){
+                $datos = $this->Reportes_model->reporte_diasencorte_flect($diasmora);
+            }else{
+                $datos = $this->Reportes_model->reporte_diasencorte_fvenc($diasmora);
+            }
+            echo json_encode($datos);
+        }
+        else
+        {
+            show_404();
+        }
+            
     }
 }
 

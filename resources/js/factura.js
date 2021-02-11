@@ -48,6 +48,9 @@ function mostrar_facturas() {
             data:{desde:desde, hasta:hasta ,opcion:opcion},
             success:function(result){
                 var factura = JSON.parse(result);
+                var estos_registros = factura;
+                const myString = JSON.stringify(estos_registros);
+                $("#resfactura").val(myString);
                 var tam = factura.length;
               
                 var mensaje = "";
@@ -162,38 +165,23 @@ function mostrar_facturas() {
 }
 
 function generarexcel(){
-    var base_url = document.getElementById('base_url').value;
-    var opcion = document.getElementById('opcion').value;
-    var controlador = base_url+'factura/mostrar_facturas';    
-    var desde = document.getElementById('fecha_desde').value;
-    var hasta = document.getElementById('fecha_hasta').value; 
-
-     //parametro = document.getElementById('filtrar').value;   
-     //controlador = base_url+'ingreso/buscarallingreso/';
-    var showLabel = true;
-    
-    var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
-    //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
-
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{desde:desde, hasta:hasta ,opcion:opcion},
-           success:function(result){
-                var factura = JSON.parse(result);
-                var tam = factura.length;
-              
-                var mensaje = "";
-                
-                html = "";
-                if (opcion==1){
+    //var tipousuario_id = document.getElementById('tipousuario_id').value;
+    var respuesta = document.getElementById('resfactura').value;
+    if(respuesta == "" || respuesta == null){
+        alert("Primero debe realizar una búsqueda");
+    }else{
+        var factura =  JSON.parse(respuesta);
+        var showLabel = true;
+        var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
+        var tam = factura.length;
+        var mensaje = "";
+        html = "";
+                //if (opcion==1){
                   /* **************INICIO Generar Excel JavaScript************** */
                     var CSV = 'sep=,' + '\r\n\n';
                     //This condition will generate the Label/Header
                     if (showLabel) {
                         var row = "";
-
-                        //This loop will extract the label from 1st index of on array
-                        
 
                             //Now convert each value to string and comma-seprated
                             row += 'ESPEC.' + ',';
@@ -229,28 +217,29 @@ function generarexcel(){
                         
                             row += '0,';
                             row += '1,';
-                            row += '"' +formato_fecha(factura[i]["factura_fecha"])+ '",';
-                            row += '"' +factura[i]["factura_numero"]+ '",';
-                            row += '"' +factura[i]["factura_autorizacion"]+ '",';
+                            row += '"' +formato_fecha(factura[i]["fecha_fact"])+ '",';
+                            row += '"' +factura[i]["num_fact"]+ '",';
+                            row += '"' +factura[i]["orden_fact"]+ '",';
                             if(factura[i]["estado_id"]==1){
                                 row += 'V,';
                             }
                             else{
                                 row += 'A,';
                             }
-                            row += '"' +factura[i]["factura_nit"]+ '",';
-                            row += '"' +factura[i]["factura_razonsocial"]+ '",';
-                            row += '"' +Number(factura[i]["factura_subtotal"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["factura_ice"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["factura_exento"]).toFixed(2)+ '",';
+                            row += '"' +factura[i]["nit_fact"]+ '",';
+                            row += '"' +factura[i]["razon_fact"]+ '",';
+                            row += '"' +Number(factura[i]["montototal_fact"]).toFixed(2)+ '",';
+                            row += '"' +Number(factura[i]["ice_fact"]).toFixed(2)+ '",';
+                            row += '"' +Number(factura[i]["exento_fact"]).toFixed(2)+ '",';
                             row += '0,';
-                            row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["factura_descuento"]).toFixed(2)+ '",';
+                            row += '"' +Number(factura[i]["montototal_fact"]).toFixed(2)+ '",';
+                            //row += '"' +Number(factura[i]["factura_descuento"]).toFixed(2)+ '",';
+                            row += '0.00,';
                             row += '0,';
-                            row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["factura_total"]*0.13).toFixed(2)+ '",';
-                            row += '"' +factura[i]["factura_codigocontrol"]+ '",';
-                            row += '"' +factura[i]["venta_id"]+ '",';
+                            row += '"' +Number(factura[i]["montototal_fact"]).toFixed(2)+ '",';
+                            row += '"' +Number(factura[i]["montototal_fact"]*0.13).toFixed(2)+ '",';
+                            row += '"' +factura[i]["codcontrol_fact"]+ '",';
+                            row += '"' +factura[i]["id_fact"]+ '",';
                             
 
                         
@@ -291,27 +280,8 @@ function generarexcel(){
                     link.click();
                     document.body.removeChild(link);
                     /* **************F I N  Generar Excel JavaScript************** */
-                   
-                   
-                   
-                   
-                   //document.getElementById('loader').style.display = 'none';
             }
-         //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
-        },
-        error:function(respuesta){
-           // alert("Algo salio mal...!!!");
-           html = "";
-           $("#tabla_factura").html(html);
-        },
-        complete: function (jqXHR, textStatus) {
-            //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
-            //tabla_inventario();
         }
-        
-    });   
-
-}
 
 function mostrar_facturas2() {
     var base_url = document.getElementById('base_url').value;

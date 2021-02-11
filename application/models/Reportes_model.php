@@ -396,4 +396,42 @@ class Reportes_model extends CI_Model
         ")->result_array();
         return $dirasociado;
     }
+    function reporte_diasencorte_flect($diasmora){
+        $deudores_encorte = $this->db->query("
+            select * 
+                from 
+                (select a.id_asoc,max(DATEDIFF(date(NOW()),l.fecha_lec)) as mora, 
+                    count(*) as cantfact, a.apellidos_asoc, a.nombres_asoc, 
+                    a.direccion_asoc,a.codigo_asoc, a.zona_asoc,
+                    a.medidor_asoc,a.servicios_asoc 
+
+                    from lectura l, factura f, asociado a 
+                    where 
+                    a.id_asoc = l.id_asoc and l.id_lec = f.id_lec
+                    and f.estado_fact='PENDIENTE' group by id_asoc
+                  ) as t1 
+            where 
+              t1.mora>= $diasmora
+        ")->result_array();
+        return $deudores_encorte;
+    }
+    function reporte_diasencorte_fvenc($diasmora){
+        $deudores_encorte = $this->db->query("
+            select * 
+                from 
+                (select a.id_asoc,max(DATEDIFF(date(NOW()),f.fechavenc_fact)) as mora, 
+                    count(*) as cantfact, a.apellidos_asoc, a.nombres_asoc, 
+                    a.direccion_asoc,a.codigo_asoc, a.zona_asoc,
+                    a.medidor_asoc,a.servicios_asoc 
+
+                    from lectura l, factura f, asociado a 
+                    where 
+                    a.id_asoc = l.id_asoc and l.id_lec = f.id_lec
+                    and f.estado_fact='PENDIENTE' group by id_asoc
+                  ) as t1 
+            where 
+              t1.mora>= $diasmora
+        ")->result_array();
+        return $deudores_encorte;
+    }
 }

@@ -5,6 +5,8 @@
 <!-------------------------------------------------------->
 <input type="hidden" id="base_url" value="<?php echo base_url();?>">
 <input type="hidden" id="rolusuario_asignado" name="rolusuario_asignado" value="<?php echo $rolusuario_asignado;?>">
+<input type="hidden" name="resfactura" id="resfactura" />
+
 <div class="row">
     <div class="col-md-12">
         <h3 class="box-title">LIBRO DE VENTAS</h3>
@@ -36,7 +38,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-2" hidden="">
+                    <div class="col-md-2">
                        <label for="desde" class="control-label"> Exportar: </label>
                        <div class="form-group">
                             <button onclick="generarexcel()" type="button" class="btn btn-facebook btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>

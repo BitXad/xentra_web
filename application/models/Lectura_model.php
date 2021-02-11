@@ -166,5 +166,21 @@ class Lectura_model extends CI_Model
 
         return $lectura;
     }
-    
+    /* obtiene informacion de asociado atravez de id_lec  */
+    function get_asociado_fromlecturas($id_lec)
+    {
+        $lectura = $this->db->query("
+            SELECT
+                a.`nombres_asoc`, a.`apellidos_asoc`
+
+            FROM
+                `lectura` l, `asociado` a
+
+            WHERE
+                l.`id_asoc` = a.`id_asoc`
+                and l.`id_lec` = $id_lec
+        ")->row_array();
+
+        return $lectura;
+    }
 }
