@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="<?php echo site_url('resources/css/mitabla.css');?>">
 
 <input id="base_url" value="<?php echo base_url(); ?>" hidden="">
-<input id="tipo_lectura" name="tipo_lectura" value="<?php echo $configuracion[8]["valor"]; ?>" hidden> 
+<input id="tipo_lectura" name="tipo_lectura" value="<?php echo $configuracion[7]["valor"]; ?>" hidden> 
 
 <div class="row">
     <div class="col-md-12">

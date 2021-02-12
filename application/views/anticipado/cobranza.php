@@ -71,7 +71,7 @@ input[type=number] { -moz-appearance:textfield; }
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="esexento" id="esexento" value="0">
- <input type="hidden" id="tipo_lectura" name="tipo_lectura" value="<?php echo $configuracion[8]["valor"]; ?>">
+ <input type="hidden" id="tipo_lectura" name="tipo_lectura" value="<?php echo $configuracion[7]["valor"]; ?>">
  <input type="hidden" id="total_aporte" name="total_aporte" value="<?php echo $all_aporte["total_aporte"]; ?>">
  <input type="hidden" id="fechaant_lec" name="fechaant_lec" value="0">
  <input type="hidden" id="tipo_asoc" name="tipo_asoc"> <!-- es para lacategoria de asocoados -->
