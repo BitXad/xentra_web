@@ -152,7 +152,7 @@
                             <span id="fecha2impresion" style="font-size: 10px"></span><br>
                             <span id="elusuario" style="font-size: 10px"></span><br>
                             <span class="text-bold" style="font-size: 10px">Impreso por: </span>
-                            <span><?php echo $nombre_usu; ?></span>
+                            <span style="font-size:10px;"><?php echo $nombre_usu; ?></span>
                         </td>
                     </tr>
                     <tr>
