@@ -361,7 +361,7 @@ function calcular(asociado){
                         $("#boton_registrar_lectura").focus();
                         */
                     } // fin de if (tipo_lectura=='0'){ //tarifas normales
-                    else{
+                    else{ //Si es tarifa por parametros..
                     
                         var res = JSON.parse(result);
                         var consumo_bs = 0;
@@ -389,7 +389,8 @@ function calcular(asociado){
                                 if  (servicios_asoc == 'ALCANTARILLADO')
                                 {
                                     consumo_bs = 0;
-                                    consumo_alcantarillado =  Number(res[0].porc_alcant) * Number(res[0].porc_factura);
+                                    //consumo_alcantarillado =  Number(res[0].porc_alcant) * Number(res[0].porc_factura);
+                                    consumo_alcantarillado =  (Number(res[0].porc_alcant) * Number(res[0].porc_factura)) + Number(res[0].costo_fijo) + Number(res[0].montofijo_extra);
                                 }
 
                                 if (servicios_asoc == 'AGUA Y ALCANTARILLADO')
