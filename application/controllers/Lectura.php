@@ -119,7 +119,7 @@ class Lectura extends CI_Controller {
             if (isset($_POST) && count($_POST) > 0) {
                 $params = array(
                     'id_usu' => $this->input->post('id_usu'),
-                    'id_asoc' => $this->input->post('id_asoc'),
+                    //'id_asoc' => $this->input->post('id_asoc'),
                     'mes_lec' => $this->input->post('mes_lec'),
                     'gestion_lec' => $this->input->post('gestion_lec'),
                     'anterior_lec' => $this->input->post('anterior_lec'),
@@ -131,22 +131,26 @@ class Lectura extends CI_Controller {
                     'totalcons_lec' => $this->input->post('totalcons_lec'),
                     'fechahora_lec' => $this->input->post('fechahora_lec'),
                     'monto_lec' => $this->input->post('monto_lec'),
-                    'estado_lec' => $this->input->post('estado_lec'),
-                    'tipo_asoc' => $this->input->post('tipo_asoc'),
-                    'servicios_asoc' => $this->input->post('servicios_asoc'),
+                    //'estado_lec' => $this->input->post('estado_lec'),
+                    //'tipo_asoc' => $this->input->post('tipo_asoc'),
+                    //'servicios_asoc' => $this->input->post('servicios_asoc'),
                     'totalmultas_' => $this->input->post('totalmultas_'),
-                    'cantfact_lec' => $this->input->post('cantfact_lec'),
-                    'montofact_lec' => $this->input->post('montofact_lec'),
+                    //'cantfact_lec' => $this->input->post('cantfact_lec'),
+                    //'montofact_lec' => $this->input->post('montofact_lec'),
                 );
 
                 $this->Lectura_model->update_lectura($id_lec, $params);
-                redirect('lectura/index');
+                redirect('lectura/historial/'.$data['lectura']['id_asoc']);
             } else {
                 $this->load->model('Usuario_model');
-                $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-
-                $this->load->model('Asociado_model');
-                $data['all_asociado'] = $this->Asociado_model->get_all_asociado();
+                $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+                
+                $this->load->model('Gestion_model');
+                $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+                
+                //$this->load->model('Asociado_model');
+                //$data['all_asociado'] = $this->Asociado_model->get_all_asociado();
+                $data['asociado'] = $this->Lectura_model->get_asociado_fromlecturas($id_lec);
 
                 $data['_view'] = 'lectura/edit';
                 $this->load->view('layouts/main', $data);

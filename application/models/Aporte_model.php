@@ -73,4 +73,19 @@ class Aporte_model extends CI_Model
     {
         return $this->db->delete('aporte',array('id_ap'=>$id_ap));
     }
+    /* retorna el total de aportes */
+    function get_aporte_total()
+    {
+        $aporte = $this->db->query("
+           SELECT
+                sum(monto_ap) as total_aporte
+            FROM
+                aporte a
+            WHERE
+                estado_ap = 'ACTIVO'
+            ORDER BY `id_ap` DESC
+        ")->row_array();
+
+        return $aporte;
+    }
 }

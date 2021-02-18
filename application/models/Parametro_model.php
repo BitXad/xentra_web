@@ -76,4 +76,20 @@ class Parametro_model extends CI_Model
     {
         return $this->db->delete('parametros',array('id_param'=>$id_param));
     }
+    /*
+     * Get all parametros
+     */
+    function get_parametros_usuarioscorte()
+    {
+        $parametros = $this->db->query("
+            SELECT
+                p.dias_param
+            FROM
+                `parametros` p
+            WHERE
+                p.id_param = 4
+        ")->row_array();
+
+        return $parametros;
+    }
 }

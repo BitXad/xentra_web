@@ -129,9 +129,9 @@
                             <td <?php echo $estilo; ?>><?php echo $f['monto_lec']; ?></td>
                             <td <?php echo $estilo; ?>><?php echo $f['estado_lec']; ?></td>
                             <td <?php echo $estilo; ?>>
-                                <!--<a href="<?php echo site_url('lectura/edit/'.$f['id_lec']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a>--> 
                             <?php if($cont==1){?>
                                 <button  class="btn btn-danger btn-xs" onclick="anular_lectura(<?php echo $f['id_lec']; ?>)"><span class="fa fa-trash"></span> Anular</button>
+                                <a href="<?php echo site_url('lectura/edit/'.$f['id_lec']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Editar</a> 
                             
                             <?php } ?>
                             

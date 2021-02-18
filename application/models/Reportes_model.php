@@ -305,7 +305,7 @@ class Reportes_model extends CI_Model
     function reporte_mes($este_mes, $esta_gestion){
         $estemes = $this->db->query("
             select 
-                l.`mes_lec`,l.`gestion_lec`,
+                a.id_asoc, l.`mes_lec`,l.`gestion_lec`,
                 a.`nombres_asoc`, a.`apellidos_asoc`, a.`codigo_asoc`, a.`direccion_asoc`, 
                 a.`ci_asoc`, a.`ciudad`, a.`categoria_asoc`,a.`servicios_asoc`, 
                 a.`tipo_asoc`,
@@ -316,10 +316,10 @@ class Reportes_model extends CI_Model
                 l.`anterior_lec`,
                 l.`actual_lec`,
                 l.`consumo_lec`,
-                if(a.`servicios_asoc` = 'AGUA', if( l.`consumo_lec` <= t.`consumo_basico`, t.costo_agua, t.costo_agua + ((l.consumo_lec - t.consumo_basico) * costo_mt3)), if(a.`servicios_asoc` = 'AGUA Y ALCANTARILLADO', if( l.`consumo_lec` <= t.`consumo_basico`, t.costo_agua, t.costo_agua + ((l.consumo_lec - t.consumo_basico) * costo_mt3)), 0)) as agua,
-                if(a.`servicios_asoc` = 'AGUA Y ALCANTARILLADO', t.`costo_alcant`, if(a.`servicios_asoc` = 'ALCANTARILLADO', t.`costo_alcant`, 0)) as alcantarillado,
-                1 AS repformulario, 
-                (if( l.`consumo_lec` <= t.`consumo_basico`, t.costo_agua, if(a.`servicios_asoc` = 'AGUA Y ALCANTARILLADO', t.`costo_alcant`, if(a.`servicios_asoc` = 'ALCANTARILLADO', t.`costo_alcant`, 0))+t.costo_agua + ((l.consumo_lec - t.consumo_basico) * costo_mt3)))/2 as descuento,
+                l.`totalcons_lec` as agua,
+                l.`consumoalcant_lec` as alcantarillado,
+                f.`totalaportes_fact` AS repformulario, 
+                (l.`totalcons_lec`+l.`consumoalcant_lec`)/2 as descuento,
                 f.`id_fact`
             from asociado a, lectura l, factura f, tarifa t
             where 
@@ -329,6 +329,7 @@ class Reportes_model extends CI_Model
                 l.`gestion_lec` = '".$esta_gestion."' and
                 l.consumo_lec >= t.`desde` and l.`consumo_lec`<= t.`hasta` and
                 t.tipo = a.`tipo_asoc`
+                order by a.`nombres_asoc`, a.`apellidos_asoc`
         ")->result_array();
         return $estemes;
     }
@@ -394,5 +395,43 @@ class Reportes_model extends CI_Model
                 t.tipo = a.`tipo_asoc`
         ")->result_array();
         return $dirasociado;
+    }
+    function reporte_diasencorte_flect($diasmora){
+        $deudores_encorte = $this->db->query("
+            select * 
+                from 
+                (select a.id_asoc,max(DATEDIFF(date(NOW()),l.fecha_lec)) as mora, 
+                    count(*) as cantfact, a.apellidos_asoc, a.nombres_asoc, 
+                    a.direccion_asoc,a.codigo_asoc, a.zona_asoc,
+                    a.medidor_asoc,a.servicios_asoc 
+
+                    from lectura l, factura f, asociado a 
+                    where 
+                    a.id_asoc = l.id_asoc and l.id_lec = f.id_lec
+                    and f.estado_fact='PENDIENTE' group by id_asoc
+                  ) as t1 
+            where 
+              t1.mora>= $diasmora
+        ")->result_array();
+        return $deudores_encorte;
+    }
+    function reporte_diasencorte_fvenc($diasmora){
+        $deudores_encorte = $this->db->query("
+            select * 
+                from 
+                (select a.id_asoc,max(DATEDIFF(date(NOW()),f.fechavenc_fact)) as mora, 
+                    count(*) as cantfact, a.apellidos_asoc, a.nombres_asoc, 
+                    a.direccion_asoc,a.codigo_asoc, a.zona_asoc,
+                    a.medidor_asoc,a.servicios_asoc 
+
+                    from lectura l, factura f, asociado a 
+                    where 
+                    a.id_asoc = l.id_asoc and l.id_lec = f.id_lec
+                    and f.estado_fact='PENDIENTE' group by id_asoc
+                  ) as t1 
+            where 
+              t1.mora>= $diasmora
+        ")->result_array();
+        return $deudores_encorte;
     }
 }

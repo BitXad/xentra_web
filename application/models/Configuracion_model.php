@@ -40,7 +40,7 @@ class Configuracion_model extends CI_Model
                 *
             FROM
                 `configuracion`
-            ORDER BY num DESC
+            ORDER BY num ASC
         ")->result_array();
 
         return $configuracion;

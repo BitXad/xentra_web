@@ -95,6 +95,8 @@ class Dosificacion extends CI_Controller{
                 $this->form_validation->set_rules('numfact_dosif','Número de factura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
                 $this->form_validation->set_rules('numorden_dosif','Número de ordenOrden','trim|required', array('required' => 'Este Campo no debe ser vacio'));
                 $this->form_validation->set_rules('fechalim_dosif','Fecha Limite','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                $this->form_validation->set_rules('dosificacion_leyenda1','Leyenda 1','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                $this->form_validation->set_rules('dosificacion_leyenda2','Leyenda 2','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 
                 if($this->form_validation->run())     
                 {   
@@ -105,6 +107,8 @@ class Dosificacion extends CI_Controller{
                         'fechalim_dosif' => $this->input->post('fechalim_dosif'),
                         'fechahora_dosif' => $this->input->post('fechahora_dosif'),
                         'numfact_dosif' => $this->input->post('numfact_dosif'),
+                        'dosificacion_leyenda1' => $this->input->post('dosificacion_leyenda1'),
+                        'dosificacion_leyenda2' => $this->input->post('dosificacion_leyenda2'),
                     );
 
                     $this->Dosificacion_model->update_dosificacion($id_dosif,$params);            

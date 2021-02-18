@@ -135,7 +135,6 @@
         <button class="btn btn-sm btn-warning btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;">
             <span class="fa fa-search"></span> Buscar
       </button>
-        <br>
     </div>
     <div class="col-md-4">
         <br>

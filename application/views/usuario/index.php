@@ -28,14 +28,14 @@
 <div class="box-header">
     <font size='4' face='Arial'><b>Usuarios</b></font><br>
     <font size='2' face='Arial' id="encontrados">Registros Encontrados:<b><?php echo sizeof($usuario);  ?></b></font>
-                <div class="box-tools">
+                <div class="box-tools no-print">
                     <a href="<?php echo site_url('usuario/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
                 </div>
             </div>
 <div class="row">
     <div class="col-md-12">
         <!---- ----------------- parametro de buscador ------------------- -->
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                  <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, login">
                   </div>
             <!-- ------------------- fin parametro de buscador ------------------- -->
@@ -51,7 +51,7 @@
                         <th>Login</th>
                         <th>Imagen</th>
                         <th>Estado</th>
-                        <th></th>
+                        <th class="no-print"></th>
                     </tr>
                     <tbody class="buscar">
                   <?php
@@ -104,7 +104,7 @@
                         </td>
                         <td style="text-align: center;"><?php echo $u['estado_usu']; ?></td>
 
-                        <td>
+                        <td class="no-print">
                             <a href="<?php echo site_url('usuario/edit/'. $u['id_usu']); ?>" title="EDITAR" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
                             <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><em class="fa fa-trash"></em></a>-->
                             <?php if($tipo_usuario == "ADMINISTRADOR"){ ?>

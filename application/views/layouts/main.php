@@ -144,6 +144,12 @@
                                 <li>
                                     <a href="<?php echo site_url('factura/cobranza');?>"><i class="fa fa-list-alt"></i> Factura(Cobranza)</a>
                                 </li>
+                                <?php }
+                                if($rolusuario[404-1]['rolusuario_asignado'] == 1){
+                                ?>
+                                <li>
+                                    <a href="<?php echo site_url('anticipado/cobranza');?>"><i class="fa fa-list-ul"></i> Pagos(Anticipado)</a>
+                                </li>
                                 <?php } ?>
                             </ul>
                         </li>
@@ -375,6 +381,12 @@
                                 ?>
                                 <li>
                                     <a href="<?php echo site_url('reportes/encorte');?>"><i class="fa fa-dollar"></i> En Corte</a>
+                                </li>
+                                <?php }
+                                if($rolusuario[412-1]['rolusuario_asignado'] == 1){
+                                ?>
+                                <li>
+                                    <a href="<?php echo site_url('factura');?>"><i class="fa fa-shopping-cart"></i> Libro de Ventas</a>
                                 </li>
                                 <?php }
                                 if($rolusuario[413-1]['rolusuario_asignado'] == 1){
