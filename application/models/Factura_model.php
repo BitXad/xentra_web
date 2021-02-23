@@ -331,6 +331,22 @@ class Factura_model extends CI_Model
      function get_factura_ventas($inicio, $fin)
     {
         $sql = "
+            SELECT 
+		f.id_fact, f.nit_fact AS nit, f.razon_fact AS razon_soc,
+                f.num_fact, f.orden_fact AS num_autoriz,
+                f.fecha_fact as fecha_ven, f.montototal_fact AS importe,
+                f.ice_fact AS ice, f.exento_fact AS excento,
+                (f.montototal_fact-f.exento_fact-f.ice_fact) AS subtotal,
+                (f.montototal_fact-f.exento_fact-f.ice_fact) AS neto,
+                (f.montototal_fact-f.exento_fact-f.ice_fact) * 0.13 AS debito_fiscal,
+                if(f.estado_fact = 'CANCELADA', 'V', 'A') AS estado_fact,
+                f.codcontrol_fact as codigo_control, f.id_lec as n_trans
+                FROM factura f
+                WHERE f.fecha_fact>='".$inicio."'
+                        AND f.fecha_fact<='".$fin."'
+                    AND f.tipo_fact=1
+                ORDER BY f.num_fact ASC
+            /*
             SELECT
                 *
             FROM
@@ -338,7 +354,7 @@ class Factura_model extends CI_Model
             WHERE
                 fecha_fact >= '".$inicio."'
                 and fecha_fact <= '".$fin."'
-            ORDER BY `id_fact` ASC";
+            ORDER BY `id_fact` ASC*/ ";
         $factura = $this->db->query($sql)->result_array();
         return $factura;
     }

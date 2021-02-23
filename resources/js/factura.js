@@ -84,7 +84,7 @@ function mostrar_facturas() {
                     
                       var totalfinal = Number(0);
                     
-                    for(var i = 0; i < tam; i++ ){                        
+                    for(var i = 0; i < tam; i++ ){
                         if (factura[i]['estado_fact']==3)
                             color = "style = 'background-color:gray'";
                         else
@@ -93,9 +93,9 @@ function mostrar_facturas() {
                         html += "<tr  "+color+">";
                         html += "   <td>0</td>";
                         html += "   <td>1</td>";
-                        html += "   <td>"+formato_fecha(factura[i]["fecha_fact"])+"</td>";
+                        html += "   <td>"+formato_fecha(factura[i]["fecha_ven"])+"</td>";
                         html += "   <td>"+factura[i]["num_fact"]+"</td>";
-                        html += "   <td>"+factura[i]["orden_fact"]+"</td>";
+                        html += "   <td>"+factura[i]["num_autoriz"]+"</td>";
                         if(factura[i]["estado_fact"]==1){
                                 html += "   <td>V</td>";
                         }
@@ -103,19 +103,19 @@ function mostrar_facturas() {
                                 html += "   <td>A</td>";
                         }
                             
-                        html += "   <td>"+factura[i]["nit_fact"]+"</td>";
-                        html += "   <td>"+factura[i]["razon_fact"]+"</td>";
-                        html += "   <td>"+Number(factura[i]["montototal_fact"]).toFixed(2)+"</td>";
-                        html += "   <td>"+Number(factura[i]["ice_fact"]).toFixed(2)+"</td>";
-                        html += "   <td>"+Number(factura[i]["exento_fact"]).toFixed(2)+"</td>";
+                        html += "   <td>"+factura[i]["nit"]+"</td>";
+                        html += "   <td>"+factura[i]["razon_soc"]+"</td>";
+                        html += "   <td>"+Number(factura[i]["importe"]).toFixed(2)+"</td>";
+                        html += "   <td>"+Number(factura[i]["ice"]).toFixed(2)+"</td>";
+                        html += "   <td>"+Number(factura[i]["excento"]).toFixed(2)+"</td>";
                         html += "   <td>0</td>";
-                        html += "   <td>"+Number(factura[i]["montototal_fact"]).toFixed(2)+"</td>";
+                        html += "   <td>"+Number(factura[i]["subtotal"]).toFixed(2)+"</td>";
                         //html += "   <td>"+Number(factura[i]["factura_descuento"]).toFixed(2)+"</td>";
                         html += "   <td>0.00</td>";
                         html += "   <td>0</td>";
-                        html += "   <td>"+Number(factura[i]["montototal_fact"]).toFixed(2)+"</td>";
-                        html += "   <td>"+Number(factura[i]["montototal_fact"]*0.13).toFixed(2)+"</td>";
-                        html += "   <td>"+factura[i]["codcontrol_fact"]+"</td>";
+                        html += "   <td>"+Number(factura[i]["debito_fiscal"]).toFixed(2)+"</td>";
+                        html += "   <td>"+Number(factura[i]["debito_fiscal"]).toFixed(2)+"</td>";
+                        html += "   <td>"+factura[i]["codigo_control"]+"</td>";
                         html += "   <td>"+factura[i]["id_fact"]+"</td>";
 //                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
                         html += "   <td><a href='"+base_url+"factura/imprimir_factura/0/"+factura[i]["id_fact"]+"' class='btn btn-warning btn-xs' ' target='_BLANK' title='Imprimir factura original'><i class='fa fa-list'></i> </a>";
@@ -125,11 +125,12 @@ function mostrar_facturas() {
                         }
                         html += "</tr>";
                         
-                        totalfinal += Number(factura[i]["montototal_fact"]);
+                        totalfinal += Number(factura[i]["debito_fiscal"]);
                         
                         
                     }
-                        var debitofiscal =  totalfinal * 0.13;
+                        //var debitofiscal =  totalfinal * 0.13;
+                        var debitofiscal =  totalfinal;
                         
                         html += "<th> </th> ";
                         html += "<th> </th> ";
@@ -217,28 +218,28 @@ function generarexcel(){
                         
                             row += '0,';
                             row += '1,';
-                            row += '"' +formato_fecha(factura[i]["fecha_fact"])+ '",';
+                            row += '"' +formato_fecha(factura[i]["fecha_ven"])+ '",';
                             row += '"' +factura[i]["num_fact"]+ '",';
-                            row += '"' +factura[i]["orden_fact"]+ '",';
+                            row += '"' +factura[i]["num_autoriz"]+ '",';
                             if(factura[i]["estado_id"]==1){
                                 row += 'V,';
                             }
                             else{
                                 row += 'A,';
                             }
-                            row += '"' +factura[i]["nit_fact"]+ '",';
-                            row += '"' +factura[i]["razon_fact"]+ '",';
-                            row += '"' +Number(factura[i]["montototal_fact"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["ice_fact"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["exento_fact"]).toFixed(2)+ '",';
+                            row += '"' +factura[i]["nit"]+ '",';
+                            row += '"' +factura[i]["razon_soc"]+ '",';
+                            row += '"' +Number(factura[i]["importe"]).toFixed(2)+ '",';
+                            row += '"' +Number(factura[i]["ice"]).toFixed(2)+ '",';
+                            row += '"' +Number(factura[i]["excento"]).toFixed(2)+ '",';
                             row += '0,';
-                            row += '"' +Number(factura[i]["montototal_fact"]).toFixed(2)+ '",';
+                            row += '"' +Number(factura[i]["subtotal"]).toFixed(2)+ '",';
                             //row += '"' +Number(factura[i]["factura_descuento"]).toFixed(2)+ '",';
                             row += '0.00,';
                             row += '0,';
-                            row += '"' +Number(factura[i]["montototal_fact"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["montototal_fact"]*0.13).toFixed(2)+ '",';
-                            row += '"' +factura[i]["codcontrol_fact"]+ '",';
+                            row += '"' +Number(factura[i]["debito_fiscal"]).toFixed(2)+ '",';
+                            row += '"' +Number(factura[i]["debito_fiscal"]).toFixed(2)+ '",';
+                            row += '"' +factura[i]["codigo_control"]+ '",';
                             row += '"' +factura[i]["id_fact"]+ '",';
                             
 
