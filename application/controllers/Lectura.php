@@ -52,7 +52,7 @@ class Lectura extends CI_Controller {
         if($this->acceso(400)){
             //$data['asociados'] = $this->Asociado_model->get_all_asociado();
             $data['configuracion'] = $this->Configuracion_model->get_all_configuracion();
-            $data['lectura'] = $this->Lectura_model->get_all_lectura();
+            //$data['lectura'] = $this->Lectura_model->get_all_lectura();
             $data['meses'] = $this->Mes_model->get_all_mes();
             $data['zonas'] = $this->Lectura_model->get_all_zonas();
             $data['direcciones'] = $this->Lectura_model->get_all_direcciones();
