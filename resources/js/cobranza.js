@@ -20,6 +20,7 @@ function finalizar(){
     var multar = document.getElementById('multar').checked;
     var generar_factura = document.getElementById('generar_factura').checked;
     var imprimir_factura = document.getElementById('imprimir_factura').checked;
+    var imprimir_copia = document.getElementById('imprimir_copia').checked;
     var consumo = document.getElementById('consumo').value;
     var aportes = document.getElementById('aportes').value;
     var recargos = document.getElementById('recargos').value;
@@ -40,11 +41,18 @@ function finalizar(){
                 var registros = JSON.parse(respuesta);
                 if(registros != null){
                 alert('COBRO REALIZADO CON EXITO');
-                if (imprimir_factura==true) {
-                    window.open(base_url+"factura/imprimir_factura/0/"+factura_id, '_blank'); //factura original
-                    window.open(base_url+"factura/imprimir_factura/1/"+factura_id, '_blank'); //factura copia
-//                    window.open(base_url+"factura/copia/"+factura_id, '_blank');
+                if(generar_factura == true){
+                    if (imprimir_factura==true) {
+                        window.open(base_url+"factura/imprimir_factura/0/"+factura_id, '_blank'); //factura original
+    //                    window.open(base_url+"factura/copia/"+factura_id, '_blank');
+                    }
+                    if (imprimir_copia==true) {
+                        window.open(base_url+"factura/imprimir_factura/1/"+factura_id, '_blank'); //factura copia
+                    }
+                }else{
+                    window.open(base_url+"factura/imprimir_recibo/"+factura_id, '_blank'); //factura original
                 }
+                
                 var nada = "";
                 $("#lista_pendientes").html(nada);
                 $("#detalle_factura").html(nada);
