@@ -85,7 +85,7 @@ function mostrar_facturas() {
                       var totalfinal = Number(0);
                     
                     for(var i = 0; i < tam; i++ ){
-                        if (factura[i]['estado_fact']==3)
+                        if (factura[i]['estado_fact']=="A")
                             color = "style = 'background-color:gray'";
                         else
                             color = "";
@@ -96,12 +96,13 @@ function mostrar_facturas() {
                         html += "   <td>"+formato_fecha(factura[i]["fecha_ven"])+"</td>";
                         html += "   <td>"+factura[i]["num_fact"]+"</td>";
                         html += "   <td>"+factura[i]["num_autoriz"]+"</td>";
-                        if(factura[i]["estado_fact"]==1){
+                        /*if(factura[i]["estado_fact"]==1){
                                 html += "   <td>V</td>";
                         }
                         else{
                                 html += "   <td>A</td>";
-                        }
+                        }*/
+                        html += "   <td class='text-center'>"+factura[i]["estado_fact"]+"</td>";
                             
                         html += "   <td>"+factura[i]["nit"]+"</td>";
                         html += "   <td>"+factura[i]["razon_soc"]+"</td>";
@@ -221,12 +222,13 @@ function generarexcel(){
                             row += '"' +formato_fecha(factura[i]["fecha_ven"])+ '",';
                             row += '"' +factura[i]["num_fact"]+ '",';
                             row += '"' +factura[i]["num_autoriz"]+ '",';
-                            if(factura[i]["estado_id"]==1){
+                            /*if(factura[i]["estado_id"]==1){
                                 row += 'V,';
                             }
                             else{
                                 row += 'A,';
-                            }
+                            }*/
+                            row += '"' +factura[i]["estado_fact"]+ '",';
                             row += '"' +factura[i]["nit"]+ '",';
                             row += '"' +factura[i]["razon_soc"]+ '",';
                             row += '"' +Number(factura[i]["importe"]).toFixed(2)+ '",';
