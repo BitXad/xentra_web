@@ -65,11 +65,11 @@
 					</div>
 					
 					
-					<!--<div class="col-md-4">
-						<label for="exento_ap" class="control-label">Exento Ap</label>
+					<div class="col-md-2">
+						<label for="exento_ap" class="control-label">Exento</label>
 						<div class="form-group">
 							<select name="exento_ap" class="form-control">
-								<option value="">select</option>
+								<!--<option value="">select</option>-->
 								<?php 
 								$exento_ap_values = array(
 									'SI'=>'SI',
@@ -86,11 +86,11 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-md-4">
-						<label for="ice_ap" class="control-label">Ice Ap</label>
+					<div class="col-md-2">
+						<label for="ice_ap" class="control-label">Ice</label>
 						<div class="form-group">
 							<select name="ice_ap" class="form-control">
-								<option value="">select</option>
+								<!--<option value="">select</option>-->
 								<?php 
 								$ice_ap_values = array(
 									'SI'=>'SI',
@@ -106,7 +106,7 @@
 								?>
 							</select>
 						</div>
-					</div>-->
+					</div>
 					<div class="col-md-4">
 						<label for="motivo_ap" class="control-label"><span class="text-danger">*</span>Motivo</label>
 						<div class="form-group">

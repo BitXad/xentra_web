@@ -38,8 +38,8 @@
                         <th>Mes</th>
                         <th>Gestion</th>
                         <th>Tipo</th>
-                        <!--<th>Exento Ap</th>
-                        <th>Ice Ap</th>-->
+                        <<th>Exento</th>
+                        <th>Ice</th>
                         <th>Motivo</th>
                         <th>Detalle</th>
                         <th>Monto</th>
@@ -57,8 +57,8 @@
                         <td><?php echo $a['mes_ap']; ?></td>
                         <td><?php echo $a['gestion_ap']; ?></td>
                         <td><?php echo $a['tipo_ap']; ?></td>
-                        <!--<td><?php echo $a['exento_ap']; ?></td>
-                        <td><?php echo $a['ice_ap']; ?></td>-->
+                        <td class="text-center"><?php echo $a['exento_ap']; ?></td>
+                        <td class="text-center"><?php echo $a['ice_ap']; ?></td>
                         <td><?php echo $a['motivo_ap']; ?></td>
                         <td><?php echo $a['detalle_ap']; ?></td>
                         <td><?php echo number_format($a['monto_ap'], 2, ".", ","); ?></td>
