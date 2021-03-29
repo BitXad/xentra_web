@@ -29,43 +29,43 @@ function finalizar(){
     var razon_asoc = document.getElementById('razon_asoc').value;
     var esexento = document.getElementById('esexento').value;
     $.ajax({url:controlador,
-
             type:"POST",
-
             data:{factura_id:factura_id,multar:multar,generar_factura:generar_factura,lectura_id:lectura_id,
                 consumo:consumo,aportes:aportes,recargos:recargos,total:total,nit_asoc:nit_asoc,razon_asoc:razon_asoc,
                 esexento:esexento},
-
             success:function(respuesta){
-
                 var registros = JSON.parse(respuesta);
                 if(registros != null){
-                alert('COBRO REALIZADO CON EXITO');
-                if(generar_factura == true){
-                    if (imprimir_factura==true) {
-                        window.open(base_url+"factura/imprimir_factura/0/"+factura_id, '_blank'); //factura original
-    //                    window.open(base_url+"factura/copia/"+factura_id, '_blank');
-                    }
-                    if (imprimir_copia==true) {
-                        window.open(base_url+"factura/imprimir_factura/1/"+factura_id, '_blank'); //factura copia
+                    if(registros == "yafacturado"){
+                        alert('Ya se realizo el cobro!..');
+                    }else{
+                        alert('COBRO REALIZADO CON EXITO');
+                        if(generar_factura == true){
+                            if (imprimir_factura==true) {
+                                window.open(base_url+"factura/imprimir_factura/0/"+factura_id, '_blank'); //factura original
+            //                    window.open(base_url+"factura/copia/"+factura_id, '_blank');
+                            }
+                            if (imprimir_copia==true) {
+                                window.open(base_url+"factura/imprimir_factura/1/"+factura_id, '_blank'); //factura copia
+                            }
+                        }else{
+                            window.open(base_url+"factura/imprimir_recibo/"+factura_id, '_blank'); //factura original
+                        }
+
+                        var nada = "";
+                        $("#lista_pendientes").html(nada);
+                        $("#detalle_factura").html(nada);
+                        $("#detalle_recargo").html(nada);
+                        $("#consumo").val("0.00");
+                        $("#aportes").val("0.00");
+                        $("#recargos").val("0.00");
+                        $("#total_factura").val("0.00");
+                        $("#btnfinalizar").prop('disabled',true);
+                        facturas_pendientes(id_asoc);
                     }
                 }else{
-                    window.open(base_url+"factura/imprimir_recibo/"+factura_id, '_blank'); //factura original
+                    alert("Informacion Incorrecta, revise sus datos, consumo y total no pueden ser 0");
                 }
-                
-                var nada = "";
-                $("#lista_pendientes").html(nada);
-                $("#detalle_factura").html(nada);
-                $("#detalle_recargo").html(nada);
-                $("#consumo").val("0.00");
-                $("#aportes").val("0.00");
-                $("#recargos").val("0.00");
-                $("#total_factura").val("0.00");
-                $("#btnfinalizar").prop('disabled',true);
-                facturas_pendientes(id_asoc);
-            }else{
-                alert("Informacion Incorrecta, revise sus datos, consumo y total no pueden ser 0");
-            }
             
             },
 

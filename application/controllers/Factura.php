@@ -351,79 +351,85 @@ class Factura extends CI_Controller{
         $consumo=$this->input->post('consumo');
         $total=$this->input->post('total');
         if($consumo >0 && $total>0){
-            $session_data = $this->session->userdata('logged_in');
-            $usuario_id = $session_data['id_usu'];
             $factura_id = $this->input->post('factura_id');
-            $lectura_id = $this->input->post('lectura_id');
-            $genera_factura = $this->input->post('generar_factura');  //aca debe venir el check generar
-            $multar = $this->input->post('multar');
-            $empresa = $this->Empresa_model->get_empresa(1);
-            $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-            $numfact_dosif = $dosificacion['numfact_dosif'];
-            $numfact_dosif1 = $numfact_dosif+1;
-            //$consumo=$this->input->post('consumo');
-            $aportes=$this->input->post('aportes');
-            $recargos1=$this->input->post('recargos');
-            $total=$this->input->post('total');
+            $estafactura = $this->Factura_model->get_datos_factura($factura_id);
+            if($estafactura[0]["estado_fact"] == "PENDIENTE"){
+                $session_data = $this->session->userdata('logged_in');
+                $usuario_id = $session_data['id_usu'];
 
-            if ($multar=="true") { //agregar los recargos al detalle
-                $recargos = $this->Factura_model->get_recargo_detalle($lectura_id);
-                foreach ($recargos as $rec) {
-                    $this->Factura_model->recargosadetalle($rec['id_param'],$factura_id);
+                $lectura_id = $this->input->post('lectura_id');
+                $genera_factura = $this->input->post('generar_factura');  //aca debe venir el check generar
+                $multar = $this->input->post('multar');
+                $empresa = $this->Empresa_model->get_empresa(1);
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                $numfact_dosif = $dosificacion['numfact_dosif'];
+                $numfact_dosif1 = $numfact_dosif+1;
+                //$consumo=$this->input->post('consumo');
+                $aportes=$this->input->post('aportes');
+                $recargos1=$this->input->post('recargos');
+                $total=$this->input->post('total');
+
+                if ($multar=="true") { //agregar los recargos al detalle
+                    $recargos = $this->Factura_model->get_recargo_detalle($lectura_id);
+                    foreach ($recargos as $rec) {
+                        $this->Factura_model->recargosadetalle($rec['id_param'],$factura_id);
+                    }
+
                 }
+                $total_credfiscal = 0;
+                if ($genera_factura=="true") {
+                    //$datfactura = $this->Dosificacion_model->get_dosificacion($factura_id);
+                            $tipo_fact=1;
+                            //$estado_fact
+                            //$id_usu
+                            //$id_lec ya viene
+                            //$num_fact 
+                            $nit_fact = $this->input->post('nit_asoc');
+                            $razon_fact = $this->input->post('razon_asoc');
+                            $orden_fact = $dosificacion['numorden_dosif'];
+                            $nitemisor_fact = $empresa['nit_emp'];
+                            $llave_fact = $dosificacion['llave_dosif'];
+                            $factura_leyenda1 = $dosificacion['dosificacion_leyenda1'];
+                            $factura_leyenda2 = $dosificacion['dosificacion_leyenda2'];
+                            $esexento = $this->input->post('esexento');
+                            $total_credfiscal = ($total-$esexento);
+                            //$fecha_fact
+                            //$hora_fact
+                            $fechaemision_fact = $dosificacion['fechalim_dosif'];
+                            $fecha = date("Y-m-d");
+                            //$montoparc_fact ya viene
+                            //$desc_fact ya viene 0 
+                            //$cadenaqr_fact = $nitemisor_fact, $numfact_dosif1, $orden_fact, date('dd/mm/yyyy'), $toal(letras), $total, $CodigodeControl  ,  $nit_asoc , $exento , $ice ,$exento , 0; 
+                            /*',cadenaqr_fact='+quotedStr(FormEmpresa.ADOPrime.fieldbyname('nit_emp').AsString+'|'+
+                      inttoStr(numerofact)+'|'+formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString+'|'+
+                      formatdatetime('dd/mm/yyyy',date)+'|'+ETotal_Bs.Text+'|'+totalfactura+'|'+
+                      FormCodigoControl.CodigodeControl(inttoStr(numerofact),nit_asoc1.Text,formatdatetime('yyyymmdd',date),formLogin.sincoma(totalfactura),formDosificacion.ADODosif.fieldbyname('llave_dosif').AsString,formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString)+'|'+
+                      nit_asoc1.Text+'|'+exento+'|'+ice+'|'+exento+'|0')+*/
 
+                            $codcontrol_fact = $this->codigo_control($llave_fact,$orden_fact,$numfact_dosif1,$nit_fact,$fecha,$total_credfiscal);
+                            //',codcontrol_fact='+quotedStr(FormCodigoControl.CodigodeControl(inttoStr(numerofact),Trim(nit_asoc1.Text),formatdatetime('yyyymmdd',date),FormLogin.sinComa(totalfactura),formDosificacion.ADODosif.fieldbyname('llave_dosif').AsString,formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString))+
+                            //$literal_fact no necesary
+                            //$fechahora_fact ya viene
+                            //$fechavenc_fact ya viene
+                            //$totalconsumo_fact
+                            //$totalaportes_fact
+                            //$totalrecargos_fact
+                            //$montototal_fact
+                            //$exento_fact = 0;
+                            //$ice_fact = 0;
+                            //$id_ing nada esta null ojo
+                    $this->Factura_model->generar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact, $factura_leyenda1, $factura_leyenda2);
+                    //aqui si hay q generar la factura...
+                } else {
+                    $this->Factura_model->cancelar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id);
+
+                }
+                    $this->Factura_model->actualizar_dosificacion($numfact_dosif1);
+                    $datos = $this->Factura_model->get_datos_factura($factura_id);
+                    echo json_encode($datos);
+            }else{
+                echo json_encode("yafacturado");
             }
-            $total_credfiscal = 0;
-            if ($genera_factura=="true") {
-                //$datfactura = $this->Dosificacion_model->get_dosificacion($factura_id);
-                        $tipo_fact=1;
-                        //$estado_fact
-                        //$id_usu
-                        //$id_lec ya viene
-                        //$num_fact 
-                        $nit_fact = $this->input->post('nit_asoc');
-                        $razon_fact = $this->input->post('razon_asoc');
-                        $orden_fact = $dosificacion['numorden_dosif'];
-                        $nitemisor_fact = $empresa['nit_emp'];
-                        $llave_fact = $dosificacion['llave_dosif'];
-                        $factura_leyenda1 = $dosificacion['dosificacion_leyenda1'];
-                        $factura_leyenda2 = $dosificacion['dosificacion_leyenda2'];
-                        $esexento = $this->input->post('esexento');
-                        $total_credfiscal = ($total-$esexento);
-                        //$fecha_fact
-                        //$hora_fact
-                        $fechaemision_fact = $dosificacion['fechalim_dosif'];
-                        $fecha = date("Y-m-d");
-                        //$montoparc_fact ya viene
-                        //$desc_fact ya viene 0 
-                        //$cadenaqr_fact = $nitemisor_fact, $numfact_dosif1, $orden_fact, date('dd/mm/yyyy'), $toal(letras), $total, $CodigodeControl  ,  $nit_asoc , $exento , $ice ,$exento , 0; 
-                        /*',cadenaqr_fact='+quotedStr(FormEmpresa.ADOPrime.fieldbyname('nit_emp').AsString+'|'+
-                  inttoStr(numerofact)+'|'+formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString+'|'+
-                  formatdatetime('dd/mm/yyyy',date)+'|'+ETotal_Bs.Text+'|'+totalfactura+'|'+
-                  FormCodigoControl.CodigodeControl(inttoStr(numerofact),nit_asoc1.Text,formatdatetime('yyyymmdd',date),formLogin.sincoma(totalfactura),formDosificacion.ADODosif.fieldbyname('llave_dosif').AsString,formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString)+'|'+
-                  nit_asoc1.Text+'|'+exento+'|'+ice+'|'+exento+'|0')+*/
-
-                        $codcontrol_fact = $this->codigo_control($llave_fact,$orden_fact,$numfact_dosif1,$nit_fact,$fecha,$total_credfiscal);
-                        //',codcontrol_fact='+quotedStr(FormCodigoControl.CodigodeControl(inttoStr(numerofact),Trim(nit_asoc1.Text),formatdatetime('yyyymmdd',date),FormLogin.sinComa(totalfactura),formDosificacion.ADODosif.fieldbyname('llave_dosif').AsString,formDosificacion.ADODosif.fieldbyname('numorden_dosif').AsString))+
-                        //$literal_fact no necesary
-                        //$fechahora_fact ya viene
-                        //$fechavenc_fact ya viene
-                        //$totalconsumo_fact
-                        //$totalaportes_fact
-                        //$totalrecargos_fact
-                        //$montototal_fact
-                        //$exento_fact = 0;
-                        //$ice_fact = 0;
-                        //$id_ing nada esta null ojo
-                $this->Factura_model->generar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id,$tipo_fact,$nit_fact,$razon_fact,$orden_fact,$nitemisor_fact,$llave_fact,$fechaemision_fact,$codcontrol_fact, $factura_leyenda1, $factura_leyenda2);
-                //aqui si hay q generar la factura...
-            } else {
-                $this->Factura_model->cancelar_factura($factura_id,$numfact_dosif1,$consumo,$aportes,$recargos1,$total,$usuario_id);
-
-            }
-                $this->Factura_model->actualizar_dosificacion($numfact_dosif1);
-                $datos = $this->Factura_model->get_datos_factura($factura_id);
-                echo json_encode($datos);
         }else{
             echo json_encode(null);
         }
