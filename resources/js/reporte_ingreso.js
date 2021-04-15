@@ -144,9 +144,9 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden
                             html += "<td class='text-center lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["totalcons_lec"]).toFixed(2)+"</td>";
                             html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["consumoalcant_lec"]).toFixed(2)+"</td>";
                             html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["totalaportes_fact"]).toFixed(2)+"</td>";
-                            html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["totalrecargos_fact"]).toFixed(2)+"</td>";
+                            html += "<td class='text-right lizq' style='padding: 0px 5px !important'><span id='totaporte"+registros[i]["id_lec"]+"'>"+Number(registros[i]["totalrecargos_fact"]).toFixed(2)+"</span></td>";
                             html += "<td class='text-right lizq' style='padding: 0px 5px !important'>";
-                            html += estetotal;
+                            html += "<span id='estetotal"+registros[i]["id_lec"]+"'>"+estetotal+"</span>";
                             html += "</td>";
                             //html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+
                             html += "</tr>";
@@ -176,14 +176,14 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden
                     htmls += "<td class='text-right'>"+numberFormat(Number(totalconsumo).toFixed(2))+"</td>";
                     htmls += "<td class='text-right'>"+numberFormat(Number(totalalcanta).toFixed(2))+"</td>";
                     htmls += "<td class='text-right'>"+numberFormat(Number(totalaportes).toFixed(2))+"</td>";
-                    htmls += "<td class='text-right'>"+numberFormat(Number(totalrecargo).toFixed(2))+"</td>";
+                    htmls += "<td class='text-right'><span id='elrecargototal'>"+numberFormat(Number(totalrecargo).toFixed(2))+"</span></td>";
                     htmls += "</tr>";
                     htmls += "<tr>";
                     htmls += "<td class='lizq1' colspan='2'></td>";
                     htmls += "<td class='lizq1'><br><br></td>";
                     htmls += "<td class='larrf' colspan='6'></td>";
                     htmls += "<td class='larrf text-right text-bold' colspan='3' style='font-family: Arial; font-size: 15px; !important'>TOTAL Bs.</td>";
-                    htmls += "<td class='larrf text-right text-bold' style='font-family: Arial; font-size: 15px; !important'>"+numberFormat(Number(totalingreso).toFixed(2))+"</td>";
+                    htmls += "<td class='larrf text-right text-bold' style='font-family: Arial; font-size: 15px; !important'><span id='eltotal'>"+numberFormat(Number(totalingreso).toFixed(2))+"</span></td>";
                     htmls += "</tr>";
                     htmls += "<tr>";
                     htmls += "<td class='larrf' colspan='2'></td>";
@@ -202,7 +202,11 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden
                     piehtmlt = "</tbody></table></div></div>";
                    
                     $("#tablatotalresultados").html(cabecerahtmlt+html+htmls+piehtmlt);
-                   
+                    for (var i = 0; i < n ; i++){
+                        if(registros[i]["estado_fact"] == "PENDIENTE"){
+                            buscartotaporte(registros[i]["id_fact"], registros[i]["id_lec"]);
+                        }
+                    }
                     document.getElementById('loader').style.display = 'none';
             }
         document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
@@ -218,5 +222,38 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, estado_id, orden
         
     });   
 
+}
+/* busca el total adeudado (RECARGOS) de una determinada factura/lectura */
+function buscartotaporte(factura,lectura)
+{
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"factura/datos_factura";
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{factura:factura,lectura:lectura},
+            success:function(respuesta){
+                
+                var registros = JSON.parse(respuesta);
+                var consumos = (Number(registros.consumo).toFixed(2));
+                var multas = (Number(registros.multa).toFixed(2));
+                var recargos = (Number(registros.recargo).toFixed(2));
+                if(recargos >0){
+                    var totalparcial = Number(consumos)+Number(multas)+Number(recargos);
+                    var totalrecargoc = $("#elrecargototal").html();
+                    var totalrecargo  = totalrecargoc.replace(/,/gi, "");
+                    var totalc = $("#eltotal").html();
+                    var total  = totalc.replace(/,/gi, "");
+                    $("#totaporte"+lectura).html(recargos);
+                    $("#estetotal"+lectura).html(Number(totalparcial).toFixed(2));
+                    //alert(Number(totalparcial).toFixed(2));
+                    $("#elrecargototal").html(numberFormat(Number(Number(totalrecargo)+Number(recargos)).toFixed(2)));
+                    $("#eltotal").html(numberFormat(Number(Number(total)+Number(recargos)).toFixed(2)));
+                }
+                
+            },
+            error: function(respuesta){
+              alert('Error inesperado, consulte a su tecnico!.');
+            }
+        });
 }
 

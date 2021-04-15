@@ -131,43 +131,37 @@ class ingreso extends CI_Controller{
     {   
         if($this->acceso(55)){
             $data['page_title'] = "ingreso";
-            $id_usu = $this->session_data['id_usu'];
-        // check if the ingreso exists before tryegr to edit it
-        $data['ingreso'] = $this->Ingreso_model->get_ingreso($id_ing);
-        //$data['tipoid_usu'] = $this->session_data['tipoid_usu'];
-        
-        if(isset($data['ingreso']['id_ing']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-                    'id_usu' => $id_usu,
-        'detalle_ing' => $this->input->post('detalle_ing'),
-        'numrec_ing' => $this->input->post('numrec_ing'),
-        'nombre_ing' => $this->input->post('nombre_ing'),
-        'monto_ing' => $this->input->post('monto_ing'),
-        'estado_ing' => $this->input->post('estado_ing'),
-        'descripcion_ing' => $this->input->post('descripcion_ing'),
-        'fechahora_ing' => $this->input->post('fechahora_ing'),
-        'ci_ing' => $this->input->post('ci_ing'),
-        'id_asoc' => $this->input->post('id_asoc'),        
-                );
-
-                $this->Ingreso_model->update_ingreso($id_ing,$params);            
-                redirect('ingreso/index');
-            }
-            else
+            //$id_usu = $this->session_data['id_usu'];
+            // check if the ingreso exists before tryegr to edit it
+            $data['ingreso'] = $this->Ingreso_model->get_ingreso($id_ing);
+            //$data['tipoid_usu'] = $this->session_data['tipoid_usu'];
+            if(isset($data['ingreso']['id_ing']))
             {
-    
-                $this->load->model('Categoria_ingreso_model');
-           $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
-                $data['_view'] = 'ingreso/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                        //'id_usu' => $id_usu,
+                        'detalle_ing' => $this->input->post('detalle_ing'),
+                        'numrec_ing' => $this->input->post('numrec_ing'),
+                        'nombre_ing' => $this->input->post('nombre_ing'),
+                        'monto_ing' => $this->input->post('monto_ing'),
+                        'estado_ing' => $this->input->post('estado_ing'),
+                        'descripcion_ing' => $this->input->post('descripcion_ing'),
+                        'fechahora_ing' => $this->input->post('fechahora_ing'),
+                        'ci_ing' => $this->input->post('ci_ing'),
+                        'id_asoc' => $this->input->post('id_asoc'),        
+                    );
+                    $this->Ingreso_model->update_ingreso($id_ing,$params);            
+                    redirect('ingreso/index');
+                }else{
+                    $this->load->model('Categoria_ingreso_model');
+                   $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+                    $data['_view'] = 'ingreso/edit';
+                    $this->load->view('layouts/main',$data);
+                }
+            }else
             show_error('The ingreso you are tryegr to edit does not exist.');
-            }
+        }
     }
 
     /*

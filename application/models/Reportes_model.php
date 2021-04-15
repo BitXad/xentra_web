@@ -76,7 +76,7 @@ class Reportes_model extends CI_Model
         $ingresos = $this->db->query("
             select 
                     a.id_asoc, a.codigo_asoc, a.nombres_asoc, a.apellidos_asoc, a.razon_asoc,
-                    l.mes_lec, l.gestion_lec, f.num_fact, l.id_lec, f.estado_fact,
+                    l.mes_lec, l.gestion_lec, f.id_fact, f.num_fact, l.id_lec, f.estado_fact,
                     l.actual_lec, anterior_lec, l.consumo_lec, l.totalcons_lec,
                     f.totalaportes_fact, f.totalrecargos_fact, f.montototal_fact,
                     l.consumoalcant_lec

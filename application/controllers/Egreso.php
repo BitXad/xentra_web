@@ -124,7 +124,7 @@ class Egreso extends CI_Controller{
                 if(isset($_POST) && count($_POST) > 0)
                 {
                     $params = array(
-                        'id_usu' => 1,
+                        //'id_usu' => 1,
                         'detalle_egr' => $this->input->post('detalle_egr'),
                         'numrec_egr' => $this->input->post('numrec_egr'),
                         'nombre_egr' => $this->input->post('nombre_egr'),
