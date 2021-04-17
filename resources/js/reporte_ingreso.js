@@ -252,7 +252,7 @@ function buscartotaporte(factura,lectura)
                 
             },
             error: function(respuesta){
-              alert('Error inesperado, consulte a su tecnico!.');
+              //alert('Error inesperado, consulte a su tecnico!.');
             }
         });
 }
