@@ -352,6 +352,7 @@ class Asociado extends CI_Controller{
                         'lecturabase_asoc' => $this->input->post('lecturabase_asoc'),
                         'sistemared_asoc' => $this->input->post('sistemared_asoc'),
                         'distanciar_asoc' => $this->input->post('distanciar_asoc'),
+                        'login_asoc' => $this->input->post('login_asoc'),
                     );
                     $this->Asociado_model->update_asociado($id_asoc,$params);
 

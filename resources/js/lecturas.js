@@ -566,7 +566,7 @@ function buscar_asociados() {
     var buscar_asoc = " ";
     if (buscar_nombreasoc != ""){
         buscar_asoc = " and(a.nombres_asoc like '%"+buscar_nombreasoc+"%' or a.apellidos_asoc like '%"+buscar_nombreasoc+"%'";
-        buscar_asoc += " or a.codigo_asoc = '"+buscar_nombreasoc+"' or a.medidor_asoc = '"+buscar_nombreasoc+"'";
+        buscar_asoc += " or a.codigo_asoc = '"+buscar_nombreasoc+"' or a.medidor_asoc like '%"+buscar_nombreasoc+"%'";
         buscar_asoc += " or a.ci_asoc = '"+buscar_nombreasoc+"' or a.nit_asoc like '%"+buscar_nombreasoc+"%')";
     }
 
@@ -668,7 +668,7 @@ function buscar_asociados() {
                 nombrecompleto = res[i].apellidos_asoc + ", " + res[i].nombres_asoc;
                 foto = res[i].foto_asoc;
 
-                if (foto == null) {
+                if (foto == null || foto == "") {
                     imagen = base_url + "resources/images/asociados/thumb_default.jpg";
                 } else {
                     imagen = base_url + "resources/images/asociados/" + res[i].foto_asoc;

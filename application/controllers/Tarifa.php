@@ -53,6 +53,8 @@ class Tarifa extends CI_Controller{
                     'hasta' => $this->input->post('hasta'),
                     'costo_agua' => $this->input->post('costo_agua'),
                     'costo_alcant' => $this->input->post('costo_alcant'),
+                    'costo_mt3' => $this->input->post('costo_mt3'),
+                    'consumo_basico' => $this->input->post('consumo_basico'),
                 );
 
                 $tarifa_id = $this->Tarifa_model->add_tarifa($params);
@@ -87,6 +89,8 @@ class Tarifa extends CI_Controller{
                         'hasta' => $this->input->post('hasta'),
                         'costo_agua' => $this->input->post('costo_agua'),
                         'costo_alcant' => $this->input->post('costo_alcant'),
+                        'costo_mt3' => $this->input->post('costo_mt3'),
+                        'consumo_basico' => $this->input->post('consumo_basico'),
                     );
 
                     $this->Tarifa_model->update_tarifa($id_tarifa,$params);            
