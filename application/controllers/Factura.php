@@ -10,6 +10,7 @@ class Factura extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Factura_model');
+        $this->load->model('Configuracion_model');
         $this->load->model('Dosificacion_model');
         $this->load->model('Empresa_model');
         $this->load->helper('numeros');
@@ -467,8 +468,15 @@ class Factura extends CI_Controller{
          $this->load->model('Empresa_model');
          $data['empresa'] = $this->Empresa_model->get_empresa(1);
          $data['factura'] = $this->Factura_model->get_factura_completa($factura_id);
-         $data['detalle_factura'] = $this->Factura_model->get_pendiente_detalle($factura_id); 
-         $data['_view'] = 'factura/recibo';
+         $data['detalle_factura'] = $this->Factura_model->get_pendiente_detalle($factura_id);
+         $configuracion = $this->Configuracion_model->get_all_configuracion();
+         $data['configuracion'] = $configuracion;
+         if($configuracion[1-1]["valor"] == 0){ //Utilizar impresora, facturadora
+             $data['_view'] = 'factura/recibo_boucher';
+         }else{
+             $data['_view'] = 'factura/recibo';
+         }
+         
          $this->load->view('layouts/main',$data);
      }
 
