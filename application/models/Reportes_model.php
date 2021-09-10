@@ -344,6 +344,7 @@ class Reportes_model extends CI_Model
             where 
                 a.id_asoc = l.id_asoc and l.id_lec = f.id_lec 
                 and f.estado_fact='PENDIENTE' group by id_asoc
+            ORDER BY count(*) desc
         ")->result_array();
         return $deudores;
     }
