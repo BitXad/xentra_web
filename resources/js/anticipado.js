@@ -46,7 +46,7 @@ function buscar_asociados(){
                 
                 for(var i = 0; i<fin; i++)
                 {
-                    html += "<tr onclick='ver_facturas("+JSON.stringify(registros[i])+"); ocultar_tabla()'>";               
+                    html += "<tr onclick='ver_facturas("+JSON.stringify(registros[i])+"); ocultar_tabla(); ultimopago("+registros[i]["id_asoc"]+")'>";               
                     //html += "<tr onclick='ver_facturas("+JSON.stringify(registros[i])+")'>";               
                     html += "<td>"+(i+1)+"</td>";
                     html += "<td>"+registros[i]["apellidos_asoc"]+"</td>";  
@@ -160,7 +160,7 @@ function ultima_lectura(id_asoc)
                     html1 += "<tr>";
                     html1 += "<td align='center' style='background-color: #f0f0f5'>Lectura Promedio Mes (mts<sup>3</sup>)</td>";
                     html1 += "<td align='center' style='background-color: #558cf2'>";
-                    html1 += "<input type='number' step='any' min='0' val='0' name='elpromedio' id='elpromedio' onkeypress='calcular_consumo(event,"+JSON.stringify(registros[0])+")' />";
+                    html1 += "<input type='number' step='any' min='0' value='0' name='elpromedio' id='elpromedio' onkeypress='calcular_consumo(event,"+JSON.stringify(registros[0])+")' />";
                     html1 += "</td>";
                     html1 += "<td align='center' style='background-color: #36396e; color: white'><span id='consumo_bs'>0</span></td>";
                     html1 += "<td class='text-left' style='background-color: #36396e; color: white' >Bs</td>";
@@ -267,6 +267,7 @@ function ultima_lectura(id_asoc)
                     $("#lecturaanterior").css("display", "block");
                     $("#mespara_cobro").html(html2+html3);
                     $("#mespara_cobro").css("display", "block");
+                    calcular(JSON.stringify(registros[0]),1);
                 }else{
                     $("#fechaant_lec").val("");
                     $("#tipo_asoc").val("");
@@ -288,22 +289,31 @@ function ultima_lectura(id_asoc)
 function calcular_consumo(e, asociado) {
     tecla = (document.all) ? e.keyCode : e.which;
     if(tecla == 13){
-        calcular(asociado);
+        calcular(asociado, 0);
     }
 }
 
-function calcular(asociado){
-        var lectura_anterior = asociado["actual_lec"];
+function calcular(infasociado, dedonde){
+    if(dedonde == 1){
+        var registros = JSON.parse(infasociado);
+    }else{
+        var registros = infasociado;
+    }
+    
+    //alert(asociado);
+        var lectura_anterior = registros["actual_lec"];
+        //alert(lectura_anterior);
+        
         var tipo_lectura = document.getElementById("tipo_lectura").value;
         var lectura_promedio = document.getElementById("elpromedio").value;
-        var servicios_asoc = asociado["servicios_asoc"];
+        var servicios_asoc = registros["servicios_asoc"];
         var base_url = document.getElementById("base_url").value;
         var controlador = base_url + "lectura/calcular_consumo";
         //var asociado = asociado["id_asoc"];
         var tipo_lectura = document.getElementById("tipo_lectura").value;
         if (Number(lectura_promedio) >= 0) {
             var consumo = lectura_promedio;
-            var id_asoc = asociado["id_asoc"];
+            var id_asoc = registros["id_asoc"];
             $.ajax({
                 url: controlador,
                 type: "POST",
@@ -456,6 +466,7 @@ function calcular(asociado){
 function cobrar_mes(mes) {
     var total_aporte = document.getElementById("total_aporte").value;
     var el_promedio = document.getElementById("elpromedio").value;
+    var lagestion = document.getElementById("gestionlec_asoc").value;
     if ($('#mes'+mes).is(':checked') ) {
         $("#m"+mes).css('background-color','#edf3f5');
         var consumo_bs = $("#consumo_bs").html();
@@ -468,9 +479,21 @@ function cobrar_mes(mes) {
         $("#aportes").val($("#rep_formulario").val());
         var consumo_m3 = $("#consumo_m3").val();
         $("#consumo_m3").val(Number(consumo_m3)+Number(el_promedio));
-        
+        /* ************inicio esto esta para ASAPAVS************* */
+        var fecha = new Date();
+        var elmes = fecha.getMonth();
+        var elanio = fecha.getFullYear();
+        let recargo = Number($("#recargos").val());
+        if(lagestion < elanio){
+            recargo = recargo+8.33;
+        }else if(mes < Number(elmes+1)){
+            recargo = recargo+2;
+            //alert(recargo);
+        }
+        $("#recargos").val(recargo.toFixed(2));
+        /* ************fin esto esta para ASAPAVS************* */
         //var total_factura = $("#total_factura").val();
-        $("#total_factura").val(Number($("#consumo").val())+Number($("#aportes").val())+Number($("#recargos").val()));
+        $("#total_factura").val(Number(Number($("#consumo").val())+Number($("#aportes").val())+Number($("#recargos").val())).toFixed(2));
     }else{
         $("#m"+mes).css('background-color','#b1b2bd');
         var consumo_bs = $("#consumo_bs").html();
@@ -483,7 +506,19 @@ function cobrar_mes(mes) {
         $("#aportes").val($("#rep_formulario").val());
         var consumo_m3 = $("#consumo_m3").val();
         $("#consumo_m3").val(Number(consumo_m3)-Number(el_promedio));
-        
+        /* ************inicio esto esta para ASAPAVS************* */
+        var fecha = new Date();
+        var elmes = fecha.getMonth();
+        var elanio = fecha.getYear();
+        let recargo = Number($("#recargos").val());
+        if(lagestion < elanio){
+            recargo = recargo-8.33;
+        }else if(mes < Number(elmes+1)){
+            recargo = recargo-2;
+            //alert(recargo);
+        }
+        $("#recargos").val(recargo);
+        /* ************fin esto esta para ASAPAVS************* */
         //var total_factura = $("#total_factura").val();
         $("#total_factura").val(Number($("#consumo").val())+Number($("#aportes").val())+Number($("#recargos").val()));
     }
@@ -577,11 +612,17 @@ function registrar_lecfact(losmeses){
                     if(registros != null){
                     alert('COBRO REALIZADO CON EXITO');
                     if (imprimir_factura==true) {
+                        window.open(base_url+"factura/imprimir_recibo/"+registros[0]["id_fact"], '_blank'); //factura original
+                    }
+                    if (imprimir_copia==true) {
+                        window.open(base_url+"factura/imprimir_recibo/"+registros[0]["id_fact"], '_blank'); //factura copia
+                    }
+                    /*if (imprimir_factura==true) {
                         window.open(base_url+"factura/imprimir_factura/0/"+registros[0]["id_fact"], '_blank'); //factura original
                     }
                     if (imprimir_copia==true) {
                         window.open(base_url+"factura/imprimir_factura/1/"+registros[0]["id_fact"], '_blank'); //factura copia
-                    }
+                    }*/
                     location.reload();
                     /*var nada = "";
                     $("#lista_pendientes").html(nada);
@@ -625,6 +666,32 @@ function actualizarvalores(e) {
     }
 }
 
+function ultimopago(id_asoc)
+{
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"anticipado/get_ultimopago";
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{id_asoc:id_asoc},
+        success:function(respuesta){
+            var registros = JSON.parse(respuesta);
+            if(registros != null){
+                console.log(registros);
+                var el_ultimo = registros.length;
+                if(el_ultimo>0){
+                    $("#mensaje_cobroanterior").html('Ultimo pago realizado: '+registros[el_ultimo-1]["mes_lec"]+" "+registros[el_ultimo-1]["gestion_lec"]);
+                }else{
+                    $("#mensaje_cobroanterior").html('No tiene pagos registrados');
+                }
+            }else{
+                $("#mensaje_cobroanterior").html('Ocurrio algo');
+            }
+        },
+        error: function(respuesta){
+          alert('Esta Factura no se puede Anular');
+        }
+    });
+}
 
 
 

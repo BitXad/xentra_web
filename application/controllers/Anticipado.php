@@ -223,6 +223,22 @@ class Anticipado extends CI_Controller{
                     $this->Anticipado_model->ejecutar($sql);
                     
                 } //finforeach
+                if ($recargos1 > 0) { //Significa que tiene recargos
+                    $cant_detfact = "1";
+                    $descip_detfact = "'RECARGOS'";
+                    $punit_detfact = $recargos1;
+                    $desc_detfact = "0";
+                    $total_detfact = $recargos1;
+                    if($elexento == true){
+                        $exento_detfact = "'SI'";
+                    }else{
+                        $exento_detfact = "'NO'";
+                    }
+                    $sql = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact, exento_detfact) values(" .
+                            $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . $coma. $exento_detfact.")";
+                    //echo $sql;
+                    $this->Anticipado_model->ejecutar($sql);
+                }
                 if ($aportes > 0) { //Significa que tiene aportes
                     $cant_detfact = "1";
                     $descip_detfact = "'".$rep_concepto."'";
@@ -278,7 +294,22 @@ class Anticipado extends CI_Controller{
                         $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . ")";
                 $this->Anticipado_model->ejecutar($sql);
                 //}
-                
+                if ($recargos1 > 0) { //Significa que tiene recargos
+                    $cant_detfact = "1";
+                    $descip_detfact = "'RECARGOS'";
+                    $punit_detfact = $recargos1;
+                    $desc_detfact = "0";
+                    $total_detfact = $recargos1;
+                    if($elexento == true){
+                        $exento_detfact = "'SI'";
+                    }else{
+                        $exento_detfact = "'NO'";
+                    }
+                    $sql = "insert into detalle_factura(id_fact,cant_detfact,descip_detfact,punit_detfact,desc_detfact,total_detfact, exento_detfact) values(" .
+                            $id_fact . $coma . $cant_detfact . $coma . $descip_detfact . $coma . $punit_detfact . $coma . $desc_detfact . $coma . $total_detfact . $coma. $exento_detfact.")";
+                    //echo $sql;
+                    $this->Anticipado_model->ejecutar($sql);
+                }
                 if ($aportes > 0) { //Significa que tiene aportes
                     $cant_detfact = "1";
                     $descip_detfact = "'".$rep_concepto."'";
@@ -347,6 +378,18 @@ class Anticipado extends CI_Controller{
         }
     }
     
+    /* devuelve el ultimo pago realizado*/
+    function get_ultimopago()
+    {
+        if ($this->input->is_ajax_request()) {
+            $asociado = $this->input->post('id_asoc');
+            $estado = "CANCELADA";
+            $datos = $this->Anticipado_model->get_pendiente_factura($asociado, $estado);
+            echo json_encode($datos); 
+        }else{                 
+            show_404();
+        }
+    }
     
     
     

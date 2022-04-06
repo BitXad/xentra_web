@@ -104,6 +104,9 @@ input[type=number] { -moz-appearance:textfield; }
         </div>
     </div>
 </div>
+<div class="col-md-12 row" style="padding-left: 30px; margin-top: -12px;margin-bottom: 0px;">
+    <span class="text-red" id="mensaje_cobroanterior"></span>
+ </div>
 <div class="col-md-12" id="lista_asociados" style="padding-left:5px; padding-right: 20px"></div>
 <!---------------------------------------TABLA DE DETALLE orden_trabajo------------------------------------>
 <div class="col-md-12">
@@ -138,7 +141,7 @@ input[type=number] { -moz-appearance:textfield; }
                     <tr>
                         <td style="width: 15%"><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='rep_formulario' id='rep_formulario' onkeypress="actualizarvalores(event)" /></td>
                         <td style="width: 70%"><input style="width: 100%" type='text' value='REPOSICION DE FORMULARIO' name='rep_concepto' id='rep_concepto' onkeypress="actualizarvalores(event)" /></td>
-                        <td style="width: 15%"><label><input type="checkbox" name="elexento" id="elexento" checked /> Exento</label></td>
+                        <td style="width: 15%"><label><input type="checkbox" name="elexento" id="elexento" /> Exento</label></td>
                     </tr>
                 </table>
             </div>
@@ -196,9 +199,9 @@ input[type=number] { -moz-appearance:textfield; }
                         <th class="text-center" colspan="3" style="color: white">Formato de Facturación</th>
                     </tr>
                     <tr>
-                        <td style="color: #f74205"><label><input type="radio" name="tipofactura" id="resumido" value="1" checked />Factura resumida</label></td>
+                        <td style="color: #f74205"><label><input type="radio" name="tipofactura" id="resumido" value="1" />Factura resumida</label></td>
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td style="color: #f74205"><label><input type="radio" name="tipofactura" id="detallado" value="2" />Factura detallada</label></td>
+                        <td style="color: #f74205"><label><input type="radio" name="tipofactura" id="detallado" value="2" checked />Factura detallada</label></td>
                     </tr>
                 </table>
             </div>
@@ -251,15 +254,15 @@ input[type=number] { -moz-appearance:textfield; }
                     </table>
                     <hr style="margin: 0;border: 2px solid #f2f2f2">
                     <div class="col-md-4">
-                        <input type="checkbox" checked id="generar_factura" onclick="facturan()" name="generar_factura" size="8" value="1"><label for="generar_factura"> Generar Factura </label> 
+                        <input type="checkbox" id="generar_factura" onclick="facturan()" name="generar_factura" size="8" value="1"><label for="generar_factura"> Generar Factura </label> 
                     </div>
                     <div class="col-md-4">
-                        <input type="checkbox" checked id="imprimir_factura" name="imprimir_factura" size="8" value=""><label for="imprimir_factura"> Imprimir Factura </label> 
+                        <input type="checkbox" checked id="imprimir_factura" name="imprimir_factura" size="8" value=""><label for="imprimir_factura"> Imprimir Recibo </label> 
                     </div>
                     <div class="col-md-4">
-                        <input type="checkbox" checked id="imprimir_copia" name="imprimir_copia" size="8" value=""><label for="imprimir_copia"> Imprimir Copia </label> 
+                        <input type="checkbox" id="imprimir_copia" name="imprimir_copia" size="8" value=""><label for="imprimir_copia"> Imprimir Copia </label> 
                     </div>
-                    <div id="facturan" style="display: block">
+                    <div id="facturan" style="display: none">
                         <div class="col-md-6">
                             <label for="nit_asoc"> NIT </label> 
                            <input type="tex" class="form-control btn-warning" id="nit_asoc" name="nit_asoc" value="">
