@@ -103,6 +103,12 @@ input[type=number] { -moz-appearance:textfield; }
             </datalist>-->
         </div>
     </div>
+    <div class="col-md-2">
+        <label for="nombre" class="control-label">&nbsp;</label>
+        <div class="form-group">
+          <a onclick="buscar_asociados()" class="btn btn-facebook"><span class="fa fa-binoculars"></span> Buscar</a>
+        </div>
+    </div>
 </div>
 <div class="col-md-12 row" style="padding-left: 30px; margin-top: -12px;margin-bottom: 0px;">
     <span class="text-red" id="mensaje_cobroanterior"></span>

@@ -21,6 +21,7 @@ function buscar_asociados(){
     var apellido = document.getElementById('apellido').value;
     var nombre = document.getElementById('nombre').value;
     var ci = document.getElementById('ci').value;
+    $("#mensaje_cobroanterior").html('');
         $.ajax({url: controlador,
             type:"POST",
             data:{apellido:apellido,nombre:nombre, ci:ci},
