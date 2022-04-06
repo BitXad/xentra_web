@@ -77,52 +77,39 @@ class ingreso extends CI_Controller{
     {   
         if($this->acceso(54)){
             $data['page_title'] = "ingreso";
-                $id_usu = $this->session_data['id_usu'];
-                
-      $this->load->library('form_validation');
-      $this->form_validation->set_rules(
-        'nombre_ing', 'nombre_ing',
-        'required');
-       
-       if($this->form_validation->run())      
-        {   
-          //$numrec = $this->Ingreso_model->numero();
-           $numero = 0;
-           
-
-            $params = array(
-        'id_usu' => $id_usu,
-        'detalle_ing' => $this->input->post('detalle_ing'),
-        'numrec_ing' => $numero,
-        'nombre_ing' => $this->input->post('nombre_ing'),
-        'monto_ing' => $this->input->post('monto_ing'),
-        'estado_ing' => 'ACTIVO',
-        'tipo_ing' => 'ingreso',
-        'descripcion_ing' => $this->input->post('descripcion_ing'),
-        'ci_ing' => $this->input->post('ci_ing'),
-        'id_asoc' => $this->input->post('id_asoc'),
-        
-            );
-
-            
-            
-            $id_ing = $this->Ingreso_model->add_ingreso($params);
-            /*$sql = "UPDATE parametros SET parametro_numrecegr=parametro_numrecegr+1 WHERE parametro_id = '1'"; 
-            $this->db->query($sql);*/
-            redirect('ingreso/index');
-           
-        }
-        else
-        {
-         $this->load->model('Categoria_ingreso_model');
-           $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
-           //$this->load->model('Parametro_model');
-           //$data['parametro'] = $this->Parametro_model->get_all_parametro();
-            $data['_view'] = 'ingreso/add';
-            $this->load->view('layouts/main',$data);
-        }
+            $id_usu = $this->session_data['id_usu'];
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('nombre_ing', 'nombre_ing', 'required');
+            if($this->form_validation->run())      
+            {
+                //$numrec = $this->Ingreso_model->numero();
+                $numero = 0;
+                $params = array(
+                    'id_usu' => $id_usu,
+                    'detalle_ing' => $this->input->post('detalle_ing'),
+                    'numrec_ing' => $numero,
+                    'nombre_ing' => $this->input->post('nombre_ing'),
+                    'monto_ing' => $this->input->post('monto_ing'),
+                    'estado_ing' => 'ACTIVO',
+                    'tipo_ing' => 'ingreso',
+                    'descripcion_ing' => $this->input->post('descripcion_ing'),
+                    'ci_ing' => $this->input->post('ci_ing'),
+                    'id_asoc' => $this->input->post('id_asoc'),
+                );
+                $id_ing = $this->Ingreso_model->add_ingreso($params);
+                /*$sql = "UPDATE parametros SET parametro_numrecegr=parametro_numrecegr+1 WHERE parametro_id = '1'"; 
+                $this->db->query($sql);*/
+                redirect('ingreso/index');
+            }else{
+                $this->load->model('Categoria_ingreso_model');
+                $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+                //$this->load->model('Parametro_model');
+                //$data['parametro'] = $this->Parametro_model->get_all_parametro();
+                $data['_view'] = 'ingreso/add';
+                $this->load->view('layouts/main',$data);
             }
-    } 
+        }
+    }
 
     /*
      * Editegr a ingreso

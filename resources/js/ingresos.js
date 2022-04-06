@@ -1,13 +1,9 @@
-  $(document).on("ready",inicio);
+$(document).on("ready",inicio);
 function inicio(){
-     filtro = " and date(fechahora_ing) = date(now())";   
-        
+    filtro = " and date(fechahora_ing) = date(now())";
         fechadeingreso(filtro); 
-        nombreasoc(); 
-     
-        
-} 
-
+        //nombreasoc(); 
+}
 
 function buscar_ingresos()
 {
