@@ -127,6 +127,12 @@ class Anticipado_model extends CI_Model
         return $this->db->query($sql)->result_array();
     }
     
+    function add_detallefactura($params)
+    {
+        $this->db->insert('detalle_factura',$params);
+        return $this->db->insert_id();
+    }
+    
     
     
     

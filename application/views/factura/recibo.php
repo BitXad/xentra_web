@@ -90,7 +90,9 @@
         </tr>
         <tr>    
             <td><b>C.I.: </b>
-            <?php echo $factura[0]['nit_fact'];?>
+                <?php echo $factura[0]['nit_fact'];?>
+                &nbsp &nbsp &nbsp<b>MEDIDOR: </b>
+                <?php echo $factura[0]['medidor_asoc'];?>
             </td>
         </tr>
         <tr>    

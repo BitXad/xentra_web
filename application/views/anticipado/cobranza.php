@@ -110,9 +110,6 @@ input[type=number] { -moz-appearance:textfield; }
         </div>
     </div>
 </div>
-<div class="col-md-12 row" style="padding-left: 30px; margin-top: -12px;margin-bottom: 0px;">
-    <span class="text-red" id="mensaje_cobroanterior"></span>
- </div>
 <div class="col-md-12" id="lista_asociados" style="padding-left:5px; padding-right: 20px"></div>
 <!---------------------------------------TABLA DE DETALLE orden_trabajo------------------------------------>
 <div class="col-md-12">
@@ -141,14 +138,29 @@ input[type=number] { -moz-appearance:textfield; }
             </div>
             <div class="col-md-12" style="display: none; padding: 0px" id="lecturaanterior"></div>
             <div class="col-md-12 box" style="display: none; padding: 0px" id="mespara_cobro"></div>
-            <div class="col-md-12 box" style="padding-left:0px;">
+            <div class="col-md-12 box" style="padding-left:0px; margin-bottom: 0px !important">
                 <!--<h4 class="modal-title">Multas y Recargos</h4>-->
-                <table class="table table-striped table-condensed" id="mitabla_xs" style="width: 100%">
+                <table class="table table-striped table-condensed" id="mitabla_xs" style="width: 100%; margin: 1px">
                     <tr>
                         <td style="width: 15%"><input style='background-color: #b1b2bd' type='number' step='any' min='0' value='0.00' name='rep_formulario' id='rep_formulario' onkeypress="actualizarvalores(event)" /></td>
-                        <td style="width: 70%"><input style="width: 100%" type='text' value='REPOSICION DE FORMULARIO' name='rep_concepto' id='rep_concepto' onkeypress="actualizarvalores(event)" /></td>
+                        <td style="width: 70%"><input style="width: 100%" type='text' value='REPOSICION DE FORMULARIO' name='rep_concepto' id='rep_concepto' onkeypress="actualizarvalores(event)" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" /></td>
                         <td style="width: 15%"><label><input type="checkbox" name="elexento" id="elexento" /> Exento</label></td>
                     </tr>
+                </table>
+            </div>
+            <div class="col-md-12 box" style="padding-left:0px; margin-bottom: 0px !important">
+                <table class="table table-striped table-condensed" id="mitabla_xs" style="margin: 1px">
+                    <tr><th style="padding: 0px" colspan="7">MULTAS</th></tr>
+                    <tr>
+                        <th style="padding: 0px">Nº</th>
+                        <th style="padding: 0px">Mes/Gestión</th>
+                        <th style="padding: 0px">Tipo</th>
+                        <th style="padding: 0px">Motivo</th>
+                        <th style="padding: 0px">Detalle</th>
+                        <th style="padding: 0px">Monto</th>
+                        <th style="padding: 0px"></th>
+                    </tr>
+                    <tbody class="buscar3" id="detalle_multa"></tbody>
                 </table>
             </div>
             <!--<h5 class="modal-title">Multas y Recargos 
@@ -240,8 +252,12 @@ input[type=number] { -moz-appearance:textfield; }
                             <td><input class="btn btn-default" type="text" size="8" readonly id="consumo" name="consumo" value="0.00"></td>
                         </tr>
                         <tr>
-                            <td>Multas/Aps Bs.</td>
+                            <td>Aportes Bs.</td>
                             <td><input class="btn btn-default" type="text" size="8" readonly id="aportes" name="aportes" value="0.00"></td>
+                        </tr>
+                        <tr>
+                            <td>Multas Bs.</td>
+                            <td><input class="btn btn-default" type="text" size="8" readonly id="multas" name="multas" value="0.00"></td>
                         </tr>
                         <tr>
                             <td>Recargos Bs.</td>
@@ -263,7 +279,7 @@ input[type=number] { -moz-appearance:textfield; }
                         <input type="checkbox" id="generar_factura" onclick="facturan()" name="generar_factura" size="8" value="1"><label for="generar_factura"> Generar Factura </label> 
                     </div>
                     <div class="col-md-4">
-                        <input type="checkbox" checked id="imprimir_factura" name="imprimir_factura" size="8" value=""><label for="imprimir_factura"> Imprimir Recibo </label> 
+                        <input type="checkbox" checked id="imprimir_factura" name="imprimir_factura" size="8" value=""><label for="imprimir_factura"><span id="etiq_print"> Imprimir Recibo </span></label> 
                     </div>
                     <div class="col-md-4">
                         <input type="checkbox" id="imprimir_copia" name="imprimir_copia" size="8" value=""><label for="imprimir_copia"> Imprimir Copia </label> 

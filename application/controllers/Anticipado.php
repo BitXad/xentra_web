@@ -12,6 +12,7 @@ class Anticipado extends CI_Controller{
         $this->load->model('Anticipado_model');
         $this->load->model('Dosificacion_model');
         $this->load->model('Empresa_model');
+        $this->load->model('Multum_model');
         $this->load->helper('numeros');
         $this->load->library('ControlCode'); 
         if ($this->session->userdata('logged_in')) {
@@ -255,6 +256,28 @@ class Anticipado extends CI_Controller{
                     //echo $sql;
                     $this->Anticipado_model->ejecutar($sql);
                 }
+                /* ************* Inicio para la multa ************** */
+                $lasmultas = $this->input->post('lasmultas');
+                if(is_array($lasmultas)){
+                    foreach($lasmultas as $multa){
+                        $multa_datos = $this->Multum_model->get_multum($multa);
+                        $params = array(
+                            'id_fact' => $id_fact,
+                            'cant_detfact' => 1,
+                            'descip_detfact' => $multa_datos["motivo_multa"]." ".$multa_datos["detalle_multa"],
+                            'punit_detfact' => $multa_datos["monto_multa"],
+                            'desc_detfact' => 0,
+                            'total_detfact' => $multa_datos["monto_multa"],
+                            'exento_detfact' => "SI",
+                        );
+                        $id_detallefactura = $this->Anticipado_model->add_detallefactura($params);
+                        $paramsmod = array(
+                            'estado_multa' => "INACTIVO",
+                        );
+                        $this->Multum_model->update_multum($multa,$paramsmod);
+                    }
+                }
+                /* ************* F i n  para la multa ************** */
             }else{ // factura resumida
                 $primermes = "";
                 $ultimomes = "";
@@ -326,6 +349,28 @@ class Anticipado extends CI_Controller{
                     //echo $sql;
                     $this->Anticipado_model->ejecutar($sql);
                 }
+                /* ************* Inicio para la multa ************** */
+                $lasmultas = $this->input->post('lasmultas');
+                if(is_array($lasmultas)){
+                    foreach($lasmultas as $multa){
+                        $multa_datos = $this->Multum_model->get_multum($multa);
+                        $params = array(
+                            'id_fact' => $id_fact,
+                            'cant_detfact' => 1,
+                            'descip_detfact' => $multa_datos["motivo_multa"]." ".$multa_datos["detalle_multa"],
+                            'punit_detfact' => $multa_datos["monto_multa"],
+                            'desc_detfact' => 0,
+                            'total_detfact' => $multa_datos["monto_multa"],
+                            'exento_detfact' => "SI",
+                        );
+                        $id_detallefactura = $this->Anticipado_model->add_detallefactura($params);
+                        $paramsmod = array(
+                            'estado_multa' => "INACTIVO",
+                        );
+                        $this->Multum_model->update_multum(multa,$paramsmod);
+                    }
+                }
+                /* ************* F i n  para la multa ************** */
                 
             }
             
@@ -391,6 +436,17 @@ class Anticipado extends CI_Controller{
         }
     }
     
+    /* devuelve las multas de un asociado*/
+    function get_multas()
+    {
+        if($this->input->is_ajax_request()){
+            $id_asoc = $this->input->post('id_asoc');
+            $datos = $this->Multum_model->get_multas_asoc($id_asoc);
+            echo json_encode($datos); 
+        }else{
+            show_404();
+        }
+    }
     
     
     

@@ -47,7 +47,7 @@ function buscar_asociados(){
                 
                 for(var i = 0; i<fin; i++)
                 {
-                    html += "<tr onclick='ver_facturas("+JSON.stringify(registros[i])+"); ocultar_tabla(); ultimopago("+registros[i]["id_asoc"]+")'>";               
+                    html += "<tr onclick='ver_facturas("+JSON.stringify(registros[i])+"); ocultar_tabla(); obtenermultas("+registros[i]["id_asoc"]+")'>";
                     //html += "<tr onclick='ver_facturas("+JSON.stringify(registros[i])+")'>";               
                     html += "<td>"+(i+1)+"</td>";
                     html += "<td>"+registros[i]["apellidos_asoc"]+"</td>";  
@@ -175,7 +175,11 @@ function ultima_lectura(id_asoc)
                     html1 += "<td></td>";
                     html1 += "</tr>";
                     html1 += "</table>";
-                    html1 += "</div>";                    
+                    html1 += "</div>";
+                    
+                    html2 += "<div class='col-md-12 text-center'>";
+                    html2 += "<span class='text-bold' style='color: #f74205' id='mensaje_cobroanterior'></span>";
+                    html2 += "</div>";
                     
                     html2 += "<div class='col-md-6 box-body table-responsive' style='padding: 0px'>";
                     html2 += "<table class='table table-striped table-condensed' style='width: 80%'>";
@@ -269,6 +273,7 @@ function ultima_lectura(id_asoc)
                     $("#mespara_cobro").html(html2+html3);
                     $("#mespara_cobro").css("display", "block");
                     calcular(JSON.stringify(registros[0]),1);
+                    ultimopago(id_asoc);
                 }else{
                     $("#fechaant_lec").val("");
                     $("#tipo_asoc").val("");
@@ -468,6 +473,16 @@ function cobrar_mes(mes) {
     var total_aporte = document.getElementById("total_aporte").value;
     var el_promedio = document.getElementById("elpromedio").value;
     var lagestion = document.getElementById("gestionlec_asoc").value;
+    var tamul = $('[name="mesmulta[]"]:checked').length;
+    //alert(tamul);
+    if (tamul >0){
+        $('[name="mesmulta[]"]:checked').each(function(){
+            var id_multa = $(this).attr("value");
+            $("#multa"+id_multa).prop("checked", false);
+        });
+        $("#multas").val("0.00");
+    }
+    
     if ($('#mes'+mes).is(':checked') ) {
         $("#m"+mes).css('background-color','#edf3f5');
         var consumo_bs = $("#consumo_bs").html();
@@ -481,7 +496,7 @@ function cobrar_mes(mes) {
         var consumo_m3 = $("#consumo_m3").val();
         $("#consumo_m3").val(Number(consumo_m3)+Number(el_promedio));
         /* ************inicio esto esta para ASAPAVS************* */
-        var fecha = new Date();
+        /*var fecha = new Date();
         var elmes = fecha.getMonth();
         var elanio = fecha.getFullYear();
         let recargo = Number($("#recargos").val());
@@ -491,7 +506,7 @@ function cobrar_mes(mes) {
             recargo = recargo+2;
             //alert(recargo);
         }
-        $("#recargos").val(recargo.toFixed(2));
+        $("#recargos").val(recargo.toFixed(2));*/
         /* ************fin esto esta para ASAPAVS************* */
         //var total_factura = $("#total_factura").val();
         $("#total_factura").val(Number(Number($("#consumo").val())+Number($("#aportes").val())+Number($("#recargos").val())).toFixed(2));
@@ -586,6 +601,16 @@ function registrar_lecfact(losmeses){
     var servicios_asoc = document.getElementById('servicios_asoc').value;
     var consumo_alcantarillado = $("#consumo_alcantarillado").html();
     var rep_concepto = document.getElementById('rep_concepto').value;
+    /* ****** inicio para el cobro de multa ****** */
+    var tamul = $('[name="mesmulta[]"]:checked').length;
+    //alert(tamul);
+    var lasmultas = [];
+    if (tamul >0){
+        $('[name="mesmulta[]"]:checked').each(function(){
+            lasmultas.push(($(this).attr("value")));
+        });
+    }
+    /* ****** f i n  para el cobro de multa ****** */
     //var estemes = 0;
     /*var miband = true;
     $('[name="mes[]"]:checked').each(function(){
@@ -605,26 +630,34 @@ function registrar_lecfact(losmeses){
                       id_asoc:id_asoc, gestionlec_asoc:gestionlec_asoc, lec_anterior:lec_anterior,
                       elpromedio:elpromedio, fechaant_lec:fechaant_lec, consumo_bs:consumo_bs, tipo_asoc:tipo_asoc,
                       servicios_asoc:servicios_asoc, consumo_alcantarillado:consumo_alcantarillado,
-                      total_aporte:total_aporte, losmeses:losmeses, elexento:elexento, rep_concepto:rep_concepto},
+                      total_aporte:total_aporte, losmeses:losmeses, elexento:elexento, rep_concepto:rep_concepto,
+                      lasmultas:lasmultas
+                },
 
                 success:function(respuesta){
 
                     var registros = JSON.parse(respuesta);
                     if(registros != null){
                     alert('COBRO REALIZADO CON EXITO');
-                    if (imprimir_factura==true) {
-                        window.open(base_url+"factura/imprimir_recibo/"+registros[0]["id_fact"], '_blank'); //factura original
+                    if (generar_factura==true) {
+                        if (imprimir_factura==true) {
+                            window.open(base_url+"factura/imprimir_factura/0/"+registros[0]["id_fact"], '_blank'); //factura original
+                        }
+                        if (imprimir_copia==true) {
+                            window.open(base_url+"factura/imprimir_factura/1/"+registros[0]["id_fact"], '_blank'); //factura copia
+                        }
+                    }else{
+                        if (imprimir_factura==true) {
+                            window.open(base_url+"factura/imprimir_recibo/"+registros[0]["id_fact"], '_blank'); //factura original
+                        }
+                        if (imprimir_copia==true) {
+                            window.open(base_url+"factura/imprimir_recibo/"+registros[0]["id_fact"], '_blank'); //factura copia
+                        }
                     }
-                    if (imprimir_copia==true) {
-                        window.open(base_url+"factura/imprimir_recibo/"+registros[0]["id_fact"], '_blank'); //factura copia
-                    }
-                    /*if (imprimir_factura==true) {
-                        window.open(base_url+"factura/imprimir_factura/0/"+registros[0]["id_fact"], '_blank'); //factura original
-                    }
-                    if (imprimir_copia==true) {
-                        window.open(base_url+"factura/imprimir_factura/1/"+registros[0]["id_fact"], '_blank'); //factura copia
-                    }*/
-                    location.reload();
+                    
+                    /**/
+                    window.location.reload(true)
+                    //location.reload();
                     /*var nada = "";
                     $("#lista_pendientes").html(nada);
                     $("#detalle_factura").html(nada);
@@ -693,6 +726,78 @@ function ultimopago(id_asoc)
         }
     });
 }
+
+function obtenermultas(id_asoc)
+{
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"anticipado/get_multas";
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{id_asoc:id_asoc},
+        success:function(respuesta){
+            var registros = JSON.parse(respuesta);
+            if(registros != null){
+                console.log(registros);
+                var m = registros.length;
+                html = "";
+                for(var i = 0; i<m; i++)
+                {
+                    html += "<tr id='mu"+registros[i]["id_multa"]+"'>";
+                    html += "<td>"+(i+1)+"</td>";
+                    html += "<td>"+registros[i]["mes_multa"]+"/"+registros[i]["gestion_multa"]+"</td>";  
+                    html += "<td>"+registros[i]["tipo_multa"]+"</td>";
+                    html += "<td>"+registros[i]["motivo_multa"]+"</td>";
+                    html += "<td>"+registros[i]["detalle_multa"]+"</td>";
+                    html += "<td>"+registros[i]["monto_multa"]+"</td>";
+                    html += "<td>";
+                    html += "<input type='checkbox' name='mesmulta[]' id='multa"+registros[i]["id_multa"]+"' value='"+registros[i]["id_multa"]+"' onchange='cobrar_multas("+registros[i]["monto_multa"]+","+registros[i]["id_multa"]+")' />";
+                    html += "</td>";
+                    html += "</tr>";
+                }
+                $("#detalle_multa").html(html);
+            }else{
+                $("#detalle_multa").html('');
+            }
+        },
+        error: function(respuesta){
+          alert('Ocurrio algo, no se puede ver las multas');
+        }
+    });
+}
+
+function cobrar_multas(monto_multa, id_multa) {
+    /*var total_aporte = document.getElementById("total_aporte").value;
+    var el_promedio = document.getElementById("elpromedio").value;
+    var lagestion = document.getElementById("gestionlec_asoc").value;*/
+    if ($('#multa'+id_multa).is(':checked') ) {
+        $("#mu"+id_multa).css('background-color','#edf3f5');
+        var lamulta = $("#multas").val();
+        $("#multas").val(Number(lamulta)+Number(monto_multa))
+        var tfactura = $("#total_factura").val();
+        $("#total_factura").val(Number(tfactura)+Number(monto_multa));
+    }else{
+        $("#mu"+id_multa).css('background-color','#b1b2bd');
+        var lamulta = $("#multas").val();
+        $("#multas").val(Number(lamulta)-Number(monto_multa))
+        var tfactura = $("#total_factura").val();
+        $("#total_factura").val(Number(tfactura)-Number(monto_multa));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1088,13 +1193,13 @@ function total_pendientes(asociado)
 
 function facturan()
 {
-    
     var facturan = document.getElementById('generar_factura').checked;
     //alert(facturan);
     if (facturan==true) {
             document.getElementById('facturan').style.display = 'block';
-                                         
+            $("#etiq_print").html(" Imprimir Factura ");
     }else{
-            document.getElementById('facturan').style.display = 'none';         
+            document.getElementById('facturan').style.display = 'none';
+            $("#etiq_print").html(" Imprimir Recibo ");
     }
 }

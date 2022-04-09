@@ -76,4 +76,20 @@ class Multum_model extends CI_Model
     {
         return $this->db->delete('multa',array('id_multa'=>$id_multa));
     }
+    /*
+     * Get all multas dado mes y gestion
+     */
+    function get_multas_asoc($id_asoc)
+    {
+        $multa = $this->db->query("
+            select
+                *
+            from
+                multa
+            where
+                estado_multa = 'ACTIVO' and
+                id_asoc= $id_asoc
+        ")->result_array();
+        return $multa;
+    }
 }

@@ -134,6 +134,11 @@
                                     </td>
                                 </tr>
                                 <tr>    
+                                    <td><b>MEDIDOR: </b>
+                                    <?php echo $factura[0]['medidor_asoc'];?>
+                                    </td>
+                                </tr>
+                                <tr>    
                                     <td><b>DIRECCÍON: </b>
                                     <?php echo $factura[0]['direccion_asoc'];?>
                                     </td>
