@@ -523,7 +523,7 @@ function cobrar_mes(mes) {
         var consumo_m3 = $("#consumo_m3").val();
         $("#consumo_m3").val(Number(consumo_m3)-Number(el_promedio));
         /* ************inicio esto esta para ASAPAVS************* */
-        var fecha = new Date();
+        /*var fecha = new Date();
         var elmes = fecha.getMonth();
         var elanio = fecha.getYear();
         let recargo = Number($("#recargos").val());
@@ -533,7 +533,7 @@ function cobrar_mes(mes) {
             recargo = recargo-2;
             //alert(recargo);
         }
-        $("#recargos").val(recargo);
+        $("#recargos").val(recargo);*/
         /* ************fin esto esta para ASAPAVS************* */
         //var total_factura = $("#total_factura").val();
         $("#total_factura").val(Number($("#consumo").val())+Number($("#aportes").val())+Number($("#recargos").val()));
