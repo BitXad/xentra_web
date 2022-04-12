@@ -1090,7 +1090,7 @@ function reimprimirbusqueda()
     var tipoimpresion    = document.getElementById('tipoimpresion').checked;
     if (numero=='') {
          alert('Debe ingresar un numero');   
-         alert(tipoimpresion);   
+         //alert(tipoimpresion);   
     }else{
         if (tipoimpresion==false) {
             var controlador = base_url+"factura/buscar_lectura";

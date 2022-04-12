@@ -173,27 +173,31 @@
                     <table class='table1 table-striped table-condensed' id='mitabladetimpresion' style='width: 100%; font-family: Arial !important;'>
                         <tr class='boxtabla'>
                             <th class='text-center' style='width: 2%; padding: 1px; vertical-align: middle'>N°</th>
-                            <th class='text-center' style='width: 5%; padding: 1px; vertical-align: middle'>CODIGO</th>
+                            <th class='text-center' style='width: 4%; padding: 1px; vertical-align: middle'>CODIGO</th>
                             <th class='text-center' style='width: 33%; padding: 1px; vertical-align: middle'>NOMBRE COMPLETO</th>
-                            <th class='text-center' style='width: 25%; padding: 1px; vertical-align: middle'>DIRECCIÓN</th>
-                            <th class='text-center' style='width: 10%; padding: 1px; vertical-align: middle'>MEDIDOR</th>
+                            <th class='text-center' style='width: 22%; padding: 1px; vertical-align: middle'>DIRECCIÓN</th>
+                            <th class='text-center' style='width: 7%; padding: 1px; vertical-align: middle'>MEDIDOR</th>
                             <th class='text-center lizq' style='width: 5%; padding: 1px; vertical-align: middle'>DIAS<br>MORA</th>
                             <th class='text-center lizq' style='width: 5%; padding: 1px; vertical-align: middle'>MESES<br><span style="font-size: 10px">ADEUDAD</span></th>
-                            <th class='text-center lizq' style='width: 15%; padding: 1px; vertical-align: middle'>SERVICIOS</th>
+                            <th class='text-center lizq' style='width: 4%; padding: 1px; vertical-align: middle'>CONS.<br>M³</th>
+                            <th class='text-center lizq' style='width: 4%; padding: 1px; vertical-align: middle'>TOTAL<br><span style="font-size: 10px">DEUDA</span></th>
+                            <th class='text-center lizq' style='width: 14%; padding: 1px; vertical-align: middle'>SERVICIOS</th>
                         </tr>
                         <tbody class="buscar">
                         <?php
                         $i = 0;
                         foreach($all_deudores as $d){ ?>
                         <tr class='labjf'>
-                            <td class='text-center' style='padding: 0px 5px !important'><?php echo $i+1; ?></td>
-                            <td class='text-right' style='padding: 0px 5px !important'><?php echo $d["codigo_asoc"];?></td>
-                            <td class='text-left' style='padding: 0px 5px !important'><?php echo $d["nombres_asoc"]." ".$d["apellidos_asoc"];?></td>
-                            <td class='text-left' style='padding: 0px 5px !important'><?php echo $d["direccion_asoc"];?></td>
-                            <td class='text-center' style='padding: 0px 5px !important'><?php echo $d["medidor_asoc"];?></td>
-                            <td class='text-center lizq' style='padding: 0px 5px !important'><?php echo $d["mora"];?></td>
-                            <td class='text-center lizq' style='padding: 0px 5px !important'><?php echo $d["cantfact"];?></td>
-                            <td class='text-center lizq' style='padding: 0px 5px !important'><?php echo $d["servicios_asoc"];?></td>
+                            <td class='text-center' style='padding: 0px 2px !important'><?php echo $i+1; ?></td>
+                            <td class='text-right' style='padding: 0px 2px !important'><?php echo $d["codigo_asoc"];?></td>
+                            <td class='text-left' style='padding: 0px 2px !important'><?php echo $d["nombres_asoc"]." ".$d["apellidos_asoc"];?></td>
+                            <td class='text-left' style='padding: 0px 2px !important'><?php echo $d["direccion_asoc"];?></td>
+                            <td class='text-center' style='padding: 0px 2px !important'><?php echo $d["medidor_asoc"];?></td>
+                            <td class='text-center lizq' style='padding: 0px 2px !important'><?php echo $d["mora"];?></td>
+                            <td class='text-center lizq' style='padding: 0px 2px !important'><?php echo $d["cantfact"];?></td>
+                            <td class='text-center lizq' style='padding: 0px 2px !important'><?php echo $d["consumo_m3"];?></td>
+                            <td class='text-center lizq' style='padding: 0px 2px !important'><?php echo $d["deuda"];?></td>
+                            <td class='text-center lizq' style='padding: 0px 2px !important'><?php echo $d["servicios_asoc"];?></td>
                         </tr>
                         <?php $i++; } ?>
                         </tbody>

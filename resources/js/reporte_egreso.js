@@ -111,6 +111,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, nom_categr, orde
                         html += "<td class='text-center' style='padding: 0px 5px !important'>"+(i+1)+"</td>";
                         html += "<td class='text-right' style='padding: 0px 5px !important'>"+registros[i]["id_egr"]+"</td>";
                         html += "<td class='text-left' style='padding: 0px 5px !important'>"+registros[i]["nombre_egr"]+"</td>";
+                        html += "<td class='text-left' style='padding: 0px 5px !important'>"+registros[i]["fechahora_egr"]+"</td>";
                         html += "<td class='text-center' style='padding: 0px 5px !important'>"+registros[i]["detalle_egr"]+"</td>";
                         html += "<td class='text-left lizq' style='padding: 0px 5px !important'>"+registros[i]["descripcion_egr"]+"</td>";
                         html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["monto_egr"]).toFixed(2)+"</td>";
@@ -121,9 +122,10 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, nom_categr, orde
                     cabecerahtmlt += "<tr class='boxtabla'>";
                     cabecerahtmlt += "<th class='text-center' style='width: 2%; padding: 1px; vertical-align: middle'>N°</th>";
                     cabecerahtmlt += "<th class='text-center' style='width: 5%; padding: 1px; vertical-align: middle'>Nro REC.</th>";
-                    cabecerahtmlt += "<th class='text-center' style='width: 33%; padding: 1px; vertical-align: middle'>NOMBRE COMPLETO</th>";
-                    cabecerahtmlt += "<th class='text-center' style='width: 10%; padding: 1px; vertical-align: middle'>CATEGORIA</th>";
-                    cabecerahtmlt += "<th class='text-center lizq' style='width: 40%; padding: 1px; vertical-align: middle'>CONCEPTO</th>";
+                    cabecerahtmlt += "<th class='text-center' style='width: 32%; padding: 1px; vertical-align: middle'>NOMBRE COMPLETO</th>";
+                    cabecerahtmlt += "<th class='text-center' style='width: 7%; padding: 1px; vertical-align: middle'>FECHA</th>";
+                    cabecerahtmlt += "<th class='text-center' style='width: 15%; padding: 1px; vertical-align: middle'>CATEGORIA</th>";
+                    cabecerahtmlt += "<th class='text-center lizq' style='width: 30%; padding: 1px; vertical-align: middle'>CONCEPTO</th>";
                     cabecerahtmlt += "<th class='text-center lizq' style='width: 5%; padding: 1px; vertical-align: middle'>MONTO<br>Bs.</th>";
                     cabecerahtmlt += "<th class='text-center lizq' style='width: 5%; padding: 1px; vertical-align: middle'>ESTADO</th>";
                     cabecerahtmlt += "</tr>";

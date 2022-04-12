@@ -338,7 +338,8 @@ class Reportes_model extends CI_Model
             select a.id_asoc,max(DATEDIFF(date(NOW()),l.fecha_lec)) as mora, 
                 count(*) as cantfact, a.apellidos_asoc, a.nombres_asoc, 
                 a.direccion_asoc,a.codigo_asoc, a.zona_asoc,
-                a.medidor_asoc,a.servicios_asoc 
+                a.medidor_asoc,a.servicios_asoc, SUM(f.`montototal_fact`) as deuda,
+                SUM(l.`consumo_lec`) as consumo_m3
 
             from lectura l, factura f, asociado a 
             where 
