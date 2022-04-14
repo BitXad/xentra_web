@@ -182,7 +182,7 @@
           </table>
           <table  class="table table-striped table-condensed" style="width: <?php echo $ancho; ?>; font-family: Arial; font-size:10px;">
             <tr>
-                <td> TRANS: <?php echo $factura[0]['id_fact']; ?> <BR>CAJERO: <?php echo $factura[0]['nombre_usu'];  ?> </td>
+                <td> TRANS: <?php echo $factura[0]['id_fact']; ?> <BR>CAJERO(A): <?php echo $factura[0]['nombre_usu'];  ?> </td>
             </tr>
             <tr>
                 <td> 

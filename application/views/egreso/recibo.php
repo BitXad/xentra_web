@@ -122,7 +122,7 @@ border-top: 0px;
             </tr>
             <tr>
                 <td class="linea"><hr style="border: 1px solid black"></td>    
-                <td class="todo"><b>CAJERO: </b> 
+                <td class="todo"><b>CAJERO(A): </b> 
                     <?php echo$egresos[0]['nombre_usu'];?></td>
             </tr>
             <tr>

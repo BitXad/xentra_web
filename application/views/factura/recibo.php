@@ -150,7 +150,7 @@
     
     <tr>
         <td style="width: 20%;"> </td>
-        <td style="width: 26%;"> TRANS: <?php echo $factura[0]['id_fact']; ?> <BR>CAJERO: <?php echo $factura[0]['nombre_usu'];  ?> </td>
+        <td style="width: 26%;"> TRANS: <?php echo $factura[0]['id_fact']; ?> <br>CAJERO(A): <?php echo $factura[0]['nombre_usu'];  ?> </td>
         <td style="width: 27%;"> 
             <center>
 

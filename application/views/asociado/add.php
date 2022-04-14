@@ -173,9 +173,9 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="expedido" class="control-label"><span class="text-danger">*</span>Expedido</label>
+                        <label for="expedido" class="control-label">Expedido</label>
                         <div class="form-group">
-                            <select name="expedido" class="form-control" required>
+                            <select name="expedido" class="form-control">
                                 <option value="">- EXPEDIDO -</option>
                                 <?php 
                                 foreach($all_expedido as $expedido)
