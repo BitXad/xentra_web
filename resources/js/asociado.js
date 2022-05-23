@@ -378,6 +378,7 @@ function lista_socios() {
         chtml += "<th role='columnheader' >DIRECCION</th>";
         chtml += "<th role='columnheader' >OTB</th>";
         chtml += "<th role='columnheader' >SERVICIOS</th>";
+        chtml += "<th role='columnheader' >F. REGISTRO</th>";
         chtml += "<th role='columnheader' >ESTADO</th>";
         chtml += "</tr>";
         html = "";
@@ -401,6 +402,9 @@ function lista_socios() {
             html += "</td>";
             html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-left'>";
             html += registros[i]["servicios_asoc"];
+            html += "</td>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
+            html += moment(registros[i]["fechahora_asoc"]).format("DD/MM/YYYY HH:mm:ss");
             html += "</td>";
             html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
             html += registros[i]["estado"];
