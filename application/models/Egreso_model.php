@@ -79,17 +79,14 @@ class Egreso_model extends CI_Model
         SELECT
                e.*, u.*
             FROM
-                egreso e, usuario u
+                egreso e
+            left join usuario u on e.id_usu = u.id_usu
             WHERE
-                e.id_usu = u.id_usu
-                
-               
-                ".$condicion." 
-                
+                1 = 1
+                ".$condicion."
             ORDER BY e.fechahora_egr DESC 
         "
         )->result_array();
-
         return $egreso;
     }
     

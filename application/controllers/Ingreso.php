@@ -41,8 +41,8 @@ class ingreso extends CI_Controller{
         if($this->acceso(53)){
             $data['page_title'] = "Ingreso";
             //$data['rol'] = $this->session_data['rol'];
-            $data['ingreso'] = $this->Ingreso_model->get_all_ingreso();
-            $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+            //$data['ingreso'] = $this->Ingreso_model->get_all_ingreso();
+            $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
             $data['empresa'] = $this->Empresa_model->get_empresa(1);    
             $data['_view'] = 'ingreso/index';
             $this->load->view('layouts/main',$data);
@@ -225,51 +225,47 @@ public function pdf($id_ing){
         //}
     }
 
-
     function buscar_asociados()
     {
-      
         //**************** inicio contenido ***************
-        
-                if ($this->input->is_ajax_request()) {       
-                    
-                    $buscar = $this->input->post('buscar');                    
-                    $datos = $this->Ingreso_model->buscar_asociado($buscar);
-                    echo json_encode($datos);                        
-
-                }
-                else
-                {                 
-                            show_404();
-                }  
-                
+        if ($this->input->is_ajax_request()) {
+            $buscar = $this->input->post('buscar');                    
+            $datos = $this->Ingreso_model->buscar_asociado($buscar);
+            echo json_encode($datos);
+        }
+        else
+        {
+            show_404();
+        }  
         //**************** fin contenido ***************
-        
-                
-               
     }
     function buscar_idasociado()
     {
-      
-        //**************** inicio contenido ***************
-        
-                if ($this->input->is_ajax_request()) {       
-                    
-                    $id = $this->input->post('asociado');                    
-                    $datos = $this->Factura_model->buscar_id_asociado($id);
-                    echo json_encode($datos);                        
-
-                }
-                else
-                {                 
-                            show_404();
-                }  
-                
-        //**************** fin contenido ***************
-        
-                
-               
+        if ($this->input->is_ajax_request()) {
+            $id = $this->input->post('asociado');
+            $datos = $this->Factura_model->buscar_id_asociado($id);
+            echo json_encode($datos);
+        }
+        else
+        {
+            show_404();
+        }
     }
-
-
+    /* añande nueva categoria de ingreso */
+    function aniadircategoria()
+    {
+        if($this->input->is_ajax_request()){
+            //$categoria = $this->input->post('parametro');
+            $params = array(
+                'nom_cating' => $this->input->post('parametro'),
+            );
+            $id_cating = $this->Categoria_ingreso_model->add_categoria_ingreso($params);
+            $datos = $this->Categoria_ingreso_model->get_categoria_ingreso($id_cating);
+            echo json_encode($datos);
+        }
+        else
+        {
+            show_404();
+        }
+    }
 }

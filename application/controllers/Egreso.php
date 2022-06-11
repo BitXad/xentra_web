@@ -40,8 +40,8 @@ class Egreso extends CI_Controller{
         if($this->acceso(59)){
             $data['page_title'] = "Egreso";
             //$data['rol'] = $this->session_data['rol'];
-            $data['egreso'] = $this->Egreso_model->get_all_egreso();
-            $data['categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
+            //$data['egreso'] = $this->Egreso_model->get_all_egreso();
+            $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
             $data['empresa'] = $this->Empresa_model->get_empresa(1);    
             $data['_view'] = 'egreso/index';
             $this->load->view('layouts/main',$data);
@@ -216,6 +216,23 @@ class Egreso extends CI_Controller{
             , 'monto_egr' => $monto_egr
             );  
         echo json_encode($response);
+        }
+    }
+    /* añande nueva categoria de egreso */
+    function aniadircategoria()
+    {
+        if($this->input->is_ajax_request()){
+            //$categoria = $this->input->post('parametro');
+            $params = array(
+                'nom_categr' => $this->input->post('parametro'),
+            );
+            $id_categr = $this->Categoria_egreso_model->add_categoria_egreso($params);
+            $datos = $this->Categoria_egreso_model->get_categoria_egreso($id_categr);
+            echo json_encode($datos);
+        }
+        else
+        {
+            show_404();
         }
     }
 

@@ -45,7 +45,7 @@ class Categoria_ingreso_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `id_cating` DESC
+            ORDER BY `nom_cating` ASC
         ")->result_array();
 
         return $categoria_ingreso;

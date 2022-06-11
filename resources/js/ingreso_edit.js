@@ -78,9 +78,9 @@ function elegir_asoc(asociado)
                     $("#buscar").val(registros[0]["nombres_asoc"] +" "+ registros[0]["apellidos_asoc"] +" ("+registros[0]["codigo_asoc"]+")" );
                     $("#id_asoc").val(registros[0]["id_asoc"]);
                     $("#descripcion_ing").val(registros[0]["direccion_asoc"]);
-                    $("#nombre_ing").val(registros[0]["nombres_asoc"] +" "+ registros[0]["apellidos_asoc"]);
+                    /*$("#nombre_ing").val(registros[0]["nombres_asoc"] +" "+ registros[0]["apellidos_asoc"]);
                     $("#ci_ing").val(registros[0]["ci_asoc"]);
-                    
+                    */
                     //facturas_pendientes(asociado); 
                    // multas_pendientes(asociado); 
                 }
@@ -91,39 +91,8 @@ function elegir_asoc(asociado)
     });
 }
 
+
 function nombreasoc(){
         var id_asoc = document.getElementById('id_asoc').value;
         elegir_asoc(id_asoc)
-}
-/* registra nueva categoría de Ingresos */
-function registrarnuevacategoria(){
-    var controlador = "";
-    var base_url  = document.getElementById('base_url').value;
-    let parametro = document.getElementById('nueva_categoria').value;
-    controlador = base_url+'ingreso/aniadircategoria/';
-    if(parametro.trim() != ""){
-        $('#modalcategoria').modal('hide');
-        $.ajax({url: controlador,
-               type:"POST",
-               data:{parametro:parametro},
-               success:function(respuesta){
-                   var registros =  JSON.parse(respuesta);
-                   if (registros != null){
-                        html = "";
-                        html += "<option value='"+registros["nom_cating"]+"' selected >";
-                        html += registros["nom_cating"];
-                        html += "</option>";
-                        $("#detalle_ing").append(html);
-                }
-            },
-            error:function(respuesta){
-               html = "";
-               //$("#categoria_id").html(html);
-            }
-
-        });
-    }else{
-        $("#mensaje_categoria").html("<br>La nueva Categoría no debe ser vacia; por favor revise sus datos, gracias!.");
-    }
-
 }

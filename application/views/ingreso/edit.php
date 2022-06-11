@@ -1,5 +1,5 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/ingresos.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/ingreso_edit.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 
@@ -14,19 +14,19 @@
                         <input type="text" name="buscar" class="form-control btn-default" id="buscar" onkeypress="buscarasoc(event)" autofocus placeholder="Nombre, apellido, codigo, ci, nit" />
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" hidden>
                     <label for="asociado" class="control-label">Asociado </label>
                     <div class="form-group">
                         <input type="text" name="asociado" id="asociado" class="form-control btn-default"   readonly  />
                     </div>
                 </div>
-                <div id="lista_asociados"></div>
+                <div class="col-md-12" id="lista_asociados"></div>
                 <?php echo form_open('ingreso/edit/'.$ingreso['id_ing']); ?>
                 <input type="hidden" name="id_asoc" value="<?php echo ($this->input->post('id_asoc') ? $this->input->post('id_asoc') : $ingreso['id_asoc']); ?>" class="form-control" id="id_asoc" required/>
                 <div class="box-body">
                     <div class="row clearfix">
                         <div class="col-md-4">
-                            <label for="nombre_ing" class="control-label">Nombre</label>
+                            <label for="nombre_ing" class="control-label">Recibi de</label>
                             <div class="form-group">
                                 <input type="text" name="nombre_ing" value="<?php echo ($this->input->post('nombre_ing') ? $this->input->post('nombre_ing') : $ingreso['nombre_ing']); ?>" class="form-control" id="nombre_ing" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  required/>
                             </div>
@@ -38,16 +38,16 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="monto_ing" class="control-label">Monto</label>
+                            <label for="monto_ing" class="control-label">La suma de</label>
                             <div class="form-group">
                                 <input type="number" step="any" min="0" name="monto_ing" value="<?php echo ($this->input->post('monto_ing') ? $this->input->post('monto_ing') : $ingreso['monto_ing']); ?>" class="form-control" id="monto_ing" required/>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="detalle_ing" class="control-label">Categoria</label>
+                            <label for="detalle_ing" class="control-label">Por concepto de</label>
                             <div class="form-group">
                                 <select name="detalle_ing" class="form-control" >
-                                    <option value="">Selecciona categoria ingreso</option>
+                                    <option value="">- CATEGORIA INGRESO -</option>
                                     <?php 
                                     foreach($all_categoria_ingreso as $categoria_ingreso)
                                     {
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="descripcion_ing" class="control-label">Concepto</label>
+                            <label for="descripcion_ing" class="control-label">Detalle</label>
                             <div class="form-group">
                                 <input type="text" name="descripcion_ing" value="<?php echo ($this->input->post('descripcion_ing') ? $this->input->post('descripcion_ing') : $ingreso['descripcion_ing']); ?>" class="form-control" id="descripcion_ing" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  />
                             </div>
@@ -69,8 +69,8 @@
                             <label for="estado_ing" class="control-label">Estado</label>
                             <div class="form-group">
                                 <select name="estado_ing" class="form-control" required>
-                                    <option value="ACTIVO" <?php if ($ingreso['estado_ing']=='ACTIVO'){ echo "selected"; } ?> >- ACTIVO -</option>
-                                    <option value="INACTIVO" <?php if ($ingreso['estado_ing']=='INACTIVO'){ echo "selected"; } ?> >- INACTIVO -</option>
+                                    <option value="ACTIVO" <?php if ($ingreso['estado_ing']=='ACTIVO'){ echo "selected"; } ?> > ACTIVO </option>
+                                    <option value="INACTIVO" <?php if ($ingreso['estado_ing']=='INACTIVO'){ echo "selected"; } ?> > INACTIVO </option>
                                 </select>
                             </div>
                         </div>

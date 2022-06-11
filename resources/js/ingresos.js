@@ -1,112 +1,31 @@
 $(document).on("ready",inicio);
 function inicio(){
     filtro = " and date(fechahora_ing) = date(now())";
-        fechadeingreso(filtro); 
-        //nombreasoc(); 
-}
-
-function buscar_ingresos()
-{
-    var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"ingreso";
-    var opcion      = document.getElementById('select_compra').value;
- 
-    
-
-    if (opcion == 1)
-    {
-        filtro = " and date(fechahora_ing) = date(now())";
-        mostrar_ocultar_buscador("ocultar");
-
-               
-    }//compras de hoy
-    
-    if (opcion == 2)
-    {
-       
-        filtro = " and date(fechahora_ing) = date_add(date(now()), INTERVAL -1 DAY)";
-        mostrar_ocultar_buscador("ocultar");
-    }//compras de ayer
-    
-    if (opcion == 3) 
-    {
-    
-        filtro = " and date(fechahora_ing) >= date_add(date(now()), INTERVAL -1 WEEK)";//compras de la semana
-        mostrar_ocultar_buscador("ocultar");
-
-            }
-
-    
-    if (opcion == 4) 
-    {   filtro = " ";//todos los compras
-        mostrar_ocultar_buscador("ocultar");
-
-    }
-    
-    if (opcion == 5) {
-
-        mostrar_ocultar_buscador("mostrar");
-        filtro = null;
-    }
-
-    fechadeingreso(filtro);
-}
-
-function buscar_por_fechas()
-{
-    var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"ingreso";
-    var fecha_desde = document.getElementById('fecha_desde').value;
-    var fecha_hasta = document.getElementById('fecha_hasta').value;
-   
-    filtro = " and date(fechahora_ing) >= '"+fecha_desde+"'  and  date(fechahora_ing) <='"+fecha_hasta+"' ";
-    
-    fechadeingreso(filtro);
-    
-}
-
-function mostrar_ocultar_buscador(parametro){
-       
-    if (parametro == "mostrar"){
-        document.getElementById('buscador_oculto').style.display = 'block';}
-    else{
-        document.getElementById('buscador_oculto').style.display = 'none';}
-    
+    fechadeingreso(filtro); 
+    //nombreasoc(); 
 }
 
 function fechadeingreso(filtro)
-{   
-      
-   var base_url    = document.getElementById('base_url').value;
+{
+    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"ingreso/buscarfecha";
-    
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
-           type:"POST",
-           data:{filtro:filtro},
-          
-           success:function(resul){     
-              
-                            
+            type:"POST",
+            data:{filtro:filtro},
+            success:function(resul){
                 $("#pillados").val("- 0 -");
-               var registros =  JSON.parse(resul);
-           
-               if (registros != null){
-                   
-                   
+                var registros =  JSON.parse(resul);
+                if (registros != null){
                     var cont = 0;
                     var total = Number(0);
-                    
-                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
+                    var n = registros.length; //tamaño del arreglo de la consulta
                     $("#pillados").html("Registros Encontrados: "+n+"");
-                   
                     html = "";
                     for (var i = 0; i < n ; i++){
-                        
                         var suma = Number(registros[i]["monto_ing"]);
                         var total = Number(suma+total);
-                        
                         html += "<tr>";
-                      
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><b>"+registros[i]["nombre_ing"]+"</b></td>";
                         html += "<td align='center'>"+registros[i]["id_ing"]+"</td>"; 
@@ -114,7 +33,7 @@ function fechadeingreso(filtro)
                         html += "<td>"+registros[i]["detalle_ing"]+"</br>"; 
                         html += "<b>"+registros[i]["descripcion_ing"]+"</b>"; 
                         if (registros[i]["id_asoc"]>0) {
-                        html += "<b> /Asociado: "+registros[i]["nombres_asoc"]+" "+registros[i]["apellidos_asoc"]+" ("+registros[i]["codigo_asoc"]+")"+"</b>";     
+                            html += "<b> /Asociado: "+registros[i]["nombres_asoc"]+" "+registros[i]["apellidos_asoc"]+" ("+registros[i]["codigo_asoc"]+")"+"</b>";     
                         }
                         html += "</td><td align='right'>"+Number(registros[i]["monto_ing"]).toFixed(2)+"</td>"; 
                         html += "<td>"+registros[i]["estado_ing"]+"</td>"; 
@@ -149,155 +68,128 @@ function fechadeingreso(filtro)
                         html += "</td>";
                         
                         html += "</tr>";
-                    } 
-                        html += "<tr>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td align='right'><b>TOTAL</b></td>";
-                        html += "<td align='right'><font size='4'><b>"+Number(total).toFixed(2)+"</b></font></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "</tr>";
+                    }
+                    html += "<tr>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td align='right'><b>TOTAL</b></td>";
+                    html += "<td align='right'><font size='4'><b>"+Number(total).toFixed(2)+"</b></font></td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "</tr>";
                    
                    $("#fechadeingreso").html(html);
-                   
+                   document.getElementById('loader').style.display = 'none';
+                }
+                document.getElementById('loader').style.display = 'none';
+            },
+            error:function(resul){
+            // alert("Algo salio mal...!!!");
+            html = "";
+            $("#fechadeingreso").html(html);
+            document.getElementById('loader').style.display = 'none';
             }
-                
-        },
-        error:function(resul){
-          // alert("Algo salio mal...!!!");
-           html = "";
-           $("#fechadeingreso").html(html);
+    });
+}
+
+function buscaringreso(e){
+    tecla = (document.all) ? e.keyCode : e.which;
+    var filtrar = document.getElementById('filtrar').value;
+    if(filtrar.trim() != ""){
+        if(tecla==13){
+            
+            let filtro = " and(i.id_ing = '"+filtrar+"' or i.nombre_ing like '%"+filtrar+"%'";
+            filtro += " or i.monto_ing like '%"+filtrar+"%' or i.detalle_ing like '%"+filtrar+"%'";
+            filtro += " or i.descripcion_ing like '%"+filtrar+"%' or i.ci_ing like '%"+filtrar+"%')";
+            fechadeingreso(filtro);
         }
-        
-    });   
-
-} 
-
-
-function buscarasoc(e) {
-
-  tecla = (document.all) ? e.keyCode : e.which;
-
-  
-
-    if (tecla==13){ 
-
-    
-       // if (opcion==1){             
-
-            buscar_asociados();            
-
-       // }
-
-   
-     
-
-     
-
-    }   
-
+    }
 }
 
-function buscar_asociados()
+function buscar_ingresos()
 {
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"ingreso/buscar_asociados";
-    var buscar = document.getElementById('buscar').value;
-    
-        $.ajax({url: controlador,
-            type:"POST",
-            data:{buscar:buscar},
-            success:function(respuesta){
-                
-                var registros = JSON.parse(respuesta);
-                var fin = registros.length;
-                html = "";
-                html += "<div class='box-body table-responsive'>";
-                html += "<table class='table table-striped table-condensed' id='mitabla_xs'>";
-                html += "<tr>";
-                html += "<th>Nº</th>";
-                html += "<th>Apellido</th>";
-                html += "<th>Nombres</th>";
-                html += "<th>Codigo</th>";
-                html += "<th>C.I.</th>";
-                html += "<th>Direccion</th>";
-                html += "<th>Telefono</th>";
-                html += "<th>Nit</th>";
-                html += "<th>Razon</th>";
-               // html += "<th></th>";
-                html += "</tr>";
-                
-                for(var i = 0; i<fin; i++)
-                {
-
-                    html += "<tr onclick='elegir_asoc("+registros[i]["id_asoc"]+")'>";               
-                    html += "<td>"+(i+1)+"</td>";
-                    html += "<td>"+registros[i]["apellidos_asoc"]+"</td>";  
-                    html += "<td>"+registros[i]["nombres_asoc"]+"</td>";
-                    html += "<td align='center'>"+registros[i]["codigo_asoc"]+"</td>";
-                    html += "<td align='center'>"+registros[i]["ci_asoc"]+"</td>";
-                    html += "<td>"+registros[i]["direccion_asoc"]+"</td>";
-                    html += "<td align='center'>"+registros[i]["telefono_asoc"]+"</td>";  
-                    html += "<td align='center'>"+registros[i]["nit_asoc"]+"</td>";  
-                    html += "<td>"+registros[i]["razon_asoc"]+"</td>";  
-                    //html += "<td><button onclick='ver_facturas("+registros[i]["id_asoc"]+")' class='btn btn-success btn-xs' title='Ver Facturas Pendientes' ><span class='fa fa-money'></span></button></td>";
- 
-                    html += "</tr>";
-                } 
-                html += "</table>";   
-                html += "</div>";   
-                $("#lista_asociados").html(html);
-
-            },
-            error: function(respuesta){
-              alert('No existe');
-            }
-        });
+    //var base_url    = document.getElementById('base_url').value;
+    //var controlador = base_url+"ingreso";
+    $("#filtrar").val("");
+    var opcion = document.getElementById('select_lafecha').value;
+    let fecha_hoy = new Date();
+    if(opcion == 0){
+        $("#fecha_desde").val(moment(fecha_hoy).format("YYYY-MM-DD"));
+        $("#fecha_hasta").val(moment(fecha_hoy).format("YYYY-MM-DD"));
+        mostrar_ocultar_buscador("ocultar");
+    }else if(opcion == 1){ //compras de hoy
+        filtro = " and date(fechahora_ing) = date(now())";
+        mostrar_ocultar_buscador("ocultar");
+        fechadeingreso(filtro);
+    }else if (opcion == 2){ //compras de ayer
+        filtro = " and date(fechahora_ing) = date_add(date(now()), INTERVAL -1 DAY)";
+        mostrar_ocultar_buscador("ocultar");
+        fechadeingreso(filtro);
+    }else if (opcion == 3){ //compras de la semana
+        filtro = " and date(fechahora_ing) >= date_add(date(now()), INTERVAL -1 WEEK)";
+        mostrar_ocultar_buscador("ocultar");
+        fechadeingreso(filtro);
+    }else if (opcion == 4){ //todos los compras
+        filtro = "";
+        mostrar_ocultar_buscador("ocultar");
+        fechadeingreso(filtro);
+    }else if (opcion == 5) { // busqueda por fechas
+        mostrar_ocultar_buscador("mostrar");
+        filtro = null;
+    }
 }
 
-function elegir_asoc(asociado)
+function mostrar_ocultar_buscador(parametro){
+    if (parametro == "mostrar"){
+        document.getElementById('buscador_oculto').style.display = 'block';}
+    else{
+        document.getElementById('buscador_oculto').style.display = 'none';}
+}
+
+function buscar_por_fechas()
 {
-   
-   var base_url = document.getElementById('base_url').value;
-   var controlador = base_url+'ingreso/buscar_idasociado';
- 
-    $.ajax({url:controlador,
+    var nom_cating = document.getElementById('nom_cating').value;
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+    filtro = "";
+    if(nom_cating != 0){
+        filtro += " and i.detalle_ing = '"+nom_cating+"' ";
+    }
+    filtro += " and date(fechahora_ing) >= '"+fecha_desde+"'  and  date(fechahora_ing) <='"+fecha_hasta+"' ";
+    fechadeingreso(filtro);
+}
+/* buusqueda de Ingresos por Categorias */
+function buscaring_categorias()
+{
+    filtro = "";
+    var nom_cating = document.getElementById('nom_cating').value;
+    $("#filtrar").val("");
+    
+    if(nom_cating != 0){
+        let opcion = document.getElementById('select_lafecha').value;
+        filtro += " and i.detalle_ing = '"+nom_cating+"' ";
+        //let fecha_hoy = new Date();
+        /*if(opcion == 0){
 
-            type:"POST",
-
-            data:{asociado:asociado},
-
-            success:function(respuesta){
-
-                var registros = eval(respuesta);
-                if (registros[0]!=null){
-
-                    $("#asociado").val(registros[0]["nombres_asoc"] +" "+ registros[0]["apellidos_asoc"] +" ("+registros[0]["codigo_asoc"]+")" );
-                    $("#id_asoc").val(registros[0]["id_asoc"]);
-                    $("#descripcion_ing").val(registros[0]["direccion_asoc"]);
-
-                    //facturas_pendientes(asociado); 
-                   // multas_pendientes(asociado); 
-                    }             
-
-            },
-
-            error:function(respuesta){      
-
-
-
-            }                
-
-    }); 
-
+        }else*/
+        if(opcion == 1){ //compras de hoy
+            filtro += " and date(i.fechahora_ing) = date(now())";
+        }else if (opcion == 2){ //compras de ayer
+            filtro += " and date(i.fechahora_ing) = date_add(date(now()), INTERVAL -1 DAY)";
+        }else if (opcion == 3){ //compras de la semana
+            filtro += " and date(i.fechahora_ing) >= date_add(date(now()), INTERVAL -1 WEEK)";
+        }else if (opcion == 4){ //compras de la semana
+            filtro += "";
+        }else if (opcion == 5){ //compras de la semana
+            var fecha_desde = document.getElementById('fecha_desde').value;
+            var fecha_hasta = document.getElementById('fecha_hasta').value;
+            filtro += " and date(i.fechahora_ing) >= '"+fecha_desde+"'  and  date(i.fechahora_ing) <='"+fecha_hasta+"' ";
+        }
+        fechadeingreso(filtro);
+    }
+    //filtro += " and date(fechahora_ing) >= '"+fecha_desde+"'  and  date(fechahora_ing) <='"+fecha_hasta+"' ";
 }
 
-
-function nombreasoc(){
-        var id_asoc = document.getElementById('id_asoc').value;
-        elegir_asoc(id_asoc)
-}

@@ -75,27 +75,19 @@ class Ingreso_model extends CI_Model
     
     function fechaingreso($condicion)
     {
-
        $ingreso = $this->db->query("
         SELECT
-            
-                e.*, u.nombre_usu, a.nombres_asoc, a.apellidos_asoc, a.codigo_asoc
-
+                i.*, u.nombre_usu, a.nombres_asoc, a.apellidos_asoc, a.codigo_asoc
             FROM
-                ingreso e
-
-            LEFT JOIN usuario u ON e.id_usu=u.id_usu    
-            LEFT JOIN asociado a ON e.id_asoc=a.id_asoc 
+                ingreso i
+            LEFT JOIN usuario u ON i.id_usu=u.id_usu    
+            LEFT JOIN asociado a ON i.id_asoc=a.id_asoc 
             WHERE
                 1=1
-                
-               
                 ".$condicion." 
-                
-            ORDER BY e.fechahora_ing DESC 
+            ORDER BY i.fechahora_ing DESC 
         "
         )->result_array();
-
         return $ingreso;
     }
     

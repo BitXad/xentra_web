@@ -27,7 +27,7 @@
                 <div class="box-body">
                     <div class="row clearfix">
                         <div class="col-md-4">
-                            <label for="nombre_ing" class="control-label">Nombre (quien viene a pagar)</label>
+                            <label for="nombre_ing" class="control-label">Recibi de</label>
                             <div class="form-group">
                                 <input type="text" name="nombre_ing" value="<?php echo $this->input->post('nombre_ing'); ?>" class="form-control" id="nombre_ing" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  required/>
                             </div>
@@ -39,15 +39,15 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="monto_ing" class="control-label">Monto</label>
+                            <label for="monto_ing" class="control-label">La suma de</label>
                             <div class="form-group">
                                 <input type="number" step="any" min="0" name="monto_ing" value="<?php echo $this->input->post('monto_ing'); ?>" class="form-control" id="monto_ing" required/>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="detalle_ing" class="control-label">Categoria</label>
-                            <div class="form-group">
-                                <select name="detalle_ing" class="form-control">
+                            <label for="detalle_ing" class="control-label">Por concepto de</label>
+                            <div class="form-group" style="display: flex">
+                                <select name="detalle_ing" id="detalle_ing" class="form-control">
                                     <option value="">- CATEGORIA INGRESO -</option>
                                     <?php 
                                     foreach($all_categoria_ingreso as $categoria_ingreso)
@@ -58,10 +58,12 @@
                                     } 
                                     ?>
                                 </select>
+                                <a data-toggle="modal" data-target="#modalcategoria" class="btn btn-warning" title="Registrar Nueva Categoria">
+                                <i class="fa fa-plus-circle"></i></a>
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <label for="descripcion_ing" class="control-label">Concepto</label>
+                            <label for="descripcion_ing" class="control-label">Detalle</label>
                             <div class="form-group">
                                 <input type="text" name="descripcion_ing" value="<?php echo $this->input->post('descripcion_ing'); ?>" class="form-control" id="descripcion_ing" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required/>
                             </div>
@@ -69,7 +71,7 @@
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-success">
-                            <i class="fa fa-check"></i> GUARDAR
+                            <i class="fa fa-check"></i> Guardar
                         </button>
                         <a href="index">
                             <button type="button" class="btn btn-danger">
@@ -83,3 +85,33 @@
         </div>
     </div>
 </div>
+
+<!------------------------ INICIO modal para Registrar nueva Categoria ------------------->
+<div class="modal fade" id="modalcategoria" tabindex="-1" role="dialog" aria-labelledby="modalcategoria">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <h3>Registrar Nueva Categoría</h3>
+            </div>
+            <div class="modal-body">
+               <!------------------------------------------------------------------->
+               <div class="col-md-12">
+                    <label for="nueva_categoria" class="control-label">Nueva Categoria</label>
+                    <span> (Nota.- ¡Registrar solo si no hay en la lista!)</span>
+                    <span class="text-danger text-bold" id="mensaje_categoria"></span>
+                    <div class="form-group">
+                        <input type="text" name="nueva_categoria"  class="form-control" id="nueva_categoria" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+               <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a onclick="registrarnuevacategoria()" class="btn btn-success"><span class="fa fa-check"></span> Registrar </a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Registrar nueva Categoria ------------------->
