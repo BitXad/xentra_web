@@ -111,7 +111,8 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, nom_cating, orde
                         html += "<td class='text-center' style='padding: 0px 5px !important'>"+(i+1)+"</td>";
                         html += "<td class='text-right' style='padding: 0px 5px !important'>"+registros[i]["id_ing"]+"</td>";
                         html += "<td class='text-left' style='padding: 0px 5px !important'>"+registros[i]["nombre_ing"]+"</td>";
-                        html += "<td class='text-center' style='padding: 0px 5px !important'>"+registros[i]["detalle_ing"]+"</td>";
+                        html += "<td class='text-center lizq' style='padding: 0px 5px !important'>"+moment(registros[i]["fechahora_ing"]).format("DD/MM/YYYY HH:mm:ss")+"</td>";
+                        html += "<td class='text-center lizq' style='padding: 0px 5px !important'>"+registros[i]["detalle_ing"]+"</td>";
                         html += "<td class='text-left lizq' style='padding: 0px 5px !important'>"+registros[i]["descripcion_ing"]+"</td>";
                         html += "<td class='text-right lizq' style='padding: 0px 5px !important'>"+Number(registros[i]["monto_ing"]).toFixed(2)+"</td>";
                         html += "<td class='text-center lizq' style='padding: 0px 5px !important'>"+registros[i]["estado_ing"]+"</td>";
@@ -121,9 +122,10 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, nom_cating, orde
                     cabecerahtmlt += "<tr class='boxtabla'>";
                     cabecerahtmlt += "<th class='text-center' style='width: 2%; padding: 1px; vertical-align: middle'>N°</th>";
                     cabecerahtmlt += "<th class='text-center' style='width: 5%; padding: 1px; vertical-align: middle'>Nro REC.</th>";
-                    cabecerahtmlt += "<th class='text-center' style='width: 33%; padding: 1px; vertical-align: middle'>NOMBRE COMPLETO</th>";
-                    cabecerahtmlt += "<th class='text-center' style='width: 10%; padding: 1px; vertical-align: middle'>CATEGORIA</th>";
-                    cabecerahtmlt += "<th class='text-center lizq' style='width: 40%; padding: 1px; vertical-align: middle'>CONCEPTO</th>";
+                    cabecerahtmlt += "<th class='text-center' style='width: 23%; padding: 1px; vertical-align: middle'>NOMBRE COMPLETO</th>";
+                    cabecerahtmlt += "<th class='text-center lizq' style='width: 13%; padding: 1px; vertical-align: middle'>FECHA REG.</th>";
+                    cabecerahtmlt += "<th class='text-center lizq' style='width: 12%; padding: 1px; vertical-align: middle'>CATEGORIA</th>";
+                    cabecerahtmlt += "<th class='text-center lizq' style='width: 35%; padding: 1px; vertical-align: middle'>CONCEPTO</th>";
                     cabecerahtmlt += "<th class='text-center lizq' style='width: 5%; padding: 1px; vertical-align: middle'>MONTO<br>Bs.</th>";
                     cabecerahtmlt += "<th class='text-center lizq' style='width: 5%; padding: 1px; vertical-align: middle'>ESTADO</th>";
                     cabecerahtmlt += "</tr>";
@@ -131,14 +133,14 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario, nom_cating, orde
                     
                     htmls = "";
                     htmls += "<tr class='larrf lizq1'>";
-                    htmls += "<td colspan='4'></td>";
+                    htmls += "<td colspan='5'></td>";
                     htmls += "<td class='larrf text-right text-bold' colspan='2' style='font-family: Arial; font-size: 15px; !important'>TOTAL Bs.<span style='padding-right: 10px'></span>"+numberFormat(Number(totalingreso).toFixed(2))+"</td>";
                     htmls += "<td></td>";
                     htmls += "</tr>";
                     htmls += "<tr>";
                     htmls += "<td class='lizq1' colspan='2'></td>";
                     htmls += "<td class='lizq1'><br><br></td>";
-                    htmls += "<td class='larrf' colspan='4'></td>";
+                    htmls += "<td class='larrf' colspan='5'></td>";
                     htmls += "</tr>";
                     htmls += "<tr>";
                     htmls += "<td class='larrf' colspan='2'></td>";
