@@ -500,9 +500,11 @@ function cobrar_mes(mes) {
         var elmes = fecha.getMonth();
         var elanio = fecha.getFullYear();
         let recargo = Number($("#recargos").val());
+        let resmes = Number(Number(elmes+1) - Number(mes))
         if(lagestion < elanio){
             recargo = recargo+8.33;
-        }else if(mes < Number(elmes+1)){
+        //}else if(mes < Number(elmes+1)){
+        }else if(resmes >= 3){
             recargo = recargo+2;
             //alert(recargo);
         }
@@ -527,9 +529,11 @@ function cobrar_mes(mes) {
         var elmes = fecha.getMonth();
         var elanio = fecha.getYear();
         let recargo = Number($("#recargos").val());
+        let resmes = Number(Number(elmes+1) - Number(mes))
         if(lagestion < elanio){
             recargo = recargo-8.33;
-        }else if(mes < Number(elmes+1)){
+        //}else if(mes < Number(elmes+1)){
+        }else if(resmes >= 3){
             recargo = recargo-2;
             //alert(recargo);
         }
