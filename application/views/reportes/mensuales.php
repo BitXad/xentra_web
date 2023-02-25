@@ -106,7 +106,8 @@
         Gestión:
         <select  class="btn btn-primary btn-sm form-control" id="esta_gestion" name="esta_gestion" required>
             <?php
-            $migestion= ["gestion_lec"=>"2020"];
+            $anio = date("Y");
+            $migestion= ["gestion_lec"=>$anio];
             foreach($all_gestion as $gestion)
             {
                 $selected = ($gestion['gestion_lec'] == $migestion['gestion_lec']) ? ' selected="selected"' : "";

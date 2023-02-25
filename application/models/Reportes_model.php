@@ -436,4 +436,26 @@ class Reportes_model extends CI_Model
         ")->result_array();
         return $deudores_encorte;
     }
+    
+    /* busca el consumo de asociados en un rango de cosumo de una gestion y mes determinado!. */
+    function reporte_consumoasociados($mes, $gestion, $tipo_asoc, $servicios_asoc, $desde, $hasta){
+        $consumoasociados = $this->db->query("
+            select  a.`apellidos_asoc`, a.`nombres_asoc`,
+                    a.`codigo_asoc`, a.`ci_asoc`, 
+                   $servicios_asoc as servicio, l.`mes_lec`, l.`gestion_lec`,
+                    (l.`totalcons_lec`+l.`consumoalcant_lec`) as elconsumo
+                from asociado a
+                left join lectura l on a.id_asoc = l.`id_asoc` 
+                where 
+                      a.tipo_asoc = $tipo_asoc and
+                      a.`servicios_asoc` = $servicios_asoc and
+                      (l.`totalcons_lec`+l.`consumoalcant_lec`) >= $desde and
+                      (l.`totalcons_lec`+l.`consumoalcant_lec`) <= $hasta and
+                      l.`mes_lec` = '$mes' AND
+                      l.`gestion_lec` = '$gestion'
+                      ORDER BY a.`apellidos_asoc`, a.`nombres_asoc`
+        ")->result_array();
+        
+        return $consumoasociados;
+    }
 }

@@ -433,5 +433,44 @@ class Reportes extends CI_Controller{
         }
             
     }
+    /* reporte de consumo */
+    function consumo()
+    {
+        if($this->acceso(408)){
+            $data['nombre_usu'] = $this->session_data['nombre_usu'];
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $this->load->model('Gestion_model');
+            $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+            $this->load->model('Tipo_asociado_model');
+            $data['all_tipo_asociado'] = $this->Tipo_asociado_model->get_all_tipo_asociado();
+            $this->load->model('Servicio_model');
+            $data['all_servicio'] = $this->Servicio_model->get_all_servicios();
+            
+            $data['_view'] = 'reportes/consumo';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    /* busca a asociados con unn rango de consumo en una gestion y mes especifico!!.. */
+    function buscarlosconsumos()
+    {
+        if ($this->input->is_ajax_request()) {
+            $mes   = $this->input->post('mes');
+            $gestion = $this->input->post('gestion');
+            $tipo_asoc = $this->input->post('tipo_asoc');
+            $servicios_asoc = $this->input->post('servicios_asoc');
+            $desde = $this->input->post('desde');
+            $hasta = $this->input->post('hasta');
+            
+            $datos = $this->Reportes_model->reporte_consumoasociados($mes, $gestion, json_encode($tipo_asoc), json_encode($servicios_asoc), $desde, $hasta);
+            echo json_encode($datos);
+        }
+        else
+        {
+            show_404();
+        }
+            
+    }
+    
 }
 

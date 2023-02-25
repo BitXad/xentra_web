@@ -371,6 +371,13 @@
                                     <a href="<?php echo site_url('reportes/ingresof');?>"><i class="fa fa-list-alt"></i> Cobros por Servicios</a>
                                 </li>
                                 <?php }
+                                if($rolusuario[408-1]['rolusuario_asignado'] == 1){
+                                ?>
+                                <li>
+                                    <a href="<?php echo site_url('reportes/consumo');?>"><i class="fa fa-bar-chart"></i> Consumo</a>
+                                </li>
+                                <?php
+                                }
                                 if($rolusuario[411-1]['rolusuario_asignado'] == 1){
                                 ?>
                                 <li>
