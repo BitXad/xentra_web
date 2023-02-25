@@ -443,14 +443,15 @@ class Reportes_model extends CI_Model
             select  a.`apellidos_asoc`, a.`nombres_asoc`,
                     a.`codigo_asoc`, a.`ci_asoc`, 
                    $servicios_asoc as servicio, l.`mes_lec`, l.`gestion_lec`,
-                    (l.`totalcons_lec`+l.`consumoalcant_lec`) as elconsumo
+                    (f.montototal_fact) as elconsumo
                 from asociado a
                 left join lectura l on a.id_asoc = l.`id_asoc` 
+                left join factura f on l.id_lec = f.`id_lec` 
                 where 
                       a.tipo_asoc = $tipo_asoc and
                       a.`servicios_asoc` = $servicios_asoc and
-                      (l.`totalcons_lec`+l.`consumoalcant_lec`) >= $desde and
-                      (l.`totalcons_lec`+l.`consumoalcant_lec`) <= $hasta and
+                      (f.montototal_fact) >= $desde and
+                      (f.montototal_fact) <= $hasta and
                       l.`mes_lec` = '$mes' AND
                       l.`gestion_lec` = '$gestion'
                       ORDER BY a.`apellidos_asoc`, a.`nombres_asoc`
