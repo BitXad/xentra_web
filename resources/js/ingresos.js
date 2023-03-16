@@ -41,7 +41,31 @@ function fechadeingreso(filtro)
                         html += "<td class='no-print'><a href='"+base_url+"ingreso/pdf/"+registros[i]["id_ing"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
                         //html += "<a href='"+base_url+"ingreso/boucher/"+registros[i]["id_ing"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
                         html += " <a href='"+base_url+"ingreso/edit/"+registros[i]["id_ing"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
-                        html += " <a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
+                        html += " <a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Anular'><span class='fa fa-minus'></span></a>";
+                        html += "<!------------------------ INICIO modal para confirmar Anulación ------------------->";
+                        html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "</div>";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<h3><b> <span class='fa fa-trash'></span></b>";
+                        html += "Desea anular el ingreso <b># "+registros[i]["id_ing"]+"?</b>";
+                        html += "</h3>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+                        html += "<div class='modal-footer aligncenter'>";
+                        html += "<a href='"+base_url+"ingreso/anular/"+registros[i]["id_ing"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += " <a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------ FIN modal para confirmar Anulación ------------------->";
+                        /*html += " <a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
@@ -65,6 +89,7 @@ function fechadeingreso(filtro)
                         html += "</div>";
                         html += "</div>";
                         html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
+                        */
                         html += "</td>";
                         
                         html += "</tr>";

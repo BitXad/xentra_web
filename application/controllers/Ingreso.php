@@ -16,6 +16,7 @@ class ingreso extends CI_Controller{
         $this->load->helper('numeros');
         $this->load->model('Parametro_model');
         $this->load->model('Factura_model');
+        $this->load->model('Bitacora_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -266,6 +267,44 @@ public function pdf($id_ing){
         else
         {
             show_404();
+        }
+    }
+    
+    
+    /* anular un Ingreso */
+    function anular($id_ing)
+    {
+        if($this->acceso(56)){
+            $ingreso = $this->Ingreso_model->get_ingreso($id_ing);
+
+            // check if the ingreso exists before tryegr to delete it
+            if(isset($ingreso['id_ing']))
+            {
+                $params = array(
+                    'monto_ing' => 0,
+                    'estado_ing' => "ANULADO",      
+                );
+                $this->Ingreso_model->update_ingreso($id_ing,$params);
+                
+                /* ******** INICIO BITACORA ******** */
+                $fecha = date("Y-m-d");
+                $hora  = date("H:i:s");
+                $id_usu = $this->session_data['id_usu'];
+                $nombre_usu = $this->session_data['nombre_usu'];
+                $params = array(
+                    'fecha' => $fecha,
+                    'hora' => $hora,
+                    'ope' => "ANULAR INGRESO",
+                    'sentenc' => implode("&",$ingreso),
+                    'usuario' => $id_usu."=>".$nombre_usu,
+                );
+                $this->Bitacora_model->add_bitacora($params);
+                /* ******** F I N  BITACORA ******** */
+                
+                redirect('ingreso/index');
+            }
+            else
+                show_error('The ingreso you are tryegr to delete does not exist.');
         }
     }
 }
