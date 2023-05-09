@@ -394,7 +394,9 @@ function cargar_lectura(lectura) {
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + ";'>";
                 html += "<td style='padding:0;' " + columnas + "><b>LECTURA ANTERIOR (mt3): </b></td>";
-                html += "<td style='padding:0;'><input type='text' value='0.00' id='lectura_anterior' style='background: silver;' readonly='true' " + ancho + "/></td>";
+                html += "<td style='padding:0;'><input type='text' value='0.00' id='lectura_anterior' style='background: silver;' readonly='true' " + ancho + "/>";
+                html += "<button class='btn btn-xs btn-warning' onclick ='habilitar_lecanterior()' title='Habilitar para modificar lectura anterior'> Hab.</button>";
+                html += "</td>";
                 html += "</tr>";
 
                 html += "<tr style='padding:0; background-color: " + color_fondo + "; font-size:13px; font-style: bold'>";
@@ -854,4 +856,10 @@ function buscarasociado(e) {
     if (tecla==13){
         buscar_asociados();
     }
+}
+function habilitar_lecanterior(){
+    $("#lectura_anterior").attr('readonly', false);
+    $("#lectura_anterior").css('background', 'white');
+    $("#lectura_anterior").focus();
+    $("#lectura_anterior").select();
 }
