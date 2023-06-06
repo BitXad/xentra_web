@@ -36,9 +36,9 @@ function buscar_asociados(){
                 html += "<th>Apellido</th>";
                 html += "<th>Nombres</th>";
                 html += "<th>Codigo</th>";
+                html += "<th>Medidor</th>";
                 html += "<th>C.I.</th>";
                 html += "<th>Direccion</th>";
-                html += "<th>Telefono</th>";
                 html += "<th>Nit</th>";
                 html += "<th>Razon</th>";
                 html += "<th></th>";
@@ -53,9 +53,9 @@ function buscar_asociados(){
                     html += "<td>"+registros[i]["apellidos_asoc"]+"</td>";  
                     html += "<td>"+registros[i]["nombres_asoc"]+"</td>";
                     html += "<td align='center'>"+registros[i]["codigo_asoc"]+"</td>";
+                    html += "<td align='center'>"+registros[i]["medidor_asoc"]+"</td>";
                     html += "<td align='center'>"+registros[i]["ci_asoc"]+"</td>";
                     html += "<td>"+registros[i]["direccion_asoc"]+"</td>";
-                    html += "<td align='center'>"+registros[i]["telefono_asoc"]+"</td>";  
                     html += "<td align='center'>"+registros[i]["nit_asoc"]+"</td>";  
                     html += "<td>"+registros[i]["razon_asoc"]+"</td>";
                     html += "<td><button onclick='ocultar_tabla()' class='btn btn-warning btn-xs'><fa class='fa fa-eraser'></fa></button></td>";
