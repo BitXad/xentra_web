@@ -486,7 +486,9 @@ class Factura extends CI_Controller{
          $usuario_id = $session_data['id_usu'];
          $this->load->model('Empresa_model');
          $data['empresa'] = $this->Empresa_model->get_empresa(1);
+         
          $data['factura'] = $this->Factura_model->get_factura_completa($factura_id);
+         
          $data['tipo'] = $tipo;
          $detalle_factura = $this->Factura_model->get_pendiente_detalle($factura_id);
          $totalexento = 0;

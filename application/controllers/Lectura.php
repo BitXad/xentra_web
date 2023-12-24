@@ -210,20 +210,29 @@ class Lectura extends CI_Controller {
         $mes = $this->input->post("mes");
         $gestion = $this->input->post("gestion");
         $asociado = $this->input->post("asociado"); //id_asoc
+        $tipo_asoc = $this->input->post("tipo_asoc"); //tipo_asoc
         $estemes = 0;
         if($mes == "ENERO"){ $estemes = 1;}elseif($mes == "FEBRERO"){ $estemes = 2;}elseif($mes == "MARZO"){ $estemes = 3;}
         elseif($mes == "ABRIL"){ $estemes = 4;}elseif($mes == "MAYO"){ $estemes = 5;}elseif($mes == "JUNIO"){ $estemes = 6;}
         elseif($mes == "JULIO"){ $estemes = 7;}elseif($mes == "AGOSTO"){ $estemes = 8;}elseif($mes == "SEPTIEMBRE"){ $estemes = 9;}
         elseif($mes == "OCTUBRE"){ $estemes = 10;}elseif($mes == "NOVIEMBRE"){ $estemes = 11;}elseif($mes == "DICIEMBRE"){ $estemes = 12;}
+        
+        $condicion = " and tipo_asoc = '{$tipo_asoc}' "; //SEGUN EL TIPO DE USUARIO
+        
+        if ($tipo_asoc = "TODOS"){ $condicion = " "; } //TODOS
+        if ($tipo_asoc = "NINGUNO"){ $condicion = " and tipo_asoc = 'qwerwqere'"; } //NINGUNO
+        
         //MOSTRAR MULTAS/APORTES
         $sql = "(select 'MULTA' as multa,motivo_multa as motivo,detalle_multa as detalle,monto_multa as monto,mes_multa as mes,gestion_multa as gestion,tipo_multa as tipo,exento_multa as exento, ice_multa as ice " .
                 "from multa " .
                 "where estado_multa = 'ACTIVO' and " .
                 "(mes_multa = '" . $mes . "' and gestion_multa = '" . $gestion . "' and tipo_multa= 'GENERAL') or " .
                 "(mes_multa='" . $mes . "' and gestion_multa = '" . $gestion . "' and id_asoc=" . $asociado . ")) union " .
+                
+                
                 "(select 'APORTE' as multa, motivo_ap as motivo,detalle_ap as detalle,monto_ap as monto,mes_ap as mes,gestion_ap as gestion,tipo_ap as tipo, exento_ap as exento, ice_ap as ice from aporte " .
                 "where " .
-                "tipo_ap = 'PERMANENTE' and estado_ap = 'ACTIVO' or " .
+                "tipo_ap = 'PERMANENTE' and if(tipo_asoc = 'TODOS',1=1,if(tipo_asoc = 'NINGUNO',1<>1, tipo_asoc = '{$tipo_asoc}')) and estado_ap = 'ACTIVO' or " .
                 "(mes_ap = '" . $mes . "' and gestion_ap = '" . $gestion . "' and tipo_ap = 'PARCIAL' and estado_ap = 'ACTIVO'))" .
                 " union
                 (select
@@ -435,9 +444,11 @@ class Lectura extends CI_Controller {
                 "where estado_multa = 'ACTIVO' and " .
                 "(mes_multa = " . $mes . " and gestion_multa = '" . $gestion . "' and tipo_multa= 'GENERAL') or " .
                 "(mes_multa= " . $mes . " and gestion_multa = '" . $gestion . "' and id_asoc=" . $asociado . ")) union " .
+                
+                
                 "(select 'APORTE' as multa,motivo_ap as motivo,detalle_ap as detalle,monto_ap as monto,mes_ap as mes,gestion_ap as gestion,tipo_ap as tipo, exento_ap as exento, ice_ap as ice from aporte " .
                 "where " .
-                "tipo_ap = 'PERMANENTE' and estado_ap = 'ACTIVO' or " .
+                "tipo_ap = 'PERMANENTE' and if(tipo_asoc = 'TODOS',1=1,if(tipo_asoc = 'NINGUNO',1<>1, tipo_asoc = '{$tipo_asoc}')) and estado_ap = 'ACTIVO' or " .
                 "(mes_ap = " . $mes . " and gestion_ap = '" . $gestion . "' and tipo_ap = 'PARCIAL' and estado_ap = 'ACTIVO'))" .
                 " union
                 (select
@@ -505,10 +516,12 @@ class Lectura extends CI_Controller {
         if($this->acceso(400)){
             $this->load->model('Empresa_model');
 
-            $data['lectura'] = $this->Lectura_model->get_lecturasocio($lectura_id);
+            $lectura = $this->Lectura_model->get_lecturasocio($lectura_id);
+            $data['lectura'] = $lectura;
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['historico'] = $this->Lectura_model->get_historico($lectura[0]["id_asoc"]);
 
-            $data['_view'] = 'lectura/preaviso_boucher';
+            $data['_view'] = 'lectura/preaviso_boucherColcapirhua';
             $this->load->view('layouts/main', $data);
         }
     }
@@ -519,8 +532,9 @@ class Lectura extends CI_Controller {
 
             $data['lectura'] = $this->Lectura_model->get_lecturasocio_asoc($id_asoc);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['historico'] = $this->Lectura_model->get_historico($id_asoc);
 
-            $data['_view'] = 'lectura/preaviso_boucher';
+            $data['_view'] = 'lectura/preaviso_boucherColcapirhua';
             $this->load->view('layouts/main', $data);
         }
     }

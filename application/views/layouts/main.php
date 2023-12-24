@@ -19,6 +19,7 @@
         <!-- AdminLTE Skins. Choose a skin from the css/skins
              folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="<?php echo site_url('resources/css/_all-skins.min.css');?>">
+        <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
     </head>
     <?php
         $session_data = $this->session->userdata('logged_in');
@@ -176,21 +177,48 @@
                         <?php
                         if($rolusuario[418-1]['rolusuario_asignado'] == 1){
                         ?>
-                        <li>
+<!--                        <li>
                             <a href="<?php echo site_url('asociado/index');?>">
                                 <i class="fa fa-address-card-o"></i> <span>Asociado</span>
                             </a>
-                        </li>
-                        <?php } ?>
-                        <?php
-                        if($rolusuario[451-1]['rolusuario_asignado'] == 1){
-                        ?>
+                        </li>-->
+                        
                         <li>
-                            <a href="<?php echo site_url('descuento');?>">
-                                <i class="fa fa-sort-amount-asc"></i> <span>Descuento</span>
+                            <a href="#">
+                                <i class="fa fa-book"></i> <span>Registro</span>
                             </a>
+                            <ul class="treeview-menu">
+                                <?php
+                                if($rolusuario[418-1]['rolusuario_asignado'] == 1){
+                                ?>
+                                <li>
+                                    <a href="<?php echo site_url('asociado/index');?>">
+                                        <i class="fa fa-address-card-o"></i> <span>Asociado</span>
+                                    </a>
+                                </li>
+                                <?php } ?>
+                                
+                                
+                                                                <?php
+                                if($rolusuario[451-1]['rolusuario_asignado'] == 1){
+                                ?>
+                                <li>
+                                    <a href="<?php echo site_url('descuento');?>">
+                                        <i class="fa fa-sort-amount-asc"></i> <span>Descuento</span>
+                                    </a>
+                                </li>
+                                <?php } ?>
+
+                            </ul>
                         </li>
+                        
+                        
+                        
+                        
                         <?php } ?>
+                        
+
+                        
                         <li>
                             <a href="#">
                                 <i class="fa fa-money"></i> <span>Ingresos/Egresos</span>
@@ -428,20 +456,83 @@
                                 <?php } ?>
                             </ul>
                         </li>
+                        
                         <?php
                             if($rolusuario[435-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('tarifa/index');?>">
-                                <i class="fa fa-stack-overflow"></i> <span>Tarifa</span>
+                                <i class="fa fa-stack-overflow"></i> <span>Tarifas</span>
                             </a>
+                            <ul class="treeview-menu">
+      
+                                <li class="active">
+                                    <a href="<?php echo site_url('tarifa/index');?>"><i class="fa fa-life-bouy"></i> Tarifa Parametrizable</a>
+                                </li>
+                               
+                                <li class="active">
+                                    <a href="<?php echo site_url('tarifa/index');?>"><i class="fa fa-certificate"></i> Tarifa por rangos</a>
+                                </li>
+                               
+                            </ul>
                         </li>
+                        
+                        
                         <?php }
                             if($rolusuario[149-1]['rolusuario_asignado'] == 1){
                         ?>
-                        <li>
+<!--                        <li>
                             <a href="<?php echo site_url('dosificacion');?>"><i class="fa fa-list-alt"></i> Dosificación</a>
+                        </li>-->
+                        
+                        <li>
+                    <a href="#"><i class="fa fa-paste"></i> <span>Facturación</span></a>
+                    <ul class="treeview-menu">
+                        
+     
+                        <li>
+                            <a href="<?php echo site_url('dosificacion/configurar');?>"><i class="fa fa-mercury"></i> Configurar Facturacion</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('sincronizacion');?>"><i class="fa fa-server"></i> Sincronizar</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('eventos_significativos');?>"><i class="fa fa-calendar"></i> Eventos Significativos</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('emision_paquetes');?>"><i class="fa fa-link"></i> Envio/Emision de Paquetes</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('punto_venta');?>"><i class="fa fa-th"></i> Puntos de venta</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('token');?>"><i class="fa fa-align-justify"></i> Token</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('cufd');?>"><i class="fa fa-codepen"></i> Cufd</a>
+                        </li>
+
+                        <li>
+                            <a href="<?php echo site_url('dosificacion');?>"><i class="fa fa-list-alt"></i>Dosificación</a>
+                        </li>
+
+                        <li>
+                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-shopping-cart"></i> <span>Libro de Venta</span></a>
+                        </li>
+
+                        <li>
+                            <a href="<?php echo site_url('factura_compra');?>"><i class="fa fa-shopping-basket"></i> <span>Libro de Venta</span></a>
+                        </li>
+
+                        <li>
+                            <a href="<?php echo site_url('factura/verificador');?>"><i class="fa fa-paperclip"></i>Verificador de facturas</a>
+                        </li>
+
+                    </ul>
+                   
+                </li>
+                        
+                        
                         <?php } ?>
                         <li>
                             <a href="#">

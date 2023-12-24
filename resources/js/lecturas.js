@@ -278,6 +278,7 @@ function cargar_lectura(lectura) {
     var mes = document.getElementById("select_mes").value;
     var gestion = document.getElementById("select_gestion").value;
     var asociado = lectura.id_asoc;
+    var tipo_asoc = lectura.tipo_asoc;
     var base_url = document.getElementById("base_url").value;
     var controlador = base_url + "lectura/mostrar_multas";
 
@@ -339,7 +340,7 @@ function cargar_lectura(lectura) {
         $.ajax({
             url: controlador,
             type: "POST",
-            data: {mes: mes, gestion: gestion, asociado: asociado},
+            data: {mes: mes, gestion: gestion, asociado: asociado, tipo_asoc:tipo_asoc},
             success: function (result) {
 
                 var res = JSON.parse(result);
@@ -384,7 +385,7 @@ function cargar_lectura(lectura) {
                 html += "<th colspan='5' style='padding:0;'><h3 style='font-family:Arial; padding:0; margin:0;'><b>DETALLE DE LECTURA</b></h3></th>";
                 html += "</tr>";
 
-                color_fondo = "silver;";
+                color_fondo = "lightgray;";
 
                 if (esMobil()) {
                     columnas = "colspan='2'";
@@ -699,9 +700,9 @@ function buscar_asociados() {
                         html += "<br><button onclick = 'cargar_lectura(" + JSON.stringify(res[i]) + ")' class='btn btn-warning btn-xs' title='Registrar lecturas'><fa class='fa fa-pencil'></fa>Lecturar</button>";
                     }
                     
-                    html += "<br><a href='" + base_url + "lectura/historial/" + res[i].id_asoc + "' class='btn btn-facebook btn-xs' title='Historial de lecturas' target='_BLANK'><fa class='fa fa-list'></fa></a>";
-                    html += "<a href='" + base_url + "lectura/ultimo_preaviso/" + res[i].id_asoc + "' class='btn btn-info btn-xs' title='Ultimo preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
-                    html += "<a href='" + base_url + "lectura/mes_preaviso/" + res[i].id_asoc +"/"+select_mes+"/"+select_gestion+"' class='btn btn-success btn-xs' title='Reimprimir preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
+                    html += "<br><a href='" + base_url + "lectura/ultimo_preaviso/" + res[i].id_asoc + "' class='btn btn-info btn-xs' title='Ultimo preaviso' target='_BLANK'><fa class='fa fa-print'></fa></a>";
+                    html += "<a href='" + base_url + "lectura/mes_preaviso/" + res[i].id_asoc +"/"+select_mes+"/"+select_gestion+"' class='btn btn-success btn-xs' title='Reimprimir preaviso' target='_BLANK'><fa class='fa fa-print'></fa></a>";
+                    html += "<a href='" + base_url + "lectura/historial/" + res[i].id_asoc + "' class='btn btn-facebook btn-xs' title='Historial de lecturas' target='_BLANK'><fa class='fa fa-list'></fa></a>";
                     html += "</center>";
                     html += "</td>";
                     html += "</tr>";
@@ -734,9 +735,9 @@ function buscar_asociados() {
                     }
                     
 
+                    html += "<a href='" + base_url + "lectura/ultimo_preaviso/" + res[i].id_asoc + "' class='btn btn-info btn-xs' title='Ultimo preaviso' target='_BLANK'><fa class='fa fa-print'></fa></a>";
+                    html += "<a href='" + base_url + "lectura/mes_preaviso/" + res[i].id_asoc +"/"+select_mes+"/"+select_gestion+"' class='btn btn-success btn-xs' title='Reimprimir preaviso' target='_BLANK'><fa class='fa fa-print'></fa></a>";
                     html += "<a href='" + base_url + "lectura/historial/" + res[i].id_asoc + "' class='btn btn-facebook btn-xs' title='Historial de lecturas' target='_BLANK'><fa class='fa fa-list'></fa></a>";
-                    html += "<a href='" + base_url + "lectura/ultimo_preaviso/" + res[i].id_asoc + "' class='btn btn-info btn-xs' title='Ultimo preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
-                    html += "<a href='" + base_url + "lectura/mes_preaviso/" + res[i].id_asoc +"/"+select_mes+"/"+select_gestion+"' class='btn btn-success btn-xs' title='Reimprimir preaviso' target='_BLANK'><fa class='fa fa-book'></fa></a>";
                     html += "</td>";
                     html += "</tr>";
      

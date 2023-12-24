@@ -1,4 +1,6 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+
+  
 <script type="text/javascript">
     $(document).ready(function()
     {
@@ -40,9 +42,6 @@ border-collapse : collapse;
 font-family: Arial narrow;
 font-size: 8pt;  
 
-td {
-border:hidden;
-}
 }
 
 td#comentario {
@@ -139,6 +138,48 @@ border-bottom : 1px solid #aaa;
         <td align="left" style="padding: 0;"><b style="font-size: 12pt;">TOTAL Bs</b></td>
         <td align="right" style="padding: 0;"><b style="font-size: 12pt;"><?php echo number_format($l["montototal_fact"],2,".",","); ?></b></td>
     
+    </tr>
+    
+    <tr style="border-top-style: solid; border-color: #000; border-bottom-style: solid; ">        
+        <td align="left" style="padding: 0;" colspan="2">
+            <table>
+                <tr>
+                    <td>
+                        <?php
+                            $totalconsumo = 0;
+                            foreach($historico as $h){ 
+                                $totalconsumo += $h["consumo_lec"];
+                            } ?>
+                            <tr>
+                                <td><b>HISTORICO DE CONSUMO</b></td>
+                                <td><b>mt<sup>3</sup></b></td>
+                                <td><b></b></td>                       
+                            </tr>
+                            <?php
+                            foreach($historico as $h){ ?>
+                            <tr>
+                                <td><?php echo $h["mes_lec"]."/".$h["gestion_lec"]; ?></td>
+                                <td><?php echo $h["consumo_lec"]; ?></td>
+                                
+                                <td><?php 
+                                    $caracter = "*";
+                                    $repeticiones = number_format($h["consumo_lec"] / $totalconsumo * 50,0); 
+                                     echo str_repeat($caracter, $repeticiones); ?>
+                                </td>
+                                
+                            <tr>
+                        
+                        <?php } ?>
+                        
+                    </td>
+                    
+                    <td>
+                        
+                    </td>
+                </tr>
+                
+            </table>        
+        </td>
     </tr>
     <?php
     if ($l["cantfact_lec"]>0) { ?>

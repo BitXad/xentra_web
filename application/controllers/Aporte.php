@@ -139,7 +139,7 @@ class Aporte extends CI_Controller{
     /*
      * Deleting aporte
      */
-    /*function remove($id_ap)
+    function remove($id_ap)
     {
         $aporte = $this->Aporte_model->get_aporte($id_ap);
 
@@ -151,6 +151,6 @@ class Aporte extends CI_Controller{
         }
         else
             show_error('The aporte you are trying to delete does not exist.');
-    }*/
+    }
     
 }

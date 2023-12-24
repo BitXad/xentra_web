@@ -127,6 +127,18 @@ class Lectura_model extends CI_Model
         
     }    
 
+    function get_historico($id_asoc)
+    {
+        $sql = "select * from lectura
+                where id_asoc = {$id_asoc}
+                order by id_lec desc
+                limit 6";
+
+        $historico = $this->db->query($sql)->result_array();
+        return $historico;
+        
+    }     
+
     function get_lecturasocio_asoc($id_asoc)
     {
         $sql = "select * from lectura l, factura f, asociado a, detalle_factura d ".

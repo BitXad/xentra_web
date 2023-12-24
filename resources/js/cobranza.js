@@ -62,6 +62,9 @@ function finalizar(){
                         $("#total_factura").val("0.00");
                         $("#btnfinalizar").prop('disabled',true);
                         facturas_pendientes(id_asoc);
+                        
+                        window.open("http://localhost/ximpleman_web/venta/ventas", '_blank');
+                        
                     }
                 }else{
                     alert("Informacion Incorrecta, revise sus datos, consumo y total no pueden ser 0");

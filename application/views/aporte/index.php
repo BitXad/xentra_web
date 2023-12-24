@@ -31,7 +31,7 @@
     <div class="col-md-12">
         <div class="box">
             
-            <div class="box-body">
+            <div class="box-body table-responsive">
                 <table class="table table-striped" id="mitabla">
                     <tr>
                         <th>#</th>
@@ -44,6 +44,7 @@
                         <th>Detalle</th>
                         <th>Monto</th>
                         <th>Fecha Hora</th>
+                        <th>Aplicacion</th>
                         <th>Estado</th>
                         <th>Usuario</th>
                         <th></th>
@@ -63,13 +64,39 @@
                         <td><?php echo $a['detalle_ap']; ?></td>
                         <td><?php echo number_format($a['monto_ap'], 2, ".", ","); ?></td>
                         <td><?php echo date('d/m/Y H:i:s',strtotime($a['fechahora_ap']));?></td>
+                        <td><?php echo $a['tipo_asoc']; ?></td>
                         <td><?php echo $a['estado_ap']; ?></td>
                         <td><?php echo $a['nombre_usu']; ?></td>
                         <td>
                             <a href="<?php echo site_url('aporte/edit/'.$a['id_ap']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <!--<a href="<?php //echo site_url('aporte/remove/'.$a['id_ap']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
+                            <!--<a href="<?php echo site_url('aporte/remove/'.$a['id_ap']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
+                            <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirmarEliminar_<?php echo $a['id_ap']; ?>">
+                                <span class="fa fa-trash"></span>
+                            </a>
                         </td>
                     </tr>
+
+                        <!-- Modal de confirmación -->
+                        <div class="modal fade" id="confirmarEliminar_<?php echo $a['id_ap']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Confirmar Eliminación</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                ¿Estás seguro de que deseas eliminar este elemento?
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <a href="<?php echo site_url('aporte/remove/'.$a['id_ap']); ?>" class="btn btn-danger">Eliminar</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                     
                     <?php $i++; } ?>
                     </tbody>
                 </table>
@@ -78,3 +105,5 @@
         </div>
     </div>
 </div>
+
+<!-- Enlace con el modal -->
